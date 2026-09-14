@@ -1,0 +1,254 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DigitalMarketProjectState",
+  "type": "object",
+  "required": [
+    "version",
+    "current_phase",
+    "completed_phases",
+    "facts",
+    "decisions",
+    "assumptions",
+    "unknowns"
+  ],
+  "properties": {
+    "version": {
+      "type": "string"
+    },
+    "project_id": {
+      "type": "string"
+    },
+    "business_name": {
+      "type": "string"
+    },
+    "current_phase": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 8
+    },
+    "completed_phases": {
+      "type": "object",
+      "properties": {
+        "1": {
+          "type": "boolean"
+        },
+        "2": {
+          "type": "boolean"
+        },
+        "3": {
+          "type": "boolean"
+        },
+        "4": {
+          "type": "boolean"
+        },
+        "5": {
+          "type": "boolean"
+        },
+        "6": {
+          "type": "boolean"
+        },
+        "7": {
+          "type": "boolean"
+        },
+        "8": {
+          "type": "boolean"
+        }
+      }
+    },
+    "business_context": {
+      "$ref": "business-context.schema.json"
+    },
+    "facts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "phase",
+          "statement",
+          "source",
+          "verified_at"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "phase": {
+            "type": "integer"
+          },
+          "statement": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "verified_at": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "phase",
+          "topic",
+          "decision",
+          "status",
+          "evidence_refs",
+          "knowledge_refs"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "phase": {
+            "type": "integer"
+          },
+          "topic": {
+            "type": "string"
+          },
+          "decision": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PROPOSED",
+              "LOCKED",
+              "SUPERSEDED",
+              "CONTRADICTED"
+            ]
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "knowledge_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "affected_phases": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        }
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "phase",
+          "assumption",
+          "risk_level",
+          "validation_target_phase"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "phase": {
+            "type": "integer"
+          },
+          "assumption": {
+            "type": "string"
+          },
+          "risk_level": {
+            "type": "string",
+            "enum": [
+              "LOW",
+              "MEDIUM",
+              "HIGH",
+              "CRITICAL"
+            ]
+          },
+          "validation_target_phase": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "phase",
+          "question",
+          "impact",
+          "resolution_strategy"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "phase": {
+            "type": "integer"
+          },
+          "question": {
+            "type": "string"
+          },
+          "impact": {
+            "type": "string",
+            "enum": [
+              "DATA_GAP",
+              "RESEARCH_QUESTION",
+              "MEASUREMENT_REQUIREMENT"
+            ]
+          },
+          "resolution_strategy": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "contradictions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "phase_a",
+          "phase_b",
+          "issue",
+          "resolution_state"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "phase_a": {
+            "type": "integer"
+          },
+          "phase_b": {
+            "type": "integer"
+          },
+          "issue": {
+            "type": "string"
+          },
+          "resolution_state": {
+            "type": "string",
+            "enum": [
+              "OPEN",
+              "RESOLVED",
+              "RE_ENTRY_REQUIRED"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

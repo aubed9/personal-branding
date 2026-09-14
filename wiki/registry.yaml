@@ -1,0 +1,676 @@
+version: 1.0.0
+updated_at: '2026-09-05'
+knowledge_nodes:
+  KB-SYS-ARCH-001:
+    title: معماری جامع سیستم دیجیتال مارکت
+    file: wiki/00-system/architecture.md
+    category: 00-system
+    phases:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    business_types:
+    - ALL
+    dependencies: []
+    relevance: mandatory
+  KB-SYS-WORKFLOW-001:
+    title: جریان کار متوالی و قراردادهای تبادل داده
+    file: wiki/00-system/workflow.md
+    category: 00-system
+    phases:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    business_types:
+    - ALL
+    dependencies:
+    - KB-SYS-ARCH-001
+    relevance: mandatory
+  KB-SYS-GATES-001:
+    title: گیت‌های آمادگی و قوانین وتوی مراحل
+    file: wiki/00-system/phase-gates.md
+    category: 00-system
+    phases:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    business_types:
+    - ALL
+    dependencies:
+    - KB-SYS-ARCH-001
+    - KB-BIZ-ECON-001
+    relevance: mandatory
+  KB-SYS-STATE-001:
+    title: وضعیت ساخت‌یافته ماشین‌خوان پروژه
+    file: wiki/00-system/project-state.md
+    category: 00-system
+    phases:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    business_types:
+    - ALL
+    dependencies:
+    - KB-SYS-ARCH-001
+    relevance: mandatory
+  KB-SYS-EVIDENCE-001:
+    title: سیستم رتبه‌بندی شواهد و مدیریت فرضیات
+    file: wiki/00-system/evidence-system.md
+    category: 00-system
+    phases:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    business_types:
+    - ALL
+    dependencies:
+    - KB-SYS-ARCH-001
+    relevance: mandatory
+  KB-SYS-TRACE-001:
+    title: ردیابی و تبارشناسی تصمیمات در طول زنجیره
+    file: wiki/00-system/decision-traceability.md
+    category: 00-system
+    phases:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    business_types:
+    - ALL
+    dependencies:
+    - KB-SYS-STATE-001
+    - KB-SYS-EVIDENCE-001
+    relevance: mandatory
+  KB-BIZ-MODEL-001:
+    title: مدل کسب‌وکار و نحوه خلق و جذب ارزش
+    file: wiki/01-business-foundation/business-model.md
+    category: 01-business-foundation
+    phases:
+    - 1
+    - 2
+    - 3
+    business_types:
+    - ALL
+    dependencies: []
+    relevance: high
+  KB-BIZ-STAGE-001:
+    title: مراحل بلوغ کسب‌وکار و درجه قطعیت
+    file: wiki/01-business-foundation/business-stage.md
+    category: 01-business-foundation
+    phases:
+    - 1
+    business_types:
+    - ALL
+    dependencies:
+    - KB-BIZ-MODEL-001
+    relevance: high
+  KB-BIZ-REV-001:
+    title: مدل‌های درآمدی و مکانیزم‌های قیمت‌ستانی
+    file: wiki/01-business-foundation/revenue-models.md
+    category: 01-business-foundation
+    phases:
+    - 1
+    - 3
+    business_types:
+    - ALL
+    dependencies:
+    - KB-BIZ-MODEL-001
+    relevance: high
+  KB-BIZ-SALES-001:
+    title: مدل‌های فروش و فرآیند تصمیم‌گیری مشتری
+    file: wiki/01-business-foundation/sales-models.md
+    category: 01-business-foundation
+    phases:
+    - 1
+    - 3
+    business_types:
+    - ALL
+    dependencies:
+    - KB-BIZ-MODEL-001
+    relevance: high
+  KB-BIZ-CHANNEL-001:
+    title: کانال‌های دسترسی، توزیع و بازاریابی
+    file: wiki/01-business-foundation/channels.md
+    category: 01-business-foundation
+    phases:
+    - 1
+    - 2
+    - 5
+    business_types:
+    - ALL
+    dependencies:
+    - KB-BIZ-MODEL-001
+    relevance: high
+  KB-BIZ-GOALS-001:
+    title: هدف‌گذاری ملموس ۹۰ روزه و شاخص‌های موفقیت
+    file: wiki/01-business-foundation/goals.md
+    category: 01-business-foundation
+    phases:
+    - 1
+    business_types:
+    - ALL
+    dependencies:
+    - KB-BIZ-MODEL-001
+    relevance: high
+  KB-BIZ-ECON-001:
+    title: اقتصاد واحد و تعادل هزینه جذب به ارزش مشتری
+    file: wiki/01-business-foundation/unit-economics.md
+    category: 01-business-foundation
+    phases:
+    - 1
+    - 2
+    - 3
+    business_types:
+    - ALL
+    dependencies:
+    - KB-BIZ-MODEL-001
+    relevance: mandatory
+  KB-RES-MKT-001:
+    title: اصول هوش بازار و تحلیل جامع اکوسیستم
+    file: wiki/02-market-research/market-research.md
+    category: 02-market-research
+    phases:
+    - 2
+    business_types:
+    - ALL
+    dependencies:
+    - KB-SYS-EVIDENCE-001
+    relevance: high
+  KB-RES-CUST-001:
+    title: پژوهش عمیق مشتری و شغل‌های انجام‌نشده (JTBD)
+    file: wiki/02-market-research/customer-research.md
+    category: 02-market-research
+    phases:
+    - 2
+    - 3
+    business_types:
+    - ALL
+    dependencies:
+    - KB-RES-MKT-001
+    relevance: mandatory
+  KB-RES-COMP-001:
+    title: تحلیل ماتریس رقبا و جایگزین‌های رفتاری
+    file: wiki/02-market-research/competitor-research.md
+    category: 02-market-research
+    phases:
+    - 2
+    - 3
+    business_types:
+    - ALL
+    dependencies:
+    - KB-RES-MKT-001
+    relevance: high
+  KB-RES-SEG-001:
+    title: بخش‌بندی بازار و انتخاب هسته تمرکز
+    file: wiki/02-market-research/segmentation.md
+    category: 02-market-research
+    phases:
+    - 2
+    - 3
+    business_types:
+    - ALL
+    dependencies:
+    - KB-RES-MKT-001
+    - KB-RES-CUST-001
+    relevance: high
+  KB-RES-DEMAND-001:
+    title: اعتبارسنجی تقاضای واقعی و اصطکاک‌های پذیرش
+    file: wiki/02-market-research/demand.md
+    category: 02-market-research
+    phases:
+    - 2
+    business_types:
+    - ALL
+    dependencies:
+    - KB-RES-MKT-001
+    relevance: high
+  KB-RES-PRICE-001:
+    title: پژوهش کشش قیمتی و مازاد رفاه مصرف‌کننده
+    file: wiki/02-market-research/pricing-research.md
+    category: 02-market-research
+    phases:
+    - 2
+    - 3
+    business_types:
+    - ALL
+    dependencies:
+    - KB-RES-MKT-001
+    relevance: high
+  KB-RES-EVID-001:
+    title: معیارهای سنجش کیفیت شواهد پژوهش
+    file: wiki/02-market-research/evidence-quality.md
+    category: 02-market-research
+    phases:
+    - 2
+    business_types:
+    - ALL
+    dependencies:
+    - KB-SYS-EVIDENCE-001
+    relevance: mandatory
+  KB-STR-TARGET-001:
+    title: تعیین بازار هدف متمرکز و پرسونای خریدار
+    file: wiki/03-strategy/target-market.md
+    category: 03-strategy
+    phases:
+    - 3
+    business_types:
+    - ALL
+    dependencies:
+    - KB-RES-SEG-001
+    relevance: mandatory
+  KB-STR-POS-001:
+    title: استراتژی جایگاه‌یابی و تسخیر جایگاه در ذهن
+    file: wiki/03-strategy/positioning.md
+    category: 03-strategy
+    phases:
+    - 3
+    business_types:
+    - ALL
+    dependencies:
+    - KB-RES-COMP-001
+    - KB-STR-TARGET-001
+    relevance: mandatory
+  KB-STR-DIFF-001:
+    title: تمایز معنادار و بیانیه انحصار (Only-ness)
+    file: wiki/03-strategy/differentiation.md
+    category: 03-strategy
+    phases:
+    - 3
+    business_types:
+    - ALL
+    dependencies:
+    - KB-STR-POS-001
+    relevance: mandatory
+  KB-STR-VP-001:
+    title: گزاره ارزش پیشنهادی و تسکین دردهای مشتری
+    file: wiki/03-strategy/value-proposition.md
+    category: 03-strategy
+    phases:
+    - 3
+    business_types:
+    - ALL
+    dependencies:
+    - KB-RES-CUST-001
+    - KB-STR-TARGET-001
+    relevance: mandatory
+  KB-STR-PROMISE-001:
+    title: وعده تخلف‌ناپذیر برند و گارانتی اجرایی
+    file: wiki/03-strategy/brand-promise.md
+    category: 03-strategy
+    phases:
+    - 3
+    business_types:
+    - ALL
+    dependencies:
+    - KB-STR-VP-001
+    - KB-STR-POS-001
+    relevance: mandatory
+  KB-STR-PILLARS-001:
+    title: ارکان استراتژیک و ستون‌های هدایت برند
+    file: wiki/03-strategy/strategic-pillars.md
+    category: 03-strategy
+    phases:
+    - 3
+    business_types:
+    - ALL
+    dependencies:
+    - KB-STR-POS-001
+    relevance: high
+  KB-STR-PROOF-001:
+    title: دلایل باورپذیری و شواهد اثبات ادعا (RTB)
+    file: wiki/03-strategy/proof.md
+    category: 03-strategy
+    phases:
+    - 3
+    - 5
+    business_types:
+    - ALL
+    dependencies:
+    - KB-STR-PROMISE-001
+    relevance: high
+  KB-IDN-CHAR-001:
+    title: کاراکتر و کهن‌الگوی روان‌شناختی برند
+    file: wiki/04-brand-identity/brand-character.md
+    category: 04-brand-identity
+    phases:
+    - 4
+    business_types:
+    - ALL
+    dependencies:
+    - KB-STR-POS-001
+    relevance: mandatory
+  KB-IDN-PERSON-001:
+    title: صفات شخصیتی محوری برند (Brand Traits)
+    file: wiki/04-brand-identity/personality.md
+    category: 04-brand-identity
+    phases:
+    - 4
+    business_types:
+    - ALL
+    dependencies:
+    - KB-IDN-CHAR-001
+    relevance: high
+  KB-IDN-GUARD-001:
+    title: گاردریل‌های هویتی و خطوط قرمز حسی
+    file: wiki/04-brand-identity/identity-guardrails.md
+    category: 04-brand-identity
+    phases:
+    - 4
+    business_types:
+    - ALL
+    dependencies:
+    - KB-IDN-CHAR-001
+    relevance: mandatory
+  KB-MSG-VOICE-001:
+    title: صدای ثابت و پایدار برند (Brand Voice)
+    file: wiki/05-verbal-identity/voice.md
+    category: 05-verbal-identity
+    phases:
+    - 5
+    business_types:
+    - ALL
+    dependencies:
+    - KB-IDN-CHAR-001
+    relevance: mandatory
+  KB-MSG-TONE-001:
+    title: ماتریس موقعیتی لحن در موقعیت‌های گوناگون
+    file: wiki/05-verbal-identity/tone.md
+    category: 05-verbal-identity
+    phases:
+    - 5
+    business_types:
+    - ALL
+    dependencies:
+    - KB-MSG-VOICE-001
+    relevance: high
+  KB-MSG-CORE-001:
+    title: ارکان پیام و قلاب معرفی ۳۰ ثانیه‌ای (Elevator Hook)
+    file: wiki/05-verbal-identity/messaging.md
+    category: 05-verbal-identity
+    phases:
+    - 5
+    business_types:
+    - ALL
+    dependencies:
+    - KB-STR-VP-001
+    - KB-MSG-VOICE-001
+    relevance: mandatory
+  KB-MSG-VOCAB-001:
+    title: فرهنگ واژگان و اصطلاحات ممنوعه (Forbidden Words)
+    file: wiki/05-verbal-identity/vocabulary.md
+    category: 05-verbal-identity
+    phases:
+    - 5
+    business_types:
+    - ALL
+    dependencies:
+    - KB-IDN-GUARD-001
+    relevance: high
+  KB-NAM-STRAT-001:
+    title: استراتژی نام‌گذاری برند و قلمروهای معنایی
+    file: wiki/06-naming/naming-strategy.md
+    category: 06-naming
+    phases:
+    - 6
+    business_types:
+    - ALL
+    dependencies:
+    - KB-STR-POS-001
+    - KB-IDN-CHAR-001
+    relevance: mandatory
+  KB-NAM-EVAL-001:
+    title: معیارهای ارزیابی، آواشناسی و فیلترهای حقوقی نام
+    file: wiki/06-naming/naming-evaluation.md
+    category: 06-naming
+    phases:
+    - 6
+    business_types:
+    - ALL
+    dependencies:
+    - KB-NAM-STRAT-001
+    relevance: mandatory
+  KB-NAM-TAG-001:
+    title: معماری شعار برند و تکنیک‌های خلق تگ‌لاین
+    file: wiki/06-naming/tagline.md
+    category: 06-naming
+    phases:
+    - 6
+    business_types:
+    - ALL
+    dependencies:
+    - KB-STR-PROMISE-001
+    - KB-NAM-STRAT-001
+    relevance: mandatory
+  KB-TYPE-LOCAL-001:
+    title: بافتار تخصصی خدمات محلی و فنی (کارواش، اتوسرویس، سالن)
+    file: wiki/07-business-types/local-service.md
+    category: 07-business-types
+    phases:
+    - 1
+    - 2
+    - 3
+    - 5
+    - 7
+    - 8
+    business_types:
+    - LOCAL_SERVICE
+    dependencies:
+    - KB-BIZ-MODEL-001
+    adds_questions:
+    - catchment_area
+    - bay_utilization
+    - local_reviews
+    relevance: high
+  KB-TYPE-HOSP-001:
+    title: بافتار کافه، رستوران و پذیرایی (Hospitality)
+    file: wiki/07-business-types/restaurant-cafe.md
+    category: 07-business-types
+    phases:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 7
+    - 8
+    business_types:
+    - RESTAURANT_CAFE_HOSPITALITY
+    dependencies:
+    - KB-BIZ-MODEL-001
+    adds_questions:
+    - table_turnover
+    - food_cost
+    - sensory_vibe
+    relevance: high
+  KB-TYPE-SAAS-001:
+    title: بافتار تخصصی نرم‌افزار و پلتفرم ابری (SaaS)
+    file: wiki/07-business-types/saas.md
+    category: 07-business-types
+    phases:
+    - 1
+    - 2
+    - 3
+    - 5
+    - 8
+    business_types:
+    - SAAS_SOFTWARE
+    dependencies:
+    - KB-BIZ-MODEL-001
+    adds_questions:
+    - mrr
+    - churn
+    - trial_conversion
+    - onboarding_time
+    relevance: high
+  KB-TYPE-MFG-001:
+    title: بافتار صنایع تولیدی و کارخانجات B2B
+    file: wiki/07-business-types/manufacturing.md
+    category: 07-business-types
+    phases:
+    - 1
+    - 2
+    - 3
+    - 5
+    - 7
+    - 8
+    business_types:
+    - MANUFACTURER
+    dependencies:
+    - KB-BIZ-MODEL-001
+    adds_questions:
+    - moq
+    - tolerance
+    - production_capacity
+    - scrap_rate
+    relevance: high
+  KB-TYPE-ECOM-001:
+    title: بافتار آنلاین‌شاپ و تجارت الکترونیک (DTC)
+    file: wiki/07-business-types/ecommerce.md
+    category: 07-business-types
+    phases:
+    - 1
+    - 2
+    - 3
+    - 5
+    - 8
+    business_types:
+    - ECOMMERCE_DTC
+    dependencies:
+    - KB-BIZ-MODEL-001
+    adds_questions:
+    - conversion_rate
+    - cart_abandonment
+    - shipping_cost
+    relevance: high
+  KB-PB-FOUNDER-001:
+    title: برند شخصی بنیان‌گذار و پیوند با کسب‌وکار (Founder Brand)
+    file: wiki/08-personal-brand/founder-brand.md
+    category: 08-personal-brand
+    phases:
+    - 1
+    - 4
+    - 5
+    - 8
+    business_types:
+    - FOUNDER_LED
+    - PERSONAL_BRAND
+    dependencies:
+    - KB-STR-POS-001
+    adds_questions:
+    - founder_role
+    - pov
+    - dependency_risk
+    relevance: high
+  KB-PB-THOUGHT-001:
+    title: رهبری فکری و زاویه دید اختصاصی (Point-of-View)
+    file: wiki/08-personal-brand/thought-leadership.md
+    category: 08-personal-brand
+    phases:
+    - 5
+    - 8
+    business_types:
+    - FOUNDER_LED
+    - PROFESSIONAL_SERVICE
+    dependencies:
+    - KB-PB-FOUNDER-001
+    relevance: high
+  KB-KPI-SAAS-001:
+    title: شاخص‌های کلیدی عملکرد نرم‌افزارهای ابری (SaaS Metrics)
+    file: wiki/09-metrics/saas-kpis.md
+    category: 09-metrics
+    phases:
+    - 1
+    - 2
+    - 8
+    business_types:
+    - SAAS_SOFTWARE
+    dependencies:
+    - KB-TYPE-SAAS-001
+    relevance: high
+  KB-KPI-BRAND-001:
+    title: سنجه‌های قدرت و ارزش ویژه برند (Brand Equity KPIs)
+    file: wiki/09-metrics/brand-kpis.md
+    category: 09-metrics
+    phases:
+    - 3
+    - 7
+    - 8
+    business_types:
+    - ALL
+    dependencies:
+    - KB-STR-POS-001
+    relevance: high
+  KB-PLAY-CRISIS-001:
+    title: پلی‌بوک مدیریت بحران و صیانت از اعتبار برند
+    file: wiki/10-playbooks/crisis.md
+    category: 10-playbooks
+    phases:
+    - 4
+    - 5
+    - 8
+    business_types:
+    - ALL
+    dependencies:
+    - KB-IDN-GUARD-001
+    - KB-MSG-TONE-001
+    relevance: high
+  KB-GLOSS-BRAND-001:
+    title: واژه‌نامه تخصصی اصطلاحات برندینگ و هویت
+    file: wiki/11-glossary/branding-glossary.md
+    category: 11-glossary
+    phases:
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    business_types:
+    - ALL
+    dependencies: []
+    relevance: high
+  KB-GOV-SOT-001:
+    title: قوانین مرجع واحد حقیقت (Single Source of Truth)
+    file: wiki/12-governance/source-of-truth.md
+    category: 12-governance
+    phases:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    business_types:
+    - ALL
+    dependencies:
+    - KB-SYS-ARCH-001
+    relevance: mandatory

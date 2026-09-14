@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AdaptiveQuestion",
+  "type": "object",
+  "required": [
+    "id",
+    "concept_id",
+    "phase",
+    "question_fa",
+    "why_asked",
+    "required_when",
+    "answer_type"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^Q-[A-Z0-9-]+$"
+    },
+    "concept_id": {
+      "type": "string"
+    },
+    "phase": {
+      "type": "integer"
+    },
+    "question_fa": {
+      "type": "string"
+    },
+    "why_asked": {
+      "type": "string"
+    },
+    "required_when": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "skip_when": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "answer_type": {
+      "type": "string",
+      "enum": [
+        "SINGLE_CHOICE",
+        "MULTI_CHOICE",
+        "TEXT",
+        "NUMBER_OR_UNKNOWN",
+        "PERCENTAGE_OR_UNKNOWN"
+      ]
+    }
+  }
+}

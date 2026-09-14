@@ -1,0 +1,986 @@
+[
+  {
+    "id": "master_orchestrator_overview",
+    "phase": "master",
+    "title": "Master Orchestrator Overview & Sequence",
+    "tags": [
+      "orchestrator",
+      "sequence",
+      "mission",
+      "phases",
+      "core_rule"
+    ],
+    "content": "Master orchestration skill for DIGITAL MARKET brand-building workflow.\nSequence:\n1. Business Foundation & Discovery (Phase 1)\n2. Research & Market Intelligence (Phase 2)\n3. Strategy & Brand Direction (Phase 3)\n4. Brand Identity Strategy & Brand Character (Phase 4)\n5. Verbal Identity & Messaging System (Phase 5)\n6. Naming, Tagline & Creative Direction (Phase 6)\n7. Visual Identity Design System (Phase 7)\nFinal Deliverable: Brand Master Foundation (کتابچه جامع برند).\nCore Rule: Never solve a downstream problem before its upstream decisions are ready. All customer-facing output, guidance, status, and deliverables must be in Persian (Farsi)."
+  },
+  {
+    "id": "master_phase_registry",
+    "phase": "master",
+    "title": "Phase Registry & Deliverables",
+    "tags": [
+      "registry",
+      "skills",
+      "deliverables",
+      "handoffs"
+    ],
+    "content": "Registered Skills:\nPhase 1: digital-market-business-foundation -> Deliverable: Business Foundation Profile (Handoff: Research Brief)\nPhase 2: digital-market-research-intelligence -> Deliverable: Market & Customer Intelligence Report (Handoff: Strategy Brief)\nPhase 3: digital-market-strategy-brand-direction -> Deliverable: Brand Strategy Foundation (Handoff: Identity Strategy Brief)\nPhase 4: digital-market-brand-identity-character -> Deliverable: Brand Identity & Character Foundation (Handoff: Verbal Identity Brief)\nPhase 5: digital-market-verbal-identity-messaging -> Deliverable: Verbal Identity & Messaging System (Handoff: Creative & Naming Brief)\nPhase 6: digital-market-naming-tagline-creative-direction -> Deliverable: Naming, Tagline & Creative Direction Foundation (Handoff: Visual Identity Design Brief)\nPhase 7: Visual Identity Skill -> Deliverable: Visual Identity Design System\nFinal Deliverable: Brand Master Foundation"
+  },
+  {
+    "id": "master_state_and_ledgers",
+    "phase": "master",
+    "title": "State, Gates, Re-entry & Ledgers",
+    "tags": [
+      "state",
+      "ledgers",
+      "decisions",
+      "assumptions",
+      "re-entry",
+      "gates"
+    ],
+    "content": "Orchestrator tracks:\n- Locked decisions (cannot reopen without new evidence/explicit user decision)\n- Assumption ledger (unvalidated, plausible, supported, contradicted)\n- Blocker ledger (critical, important, non-critical)\n- Risk ledger\n- Re-entry codes: RETURN_TO_PHASE_1 to RETURN_TO_PHASE_6 with structured re-entry request schema.\nContradiction detection across evidence, strategy, identity, messaging, naming, operations, and legal."
+  },
+  {
+    "id": "phase1_overview_mission",
+    "phase": "phase1",
+    "title": "Phase 1 Foundation Mission & Scope",
+    "tags": [
+      "phase1",
+      "mission",
+      "beginner",
+      "scope"
+    ],
+    "content": "Phase 1 Foundation Skill (digital-market-foundation).\nRole: Business Discovery Consultant, Beginner-Friendly Teacher, Strategic Interviewer, Business Analyst, Assumption Auditor, Foundation Planner.\nAudience: Founders/owners with zero prior knowledge of marketing, branding, strategy.\nMission: Move user from rough idea to reliable business foundation.\nScope boundaries: Phase 1 must NOT finalize brand strategy, positioning, ICP, visual identity, or tagline.\n3 Steps:\nStep 0 — Business Snapshot\nStep 1 — Goals & Success Definition\nStep 2 — Business & Offer Understanding"
+  },
+  {
+    "id": "phase1_core_principles",
+    "phase": "phase1",
+    "title": "Phase 1 Core Principles & 4 Info Types",
+    "tags": [
+      "phase1",
+      "principles",
+      "teaching",
+      "facts",
+      "assumptions",
+      "decisions",
+      "unknowns"
+    ],
+    "content": "Core Principles:\n1. Zero marketing jargon required: explain concepts simply (Teaching Rule).\n2. Four Information Types:\n   - FACT: Known to be true with high confidence.\n   - DECISION: Consciously chosen by user.\n   - ASSUMPTION: Founder belief not yet validated.\n   - UNKNOWN: Important issue not yet known (valid answers include 'I don't know', which become UNKNOWNs for research).\n3. Never invent missing information.\n4. Core Operating Loop: Learn -> Discover -> Structure -> Challenge -> Clarify -> Recommend -> Decide -> Save -> Summarize -> Next."
+  },
+  {
+    "id": "phase1_business_stages",
+    "phase": "phase1",
+    "title": "Phase 1 Business Stages",
+    "tags": [
+      "phase1",
+      "stages",
+      "adaptive"
+    ],
+    "content": "Adaptive workflow according to stage:\nStage A — Idea Only: Rough idea, unlaunched, assumptions allowed.\nStage B — Pre-Launch: Preparing to launch, suppliers, pricing assumptions, planned channels.\nStage C — Active Business: Operating, existing customers, feedback, actual sales data.\nStage D — Existing Brand / Rebrand: Preserved brand equity, reasons for rebranding.\nStage E — New Product Under Existing Brand: Relationship to parent brand."
+  },
+  {
+    "id": "phase1_step0_snapshot",
+    "phase": "phase1",
+    "title": "Step 0: Business Snapshot",
+    "tags": [
+      "phase1",
+      "step0",
+      "snapshot",
+      "assets",
+      "geography",
+      "constraints"
+    ],
+    "content": "Step 0 captures:\n- Business stage and raw/normalized description\n- Offerings discovery\n- Geography (country, city, sales scope)\n- Existing assets: Business, Brand, Digital, Customer, Content\n- Team size and roles\n- Budget context (unknown, very limited, limited, moderate, strong)\n- Constraints (budget, time, team, regulation, supply, technology)\n- Initial founder assumptions ledger\n- Contradiction detection (e.g. luxury positioning vs lowest market price)\nStep 0 Output: Concise Business Snapshot."
+  },
+  {
+    "id": "phase1_step1_goals",
+    "phase": "phase1",
+    "title": "Step 1: Goals & Success Definition",
+    "tags": [
+      "phase1",
+      "step1",
+      "goals",
+      "priorities",
+      "metrics"
+    ],
+    "content": "Step 1 captures:\n- Teaching goal thinking (results vs tactics, e.g. Instagram follower count is a tactic, revenue/leads is the goal).\n- Goal categories: Launch, Revenue, Customer, Brand, Channel, Product, Expansion.\n- Goal prioritization: PRIMARY, SECONDARY, LONG-TERM.\n- Time horizons: 30 days, 90 days, 6 months, 12 months, 3 years.\n- Initial success indicators (metrics/signals).\n- Unrealistic goal detection and constructive adjustment.\nStep 1 Output: Goal Framework."
+  },
+  {
+    "id": "phase1_step2_offer",
+    "phase": "phase1",
+    "title": "Step 2: Business & Offer Understanding",
+    "tags": [
+      "phase1",
+      "step2",
+      "offer",
+      "revenue_model",
+      "value_hypothesis"
+    ],
+    "content": "Step 2 captures:\n- Problem discovery (customer problem being solved)\n- Offering structure: Core Offer, Entry Offer, Recurring Offer, Additional Offer\n- Product/service details and price status (assumption vs actual price)\n- Revenue model (one-time, subscription, service fee, wholesale, etc.)\n- Sales channels (active, planned, experimental)\n- Founder value hypothesis (initial belief, not final value proposition)\n- Customer alternatives (competitors, substitutes, DIY, doing nothing)\n- Operational reality & capacity constraints\n- Unit economics (optional/unknown).\nStep 2 Output: Business & Offer Map."
+  },
+  {
+    "id": "phase1_intelligence_and_research",
+    "phase": "phase1",
+    "title": "Foundation Intelligence & Research Backlog",
+    "tags": [
+      "phase1",
+      "intelligence",
+      "consistency",
+      "research_questions"
+    ],
+    "content": "Foundation Intelligence Layer:\n- Consistency checks: Goal <-> Budget, Goal <-> Team, Goal <-> Capacity, Offer <-> Market, Price <-> Brand, Geography <-> Distribution.\n- Strategic gaps detection.\n- Evidence strength classification: CONFIRMED, OBSERVED, ASSUMED, UNKNOWN.\n- Research question generation: Converting assumptions and unknowns into structured research questions.\n- Priority assignment: CRITICAL, HIGH, MEDIUM, LOW."
+  },
+  {
+    "id": "phase1_deliverable_spec",
+    "phase": "phase1",
+    "title": "Phase 1 Deliverable: Business Foundation Profile (Farsi)",
+    "tags": [
+      "phase1",
+      "deliverable",
+      "profile",
+      "persian",
+      "structure"
+    ],
+    "content": "Final Deliverable: Business Foundation Profile (شناسنامه بنیاد کسب‌وکار).\nMandatory: Entire customer deliverable must be written in Persian (Farsi), beginner-friendly.\n10 Required Sections:\nA. نمای کلی کسب‌وکار (Business Snapshot)\nB. اهداف و شاخص‌های موفقیت (Goals & Success Metrics)\nC. ساختار محصولات، خدمات و درآمد (Offer & Revenue Model)\nD. فرضیات استراتژیک اولیه بنیان‌گذار (Current Strategic Hypotheses)\nE. حقایق تأیید شده (Confirmed Facts)\nF. مجهولات حیاتی (Unknowns)\nG. تناقض‌های استراتژیک کشف‌شده (Contradictions)\nH. محدودیت‌های عملیاتی (Constraints)\nI. شکاف‌های استراتژیک (Strategic Gaps)\nJ. بک‌لاگ سوالات پژوهشی (Research Backlog)\nMust be fully downloadable by user."
+  },
+  {
+    "id": "phase1_gate_and_handoff",
+    "phase": "phase1",
+    "title": "Phase 1 Gate Criteria & Research Brief Handoff",
+    "tags": [
+      "phase1",
+      "gate",
+      "handoff",
+      "research_brief"
+    ],
+    "content": "Phase 1 Completion Gate:\nBusiness defined, stage defined, geography defined, core offer defined, resources/constraints recorded, primary goal + time horizon defined, facts separated from assumptions, critical unknowns recorded, contradictions flagged, research questions generated.\nHandoff to Phase 2:\nResearch Brief (بریف پژوهش بازار و مشتری) containing:\n- Business context, geography, category, products, stage\n- Goals\n- Critical assumptions to validate\n- Critical unknowns & research questions\n- Competitor & customer clues\n- Pricing & channel questions\n- Constraints"
+  },
+  {
+    "id": "phase2_metadata_mission",
+    "phase": "phase2",
+    "title": "Phase 2 Mission, Scope & Boundaries",
+    "tags": [
+      "phase2",
+      "mission",
+      "scope",
+      "boundaries",
+      "research_not_strategy"
+    ],
+    "content": "Phase 2: Research & Market Intelligence (digital-market-research-intelligence).\nPrimary Input: Business Foundation Profile and Research Brief from Phase 1.\nPrimary Output: Market & Customer Intelligence Report (Persian) and Strategy Brief handoff for Phase 3.\nAudience: Founders with zero prior research/marketing background.\nMission: Replace assumptions with practical evidence across market, customer, competitor, pricing, channel, demand, and risk.\nStrict Phase Boundary: Phase 2 does NOT finalize positioning, persona, value proposition, naming, tagline, or visual identity. Research is not strategy (evidence says vs business decides)."
+  },
+  {
+    "id": "phase2_evidence_framework",
+    "phase": "phase2",
+    "title": "Evidence Classes, Strength Scale & Traceability",
+    "tags": [
+      "phase2",
+      "evidence",
+      "classes",
+      "traceability",
+      "triangulation",
+      "freshness"
+    ],
+    "content": "Evidence Classes:\n- PRIMARY: Official stats, regulator data, published research, direct customer interviews/surveys.\n- FIRST_PARTY: CRM, sales history, support logs, analytics, reviews collected.\n- SECONDARY: Credible research firms, trade publications, marketplaces.\n- DERIVED: Calculated/inferred from other evidence (traceability required).\n- ANECDOTAL: Few social comments, single review (never generalize automatically).\n- ASSUMED & UNKNOWN: Insufficient evidence.\nEvidence Status: SUPPORTED, PARTIALLY_SUPPORTED, CONTRADICTED, INCONCLUSIVE, NOT_RESEARCHED.\nEvidence Strength Scale: A (Strong), B (Good), C (Moderate), D (Weak), E (Speculative).\nConfidence != Evidence. Triangulation across independent sources required. Freshness & Geography discipline (no US proxy for Iran without explicit cross-market proxy label)."
+  },
+  {
+    "id": "phase2_step0_plan",
+    "phase": "phase2",
+    "title": "Step 0: Research Scope & Evidence Plan",
+    "tags": [
+      "phase2",
+      "step0",
+      "plan",
+      "questions",
+      "priority"
+    ],
+    "content": "Step 0 takes Research Brief from Phase 1 and builds an internal Research Execution Plan.\nQuestions classified into 13 categories (Market, Category, Customer, Competitor, Alternative, Demand, Pricing, Offer, Channel, Trend, Regulation, Economics, Other).\nPriority: CRITICAL when getting it wrong invalidates market choice, product, customer, pricing, or business model.\nEvery critical question must link to later Phase 3 decisions. Appropriate research methods selected with limitations documented."
+  },
+  {
+    "id": "phase2_step1_market",
+    "phase": "phase2",
+    "title": "Step 1: Market & Category Intelligence",
+    "tags": [
+      "phase2",
+      "step1",
+      "market",
+      "category",
+      "sizing",
+      "trends",
+      "regulations"
+    ],
+    "content": "Step 1 captures:\n- Core category, adjacent categories, substitutes, usage occasions.\n- Market maturity (Emerging, Growing, Mature, Declining, Fragmented, Consolidating).\n- Market drivers & barriers (switching costs, trust barriers, supply constraints).\n- Market sizing (TAM, SAM, SOM in plain language). Methods: Top-down, bottom-up, supply-side. False precision rule (ranges: Low, Base, High).\n- Growth: Real growth vs price inflation.\n- Trends: Structural vs cyclical vs hype vs seasonality.\n- Regulations & market economics (margins, distribution fees, currency volatility).\nOutput: Market & Category Map."
+  },
+  {
+    "id": "phase2_step2_competitors",
+    "phase": "phase2",
+    "title": "Step 2: Competitors, Alternatives & Benchmarking",
+    "tags": [
+      "phase2",
+      "step2",
+      "competitors",
+      "alternatives",
+      "review_mining",
+      "white_space"
+    ],
+    "content": "Step 2 captures:\n- Competitor types: DIRECT, INDIRECT, SUBSTITUTE, STATUS_QUO, DO_NOTHING, INTERNAL_SOLUTION.\n- Sample diversity: Market leaders, premium, budget, digital-first, local, niche.\n- Audit fields: Target clues, core offer, price range, distribution, messaging, proof points, trust signals, review patterns, strengths/weaknesses.\n- Review mining: Why people buy, praise, complain, expectations, words used.\n- Competitor position map (evidence-based axes).\n- White space warning: Visual empty space does not automatically mean a profitable opportunity (must be tested as opportunity hypothesis).\nOutput: Competitive Intelligence Matrix."
+  },
+  {
+    "id": "phase2_step3_customer",
+    "phase": "phase2",
+    "title": "Step 3: Customer, Demand & Behavior Intelligence",
+    "tags": [
+      "phase2",
+      "step3",
+      "customer",
+      "jtbd",
+      "segments",
+      "triggers",
+      "barriers",
+      "voice_of_customer"
+    ],
+    "content": "Step 3 captures:\n- Situations and Jobs-to-be-Done (JTBD) instead of fictional personas.\n- Segment candidates: Based on need, behavior, use case, price sensitivity.\n- Customer problems: Functional, emotional, social, frictions, anxieties.\n- Purchase triggers & purchase barriers.\n- Decision criteria & Voice of Customer (natural language repository).\n- Demand evidence ladder: Actual purchase > repeat purchase > paid preorder > qualified lead > high-intent search > inquiry > survey intent > social engagement.\n- Customer need clusters & pain severity (Low, Moderate, High, Critical).\n- Segment attractiveness (Promising, Possible, Weak - NOT final target yet).\nOutput: Customer & Demand Intelligence Map."
+  },
+  {
+    "id": "phase2_step4_pricing_channels",
+    "phase": "phase2",
+    "title": "Step 4: Pricing, Offer & Channel Intelligence",
+    "tags": [
+      "phase2",
+      "step4",
+      "pricing",
+      "offers",
+      "channels",
+      "customer_journey"
+    ],
+    "content": "Step 4 captures:\n- Pricing research: Price distribution, normalized comparisons (unit, size, duration), price tiers (Entry, Value, Mid, Premium, Ultra-Premium).\n- Promotion distortion vs normal price. Price position vs proof logic. Willingness-to-pay evidence.\n- Offer architecture benchmark: Bundles, trials, subscriptions, guarantees, frictions.\n- Channel journey: Discovery -> Consideration -> Validation -> Purchase -> Repeat -> Referral.\n- Channel suitability vs mere popularity. Search journey, marketplace role, retail role.\nOutput: Commercial Intelligence Map."
+  },
+  {
+    "id": "phase2_step5_synthesis",
+    "phase": "phase2",
+    "title": "Step 5: Synthesis, Opportunity Map & Phase 3 Backlog",
+    "tags": [
+      "phase2",
+      "step5",
+      "synthesis",
+      "opportunity_map",
+      "risk_map",
+      "assumptions"
+    ],
+    "content": "Step 5 captures:\n- Cross-domain synthesis (Customer Need <-> Competitor Coverage, Segment <-> Capability, etc.).\n- Assumption Validation Ledger: SUPPORTED, PARTIALLY_SUPPORTED, CONTRADICTED, INCONCLUSIVE.\n- Research Question Resolution Ledger with answers and limitations.\n- Opportunity Map: Unmet needs, gaps, opportunity scoring (qualitative), classification (High Potential, Promising, Experimental, Weak).\n- Risk Map: Severity, likelihood, mitigation.\n- Strategic Implications (options/trade-offs, NOT premature decisions).\n- Phase 3 Decision Backlog & validation experiment cards."
+  },
+  {
+    "id": "phase2_deliverable_spec",
+    "phase": "phase2",
+    "title": "Phase 2 Deliverable: Market & Customer Intelligence Report (Farsi)",
+    "tags": [
+      "phase2",
+      "deliverable",
+      "report",
+      "persian",
+      "16_sections"
+    ],
+    "content": "Final Deliverable: Market & Customer Intelligence Report (گزارش هوش بازار و تحلیل مشتری).\nMandatory Persian (Farsi), beginner-friendly, fully downloadable.\n16 Required Sections:\nA. خلاصه اجرایی (Executive Summary)\nB. دامنه و محدوده پژوهش (Research Scope)\nC. متدولوژی و ارزیابی شواهد (Evidence Method)\nD. تحلیل کلان بازار و دسته‌بندی (Market & Category Overview)\nE. چشم‌انداز رقابتی و جایگزین‌ها (Competitive Landscape)\nF. هوش و رفتار مشتری (Customer Intelligence)\nG. هوش قیمت‌گذاری (Pricing Intelligence)\nH. هوش ساختار پیشنهادها (Offer Intelligence)\nI. هوش کانال‌های ارتباط و فروش (Channel Intelligence)\nJ. اعتبارسنجی فرضیات فاز ۱ (Assumption Validation)\nK. پاسخ به سوالات بک‌لاگ پژوهش فاز ۱ (Research Question Answers)\nL. نقشه فرصت‌های بازار (Opportunity Map)\nM. نقشه ریسک‌ها و تهدیدها (Risk Map)\nN. مجهولات و نقاط کور باقی‌مانده (What We Still Do Not Know)\nO. تست‌ها و آزمایش‌های اعتبارسنجی (Recommended Validation Tests)\nP. بریف استراتژی فاز ۳ (Phase 3 Strategy Brief)"
+  },
+  {
+    "id": "phase2_handoff_brief",
+    "phase": "phase2",
+    "title": "Phase 3 Handoff: Strategy Brief",
+    "tags": [
+      "phase2",
+      "handoff",
+      "strategy_brief"
+    ],
+    "content": "Handoff to Phase 3: Strategy Brief (بریف استراتژی برند و بازار).\nContains:\n- Business context & primary goal\n- Market definition, dynamics & maturity\n- Market opportunities & threats\n- Segment candidates & need clusters\n- Customer decision criteria, barriers & language\n- Competitor set & positions\n- Price & channel context\n- Validated vs contradicted vs unresolved assumptions\n- Opportunity hypotheses & major risks\n- Summary of evidence strength & critical decisions for Phase 3."
+  },
+  {
+    "id": "phase2_gates_and_rules",
+    "phase": "phase2",
+    "title": "Phase 2 Gates, Failure Modes & Ultimate Rule",
+    "tags": [
+      "phase2",
+      "gate",
+      "failure_modes",
+      "rules"
+    ],
+    "content": "Completion Gate: Research scope valid, critical questions answered, market/competitor/customer/pricing/channel context ready, assumptions updated, opportunity/risk maps ready, Strategy Brief ready.\nCritical Unknown Gate: If a critical decision cannot be made safely due to missing evidence, flag PHASE_3_BLOCKED_BY_RESEARCH.\nFailure Modes: Search dump, founder confirmation bias, competitor-only or customer-only, outdated data, wrong geography, fake precision, social media = market, fictional personas, white space = opportunity, research becomes strategy.\nUltimate Rule: Phase 2 is not about deciding what the brand should say; it is about discovering what the market, customers, competitors, prices, channels, and evidence actually tell us before making strategic choices."
+  },
+  {
+    "id": "phase3_metadata_mission",
+    "phase": "phase3",
+    "title": "Phase 3 Mission, Scope & Critical Principles",
+    "tags": [
+      "phase3",
+      "mission",
+      "strategy_is_choice",
+      "tradeoffs",
+      "boundaries"
+    ],
+    "content": "Phase 3: Strategy & Brand Direction (digital-market-strategy-brand-direction).\nPrimary Input: Market & Customer Intelligence Report and Strategy Brief from Phase 2.\nPrimary Output: Brand Strategy Foundation (Persian) and Identity Strategy Brief handoff for Phase 4.\nMission: Transform research into explicit strategic choices. Strategy is choice and prioritization (not trying to be everything for everyone).\nStrict Boundary: Phase 3 finalizes target segment, category frame, positioning, differentiation, value proposition, brand promise, strategic pillars, boundaries.\nPhase 3 does NOT finalize name, tagline, logo, colors, fonts, UI, or campaigns."
+  },
+  {
+    "id": "phase3_step0_readiness",
+    "phase": "phase3",
+    "title": "Step 0: Strategy Readiness & Decision Frame",
+    "tags": [
+      "phase3",
+      "step0",
+      "readiness",
+      "agenda",
+      "dependencies"
+    ],
+    "content": "Step 0 Strategy Readiness & Decision Agenda:\nRequires Phase 2 outputs (market context, customer context, competitor context, assumptions reviewed, segment candidates available, major risks visible).\nDecision dependency chain: Target Segment -> Customer Need -> Category Frame -> Competitive Frame -> Positioning -> Value Proposition -> Brand Promise -> Pillars -> Boundaries.\nImports constraints (budget, operations, team, regulation, margin requirements)."
+  },
+  {
+    "id": "phase3_step1_target",
+    "phase": "phase3",
+    "title": "Step 1: Segment Prioritization & Target Market Choice",
+    "tags": [
+      "phase3",
+      "step1",
+      "target",
+      "segmentation",
+      "prioritization",
+      "behavioral"
+    ],
+    "content": "Step 1 Targeting Principle:\nTarget market is the group prioritized because combination of need strength, demand evidence, willingness to pay, reachability, competition, and business fit is strongest.\nClassify segments into:\n- PRIMARY: Optimized for first.\n- SECONDARY: Served if needs overlap without diluting position.\n- DEPRIORITIZED: Explicitly not current priority (strategic focus).\nAnti-pattern: Demographic fiction (men and women 18-65). Prefer behavioral targeting based on situation, problem, and desired outcome."
+  },
+  {
+    "id": "phase3_step2_market_frame",
+    "phase": "phase3",
+    "title": "Step 2: Market Frame, Competitive Reference & Territory",
+    "tags": [
+      "phase3",
+      "step2",
+      "category_frame",
+      "competitive_reference",
+      "strategic_territory"
+    ],
+    "content": "Step 2 captures:\n- Category Frame: What kind of thing this brand is from customer's perspective (existing category, subcategory, hybrid, new category - caution: new category increases education cost).\n- Competitive Reference Set: Who customers compare the brand with (direct, premium, budget, substitutes, status quo).\n- Strategic Territory: Broad value space credibly owned (simplicity, expertise, trust, speed, accessible premium, customization, etc.).\nEvaluate territories on customer relevance, competitor crowding, credibility, proof, economics."
+  },
+  {
+    "id": "phase3_step3_positioning",
+    "phase": "phase3",
+    "title": "Step 3: Positioning & Differentiation Strategy",
+    "tags": [
+      "phase3",
+      "step3",
+      "positioning",
+      "differentiation",
+      "parity_vs_difference"
+    ],
+    "content": "Step 3 Positioning & Differentiation:\nPositioning is the clear, relevant, credible reason the target customer prefers this brand over alternatives.\nPositioning is an internal strategic decision, NOT a public tagline.\nComponents: For whom, in what category, what need, what distinct value, compared with what, why believe it.\nQuality tests: Relevant, Distinct, Credible, Defensible, Deliverable, Memorable, Focused.\nParity points (must be good enough) vs Difference points (meaningfully better). Table stakes must not be treated as differentiation."
+  },
+  {
+    "id": "phase3_step4_value_promise",
+    "phase": "phase3",
+    "title": "Step 4: Value Proposition, Brand Promise & Proof Logic",
+    "tags": [
+      "phase3",
+      "step4",
+      "value_proposition",
+      "brand_promise",
+      "proof",
+      "reasons_to_believe"
+    ],
+    "content": "Step 4 Value Proposition & Brand Promise:\n- Value Proposition layers: Functional (practical result), Emotional (how customer feels), Social (status/identity), Economic (ROI/savings).\n- Brand Promise: The central commitment the brand consistently delivers. Promise is an operational obligation, not marketing fluff. Must pass delivery tests (product, ops, service). Reject overpromising.\n- Reasons to Believe (Proof Hierarchy): Actual outcome > Independent validation > Measurement > Customer evidence > Process proof > Credential > Claim only.\nMark PROOF_GAP when promise lacks verifiable proof."
+  },
+  {
+    "id": "phase3_step5_pillars_boundaries",
+    "phase": "phase3",
+    "title": "Step 5: Strategic Pillars, Boundaries & Choice Architecture",
+    "tags": [
+      "phase3",
+      "step5",
+      "pillars",
+      "boundaries",
+      "must_be",
+      "must_not_be"
+    ],
+    "content": "Step 5 captures:\n- Strategic Pillars: 3 to 5 operational principles the brand consistently delivers (e.g. 'Reliable quality without specialist complexity', NOT generic words like 'Quality').\n- Brand Boundaries: What the brand deliberately will not become (protects coherence).\n- Will Not Compete On (e.g. lowest price, maximum features, extreme customization).\n- Must Be (core non-negotiable behaviors) vs Must Not Be (dangerous drift).\n- Coherence tests across target, price, operations, product, and channel."
+  },
+  {
+    "id": "phase3_step6_validation_lock",
+    "phase": "phase3",
+    "title": "Step 6: Strategy Validation, Decision Lock & Risks",
+    "tags": [
+      "phase3",
+      "step6",
+      "validation",
+      "lock",
+      "risks",
+      "experiments"
+    ],
+    "content": "Step 6 Strategy Validation:\nPass 10 tests: Customer relevance, Market fit, Competitive distinction, Business fit, Proofability, Economic fit, Deliverability, Coherence, Focus, Long-term usefulness.\nRisks documented with severity and mitigation. Validation experiment cards for uncertain elements (concept test, message test, offer test).\nStrategy Lock: Status LOCKED with versioning. Changes require documented reasons and evidence (no silent overwriting)."
+  },
+  {
+    "id": "phase3_deliverable_spec",
+    "phase": "phase3",
+    "title": "Phase 3 Deliverable: Brand Strategy Foundation (Farsi)",
+    "tags": [
+      "phase3",
+      "deliverable",
+      "brand_strategy_foundation",
+      "persian",
+      "17_sections"
+    ],
+    "content": "Final Deliverable: Brand Strategy Foundation (بنیاد استراتژی برند).\nMandatory Persian (Farsi), beginner-friendly, fully downloadable.\n17 Required Sections:\nA. خلاصه اجرایی (Executive Summary)\nB. بافتار و زمینه استراتژیک (Strategic Context)\nC. استراتژی بازار هدف (Target Market Strategy)\nD. مسئله و درد محوری مشتری (Core Customer Problem)\nE. چارچوب بازار و دسته‌بندی (Market / Category Frame)\nF. قلمرو استراتژیک برند (Strategic Territory)\nG. استراتژی جایگاه‌یابی (Positioning Strategy)\nH. گزاره ارزش (Value Proposition)\nI. وعده برند (Brand Promise)\nJ. دلایل باورپذیری و شواهد اثبات (Reasons to Believe)\nK. ارکان و پایه‌های استراتژیک (Strategic Pillars)\nL. مرزها و خطوط قرمز برند (Strategic Brand Boundaries)\nM. گزینه‌های استراتژیک رد شده (Rejected Strategic Options)\nN. نقشه ریسک‌های استراتژی (Strategy Risk Map)\nO. بک‌لاگ اعتبارسنجی (Validation Backlog)\nP. خلاصه یک‌صفحه‌ای تصمیمات استراتژیک (Strategic Decision Summary)\nQ. بریف هویت برند برای فاز ۴ (Phase 4 Identity Brief)"
+  },
+  {
+    "id": "phase3_handoff_brief",
+    "phase": "phase3",
+    "title": "Phase 4 Handoff: Identity Strategy Brief",
+    "tags": [
+      "phase3",
+      "handoff",
+      "identity_strategy_brief"
+    ],
+    "content": "Handoff to Phase 4: Identity Strategy Brief (بریف استراتژی هویت برند).\nFeeds directly into Phase 4 (Brand Identity & Character).\nContains: Business context, primary/secondary target, customer problem, category frame, competitive reference, strategic territory, positioning statement, core differentiation, parity/difference points, value proposition, brand promise, reasons to believe, strategic pillars, brand boundaries (must be, must not be, will not compete on), customer language, emotional direction, key risks, proof gaps, locked decisions."
+  },
+  {
+    "id": "phase3_gates_and_rules",
+    "phase": "phase3",
+    "title": "Phase 3 Quality Gate & 20 Failure Modes",
+    "tags": [
+      "phase3",
+      "gate",
+      "failure_modes",
+      "rules"
+    ],
+    "content": "Phase 3 Completion Gate: Target selected, Category frame selected, Competitive reference selected, Positioning selected, Differentiation defined, Value proposition defined, Brand promise defined, Proof logic defined, Pillars defined, Boundaries defined, Risks documented, Identity Strategy Brief ready.\nTop Failure Modes:\n1. Everyone is target. 2. Generic positioning. 3. Copying competitors. 4. Founder taste over evidence. 5. Too many benefits. 6. Strategy without trade-offs. 7. Promise without delivery. 8. Difference without value. 9. Words without proof. 10. Positioning contradicts price/operations.\nUltimate Rule: Phase 3 is where evidence becomes choice."
+  },
+  {
+    "id": "phase4_metadata_mission",
+    "phase": "phase4",
+    "title": "Phase 4 Mission, Scope & Core Principles",
+    "tags": [
+      "phase4",
+      "mission",
+      "character",
+      "personality",
+      "behavior",
+      "boundaries"
+    ],
+    "content": "Phase 4: Brand Identity Strategy & Brand Character (digital-market-brand-identity-character).\nPrimary Input: Brand Strategy Foundation and Identity Strategy Brief from Phase 3.\nPrimary Output: Brand Identity & Character Foundation (Persian) and Verbal Identity Brief handoff for Phase 5.\nMission: Translate strategic meaning into a human-like brand character, behavioral principles, emotional expression, relational role, communication posture, and creative guardrails.\nStrict Boundary: Phase 4 does NOT finalize brand name, tagline, copywriting, logo, colors, typography, UI, packaging, or campaigns. Identity is not decoration or a mascot; it is how strategy behaves and communicates."
+  },
+  {
+    "id": "phase4_step0_translation",
+    "phase": "phase4",
+    "title": "Step 0: Identity Readiness & Strategy Translation",
+    "tags": [
+      "phase4",
+      "step0",
+      "readiness",
+      "strategy_to_identity",
+      "conventions"
+    ],
+    "content": "Step 0 Identity Readiness & Translation:\nRequires Phase 3 locked strategy (Target, Positioning, Value Proposition, Promise, Pillars, Boundaries).\nStrategy-to-identity mapping: What behavior makes positioning believable? What emotion supports value prop?\nCategory convention audit: Useful expectations, neutral conventions, crowded cliches, trust signals.\nIdentify identity opportunities (e.g. accessible expertise where competitors use formal jargon) and constraints."
+  },
+  {
+    "id": "phase4_step1_meaning_territory",
+    "phase": "phase4",
+    "title": "Step 1: Brand Core Meaning & Identity Territory",
+    "tags": [
+      "phase4",
+      "step1",
+      "core_meaning",
+      "identity_territory",
+      "emotional_outcome"
+    ],
+    "content": "Step 1 Core Meaning & Territory:\nCore Meaning layers: Functional, Emotional (how customer feels), Social, Symbolic.\nIdentity Territory: The emotional and expressive space within which the brand consistently lives (e.g. calm mastery, accessible expertise, thoughtful simplicity).\nAnti-pattern: Random buzzwords (modern, premium, friendly, bold).\nDesired customer emotional outcome: Specific state (e.g. 'I feel capable and informed, not overwhelmed')."
+  },
+  {
+    "id": "phase4_step2_personality",
+    "phase": "phase4",
+    "title": "Step 2: Brand Personality & Character System",
+    "tags": [
+      "phase4",
+      "step2",
+      "personality",
+      "traits",
+      "trait_tension",
+      "sliders"
+    ],
+    "content": "Step 2 Brand Personality System:\nTrait Hierarchy:\n- PRIMARY: 3 to 4 actionable traits driving decisions.\n- SUPPORTING: Nuance providers.\n- PROHIBITED: Explicitly forbidden traits (arrogant, elitist, childish, cold).\nTrait Structure: Meaning, observable behavior, communication effect, experience effect, what it is not, risk of overuse.\nTrait Tension: Prevents one-dimensional brand (e.g. Expert + Approachable, Warm + Precise).\nPersonality sliders: Formal/Informal, Reserved/Expressive, Calm/Energetic, etc.\nArchetypes: Optional reference only, never replace custom character system. Define character under pressure (errors, complaints) and success."
+  },
+  {
+    "id": "phase4_step3_relationship_behavior",
+    "phase": "phase4",
+    "title": "Step 3: Brand Relationship, Role & Behavioral Principles",
+    "tags": [
+      "phase4",
+      "step3",
+      "relationship_role",
+      "behavioral_principles",
+      "situational_behavior"
+    ],
+    "content": "Step 3 Brand Relationship & Behavior:\n- Relationship Role: Guide, Partner, Coach, Enabler, Host, Ally, Curator, etc.\n- Relationship Distance (Close, Warm-professional, Professional, Formal) & Authority Style (Leads, Guides, Advises, Collaborates, Serves).\n- 4 to 7 Behavioral Principles: Actionable rules (e.g. 'Explain before persuading').\n- Behavior in situations: Sales (advisory vs urgency), Support (empathy + resolution), Mistakes (Acknowledge -> Own -> Explain -> Fix -> Follow up -> Learn), Crisis posture."
+  },
+  {
+    "id": "phase4_step4_communication_tone",
+    "phase": "phase4",
+    "title": "Step 4: Communication Posture & Tone Boundaries",
+    "tags": [
+      "phase4",
+      "step4",
+      "posture",
+      "tone",
+      "voice_vs_tone",
+      "persian_rules"
+    ],
+    "content": "Step 4 Communication Posture:\nVoice is stable character; Tone is situational adjustment.\nPosture dimensions: Formality, Warmth, Directness, Confidence (proof-backed, not hype), Energy, Expertise, Humor boundary, Emotionality, Simplicity.\nAlways / Sometimes / Never model for communication.\nPersian language rules: Formality level, colloquial usage guidelines, English loanword policies, technical jargon handling."
+  },
+  {
+    "id": "phase4_step5_principles_guardrails",
+    "phase": "phase4",
+    "title": "Step 5: Identity Principles, Experience Signals & Guardrails",
+    "tags": [
+      "phase4",
+      "step5",
+      "identity_principles",
+      "guardrails",
+      "must_feel_like",
+      "experience_signals"
+    ],
+    "content": "Step 5 Identity Principles & Guardrails:\n4 to 7 Identity Principles with implications across verbal, visual impression, and customer experience.\nExperience Signals: Tangible moments at touchpoints (transparent pricing, fast clear onboarding, proactive updates).\nCreative Guardrails:\n- Must Feel Like (e.g. clear, assured, intelligent, warm).\n- Must Not Feel Like (e.g. generic, flashy, cold, elitist, chaotic).\nElasticity: Stable elements (core meaning, primary traits, promise) vs Flexible elements (tone, energy, formality by channel)."
+  },
+  {
+    "id": "phase4_step6_validation_lock",
+    "phase": "phase4",
+    "title": "Step 6: Identity Validation, Lock & Decision Rules",
+    "tags": [
+      "phase4",
+      "step6",
+      "validation",
+      "lock",
+      "risk_map"
+    ],
+    "content": "Step 6 Validation & Lock:\nPass 11 tests: Strategy fit, Customer fit, Category fit, Distinctiveness, Credibility, Behavioral usability, Verbal usability, Visual usability, Experience usability, Flexibility, Coherence.\nIdentity Risk Map: Too generic, too formal, too casual, too technical, cultural mismatch.\nIdentity Lock: Status LOCKED with versioning. Changes require documented reasons and evidence."
+  },
+  {
+    "id": "phase4_deliverable_spec",
+    "phase": "phase4",
+    "title": "Phase 4 Deliverable: Brand Identity & Character Foundation (Farsi)",
+    "tags": [
+      "phase4",
+      "deliverable",
+      "identity_character_foundation",
+      "persian",
+      "20_sections"
+    ],
+    "content": "Final Deliverable: Brand Identity & Character Foundation (بنیاد هویت و شخصیت برند).\nMandatory Persian (Farsi), beginner-friendly, fully downloadable.\n20 Required Sections:\nA. خلاصه اجرایی (Executive Summary)\nB. بافتار و زمینه استراتژیک هویت (Strategic Identity Context)\nC. معنای محوری برند (Brand Core Meaning)\nD. قلمرو هویت برند (Identity Territory)\nE. شخصیت و کاراکتر برند (Brand Character)\nF. کارت‌های صفات شخصیتی (Personality Trait Cards)\nG. نقش رابطه با مشتری (Brand Relationship Role)\nH. اصول رفتاری برند (Behavioral Principles)\nI. رفتار در موقعیت‌های حساس (Behavior in Important Situations)\nJ. موضع ارتباطی برند (Communication Posture)\nK. مرزهای لحن (Tone Boundaries)\nL. راهنمای زبان و ادبیات فارسی (Persian / Language Guidance)\nM. اصول هویت برند (Identity Principles)\nN. نشانه‌ها و سیگنال‌های تجربه (Experience Signals)\nO. حفاظ‌ها و گاردریل‌های خلاقانه (Creative Guardrails)\nP. عناصر پایدار در برابر عناصر منعطف (Stable vs Flexible Elements)\nQ. جهت‌گیری‌های هویتی رد شده (Rejected Identity Directions)\nR. نقشه ریسک‌های هویت (Identity Risk Map)\nS. خلاصه یک‌صفحه‌ای تصمیمات هویت (Identity Decision Summary)\nT. بریف هویت کلامی برای فاز ۵ (Phase 5 Verbal Identity Brief)"
+  },
+  {
+    "id": "phase4_handoff_brief",
+    "phase": "phase4",
+    "title": "Phase 5 Handoff: Verbal Identity Brief",
+    "tags": [
+      "phase4",
+      "handoff",
+      "verbal_identity_brief"
+    ],
+    "content": "Handoff to Phase 5: Verbal Identity Brief (بریف هویت کلامی و پیام‌رسانی).\nFeeds directly into Phase 5 (Verbal Identity & Messaging System).\nContains: Strategic context, positioning, core meaning, identity territory, primary/supporting/prohibited traits, relationship role, behavioral principles, communication posture, tone boundaries (always, sometimes, never), customer language, vocabulary constraints, technical language policy, must sound like vs must not sound like, identity principles, creative guardrails, proof requirements, messaging risks."
+  },
+  {
+    "id": "phase4_failure_modes_rules",
+    "phase": "phase4",
+    "title": "Phase 4 Quality Gate & Failure Modes",
+    "tags": [
+      "phase4",
+      "gate",
+      "failure_modes",
+      "rules"
+    ],
+    "content": "Phase 4 Completion Gate: Core meaning defined, Identity territory selected, Personality defined, Relationship role defined, Behavioral principles defined, Communication posture defined, Tone boundaries defined, Identity principles defined, Creative guardrails defined, Risks documented, Verbal Identity Brief ready.\nTop Failure Modes:\n1. Generic personality. 2. Too many traits. 3. Personality conflicts with positioning. 4. Tone = personality. 5. Identity = visual style. 6. Founder mood dictates identity. 7. Category cliches. 8. Brand sounds different everywhere. 9. False humanization. 10. Archetype dogma.\nUltimate Rule: Phase 4 defines who the brand is before deciding exactly what the brand says or how the brand looks."
+  },
+  {
+    "id": "phase5_metadata_mission",
+    "phase": "phase5",
+    "title": "Phase 5 Mission, Scope & Core Concepts",
+    "tags": [
+      "phase5",
+      "mission",
+      "voice",
+      "messaging",
+      "narrative",
+      "boundaries"
+    ],
+    "content": "Phase 5: Verbal Identity & Messaging System (digital-market-verbal-identity-messaging).\nPrimary Input: Brand Identity & Character Foundation and Verbal Identity Brief from Phase 4.\nPrimary Output: Verbal Identity & Messaging System (Persian) and Creative & Naming Brief handoff for Phase 6.\nMission: Translate brand character into a complete verbal identity and messaging architecture (voice, situational tone, message hierarchy, core messages, value communication, proof language, brand story, pitch, vocabulary, and writing rules).\nStrict Boundary: Phase 5 does NOT finalize brand name, logo, colors, typography, UI, packaging, or full campaign creative."
+  },
+  {
+    "id": "phase5_voice_vs_tone",
+    "phase": "phase5",
+    "title": "Voice vs Tone & Messaging vs Copy",
+    "tags": [
+      "phase5",
+      "voice_vs_tone",
+      "messaging_vs_copy",
+      "claims_rule"
+    ],
+    "content": "Voice vs Tone:\n- VOICE: Stable verbal personality (always recognizable across touchpoints).\n- TONE: Situational adjustment (calmer in support, higher energy in launch, measured in crisis).\nMessaging vs Copy: Messaging is the strategic system of what the brand communicates; Copy is a specific execution.\nClaims Rule: Separate Fact, Provable Claim, Strategic Message, Aspirational Language, and Hypothesis. Never write aspirational language as fact."
+  },
+  {
+    "id": "phase5_step0_translation",
+    "phase": "phase5",
+    "title": "Step 0: Verbal Readiness & Identity Translation",
+    "tags": [
+      "phase5",
+      "step0",
+      "translation",
+      "customer_language",
+      "cliche_detection"
+    ],
+    "content": "Step 0 Identity-to-Language Translation:\nMaps personality traits and relationship role (e.g. Guide vs Expert) into verbal behaviors.\nEstablishes early guardrails: Must Sound Like vs Must Not Sound Like.\nCustomer language intake from Phase 2 (problem language, outcome language, objections).\nCategory language audit and cliché detection (banning empty words like 'best quality', 'innovative solutions' without proof)."
+  },
+  {
+    "id": "phase5_step1_voice_system",
+    "phase": "phase5",
+    "title": "Step 1: Brand Voice System & Principles",
+    "tags": [
+      "phase5",
+      "step1",
+      "voice_principles",
+      "traits",
+      "verbal_tensions"
+    ],
+    "content": "Step 1 Brand Voice System:\n3 to 5 core voice principles (e.g. 'Clear before clever').\nStructure per principle: Meaning, why, how it sounds, how it does not sound, Do, Don't, and Before/After examples in Persian.\nTraits: Primary, Supporting, Prohibited.\nVerbal tensions prevent flat copy: Expert but Simple, Confident but Not Arrogant, Warm but Not Overfamiliar, Direct but Not Rude."
+  },
+  {
+    "id": "phase5_step2_tone_matrix",
+    "phase": "phase5",
+    "title": "Step 2: Tone of Voice Matrix & Situational Adaptation",
+    "tags": [
+      "phase5",
+      "step2",
+      "tone_matrix",
+      "situations",
+      "complaint_tone",
+      "crisis_tone"
+    ],
+    "content": "Step 2 Situational Tone Matrix:\nDefault tone vs Contexts (Marketing, Sales, Education, Product/UI, Support, Complaint, Crisis, Celebration, B2B formal).\nTone dimensions: Formality, Warmth, Directness, Energy, Urgency, Emotionality, Humor, Technical depth.\nComplaint tone: Reduce promotional energy, increase ownership and empathy, no defensive language.\nCrisis tone: Accuracy before personality, clarity before cleverness, responsibility before promotion."
+  },
+  {
+    "id": "phase5_step3_messaging_architecture",
+    "phase": "phase5",
+    "title": "Step 3: Messaging Architecture & Message Hierarchy",
+    "tags": [
+      "phase5",
+      "step3",
+      "hierarchy",
+      "pillars",
+      "feature_to_benefit",
+      "journey_stages"
+    ],
+    "content": "Step 3 Messaging Hierarchy:\nCore Message (Why the primary target should care, connecting need + value + difference).\n3 to 5 Message Pillars derived from value proposition and differentiation.\nFeature to Benefit chain: Feature -> Functional Benefit -> Customer Outcome -> Emotional/Economic Value.\nJourney-stage mapping: Awareness (problem/category), Consideration (differentiation/proof), Purchase (friction reduction/risk reversal), Retention (value realization)."
+  },
+  {
+    "id": "phase5_step4_core_messages_proof",
+    "phase": "phase5",
+    "title": "Step 4: Core Messages, Proof Language & Objections",
+    "tags": [
+      "phase5",
+      "step4",
+      "core_messages",
+      "proof",
+      "objection_handling",
+      "superlatives"
+    ],
+    "content": "Step 4 Core Messages & Proof Library:\nProblem message, Desired outcome message, Value proposition message, Differentiation message, Brand promise message.\nProof & Claim System: Proof hierarchy (data, credentials, customer evidence, transparent process).\nUnsupported Superlative Rule: Prohibit 'best', 'first', 'only', 'number one' unless verified by strong evidence.\nObjection handling structure: Acknowledge -> Clarify -> Explain -> Prove -> Offer next step."
+  },
+  {
+    "id": "phase5_step5_narratives",
+    "phase": "phase5",
+    "title": "Step 5: Brand Story, One-Liner & Elevator Pitch",
+    "tags": [
+      "phase5",
+      "step5",
+      "one_liner",
+      "elevator_pitch",
+      "brand_story",
+      "about_narrative"
+    ],
+    "content": "Step 5 Core Narratives:\n- One-Liner: Who we help + what we help them achieve + why we are different (concise, memorable).\n- Short Brand Description: 2 to 4 sentences for directories and profiles.\n- Elevator Pitch: 30-60 second spoken explanation (must sound natural and conversational).\n- Brand Story: Customer as the hero, Brand as the guide/enabler. Factual origin (no fabricated history).\n- About Narrative: Comprehensive story for website and corporate touchpoints."
+  },
+  {
+    "id": "phase5_step6_writing_rules_cta",
+    "phase": "phase5",
+    "title": "Step 6: Vocabulary, Persian Rules, CTA & Channel Adaptation",
+    "tags": [
+      "phase5",
+      "step6",
+      "vocabulary",
+      "persian_rules",
+      "cta_system",
+      "channel_adaptation"
+    ],
+    "content": "Step 6 Writing System & Execution:\n- Vocabulary System: Preferred words, category terms, customer terms, words to avoid, prohibited claims.\n- Persian Writing Rules: Formality level, pronoun choice (شما vs تو), English loanword policy, punctuation, emoji policy, digits, currency (تومان vs ریال).\n- CTA System: Principles, types (learn, try, buy, etc.), low vs high commitment, no false urgency.\n- Channel Adaptation: Guidelines for Website, Social, Sales, Support, Product/UI, Email, Advertising. Multilingual rules."
+  },
+  {
+    "id": "phase5_step7_governance_lock",
+    "phase": "phase5",
+    "title": "Step 7: Validation, QA Checklist & Governance",
+    "tags": [
+      "phase5",
+      "step7",
+      "validation",
+      "qa_checklist",
+      "governance",
+      "lock"
+    ],
+    "content": "Step 7 Governance & Lock:\nPass 12 validation tests: Strategy fit, Identity fit, Customer clarity, Distinctiveness, Proof integrity, Consistency, Writer usability, Scalability, etc.\nMessaging QA Checklist: Key questions before publishing copy.\nAI Copywriting Guardrails: Never invent customer numbers, awards, certifications, or guarantees.\nStatus LOCKED with versioning."
+  },
+  {
+    "id": "phase5_deliverable_spec",
+    "phase": "phase5",
+    "title": "Phase 5 Deliverable: Verbal Identity & Messaging System (Farsi)",
+    "tags": [
+      "phase5",
+      "deliverable",
+      "verbal_identity_messaging",
+      "persian",
+      "28_sections"
+    ],
+    "content": "Final Deliverable: Verbal Identity & Messaging System (سیستم هویت کلامی و معماری پیام‌رسانی).\nMandatory Persian (Farsi), beginner-friendly, fully downloadable.\n28 Required Sections (A to AB):\nA. خلاصه اجرایی (Executive Summary)\nB. بافتار کلامی استراتژیک (Strategic Verbal Context)\nC. تعریف صدای برند (Brand Voice Definition)\nD. اصول صدای برند (Voice Principles)\nE. ماتریس لحن بر حسب موقعیت (Tone of Voice Matrix)\nF. معماری پیام‌رسانی (Core Messaging Architecture)\nG. ادبیات مسئله مشتری (Customer Problem Messaging)\nH. ادبیات گزاره ارزش (Value Proposition Messaging)\nI. ادبیات تمایز (Differentiation Messaging)\nJ. ادبیات وعده برند (Brand Promise Messaging)\nK. سیستم ادعاها و شواهد اثبات (Proof & Claim System)\nL. ستون‌های پیام‌رسانی (Message Pillars)\nM. جمله یک‌خطی معرفی (One-Liner)\nN. شرح کوتاه برند (Short Brand Description)\nO. متن معرفی آسانسوری (Elevator Pitch)\nP. داستان برند (Brand Story)\nQ. روایت درباره ما (About Narrative)\nR. پاسخ به اعتراضات مشتری (Objection Messaging)\nS. سیستم واژگان (Vocabulary System)\nT. فرهنگ اصطلاحات (Terminology Dictionary)\nU. قواعد نگارش فارسی (Persian Writing Rules)\nV. سیستم دعوت به اقدام (CTA System)\nW. تطبیق کانال‌ها (Channel Adaptation)\nX. راهنمای چندزبانه (Multilingual Guidance)\nY. جهت‌گیری‌های کلامی رد شده (Rejected Verbal Directions)\nZ. نقشه ریسک‌های کلامی (Verbal Risk Map)\nAA. چک‌لیست کیفیت متن (Copy Quality Checklist)\nAB. بریف خلاقیت و نام‌گذاری برای فاز ۶ (Phase 6 Creative / Naming Brief)"
+  },
+  {
+    "id": "phase5_handoff_brief",
+    "phase": "phase5",
+    "title": "Phase 6 Handoff: Creative & Naming Brief",
+    "tags": [
+      "phase5",
+      "handoff",
+      "creative_naming_brief"
+    ],
+    "content": "Handoff to Phase 6: Creative & Naming Brief (بریف خلاقیت و نام‌گذاری برند).\nFeeds directly into Phase 6 (Naming, Tagline & Creative Direction).\nContains: Strategic context, positioning, personality, voice, core message, one-liner, preferred/prohibited vocabulary, customer language, naming language constraints, what name must/must not signal, tagline territories, visual must-feel-like / must-not-feel-like, proof requirements, cultural & multilingual constraints, legal notes."
+  },
+  {
+    "id": "phase5_failure_modes_rules",
+    "phase": "phase5",
+    "title": "Phase 5 Quality Gate & 20 Failure Modes",
+    "tags": [
+      "phase5",
+      "gate",
+      "failure_modes",
+      "rules"
+    ],
+    "content": "Phase 5 Completion Gate: Voice locked, Tone system locked, Hierarchy locked, Core messages locked, Proof language defined, One-liner defined, Elevator pitch defined, Brand story defined, Vocabulary defined, Writing rules defined, CTA defined, Channels adapted, Risks documented, Phase 6 Brief ready.\nTop Failure Modes:\n1. Voice is only adjectives. 2. Tone same everywhere. 3. Voice changes by channel. 4. Feature dump. 5. Generic core message. 6. Claims without proof. 7. Corporate jargon. 8. Excessive English. 9. Fiction brand story. 10. Fake urgency. 11. Boastful proof. 12. Competitor clone.\nUltimate Rule: Phase 5 defines exactly how the brand should sound and what it must communicate before creative naming and visual execution begin."
+  },
+  {
+    "id": "phase6_metadata_mission",
+    "phase": "phase6",
+    "title": "Phase 6 Mission, Scope & Critical Boundaries",
+    "tags": [
+      "phase6",
+      "mission",
+      "naming",
+      "tagline",
+      "creative_direction",
+      "boundaries"
+    ],
+    "content": "Phase 6: Naming, Tagline & Creative Direction (digital-market-naming-tagline-creative-direction).\nPrimary Input: Verbal Identity & Messaging System and Creative & Naming Brief from Phase 5.\nPrimary Output: Naming, Tagline & Creative Direction Foundation (Persian) and Visual Identity Design Brief handoff for Phase 7.\nMission: Translate verbal strategy into a strategically appropriate brand name, evaluated shortlist, clear tagline direction, and creative concept system.\nStrict Boundary: Phase 6 does NOT finalize legal trademark registration, final domain purchase, logo design, color palette, typography, or UI design."
+  },
+  {
+    "id": "phase6_step0_readiness",
+    "phase": "phase6",
+    "title": "Step 0: Naming & Creative Readiness",
+    "tags": [
+      "phase6",
+      "step0",
+      "readiness",
+      "naming_jobs",
+      "constraints",
+      "existing_equity"
+    ],
+    "content": "Step 0 Naming Readiness:\nImports what name must/must not signal, category, positioning, personality, language requirements (Persian & Latin script).\nNaming jobs: Recognition, category signal, benefit, emotion, origin, distinctiveness, expansion.\nExisting name equity evaluation for rebrands (Keep, Refine, Rename, Test)."
+  },
+  {
+    "id": "phase6_step1_strategy_criteria",
+    "phase": "phase6",
+    "title": "Step 1: Naming Strategy & Criteria Framework",
+    "tags": [
+      "phase6",
+      "step1",
+      "naming_types",
+      "criteria",
+      "knockout_rules",
+      "phonetics"
+    ],
+    "content": "Step 1 Naming Strategy & Criteria:\n12 Naming types: Descriptive, Suggestive, Evocative, Abstract, Invented, Compound, Metaphorical, Founder-based, Geographic, Acronym, Foreign language, Hybrid.\nEvaluation Matrix: Must-have, Should-have, Nice-to-have, and Knockout rules (offensive meaning, pronunciation failure, legal conflict).\nPhonetic & Semantic criteria: Syllables, vowel flow, Persian vs Latin transliteration, homophones, typos, digital search collisions."
+  },
+  {
+    "id": "phase6_step2_territories",
+    "phase": "phase6",
+    "title": "Step 2: Naming Territory Development",
+    "tags": [
+      "phase6",
+      "step2",
+      "naming_territories",
+      "conceptual_sources"
+    ],
+    "content": "Step 2 Naming Territories:\n4 to 8 conceptual sources derived from positioning, value prop, and core meaning (Functional, Emotional, Metaphorical, Origin, Sound/Invented, Category, Benefit, Personality).\nPrevents random dictionary hunting and ensures conceptual diversity."
+  },
+  {
+    "id": "phase6_step3_generation_screening",
+    "phase": "phase6",
+    "title": "Step 3: Name Generation, Screening & Shortlisting",
+    "tags": [
+      "phase6",
+      "step3",
+      "generation",
+      "screening",
+      "shortlist",
+      "domains",
+      "preliminary_legal"
+    ],
+    "content": "Step 3 Generation & 6-Stage Screening:\nGenerates 30-100+ raw candidates (Diverge -> Screen -> Converge).\nScreening stages: 1. Strategic, 2. Linguistic, 3. Semantic, 4. Cultural, 5. Digital/Domain, 6. Preliminary Legal.\nShortlist of 3 to 7 serious names with scorecards, pronunciation, and spelling.\nDomain strategy (exact match, modified, country TLD).\nPreliminary legal screening (flagging potential conflicts, but explicitly stating it does NOT replace official legal clearance)."
+  },
+  {
+    "id": "phase6_step4_tagline",
+    "phase": "phase6",
+    "title": "Step 4: Tagline Strategy & Tagline Development",
+    "tags": [
+      "phase6",
+      "step4",
+      "tagline",
+      "tagline_jobs",
+      "no_tagline"
+    ],
+    "content": "Step 4 Tagline Strategy:\nTagline need test: NO_TAGLINE is a valid strategic choice.\nTagline jobs: Category clarity, Positioning, Promise, Benefit, Emotional meaning, Memory, Campaign platform.\nCriteria: Clarity, voice fit, distinctiveness, translatability, no clichés (e.g. 'quality you can trust').\nShortlist of 3 to 5 taglines and recommended tagline or no-tagline decision."
+  },
+  {
+    "id": "phase6_step5_creative_territories",
+    "phase": "phase6",
+    "title": "Step 5: Creative Territory Development & Direction",
+    "tags": [
+      "phase6",
+      "step5",
+      "creative_territories",
+      "central_idea",
+      "visual_impression",
+      "cliches"
+    ],
+    "content": "Step 5 Creative Territories:\n2 to 4 conceptual territories guiding visual, verbal, and experiential design (not a logo sketch).\nCentral Idea (one sentence), Symbolic World, Metaphors.\nVisual Impression Brief: Level of restraint, density, energy, precision, human vs technical balance.\nCliché audit: Rejecting overused symbols (leaf for eco, shield for security, handshake for partnership).\nVisual Literalism Rule: Logo does NOT need to literally depict the product or name."
+  },
+  {
+    "id": "phase6_step6_validation_lock",
+    "phase": "phase6",
+    "title": "Step 6: Validation, Decision Lock & Pairing Tests",
+    "tags": [
+      "phase6",
+      "step6",
+      "validation",
+      "lock",
+      "pairing_test",
+      "negative_associations"
+    ],
+    "content": "Step 6 Validation & Lock:\nSystem coherence tests: Name <-> Tagline <-> Positioning <-> Creative Direction.\nName/Descriptor and Name/Tagline pairing tests.\nNegative association test and Search collision checks.\nStatus: LOCKED with versioning. Changes require documented reasons and downstream review."
+  },
+  {
+    "id": "phase6_step7_handoff_phase7",
+    "phase": "phase6",
+    "title": "Step 7: Phase 7 Visual Identity Handoff",
+    "tags": [
+      "phase6",
+      "step7",
+      "handoff",
+      "visual_identity_brief"
+    ],
+    "content": "Step 7 Phase 7 Handoff: Visual Identity Design Brief (بریف طراحی سیستم هویت بصری).\nTranslates creative direction into design guardrails for future visual designers (logo, color palette, typography, graphic system, motion, packaging, guidelines).\nPhase 6 tells designers what the brand must mean and feel like; Phase 7 creates what it actually looks like."
+  },
+  {
+    "id": "phase6_deliverable_spec",
+    "phase": "phase6",
+    "title": "Phase 6 Deliverable: Naming, Tagline & Creative Direction Foundation (Farsi)",
+    "tags": [
+      "phase6",
+      "deliverable",
+      "naming_creative_foundation",
+      "persian",
+      "23_sections"
+    ],
+    "content": "Final Deliverable: Naming, Tagline & Creative Direction Foundation (بنیاد نام‌گذاری، شعار و جهت‌گیری خلاقانه برند).\nMandatory Persian (Farsi), beginner-friendly, fully downloadable.\n23 Required Sections (A to W):\nA. خلاصه اجرایی (Executive Summary)\nB. بافتار و زمینه استراتژیک نام‌گذاری (Strategic Context)\nC. هدف محوری نام‌گذاری (Naming Objective)\nD. معیارهای ارزیابی نام (Naming Criteria)\nE. استراتژی گونه‌های نام (Naming Type Strategy)\nF. قلمروهای مفهومی نام‌گذاری (Naming Territories)\nG. خلاصه فرآیند ایده‌پردازی و تولید نام (Name Generation Summary)\nH. فهرست نهایی نام‌های منتخب (Final Name Shortlist)\nI. جدول امتیازدهی و مقایسه نام‌ها (Naming Scorecard)\nJ. نام پیشنهادی اول (Recommended Name)\nK. راهنمای نگارش و استفاده از نام (Name Usage Guidance)\nL. وضعیت دامنه و هویت دیجیتال (Domain & Digital Notes)\nM. نکات حقوقی و علامت تجاری (Preliminary Legal Notes - با سلب مسئولیت حقوقی)\nN. استراتژی شعار برند (Tagline Strategy)\nO. فهرست نهایی شعارهای کاندید (Tagline Shortlist)\nP. تصمیم نهایی شعار یا عدم نیاز به شعار (Recommended Tagline / No-Tagline Decision)\nQ. قلمروهای جهت‌گیری خلاقانه (Creative Territory Options)\nR. جهت‌گیری خلاقانه منتخب (Selected Creative Direction)\nS. حفاظ‌ها و گاردریل‌های خلاقانه (Creative Guardrails)\nT. بریف اثرگذاری بصری (Visual Impression Brief)\nU. نقشه ریسک‌های فاز ۶ (Phase 6 Risk Map)\nV. بک‌لاگ اعتبارسنجی و تست‌ها (Validation Backlog)\nW. بریف رسمی طراحی هویت بصری برای فاز ۷ (Phase 7 Visual Identity Design Brief)"
+  },
+  {
+    "id": "phase6_failure_modes_rules",
+    "phase": "phase6",
+    "title": "Phase 6 Quality Gate & 25 Failure Modes",
+    "tags": [
+      "phase6",
+      "gate",
+      "failure_modes",
+      "rules"
+    ],
+    "content": "Phase 6 Completion Gate: Naming strategy ready, Territories ready, Screening complete, Name decision ready, Tagline ready, Creative direction ready, Risks documented, Phase 7 Brief ready.\nTop Failure Modes:\n1. Brainstorming before criteria. 2. Cool sound with no meaning. 3. Overly descriptive name. 4. Unpronounceable invented name. 5. Bad Latin transliteration. 6. Exact .com controls everything. 7. Domain safety mistaken for trademark clearance. 8. Generic tagline. 9. Creative direction = logo sketch. 10. Cliché symbols (leaf, shield, handshake).\nUltimate Rule: Phase 6 turns the brand's strategy, identity, and language into a memorable name system, a purposeful tagline decision, and a coherent creative direction — without prematurely designing the visual identity."
+  },
+  {
+    "id": "wiki_business_decision_chain",
+    "phase": "master",
+    "title": "Business Decision Chain & 5 Knowledge Layers (L1-L5)",
+    "tags": [
+      "decision_chain",
+      "macro_to_micro",
+      "l1_l5",
+      "society_to_finance",
+      "veto_rules"
+    ],
+    "content": "Causal Decision Chain: Society -> Macroeconomics -> Market -> Customer -> Brand -> Marketing -> Sales -> CRM -> Management -> Finance/Ops.\nKnowledge Layers: L1 Theory & Laws, L2 Frameworks, L3 Playbooks/SOPs, L4 Real Data & Benchmarks, L5 Internal Enterprise Assets.\nVeto Rules: Unit Economics Veto (LTV/CAC >= 3, Payback <= 12m), Macro-Inflation Veto (Shrinkflation / Down-trading adjustments), Operations Bottleneck Veto (TOC flow subordination)."
+  },
+  {
+    "id": "wiki_the_30_canonical_foundations",
+    "phase": "master",
+    "title": "The 30 Canonical Foundations for Business Decision-Making",
+    "tags": [
+      "30_foundations",
+      "keller",
+      "sharp",
+      "porter",
+      "kahneman",
+      "mankiw",
+      "rackham",
+      "goldratt",
+      "aaker",
+      "christensen"
+    ],
+    "content": "Comprehensive reference covering 30 global authorities: Society (Bourdieu, Giddens, Rogers, Hofstede); Economics (Varian, Mankiw, Kahneman, Thaler); Market Strategy (Porter, Rumelt, Christensen); Customer (Christensen JTBD, Fitzpatrick Mom Test, Osterwalder); Brand (Keller CBBE, Aaker, Sharp, Kapferer); Marketing (Kotler, Barden, Cialdini, Godin); Sales (Rackham SPIN, Dixon Challenger, Voss); Retention (Reichheld NPS, Fader); Management (Drucker, Grove OKRs); Finance/Ops (Brealey & Myers DCF/NPV, Goldratt TOC, Skok Unit Economics)."
+  },
+  {
+    "id": "wiki_graphrag_ontology",
+    "phase": "master",
+    "title": "GraphRAG Cross-Domain Ontology & Multi-Hop Traversal",
+    "tags": [
+      "graphrag",
+      "ontology",
+      "multi_hop",
+      "edges",
+      "entities",
+      "cross_domain"
+    ],
+    "content": "GraphRAG Ontology Entities: MacroCondition, CulturalContext, MarketStructure, CustomerJob, CognitiveBias, BrandAsset, MarketingTactic, SalesMotion, RetentionMechanism, OperationalConstraint, FinancialMetric.\nSemantic Edges: CONSTRAINS, AMPLIFIES, VALIDATES, TRIGGERS, MITIGATES, BOTTLENECKS, DRIVES_PROFITABILITY.\nArchetypal chains traverse from macro inflation to behavioral loss aversion down to unbundled pricing and working capital solvency."
+  },
+  {
+    "id": "wiki_conflict_resolution_hierarchy",
+    "phase": "master",
+    "title": "Conflict Resolution, Evidence Ladder & Authority Scoring",
+    "tags": [
+      "conflict_resolution",
+      "evidence_ladder",
+      "authority_scoring",
+      "sharp_vs_kotler",
+      "retention_vs_acquisition"
+    ],
+    "content": "5-Tier Evidence Hierarchy: Tier 1 (0.95-1.00) Replicated empirical meta-analysis; Tier 2 (0.85-0.94) Systematic field studies; Tier 3 (0.70-0.84) Conceptual models; Tier 4 (0.55-0.69) Practitioner tech playbooks; Tier 5 (<0.40) Anecdotes/blog fads (Rejected).\nClash Resolution: FMCG/Mass uses Sharp (Distinctiveness/Penetration); B2B/Premium uses Kotler/Keller (Differentiation/STP). Day-1 to Scale uses Penetration (80%); Mature SaaS prioritizes Churn minimization (<5%)."
+  },
+  {
+    "id": "wiki_iran_market_and_economic_sources",
+    "phase": "master",
+    "title": "Iran Indigenous Market & Macroeconomic Data Sources",
+    "tags": [
+      "iran_market",
+      "amar_org_ir",
+      "cbi_ir",
+      "codal",
+      "digikala_report",
+      "bazaar",
+      "snapp_bnpl",
+      "inflation"
+    ],
+    "content": "Official Iran Data Sources: Statistical Center of Iran (amar.org.ir: CPI, household budget surveys, demographics); Central Bank of Iran (cbi.ir: M2 money supply, Nima/free currency, PPI); Codal.ir (Audited industrial gross/net margins and cash cycles); E-commerce center (eNamad/Shaparak transaction volumes).\nPlatform Benchmarks: Digikala (FMCG growth, down-trading, basket size); Cafe Bazaar (Android OS distribution, in-app spending); Snapp (BNPL installment surge); Yektanet/Tapsell (CTR, CPC, 85%+ mobile share under connectivity shifts)."
+  }
+]

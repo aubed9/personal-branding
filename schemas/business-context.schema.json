@@ -1,0 +1,222 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "BusinessContext",
+  "type": "object",
+  "required": [
+    "primary_archetype",
+    "customer_model",
+    "offer_type",
+    "channel_model",
+    "revenue_model",
+    "maturity",
+    "scale",
+    "sales_motion",
+    "geography"
+  ],
+  "properties": {
+    "primary_archetype": {
+      "type": "string",
+      "enum": [
+        "PHYSICAL_RETAIL",
+        "ECOMMERCE_DTC",
+        "LOCAL_SERVICE",
+        "RESTAURANT_CAFE_HOSPITALITY",
+        "BEAUTY_SALON",
+        "PROFESSIONAL_SERVICE",
+        "AGENCY",
+        "CONSULTING",
+        "B2B_SERVICE",
+        "SAAS_SOFTWARE",
+        "DIGITAL_PLATFORM",
+        "MARKETPLACE",
+        "MANUFACTURER",
+        "WHOLESALE",
+        "DISTRIBUTOR",
+        "IMPORT_EXPORT",
+        "MULTI_BRANCH",
+        "FRANCHISE",
+        "EDUCATION",
+        "CREATOR_MEDIA",
+        "FOUNDER_LED",
+        "PERSONAL_BRAND",
+        "STARTUP",
+        "SCALEUP",
+        "ENTERPRISE",
+        "HOLDING"
+      ]
+    },
+    "customer_model": {
+      "type": "string",
+      "enum": [
+        "B2C",
+        "B2B",
+        "B2B2C",
+        "C2C",
+        "B2G",
+        "TWO_SIDED",
+        "MIXED"
+      ]
+    },
+    "offer_type": {
+      "type": "string",
+      "enum": [
+        "PRODUCT",
+        "SERVICE",
+        "SOFTWARE",
+        "PLATFORM",
+        "MARKETPLACE",
+        "EXPERIENCE",
+        "MIXED"
+      ]
+    },
+    "channel_model": {
+      "type": "string",
+      "enum": [
+        "PHYSICAL_FIRST",
+        "ONLINE_FIRST",
+        "HYBRID",
+        "OMNICHANNEL"
+      ]
+    },
+    "revenue_model": {
+      "type": "string",
+      "enum": [
+        "TRANSACTION",
+        "SUBSCRIPTION",
+        "RETAINER",
+        "COMMISSION",
+        "LICENSING",
+        "ADVERTISING",
+        "WHOLESALE",
+        "USAGE_BASED",
+        "PROJECT_BASED",
+        "FRANCHISE",
+        "MIXED"
+      ]
+    },
+    "maturity": {
+      "type": "string",
+      "enum": [
+        "IDEA",
+        "PRE_LAUNCH",
+        "MVP",
+        "EARLY_ACTIVE",
+        "GROWTH",
+        "SCALEUP",
+        "MATURE",
+        "REBRAND",
+        "TRANSFORMATION"
+      ]
+    },
+    "scale": {
+      "type": "string",
+      "enum": [
+        "SOLO",
+        "MICRO",
+        "SMALL",
+        "MEDIUM",
+        "ENTERPRISE",
+        "HOLDING"
+      ]
+    },
+    "sales_motion": {
+      "type": "string",
+      "enum": [
+        "SELF_SERVE",
+        "RETAIL",
+        "INSIDE_SALES",
+        "FIELD_SALES",
+        "ENTERPRISE_SALES",
+        "CHANNEL_SALES",
+        "DISTRIBUTOR",
+        "TENDER",
+        "MIXED"
+      ]
+    },
+    "geography": {
+      "type": "object",
+      "properties": {
+        "scope": {
+          "type": "string",
+          "enum": [
+            "NEIGHBORHOOD",
+            "CITY",
+            "PROVINCE",
+            "NATIONAL",
+            "REGIONAL",
+            "GLOBAL"
+          ]
+        },
+        "primary_location": {
+          "type": "string"
+        }
+      }
+    },
+    "regulatory_profile": {
+      "type": "string",
+      "enum": [
+        "LOW",
+        "NORMAL",
+        "HIGH_TRUST",
+        "REGULATED",
+        "HIGHLY_REGULATED"
+      ]
+    },
+    "brand_architecture": {
+      "type": "string",
+      "enum": [
+        "STANDALONE",
+        "MASTERBRAND",
+        "SUB_BRAND",
+        "ENDORSED",
+        "HOUSE_OF_BRANDS",
+        "FOUNDER_NAMED"
+      ]
+    },
+    "founder_role": {
+      "type": "string",
+      "enum": [
+        "NOT_PUBLIC",
+        "SUPPORTING",
+        "FOUNDER_LED",
+        "EXECUTIVE_LED",
+        "PERSONAL_PRIMARY",
+        "DUAL"
+      ]
+    },
+    "operational_complexity": {
+      "type": "string",
+      "enum": [
+        "LOW",
+        "MODERATE",
+        "HIGH",
+        "SEVERE"
+      ]
+    },
+    "purchase_cycle": {
+      "type": "string",
+      "enum": [
+        "IMPULSE",
+        "SHORT_DAYS",
+        "MEDIUM_WEEKS",
+        "LONG_MONTHS",
+        "ANNUAL_MULTI_YEAR"
+      ]
+    },
+    "relationship_model": {
+      "type": "string",
+      "enum": [
+        "TRANSACTIONAL",
+        "REPEAT_HABITUAL",
+        "RELATIONAL_RETAINER",
+        "CONTRACTUAL_COMMITTED"
+      ]
+    },
+    "active_overlays": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

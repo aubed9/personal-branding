@@ -1,0 +1,99 @@
+{
+  "version": "2.0.0",
+  "project_id": "PRJ-TEMPLATE-001",
+  "business_name": "فروشگاه لوازم آرایشی روژان",
+  "current_phase": 1,
+  "completed_phases": {
+    "1": false,
+    "2": false,
+    "3": false,
+    "4": false,
+    "5": false,
+    "6": false,
+    "7": false,
+    "8": false
+  },
+  "business_context": {
+    "primary_archetype": "PHYSICAL_RETAIL",
+    "customer_model": "B2C",
+    "offer_type": "PRODUCT",
+    "channel_model": "PHYSICAL_FIRST",
+    "revenue_model": "TRANSACTION",
+    "maturity": "GROWTH",
+    "scale": "SMALL",
+    "sales_motion": "RETAIL",
+    "geography": {
+      "scope": "NEIGHBORHOOD",
+      "primary_location": "بازار بزرگ تهران، راسته بازارچه مروی"
+    },
+    "regulatory_profile": "NORMAL",
+    "brand_architecture": "STANDALONE",
+    "founder_role": "NOT_PUBLIC",
+    "operational_complexity": "MODERATE",
+    "purchase_cycle": "SHORT_DAYS",
+    "relationship_model": "REPEAT_HABITUAL",
+    "active_overlays": [
+      "local_physical",
+      "inventory_heavy",
+      "high_local_competition"
+    ]
+  },
+  "facts": [
+    {
+      "id": "FACT-001",
+      "phase": 1,
+      "statement": "فروشگاه دارای ۵ سال سابقه فعالیت در بازار بزرگ تهران با مشتریان وفادار محلی است.",
+      "source": "مصاحبه با بنیان‌گذار و دفاتر مالی ثبتی",
+      "verified_at": "2026-09-05T12:00:00Z"
+    },
+    {
+      "id": "FACT-002",
+      "phase": 1,
+      "statement": "میانگین حاشیه سود ناخالص روی کالاهای مراقبت پوستی ۳۵٪ و روی عطرها ۲۵٪ است.",
+      "source": "گزارش سیستم حسابداری صندوق (POS)",
+      "verified_at": "2026-09-05T12:00:00Z"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "DEC-001",
+      "phase": 1,
+      "topic": "محدوده جغرافیایی تمرکز برند",
+      "decision": "تمرکز ۱۰۰٪ روی جذب و حفظ مشتریان حضوری منطقه و عدم سرمایه‌گذاری سنگین روی وب‌سایت کشوری در فاز نخست.",
+      "status": "LOCKED",
+      "evidence_refs": [
+        "FACT-001",
+        "FACT-002"
+      ],
+      "knowledge_refs": [
+        "KB-01-GEO-001",
+        "KB-01-CHN-001"
+      ],
+      "affected_phases": [
+        2,
+        3,
+        7,
+        8
+      ]
+    }
+  ],
+  "assumptions": [
+    {
+      "id": "ASM-001",
+      "phase": 1,
+      "assumption": "مشتریان منطقه به دلیل تضمین اصالت کالا و مشاوره پوستی حضوری حاضر به پرداخت ۵٪ قیمت بالاتر هستند.",
+      "risk_level": "MEDIUM",
+      "validation_target_phase": 2
+    }
+  ],
+  "unknowns": [
+    {
+      "id": "UNK-001",
+      "phase": 1,
+      "question": "دقیقاً چه سهمی از مشتریان فعلی پس از اولین خرید برای بار دوم مراجعه می‌کنند (نرخ بازگشت 90 روزه)؟",
+      "impact": "DATA_GAP",
+      "resolution_strategy": "بررسی تراکنش‌های باشگاه مشتریان در فاز ۲"
+    }
+  ],
+  "contradictions": []
+}

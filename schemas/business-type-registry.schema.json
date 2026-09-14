@@ -1,0 +1,248 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "BusinessTypeRegistry",
+  "description": "Validation schema for DIGITAL MARKET Universal 753-Business Registry across 31 macro industries and 15 independent context axes.",
+  "type": "object",
+  "required": ["version", "macro_industries", "business_types"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "macro_industries": {
+      "type": "array",
+      "minItems": 31,
+      "maxItems": 31,
+      "items": {
+        "$ref": "#/definitions/MacroIndustry"
+      }
+    },
+    "business_types": {
+      "type": "array",
+      "minItems": 753,
+      "maxItems": 753,
+      "items": {
+        "$ref": "#/definitions/BusinessType"
+      }
+    }
+  },
+  "definitions": {
+    "MacroIndustry": {
+      "type": "object",
+      "required": ["id", "code", "titleFa", "titleEn", "range", "primaryArchetype"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^IND-(0[1-9]|[12][0-9]|3[01])$"
+        },
+        "code": {
+          "type": "string",
+          "pattern": "^[A-Z0-9_]+$"
+        },
+        "titleFa": {
+          "type": "string",
+          "minLength": 2
+        },
+        "titleEn": {
+          "type": "string",
+          "minLength": 2
+        },
+        "range": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "string",
+            "pattern": "^BT-[0-9]{4}$"
+          }
+        },
+        "primaryArchetype": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "BusinessType": {
+      "type": "object",
+      "required": [
+        "id",
+        "industryId",
+        "titleFa",
+        "titleEn",
+        "guildCode",
+        "defaultAxes",
+        "activeOverlays",
+        "kpis",
+        "typicalRisks"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^BT-(0[0-9]{3}|07[0-4][0-9]|075[0-3])$"
+        },
+        "industryId": {
+          "type": "string",
+          "pattern": "^IND-(0[1-9]|[12][0-9]|3[01])$"
+        },
+        "titleFa": {
+          "type": "string",
+          "minLength": 2
+        },
+        "titleEn": {
+          "type": "string",
+          "minLength": 2
+        },
+        "guildCode": {
+          "type": "string",
+          "pattern": "^[0-9]{5,8}$"
+        },
+        "recommendedArchetype": {
+          "type": "string"
+        },
+        "defaultAxes": {
+          "$ref": "#/definitions/Context15Axes"
+        },
+        "activeOverlays": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "kpis": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "string"
+          }
+        },
+        "typicalRisks": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "string"
+          }
+        },
+        "keywords": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Context15Axes": {
+      "type": "object",
+      "required": [
+        "customerModel",
+        "offerType",
+        "channelModel",
+        "revenueModel",
+        "maturity",
+        "scale",
+        "salesMotion",
+        "geography"
+      ],
+      "properties": {
+        "customerModel": {
+          "type": "string",
+          "enum": ["B2C", "B2B", "B2B2C", "C2C", "B2G", "TWO_SIDED", "MULTI_STAKEHOLDER", "MIXED"]
+        },
+        "offerType": {
+          "type": "string",
+          "enum": ["PRODUCT", "SERVICE", "SOFTWARE", "PLATFORM", "MARKETPLACE", "EXPERIENCE", "HYBRID_BUNDLE", "MIXED"]
+        },
+        "channelModel": {
+          "type": "string",
+          "enum": ["PHYSICAL_FIRST", "ONLINE_FIRST", "HYBRID", "OMNICHANNEL", "DIRECT_SALES_B2B"]
+        },
+        "revenueModel": {
+          "type": "string",
+          "enum": [
+            "TRANSACTION",
+            "SUBSCRIPTION",
+            "RECURRING_REPEAT",
+            "RETAINER",
+            "COMMISSION",
+            "LICENSING",
+            "ADVERTISING",
+            "WHOLESALE",
+            "USAGE_BASED",
+            "PROJECT_BASED",
+            "FRANCHISE",
+            "TENDER_PROJECT",
+            "CREDIT_CHEQUE",
+            "MIXED"
+          ]
+        },
+        "maturity": {
+          "type": "string",
+          "enum": [
+            "IDEA",
+            "PRE_LAUNCH",
+            "MVP",
+            "EARLY_ACTIVE",
+            "GROWTH",
+            "SCALEUP",
+            "MATURE",
+            "REBRAND",
+            "TRANSFORMATION"
+          ]
+        },
+        "scale": {
+          "type": "string",
+          "enum": ["SOLO", "MICRO", "SMALL", "MEDIUM", "LARGE", "ENTERPRISE", "HOLDING"]
+        },
+        "salesMotion": {
+          "type": "string",
+          "enum": [
+            "SELF_SERVE",
+            "RETAIL",
+            "RETAIL_COUNTER",
+            "INSIDE_SALES",
+            "FIELD_SALES",
+            "ENTERPRISE_SALES",
+            "CHANNEL_SALES",
+            "DISTRIBUTOR",
+            "TENDER",
+            "MIXED"
+          ]
+        },
+        "geography": {
+          "type": "string",
+          "enum": ["NEIGHBORHOOD", "CITY", "PROVINCE", "NATIONAL", "REGIONAL", "GLOBAL"]
+        },
+        "branchStructure": {
+          "type": "string",
+          "enum": ["SINGLE_LOCATION", "MULTI_BRANCH_CENTRALIZED", "FRANCHISE_NETWORK", "DISTRIBUTOR_NETWORK", "VIRTUAL_DISTRIBUTED"]
+        },
+        "founderRole": {
+          "type": "string",
+          "enum": ["NOT_PUBLIC", "SUPPORTING", "FOUNDER_LED", "EXECUTIVE_LED", "PERSONAL_PRIMARY", "DUAL"]
+        },
+        "purchaseCycle": {
+          "type": "string",
+          "enum": ["IMPULSE", "SHORT_DAYS", "MEDIUM_WEEKS", "LONG_MONTHS", "ANNUAL_MULTI_YEAR"]
+        },
+        "relationshipModel": {
+          "type": "string",
+          "enum": ["TRANSACTIONAL", "REPEAT_HABITUAL", "RELATIONAL_RETAINER", "CONTRACTUAL_COMMITTED"]
+        },
+        "regulatoryProfile": {
+          "type": "string",
+          "enum": ["LOW", "NORMAL", "HIGH_TRUST", "REGULATED", "HIGHLY_REGULATED"]
+        },
+        "operationalComplexity": {
+          "type": "string",
+          "enum": ["LOW", "MODERATE", "HIGH", "SEVERE"]
+        },
+        "brandArchitecture": {
+          "type": "string",
+          "enum": ["STANDALONE", "MASTERBRAND", "SUB_BRAND", "ENDORSED", "HOUSE_OF_BRANDS", "FOUNDER_NAMED"]
+        }
+      }
+    }
+  }
+}

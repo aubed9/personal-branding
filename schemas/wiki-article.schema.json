@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "WikiArticle",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "category",
+    "version",
+    "status",
+    "related_phases",
+    "related_business_types",
+    "related_metrics",
+    "related_concepts",
+    "source"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^KB-[A-Z0-9-]+$"
+    },
+    "title": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "CANONICAL",
+        "DRAFT",
+        "NEEDS_RESEARCH",
+        "PLACEHOLDER",
+        "DEPRECATED"
+      ]
+    },
+    "related_phases": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "related_business_types": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "related_metrics": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "related_concepts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "source": {
+      "type": "string"
+    },
+    "last_updated": {
+      "type": "string"
+    }
+  }
+}
