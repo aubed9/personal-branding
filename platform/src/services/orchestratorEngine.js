@@ -31,7 +31,7 @@ export class OrchestratorEngine {
     this.unknowns = [];
     this.contradictions = [];
     this.businessContext = null;
-    this.overrideCurrentQuestion = null;
+    this.dynamicQuestionOverride = null; // { question, consumed: false, createdAt, source }
   }
 
   addStrategicDecision(statement) {
@@ -47,7 +47,12 @@ export class OrchestratorEngine {
   }
 
   setDynamicNextQuestion(question) {
-    this.overrideCurrentQuestion = question;
+    this.dynamicQuestionOverride = {
+      question,
+      consumed: false,
+      createdAt: new Date().toISOString(),
+      source: 'KNOWLEDGE_BRAIN_AI'
+    };
   }
 
   getCurrentPhaseQuestions() {
@@ -61,8 +66,9 @@ export class OrchestratorEngine {
   }
 
   getCurrentQuestion() {
-    if (this.overrideCurrentQuestion) {
-      return this.overrideCurrentQuestion;
+    // Dynamic override: return only if not consumed
+    if (this.dynamicQuestionOverride && !this.dynamicQuestionOverride.consumed) {
+      return this.dynamicQuestionOverride.question;
     }
     const questions = this.getCurrentPhaseQuestions();
     
@@ -254,6 +260,11 @@ export class OrchestratorEngine {
     const currentQ = this.getCurrentQuestion();
     const qId = currentQ ? currentQ.id : "free_text";
     const phase = this.currentPhase;
+
+    // Mark dynamic override as consumed after retrieving it
+    if (this.dynamicQuestionOverride && !this.dynamicQuestionOverride.consumed) {
+      this.dynamicQuestionOverride.consumed = true;
+    }
 
     // Multi-pattern unknown detection
     const unknownDetection = detectUnknownIntent(userText);
