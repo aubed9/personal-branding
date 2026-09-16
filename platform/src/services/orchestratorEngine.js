@@ -5,6 +5,9 @@ import { WIKI_PLAYBOOKS } from "../data/wikiKnowledge.js";
 import { generateDeliverable } from './deliverableGenerator.js';
 import { composeChainedQuestions, DYNAMIC_QUESTION_FORMULA } from './dynamicQuestionEngine.js';
 import { detectUnknownIntent, parseSemanticInput, parseFreeformSemanticSlots, UNKNOWN_CATEGORIES } from './semanticParser.js';
+import { validatePhaseGate } from "./phaseGateValidator.js";
+import { UnknownsManager, UNKNOWN_SEVERITY, UNKNOWN_STATUS } from "./unknownsManager.js";
+import { ContradictionEngine, CONTRADICTION_SEVERITY, CONTRADICTION_STATUS } from "./contradictionEngine.js";
 
 export class OrchestratorEngine {
   constructor() {
@@ -14,6 +17,8 @@ export class OrchestratorEngine {
     this.completedPhases = {
       1: false, 2: false, 3: false, 4: false, 5: false, 6: false, 7: false, 8: false
     };
+
+    this.phaseStatus = {};
 
     // Store responses across all 8 phases
     this.phaseData = {
@@ -73,10 +78,112 @@ export class OrchestratorEngine {
     return null;
   }
 
-  // Seamless transition to any phase (1 to 8)
+  canStartPhase(phaseNum) {
+    const p = Number(phaseNum);
+    if (isNaN(p) || p < 1 || p > 8) {
+      return {
+        allowed: false,
+        reason: `شماره فاز نامعتبر است (${phaseNum}). فازها باید عددی بین ۱ تا ۸ باشند.`
+      };
+    }
+
+    if (p === 1) {
+      return { allowed: true };
+    }
+
+    // Phase N can ONLY be opened if Phase N-1 has passed its exit gate
+    if (!this.completedPhases[p - 1]) {
+      return {
+        allowed: false,
+        reason: `ورود به فاز ${p} مجاز نیست. فاز پیش‌نیاز ${p - 1} هنوز تکمیل و تایید نشده است. سیستم دیجیتال مارکت از پرش فازها جلوگیری می‌کند.`
+      };
+    }
+
+    // Check all earlier phases 1 to p-2 as well
+    for (let prev = 1; prev < p - 1; prev++) {
+      if (!this.completedPhases[prev]) {
+        return {
+          allowed: false,
+          reason: `ورود به فاز ${p} مجاز نیست. فاز اولیه ${prev} تایید نشده یا ابطال گردیده است.`
+        };
+      }
+    }
+
+    return { allowed: true };
+  }
+
+  getPhaseStatus(phaseNum) {
+    const p = Number(phaseNum);
+    if (p < 1 || p > 8) return "INVALID";
+
+    if (this.phaseStatus[p] === "INVALIDATED") {
+      return "INVALIDATED";
+    }
+
+    if (this.completedPhases[p] === true) {
+      return "COMPLETED";
+    }
+
+    if (this.currentPhase === p) {
+      return "IN_PROGRESS";
+    }
+
+    const canStart = this.canStartPhase(p);
+    if (canStart.allowed) {
+      return "AVAILABLE";
+    }
+
+    return "LOCKED";
+  }
+
+  invalidateDependentPhases(fromPhase) {
+    const p = Number(fromPhase);
+    const invalidated = [];
+
+    if (p <= 1) {
+      for (let ph = 2; ph <= 8; ph++) {
+        if (this.completedPhases[ph]) {
+          this.completedPhases[ph] = false;
+          invalidated.push(ph);
+        }
+        this.phaseStatus[ph] = "INVALIDATED";
+      }
+    } else if (p === 2) {
+      for (let ph = 3; ph <= 8; ph++) {
+        if (this.completedPhases[ph]) {
+          this.completedPhases[ph] = false;
+          invalidated.push(ph);
+        }
+        this.phaseStatus[ph] = "INVALIDATED";
+      }
+    }
+
+    const message = invalidated.length > 0
+      ? `⚠️ **هشدار ابطال فازهای وابسته:** با توجه به تغییر اطلاعات بنیادین در فاز ${p}، خروجی‌های وابسته در فازهای (${invalidated.join("، ")}) نامعتبر شده و نیازمند بازبینی مجدد هستند.`
+      : `هیچ فاز تکمیلی وابسته‌ای نیاز به ابطال نداشت.`;
+
+    return {
+      fromPhase: p,
+      invalidatedPhases: invalidated,
+      message
+    };
+  }
+
+  // Controlled transition to phase (1 to 8) enforcing anti-skip protocol
   startPhase(phaseNum) {
+    const check = this.canStartPhase(phaseNum);
+    if (!check.allowed) {
+      const err = new Error(check.reason);
+      err.isGateBlocked = true;
+      err.phase = phaseNum;
+      throw err;
+    }
+
     this.currentPhase = phaseNum;
     this.currentStepIndex = 0;
+    if (this.phaseStatus[phaseNum] === "INVALIDATED") {
+      delete this.phaseStatus[phaseNum];
+    }
 
     const offer = this.phaseData[1]?.coreOffer || this.phaseData[1]?.description || "خدمات و تخصص محوری";
     const seg = this.phaseData[3]?.targetSegment || "مشتریان ارزش‌محور";
@@ -162,18 +269,18 @@ export class OrchestratorEngine {
       const actionItem = unknownDetection.actionItem || "طراحی و استقرار شیت ثبت روزانه داده‌ها در بازه ۳۰ روزه اولیه برای استخراج عدد واقعی";
       const hypothesis = `[فرضیه نیازمند تست - مجهول رسمی]: داده‌های مربوط به ${currentQ?.title || qId} هنوز به طور قطعی اندازه‌گیری نشده و در فاز ۳۰ روزه اولیه سنجیده خواهد شد.`;
 
-      const unknownEntry = {
-        id: `U-P${phase}-${this.unknowns.length + 1}`,
+      const unknownEntry = UnknownsManager.createUnknown({
         phase: phase,
         questionId: qId,
-        question: currentQ ? currentQ.title : userText,
-        unknownCategory: cat,
+        category: cat,
         reason: reason,
         actionItem: actionItem,
         hypothesis: hypothesis,
-        userResponse: userText,
-        timestamp: new Date().toISOString()
-      };
+        owner: "FOUNDER",
+        status: UNKNOWN_STATUS.OPEN,
+        source: optionValue === "unknown" ? "USER_OPTION" : "USER_TEXT",
+        existingCount: this.unknowns.length
+      });
       this.unknowns.push(unknownEntry);
 
       this.assumptions.push({
@@ -252,17 +359,6 @@ export class OrchestratorEngine {
     }
 
     if (phase === 1) {
-      // Test suite compatibility guards
-      if (userText === "" && !this.phaseData[1].stage) {
-        this.phaseData[1].stage = "";
-      }
-      if (optionValue === "huge_val") {
-        this.phaseData[1].geography = userText;
-      }
-      if (optionValue === "xss_val") {
-        this.phaseData[1].primaryGoal = userText;
-      }
-
       const isStageValue = ["active", "idea", "pre_launch", "rebrand"].includes(optionValue);
       const isGeoValue = ["local_city", "nationwide_iran", "international", "city_regional"].includes(optionValue);
       const legacyDescValues = [
@@ -386,6 +482,24 @@ export class OrchestratorEngine {
       this.decisions.push({ id: `D-P8-${this.decisions.length + 1}`, statement: `فعال‌سازی ${currentQ?.title}: ${userText}` });
     }
 
+    // Downstream Invalidation Trigger: If Phase 1 or 2 is modified while downstream phases are completed
+    if (phase === 1 && (this.completedPhases[2] || this.completedPhases[3])) {
+      this.invalidateDependentPhases(1);
+    } else if (phase === 2 && this.completedPhases[3]) {
+      this.invalidateDependentPhases(2);
+    }
+
+    // Detect semantic & factual contradictions across project state
+    const detectedContradictions = ContradictionEngine.detectContradictions(this);
+    detectedContradictions.forEach(c => {
+      const exists = this.contradictions.some(
+        existing => existing.statementA === c.statementA && existing.statementB === c.statementB
+      );
+      if (!exists) {
+        this.contradictions.push(c);
+      }
+    });
+
     this.currentStepIndex++;
     const nextQ = this.getCurrentQuestion();
 
@@ -400,12 +514,52 @@ export class OrchestratorEngine {
     }
   }
 
+  getPhaseName(p) {
+    const phaseNames = {
+      1: "کشف و بنیاد کسب‌وکار",
+      2: "هوش بازار و پژوهش مشتری",
+      3: "استراتژی و جهت‌گیری برند",
+      4: "هویت و شخصیت برند",
+      5: "سیستم هویت کلامی و پیام‌رسانی",
+      6: "نام‌گذاری، شعار و جهت‌گیری خلاقانه",
+      7: "سیستم طراحی هویت بصری",
+      8: "برنامه فعال‌سازی اجرایی، PR و مدیریت اعتبار"
+    };
+    return phaseNames[p] || `فاز ${p}`;
+  }
+
   finalizeCurrentPhase() {
     const p = this.currentPhase;
-    this.completedPhases[p] = true;
 
     if (p === 1) {
       this.businessContext = classifyBusinessContext(this.phaseData);
+    }
+
+    // Real Phase Gate Validation (Requirement R2)
+    const gateResult = validatePhaseGate(p, this);
+
+    if (!gateResult.passed) {
+      this.completedPhases[p] = false;
+      const reasonsList = gateResult.blockingReasons.map(r => `- ❌ ${r}`).join("\n");
+      const missingList = gateResult.missingFacts.length > 0
+        ? `\n\n📌 **اقلام اطلاعاتی مفقود:**\n` + gateResult.missingFacts.map(f => `- ⚠️ ${f}`).join("\n")
+        : "";
+
+      return {
+        reply: `🛑 **توقف در گیت خروج فاز ${p} (${this.getPhaseName(p)})**\n\nامکان نهایی‌سازی فاز جاری وجود ندارد زیرا الزامات ورود به مرحله بعد محقق نشده است:\n\n${reasonsList}${missingList}\n\n💡 *لطفاً موارد فوق را شفاف‌سازی کنید تا امکان عبور از گیت و صدور سند فراهم شود.*`,
+        nextQuestion: null,
+        isCompleted: false,
+        gatePassed: false,
+        gateResult: gateResult,
+        completedPhase: null,
+        nextPhase: null,
+        isFinalGrandFinale: false
+      };
+    }
+
+    this.completedPhases[p] = true;
+    if (this.phaseStatus[p] === "INVALIDATED") {
+      delete this.phaseStatus[p];
     }
 
     const phaseNames = {
@@ -421,9 +575,11 @@ export class OrchestratorEngine {
 
     if (p < 8) {
       return {
-        reply: `🎉 **تبریک می‌گویم! تمامی مراحل فاز ${p} (${phaseNames[p]}) با موفقیت تکمیل شد.**\n\nسند تخصصی این فاز صادر شده و در دوسیه راهبردی قرار گرفت.\n\n👇 **روی دکمه «ورود به فاز ${p + 1}: ${phaseNames[p + 1]}» کلیک کنید تا ادامه دهیم:**`,
+        reply: `🎉 **تبریک می‌گویم! تمامی مراحل فاز ${p} (${phaseNames[p]}) با موفقیت تکمیل شد.**\n\nگیت اعتبارسنجی با نمره شواهد ${gateResult.evidenceScore}/100 تایید شد و سند تخصصی صادر گردید.\n\n👇 **روی دکمه «ورود به فاز ${p + 1}: ${phaseNames[p + 1]}» کلیک کنید تا ادامه دهیم:**`,
         nextQuestion: null,
         isCompleted: true,
+        gatePassed: true,
+        gateResult: gateResult,
         completedPhase: p,
         nextPhase: p + 1,
         isFinalGrandFinale: false
@@ -433,6 +589,8 @@ export class OrchestratorEngine {
         reply: `🏆 **شاهکار است! تبریک صمیمانه، شما تمامی ۸ فاز برندینگ و فعال‌سازی اجرایی را با موفقیت ۱۰۰٪ نهایی کردید!**\n\nاکنون کل هویت برند، تمایز محوری، کاراکتر، پیام‌رسانی، نام، سیستم بصری و ماشین فعال‌سازی تجاری و سئوی شما به صورت علمی و هماهنگ تدوین شد.\n\n🌟 **«کتابچه جامع استراتژی و ماشین اجرای برند (Master Brand Book & Execution Machine)»** شامل تمامی اسناد ۸ گانه تولید شده و آماده دانلود یکپارچه است!`,
         nextQuestion: null,
         isCompleted: true,
+        gatePassed: true,
+        gateResult: gateResult,
         completedPhase: 8,
         nextPhase: null,
         isFinalGrandFinale: true

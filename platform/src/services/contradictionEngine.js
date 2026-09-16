@@ -1,0 +1,198 @@
+/**
+ * DIGITAL MARKET — Contradiction Engine (Requirement R3)
+ * Semantic & Factual Conflict Detection with Typed Severity
+ */
+
+export const CONTRADICTION_SEVERITY = {
+  CRITICAL: "CRITICAL",
+  MAJOR: "MAJOR",
+  MINOR: "MINOR"
+};
+
+export const CONTRADICTION_STATUS = {
+  UNRESOLVED: "UNRESOLVED",
+  RESOLVED: "RESOLVED",
+  DISMISSED: "DISMISSED"
+};
+
+export class ContradictionEngine {
+  /**
+   * Create a typed contradiction entity
+   */
+  static createContradiction({
+    id = null,
+    statementA,
+    statementB,
+    severity = CONTRADICTION_SEVERITY.MAJOR,
+    affectedPhases = [],
+    resolutionStatus = CONTRADICTION_STATUS.UNRESOLVED,
+    resolutionQuestion = "",
+    resolution = null,
+    resolvedAt = null,
+    createdAt = null,
+    existingCount = 0
+  } = {}) {
+    const generatedId = id || `CTR-${String(existingCount + 1).padStart(3, "0")}`;
+    return {
+      id: generatedId,
+      statementA: String(statementA || ""),
+      statementB: String(statementB || ""),
+      severity: severity || CONTRADICTION_SEVERITY.MAJOR,
+      affectedPhases: Array.isArray(affectedPhases) && affectedPhases.length > 0 ? affectedPhases : [1],
+      resolutionStatus: resolutionStatus || CONTRADICTION_STATUS.UNRESOLVED,
+      resolutionQuestion: resolutionQuestion || "لطفاً تناقض میان دو گزاره را شفاف‌سازی یا یکی را اصلاح نمایید.",
+      createdAt: createdAt || new Date().toISOString(),
+      resolvedAt: resolvedAt || null,
+      resolution: resolution || null
+    };
+  }
+
+  /**
+   * Detect contradictions across the full project state
+   */
+  static detectContradictions(projectState) {
+    const contradictions = [];
+    if (!projectState) return contradictions;
+
+    const phaseData = projectState.phaseData || {};
+    const p1 = phaseData[1] || {};
+    const p2 = phaseData[2] || {};
+    const p3 = phaseData[3] || {};
+    const p5 = phaseData[5] || {};
+    const p8 = phaseData[8] || {};
+    const decisions = Array.isArray(projectState.decisions) ? projectState.decisions : [];
+    const context = projectState.businessContext || null;
+
+    // Helper to gather all text from decisions and phase answers
+    const allDecisionTexts = decisions.map(d => (typeof d === "string" ? d : d.statement || "")).join(" ");
+    const allP8Text = Object.values(p8).join(" ");
+    const allP5Text = Object.values(p5).join(" ");
+    const allP3Text = Object.values(p3).join(" ");
+    const combinedDownstreamText = `${allDecisionTexts} ${allP3Text} ${allP5Text} ${allP8Text}`;
+
+    // RULE 1: Customer Model Conflict (B2C vs B2B Enterprise RFP)
+    // If P1 customer model is purely B2C / local walk-in retail, but later states enterprise tenders / RFPs / corporate procurement
+    const isB2C = (context?.customerModel === "B2C") || 
+                  (p1.customerModel === "B2C") || 
+                  (context?.archetype === "LOCAL_SERVICE" && !p1.customerModel?.includes("B2B"));
+
+    const hasEnterpriseB2BTerms = /(مناقصه|مناقصات|تدارکات سازمانی|قراردادهای دولتی|RFP|B2B Enterprise|خرید کلان شرکت‌ها|سامانه ستاد ایران)/i;
+    
+    if (isB2C && hasEnterpriseB2BTerms.test(combinedDownstreamText)) {
+      contradictions.push(this.createContradiction({
+        statementA: "مدل مشتری در فاز ۱ به صورت مصرف‌کننده نهایی (B2C) و مراجعان حضوری ثبت شده است.",
+        statementB: "در برنامه‌های استراتژیک یا فعال‌سازی، به مناقصات کلان سازمانی و تدارکات B2B اشاره شده است.",
+        severity: CONTRADICTION_SEVERITY.CRITICAL,
+        affectedPhases: [1, 3, 8],
+        resolutionQuestion: "آیا مدل کسب‌وکار شما B2C است یا B2B سازمانی؟ ورود همزمان به مناقصات شرکتی نیازمند فرآیند فروش و اهلیت حقوقی متفاوت است.",
+        existingCount: contradictions.length
+      }));
+    }
+
+    // RULE 2: Budget / Capital Constraint vs Expensive Mass Media
+    // If user states low budget / bootstrapped / cash-constrained, but plans TV ads / national billboards / celebrities
+    const p1BudgetRaw = `${p1.budgetConstraint || ""} ${p1.cashConstraint || ""} ${p1.stage || ""} ${p1.primaryBottleneck || ""}`.toLowerCase();
+    const isCashConstrained = p1BudgetRaw.includes("low") || 
+                             p1BudgetRaw.includes("محدود") || 
+                             p1BudgetRaw.includes("صفر") || 
+                             p1BudgetRaw.includes("bootstrapped") || 
+                             p1BudgetRaw.includes("کمبود نقدینگی") ||
+                             (p1.stageValue === "idea" && !p1.budgetConstraint);
+
+    const hasMassMediaTerms = /(کمپین تلویزیونی|بیلبورد بزرگراهی|تبلیغات صدا و سیما|تبلیغ تلویزیون|سلبریتی مارکتینگ میلیاردی|بیلبوردهای سراسری)/i;
+    if (isCashConstrained && hasMassMediaTerms.test(combinedDownstreamText)) {
+      contradictions.push(this.createContradiction({
+        statementA: "بودجه اولیه و نقدینگی کسب‌وکار محدود یا در مرحله ایده/بوت‌استرپ اعلام شده است.",
+        statementB: "کانال‌های اجرایی شامل رسانه‌های جمعی پرهزینه (تلویزیون، بیلبورد سراسری) برنامه‌ریزی شده است.",
+        severity: CONTRADICTION_SEVERITY.CRITICAL,
+        affectedPhases: [1, 5, 8],
+        resolutionQuestion: "تبلیغات جمعی و بیلبوردی نیازمند بودجه چند صدمیلیونی است. چگونه این کانال با قید نقدینگی محدود تامین مالی خواهد شد؟",
+        existingCount: contradictions.length
+      }));
+    }
+
+    // RULE 3: Geographic Scope Conflict (Local 3km radius vs International Export)
+    const isLocalScope = (context?.geographicScope === "LOCAL") || 
+                         (p1.geographyValue === "local_city") || 
+                         (typeof p1.geography === "string" && p1.geography.includes("محلی"));
+    const hasExportTerms = /(صادرات به کشورهای منطقه|صادرات بین‌المللی|حمل‌ونقل دریایی کانتینری|ارسال به حوزه خلیج فارس)/i;
+    if (isLocalScope && hasExportTerms.test(combinedDownstreamText)) {
+      contradictions.push(this.createContradiction({
+        statementA: "محدوده جغرافیایی کسب‌وکار در فاز ۱ به عنوان خدمت محلی و شهری تعیین شده است.",
+        statementB: "در استراتژی یا برنامه‌های توسعه، صادرات خارجی و بازارهای بین‌المللی قید گردیده است.",
+        severity: CONTRADICTION_SEVERITY.MAJOR,
+        affectedPhases: [1, 3],
+        resolutionQuestion: "خدمات محلی و صادرات بین‌المللی دو زنجیره ارزش کاملاً متفاوت دارند. آیا قلمرو بازار باید به بین‌المللی ارتقا یابد؟",
+        existingCount: contradictions.length
+      }));
+    }
+
+    // RULE 4: Pricing vs Value Proposition Conflict (Cheapest Discount vs Luxury Exclusive)
+    const p2Pricing = `${p2.pricingModel || ""} ${p2.pricingModelValue || ""}`.toLowerCase();
+    const p3Pos = `${p3.positioning || ""} ${p3.positioningValue || ""}`.toLowerCase();
+    const isUltraCheap = p2Pricing.includes("تخفیف") || p2Pricing.includes("ارزان") || p2Pricing.includes("حراج") || p2Pricing.includes("lowest_price");
+    const isLuxury = p3Pos.includes("لوکس") || p3Pos.includes("اشرافی") || p3Pos.includes("پریمیوم") || p3Pos.includes("گران‌قیمت") || p3Pos.includes("exclusive");
+    if (isUltraCheap && isLuxury) {
+      contradictions.push(this.createContradiction({
+        statementA: "استراتژی قیمت‌گذاری بر مبنای تخفیف تهاجمی و ارزان‌ترین نرخ بازار تعریف شده است.",
+        statementB: "جایگاه‌یابی برند به عنوان برند لوکس، پرستیژی و پریمیوم ادعا شده است.",
+        severity: CONTRADICTION_SEVERITY.MAJOR,
+        affectedPhases: [2, 3],
+        resolutionQuestion: "جایگاه لوکس با جنگ قیمت و تخفیف تهاجمی در تضاد هویتی است. لطفاً بین رهبری هزینه یا تمایز پرستیژی یکی را برگزینید.",
+        existingCount: contradictions.length
+      }));
+    }
+
+    return contradictions;
+  }
+
+  /**
+   * Check if a specific contradiction is actively blocking
+   */
+  static isBlocking(contradiction) {
+    if (!contradiction) return false;
+    const isSevere = contradiction.severity === CONTRADICTION_SEVERITY.CRITICAL || 
+                     contradiction.severity === CONTRADICTION_SEVERITY.MAJOR;
+    const isUnresolved = contradiction.resolutionStatus === CONTRADICTION_STATUS.UNRESOLVED;
+    return isSevere && isUnresolved;
+  }
+
+  /**
+   * Filter active blocking contradictions
+   */
+  static getBlockingContradictions(contradictionsList = [], phase = null) {
+    if (!Array.isArray(contradictionsList)) return [];
+    return contradictionsList.filter(c => {
+      if (phase !== null && Array.isArray(c.affectedPhases) && !c.affectedPhases.includes(Number(phase))) {
+        return false;
+      }
+      return this.isBlocking(c);
+    });
+  }
+
+  /**
+   * Resolve a contradiction
+   */
+  static resolveContradiction(contradictionsList, id, resolution) {
+    if (!Array.isArray(contradictionsList)) return null;
+    const item = contradictionsList.find(c => c.id === id);
+    if (!item) return null;
+    item.resolutionStatus = CONTRADICTION_STATUS.RESOLVED;
+    item.resolvedAt = new Date().toISOString();
+    item.resolution = resolution || "رفع تناقض با تصحیح فرضیات انجام شد.";
+    return item;
+  }
+
+  /**
+   * Dismiss a contradiction
+   */
+  static dismissContradiction(contradictionsList, id, rationale) {
+    if (!Array.isArray(contradictionsList)) return null;
+    const item = contradictionsList.find(c => c.id === id);
+    if (!item) return null;
+    item.resolutionStatus = CONTRADICTION_STATUS.DISMISSED;
+    item.resolvedAt = new Date().toISOString();
+    item.resolution = `رد شده با توجیه: ${rationale || "عدم وجود تناقض واقعی"}`;
+    return item;
+  }
+}

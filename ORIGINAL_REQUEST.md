@@ -192,5 +192,123 @@ Integrity mode: benchmark
 - [ ] سوالات بعدی در جریان گفتوگو مستقیماً منعکسکننده پاسخها و جملات خود کاربر باشند و مسیر تصمیمگیری را متناسب با آن هدایت کنند.
 - [ ] تمامی آزمونهای سیستم (`npm test`, `test_adversarial_challenger.js`, `validate_system.py`, `test_adversarial_753_jargon.js`) بدون رگرسیون با قبولی ۱۰۰٪ اجرا شوند و بیلد پروداکشن (`npm run build`) با موفقیت کامپایل شود.
 
+## Follow-up — 2026-09-14T16:33:20Z
+
+Comprehensive end-to-end audit, architectural harmonization, bug fixing, test suite overhaul, and production hardening of the DIGITAL MARKET personal branding and business strategy platform (8 phases, 753 business taxonomy, AI dynamic questioning, evidence ledger, and real exit gates).
+
+Working directory: d:\personal branding
+Integrity mode: development (Strict: zero test cheats, zero hardcoded scores, zero fake passes, objective evidence only)
+
+## Context & Objectives
+
+The DIGITAL MARKET platform is an intelligent business strategy and brand-building execution system spanning 8 distinct phases (Business Foundation, Research Intelligence, Strategy & Brand Direction, Brand Identity & Character, Verbal Identity & Messaging, Naming/Taglines/Creative, Visual Identity, and Executive Activation).
+
+The goal of this assignment is NOT merely to make tests green. It is to enforce full congruence between the claimed architecture and the actual implementation, make tests genuinely measure system behavior, eliminate all fabricated metrics/scores, eliminate circular or mock-based verifications, secure the engine, and make the platform robust, deterministic, and dependable in real Iranian market scenarios.
+
+## Requirements
+
+### R1. Baseline Audit & Branching
+1. Check out a dedicated Git branch: `fix/production-hardening`.
+2. Execute an uncompromising initial baseline of all existing commands before any code modifications:
+   - `npm ci`, `npm test`, `npm run test:753`, `npm run build` in `platform/`
+   - Unregistered test files: `test_adversarial_challenger.js`, `test_adversarial_753_jargon.js`, `test_multi_sector_customization.js`, `test_e2e_guild_to_finish.js`, `simulate_100_businesses.js`
+   - Python validations: `python scripts/validate_system.py`
+3. Record all exact failures, warnings, tracebacks, circular tests, and suspicious behaviors in an initial baseline log. Never report a pass without real zero exit codes.
+
+### R2. Phase Gate Enforcement & Anti-Skip Protocol
+1. Implement real, non-bypassable exit gates: `validatePhaseGate(phaseNum)`.
+2. Output a structured validation object:
+   `{ passed: boolean, blockingReasons: string[], warnings: string[], missingFacts: string[], unresolvedUnknowns: unknown[], unresolvedContradictions: contradiction[], requiredDecisions: string[], evidenceScore: number }`.
+3. Completion of a phase must NEVER occur merely because questions ran out; `finalizeCurrentPhase()` must execute `validatePhaseGate()`. If it fails, `completedPhases[p] = false` remains and actionable Persian feedback is rendered.
+4. Implement strict phase progression:
+   - Phase 1 is the mandatory starting point.
+   - Phase N can ONLY be opened if Phase N-1 has passed its real exit gate.
+   - Arbitrary phase jumping (e.g. Phase 1 to Phase 5) is strictly forbidden.
+   - APIs: `canStartPhase(phaseNum)`, `getPhaseStatus(phaseNum)`, `invalidateDependentPhases(fromPhase)`.
+
+### R3. Unknowns & Contradiction Architecture
+1. Re-architect `UNKNOWN` from a decorative tag into a first-class state entity with typed severity: `BLOCKING_UNKNOWN` vs `NON_BLOCKING_UNKNOWN`.
+2. Schema for UNKNOWNs: `id`, `phase`, `questionId`, `category`, `severity`, `blocking`, `reason`, `hypothesis`, `actionItem`, `owner`, `status` (`OPEN`, `IN_RESEARCH`, `RESOLVED`, `ACCEPTED_RISK`), `createdAt`, `resolvedAt`, `resolution`, `source`. Unresolved blocking unknowns strictly halt Phase Gate completion.
+3. First-class Contradiction Engine: Detect semantic and factual conflicts (e.g., user claiming pure B2C then later asserting exclusive B2B enterprise contracts).
+4. Schema for CONTRADICTION: `id`, `statementA`, `statementB`, `severity`, `affectedPhases`, `resolutionStatus`, `resolutionQuestion`. Major unresolved contradictions block Phase Gates.
+5. Downstream Invalidation: Modifying foundational decisions in Phase 1 or 2 must mark dependent downstream outputs (Phases 3–8) as stale/invalidated with clear review prompts.
+
+### R4. Dynamic AI Question Loop & Robust Response Parser
+1. Resolve the `overrideCurrentQuestion` / `setDynamicNextQuestion` lifecycle bug. Replace unstructured overrides with a deterministic state machine: `{ id, source, createdAt, consumed: boolean, parentQuestionId }`. Once answered, dynamic questions are flagged as `consumed` and permanently cleared; no infinite loops or repeats.
+2. Upgrade Gemini LLM response parsing to structured JSON output with schema validation, fallback parsing, malformed response recovery, and exponential backoff retry. No malformed model response may corrupt the project state.
+3. Decouple LLM integration with an adapter interface (`LLMProvider`: `GeminiProvider`, `MockProvider`, `CustomEndpointProvider`) ensuring deterministic testing without live API keys. Centralize model configuration away from deprecated hardcoded strings.
+
+### R5. Single Canonical Knowledge Base & Grounded Sourcing
+1. Eliminate fragmentation across `wiki/`, `knowledge_base/`, `platform/src/data/wikiKnowledge.js`, and `skills/llm-wiki/`.
+2. Establish a single canonical knowledge source with build-time generation: `wiki/ + registry.yaml` → generated runtime knowledge bundle.
+3. Audit the claimed "165 Sources". Implement a verified source registry schema (`sourceId`, `title`, `author`, `year`, `type`, `authorityLevel`, `domains`, `claims`, `lastVerified`). Remove any unverified numerical claims (e.g., claiming 165 if fewer exist).
+4. Make Knowledge Retrieval context- and phase-aware, retrieving based on phase, business archetype, industry, customer model, regulatory profile, and founder role (e.g. Phase 2 retrieves market research and pricing; Phase 6 retrieves naming/tagline heuristics).
+5. Temporal grounding for Iranian macroeconomic/regulatory data: attach `validFrom`, `validUntil`, `lastVerified`, `jurisdiction` to inflation, tax, union (صنفی), and regulatory facts. No fabricated or unsourced benchmark numbers (30%, 80%, etc.).
+
+### R6. Simulation 753 & Metric Integrity
+1. Complete rewrite of `simulate_753_businesses.js` and `simulate_100_businesses.js`:
+   - Purge all artificial base score inflation (e.g., `m1Score = 96`, `98.5 + ((i % 4) * 0.5)`).
+   - Compute metrics (M1 Problem Solving, M2 Context Relevance, M3 Identity Integrity, M4 State/Gate Integrity) exclusively from real, empirical assertions (e.g., 42/50 assertions passed = 84.0%, never defaulted to 96%).
+2. Purge circular tests in `scripts/validate_system.py`: Python validation must test real schema integrity and invoke actual engine logic, not generate mock inquiries to test its own keywords.
+3. Remove test-only magic guards (`huge_val`, `xss_val`, fixture bypasses) from production code; use dependency injection and test fixtures instead.
+4. Correct all exaggerated marketing claims in documentation (e.g., "99.87%", "100% Zero Hallucination", "سوگند ممیزی") with verified, evidence-backed test metrics.
+
+### R7. Business Taxonomy 753 & 15-Axis Context Harmonization
+1. Programmatic validation of all 753 entries in `businessTaxonomy753.js`:
+   - ID uniqueness and sequence integrity (`BT-0001` through `BT-0753`).
+   - Valid `industryId`, non-empty `titleFa` / `titleEn`, valid `archetype`, valid enum axes.
+   - Verification of Iranian guild codes (کد آیسیک / صنف).
+   - Generate a machine-readable validation report: `taxonomy-validation-report.json`.
+2. Reconcile 15-Axis Context naming across schemas, documentation, and runtime into a single canonical format (camelCase runtime, mapped schema).
+3. Enhance Guild/Business search with full Persian normalization (ی/ي, ک/ك, نیمفاصله, plural variants, typo tolerance, alias search).
+
+### R8. Persistence, Security, Error Handling & UX
+1. Versioned State Persistence: LocalStorage / IndexedDB with automated migrations (`schemaVersion: 2`, `v1 -> v2`). Support Save, Auto-Save, Restore, Export JSON, Import JSON, and Reset with strict schema validation on import.
+2. API Key & Endpoint Security: Ensure API keys are NEVER logged, exported in project JSON, or embedded in repository deliverables. Provide session-only / BYOK mode and sanitize custom endpoints (validate protocol, block `javascript:`, enforce timeouts and AbortController).
+3. Evidence Ledger: Manage `FACT`, `DECISION`, `ASSUMPTION`, `UNKNOWN`, `CONTRADICTION`, `RISK`, `BLOCKER` with full status lifecycle (`PROPOSED`, `ACCEPTED`, `LOCKED`, `SUPERSEDED`, `INVALIDATED`).
+4. Deliverable Generator & Markdown Export: Deliverables must display provenance status (`VERIFIED`, `USER_REPORTED`, `ASSUMED`, `UNKNOWN`, `AI_INFERRED`). Markdown export must cleanly serialize nested arrays/objects without `[object Object]`.
+5. UI/UX: Add React Error Boundaries, loading states, clear Persian error messaging for network/quota failures, mobile responsiveness, accessibility (keyboard navigation, modal focus traps, Esc close, RTL correctness), and eliminate race conditions on rapid message submission.
+
+### R9. Testing Architecture, CI & Documentation
+1. Structured test hierarchy:
+   - `tests/unit/`: semantic parser, context classification, phase gates, deliverable serialization.
+   - `tests/integration/`: phase transitions, dynamic question lifecycle, unknown blocking, contradiction downstream invalidation.
+   - `tests/e2e/`: full 8-phase journey, save/restore, export/import.
+   - `tests/adversarial/`: 20 real diverse Iranian business scenarios + adversarial inputs (Finglish, slang, typos, emojis, HTML/script tags, contradictory statements, rapid sends).
+   - `tests/data-integrity/`: 753 taxonomy validation, canonical knowledge validation.
+2. Complete `package.json` scripts: `test`, `test:unit`, `test:integration`, `test:e2e`, `test:adversarial`, `test:taxonomy`, `test:753`, `validate`, `build`, `ci`.
+3. GitHub Actions CI workflow (`.github/workflows/ci.yml`) running all linters, tests, builds, and taxonomy validations on push/PR.
+4. Comprehensive, evidence-based audit report: `AUDIT-AND-HARDENING-REPORT.md`.
+
+## Acceptance Criteria
+
+### Verification Commands & Exit Status
+- [ ] `npm ci` executes with exit code 0.
+- [ ] `npm run build` succeeds with zero errors and clean bundle analysis.
+- [ ] `npm run lint` exists and passes with 0 critical errors.
+- [ ] `npm run test:unit` passes 100% of unit tests.
+- [ ] `npm run test:integration` passes 100% of integration tests.
+- [ ] `npm run test:adversarial` passes all 20 diverse Iranian business scenarios and adversarial input suites without crashes or state corruption.
+- [ ] `npm run test:taxonomy` confirms all 753 entries are strictly valid with machine-readable verification output.
+- [ ] `npm run test:753` executes with empirical assertions (zero hardcoded base scores) and logs honest metric scores.
+- [ ] `python scripts/validate_system.py` executes without circular mocking and exits with 0.
+- [ ] `npm run ci` runs the entire pipeline end-to-end and exits with 0.
+
+### Functional & Architectural Gates
+- [ ] Phase skipping is strictly prevented: calling `startPhase(N)` when Phase N-1 is incomplete throws an explicit error.
+- [ ] Calling `finalizeCurrentPhase()` with unresolved `BLOCKING_UNKNOWN` or critical contradictions fails the gate and leaves `completedPhases[p] = false`.
+- [ ] `NON_BLOCKING_UNKNOWN` allows phase progression with warning records.
+- [ ] Modifying foundational decisions in Phase 1 invalidates dependent downstream phases.
+- [ ] Dynamic Gemini question answers do not loop or repeat; questions are properly consumed and retired.
+- [ ] Malformed LLM responses gracefully fall back without corrupting state or crashing the UI.
+- [ ] Single canonical knowledge source powers both runtime and documentation with verifiable provenance.
+- [ ] Refreshing or closing the browser preserves the active project state; JSON export/import functions without loss.
+- [ ] API keys are never written to exported project JSON or logged to the console.
+- [ ] Deliverable generation renders factual provenance tags and exports clean Markdown without `[object Object]`.
+- [ ] All claims in README, ARCHITECTURE, and CHANGELOG are aligned with verifiable test results (exaggerated numbers removed).
+- [ ] Comprehensive `AUDIT-AND-HARDENING-REPORT.md` is compiled detailing before/after metrics, exact test runs, root causes, and remaining limitations.
+- [ ] All work is committed cleanly on branch `fix/production-hardening`.
+
+
 
 

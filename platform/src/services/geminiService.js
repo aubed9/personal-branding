@@ -2,7 +2,7 @@
  * DIGITAL MARKET — Knowledge-Grounded AI Brain Service
  * 
  * Powered by Google Gemini API and strictly grounded in 49 Canonical Wiki Playbooks
- * and 165 Master Strategic Intelligence Sources.
+ * and 49 Canonical Wiki Knowledge Nodes (with references to academic & regulatory frameworks).
  * 
  * Enforces Zero-Hallucination, Zero-Corporate-Jargon for Local Trades, and True
  * Dynamic Question Customization based on user's exact prior answers.
@@ -70,7 +70,7 @@ ${p.content || ""}`).join("\n\n");
 1. **توقف کامل بافتن مطالب کلیشه‌ای و توخالی:** به هیچ وجه شعارهای انگیزشی، جملات کلیشه‌ای ("شما عالی هستید"، "موفقیت نزدیک است") نگویید.
 2. **قانون ایزولاسیون کامل واژگان شرکتی (Zero Corporate Jargon):**
 ${isLocalTrade ? `این صنف یک پیشه محلی/سنتی/فیزیکی است. به کار بردن واژگان فرنگی شرکتی (نظیر CAC, LTV, Churn, DMU, SLA, Pipeline, Funnel) مطلقاً و با نمره صفر ممنوع است. تماماً از معادل‌های واقعی و ملموس بازار ایران استفاده کنید (مانند: هزینه جذب هر مشتری محلی، ارزش مراجعات مکرر، ریزش مشتری، تصمیم‌گیرنده خرید، تضمین کتبی کار، فهرست سفارش‌ها).` : `اصطلاحات را با تعاریف دقیق مالی و رفتاری بازار ایران تطبیق دهید.`}
-3. **پایبندی ۱۰۰٪ به پایگاه دانش ۱۶۵ منبعی ویکی:**
+3. **پایبندی به پایگاه دانش ۴۹ مقاله ویکی و چارچوب‌های علمی مرجع:**
 استدلال شما باید منحصراً بر پایه چارچوب‌های علمی مادر (مدل حساسیت قیمت وستندورپ، تمایز زاگ نئومایر، استوری‌برند دونالد میلر، کهن‌الگوهای مارک و پیرسون، مهار بحران SCCT) باشد.
 
 پلی‌بوک‌های دانشی تزریق‌شده از ویکی:
