@@ -309,6 +309,275 @@ The goal of this assignment is NOT merely to make tests green. It is to enforce 
 - [ ] Comprehensive `AUDIT-AND-HARDENING-REPORT.md` is compiled detailing before/after metrics, exact test runs, root causes, and remaining limitations.
 - [ ] All work is committed cleanly on branch `fix/production-hardening`.
 
+## Follow-up — 2026-09-17T01:01:18Z
+
+# Teamwork Project Prompt
+
+Comprehensive end-to-end audit, architectural refactor, full UI redesign, 753-business-type validation, security hardening, accessibility compliance, and production certification of the DIGITAL MARKET brand strategy platform — an 8-phase intelligent business & personal branding system targeting the Iranian market.
+
+Working directory: d:\personal branding
+Integrity mode: development (Strict: zero test cheats, zero hardcoded scores, zero fake passes, objective evidence only)
+
+Repository: https://github.com/aubed9/personal-branding
+Branch: main (merge fix/production-hardening first — it contains 3 commits of prior hardening work including phase gates, unknowns manager, contradiction engine, LLM adapter, persistence manager, and ErrorBoundary)
+
+---
+
+## Requirements
+
+### R1. Pre-Code Baseline Audit
+
+Before modifying any code, produce AUDIT-BEFORE-REFACTOR.md documenting:
+- Current architecture and dependency flow across all files in platform/src/
+- Single Sources of Truth for business taxonomy, question templates, state, and knowledge
+- The complete path from guild selection through all 8 phases to final deliverable
+- How questions are generated, how Business Type and 15 Context Axes influence them
+- How deliverables are produced and what provenance they carry
+- Where state is stored, what its schema is, and how it persists
+- Fragile dependencies, duplicated logic, hardcoded assumptions
+- Which existing tests actually measure real behavior vs. which are circular or decorative
+- Execute all existing test commands (npm ci, npm test, npm run test:753, npm run build, all test_*.js files, simulate_753_businesses.js, simulate_100_businesses.js, python scripts/validate_system.py) and record exact results before any changes
+
+### R2. Simulation & Score Integrity
+
+Purge all artificial score inflation in simulate_753_businesses.js and simulate_100_businesses.js. No metric may start from a high base value (96, 97, 98.5, etc.). Every quality metric (M1 Problem-Solving, M2 Context-Relevance, M3 Identity-Integrity, M4 State/Gate-Integrity) must be computed exclusively from empirical assertion counts (e.g. 42/50 passed = 84.0%). If a test fails, record FAIL — never inflate. Remove all unearned claims like "100% verified", "zero hallucination", "auditor oath" unless backed by actual test evidence.
+
+### R3. Full 753 Business Type Smoke Tests
+
+For every BT-0001 through BT-0753, execute at minimum a Phase 1→8 smoke journey validating:
+- taxonomyId and industryId stability through the journey
+- Archetype correctness
+- Context Axes validity
+- No undefined questions or empty options
+- No infinite loops or unjustified question repeats
+- All phase gates passable
+- Phase 7 → Phase 8 transition works
+- Master deliverable generated without cross-contamination from other industries
+- No fabricated user data or phantom facts
+- Unknowns remain as Unknown/Hypothesis, not silently promoted to Fact
+- No [object Object], undefined, null, or NaN in output
+- Store real per-BT results in 753-REAL-TEST-RESULTS.md
+
+### R4. Context Matrix / Pairwise Testing
+
+Current simulations only test ACTIVE stage. Build a pairwise/combinatorial test generator covering:
+- Business Stage: IDEA, PRE_LAUNCH, ACTIVE, EARLY_ACTIVE, REBRAND
+- Customer: B2C, B2B, B2B2C, marketplace/multi-sided
+- Channel: PHYSICAL_FIRST, ONLINE_FIRST, HYBRID
+- Geography: CITY, PROVINCIAL, NATIONAL, INTERNATIONAL
+- Revenue model: TRANSACTION, RECURRING, PROJECT, RETAINER, COMMISSION, etc.
+- Scale: MICRO, SMALL, MEDIUM, LARGE
+- Founder Role: FOUNDER_LED, SUPPORTING, etc.
+- Regulation: NORMAL, REGULATED, HIGHLY_REGULATED
+- All 4 Unknown types in the system
+
+Use pairwise coverage + boundary cases, not brute-force permutations. Produce a machine-readable BUSINESS-COVERAGE-MATRIX.md.
+
+### R5. Business Specialization Hierarchy Fix
+
+The specialization system over-relies on archetype-level hardcoding. Fix so that:
+- LOCAL_SERVICE doesn't default to car wash context — it could be a salon, phone repair, home services, studio, dry cleaning, clinic, etc.
+- RESTAURANT_CAFE_HOSPITALITY doesn't always talk about coffee roasting — restaurants, fast food, bakeries, hotels have different contexts
+- MANUFACTURER doesn't assume "3 micron tolerance" for all factories — food, clothing, wood, chemical, and precision parts are different
+- SAAS_SOFTWARE doesn't assume all SaaS is accounting/Moadian tax compliance
+
+Enforce this specialization hierarchy: Exact BT (BT-xxxx) → Industry module → Primary Archetype → 15 Context Axes → Business Stage → Prior answers → Known Facts → Question generation. Archetype must not invent micro-domain details. Specific examples are only permitted when confirmed by taxonomyId or user input. No numbers, KPIs, guarantees, or advantages may be treated as Fact unless user-provided — otherwise they must be marked as Example/Hypothesis.
+
+### R6. Cross-Domain Leakage Tests
+
+Write cross-domain leakage tests for all industries. Examples:
+- Beauty salon questions must not reference automotive terminology
+- Textile factory must not get machining tolerance questions
+- Gym management SaaS must not default to Moadian tax as primary concern
+- Iranian restaurant must not be assumed to be a coffee roastery
+- Wholesaler must not receive Creator Economy vocabulary
+- Medical business must not generate treatment claims without data
+
+Define a Vocabulary Allowlist / Forbidden-context strategy per industry — semantic relevance, not rigid keyword matching.
+
+### R7. UI Transformation: Chat → Professional Brand Strategy Workspace
+
+Completely remove the chat-based interface. The user must never feel they're talking to ChatGPT or any chatbot. Remove:
+- ChatContainer, MessageBubble, Assistant/User bubbles, Bot icon, typing dots
+- Permanent ChatInput, Send icon, conversation timeline, auto-scroll
+- "هوش مصنوعی در حال فکر کردن است", "در حال تحلیل ۱۶۵ منبع"
+- All anthropomorphic AI wording ("دستیار هوشمند", "مغز هوش مصنوعی", "AI در حال تحلیل", "پاسخ دستیار", "پیام شما", "Bot", "Assistant")
+
+Replace with professional workspace language: "فضای تدوین برند", "راهنمای تصمیم", "تحلیل پروژه", "اطلاعات ثبتشده", "تصمیمهای این مرحله", "سند برند"
+
+Non-ChatGPT acceptance test: If you remove the logo and product name, would an average user mistake it for ChatGPT/Claude/Gemini? If yes, the design is rejected. The interface must look like a strategic planning application / assessment tool / guided workshop / professional configuration workflow — not a messenger.
+
+### R8. Layout & Visual Design
+
+Desktop layout:
+┌──────────────────────────────────────────────┐
+│  Project Phase Progress  1–8 Status          │
+├──────────────┬───────────────────────────────┤
+│ Context      │                               │
+│ Summary      │   Current Question            │
+│              │                               │
+│ What we know │   Answer Options              │
+│              │                               │
+│ Decisions    │   Optional Custom Input        │
+│              │                               │
+│              │          Back   Continue       │
+├──────────────┴───────────────────────────────┤
+│  Autosaved  •  Phase x  •  Question x/y      │
+└──────────────────────────────────────────────┘
+
+No chat timeline on the main screen. History in a separate Drawer/Modal only if needed.
+
+Question Card: One question at a time with: phase label, short question title, 1-2 line explanation ("why this matters"), options, custom answer, navigation. Remove repetitive text, long explanations, and technical jargon from the main surface — put deeper info in tooltips/popovers.
+
+Answer options: Desktop 2×2 grid for ≤4 options; for 6-8+ options use searchable choice / segmented category / compact grid / pagination / command palette. User must never scroll to find the Continue button.
+
+Free text: Remove permanent bottom textarea. Inside the Question Card, offer "پاسخ خودم را مینویسم" option that opens an inline textarea. Enter ≠ send; CTA is "ثبت و ادامه".
+
+Monochrome visual system: Background #000000, primary text #FFFFFF, secondary text grey, surfaces #080808/#0D0D0D/#111111, borders white with low opacity, accent only white. Remove all blue/purple/green/amber visual accents from core UI. States shown via opacity, border thickness, fill, icon, pattern, typography weight — not color. Selected: white bg + black text. Unselected: black bg + white border. Hover: white border. Focus: 2px solid white. Disabled: low-opacity grey. Completed: white check icon. Current: white-filled indicator.
+
+Design aesthetic: Minimal glow, no colored gradients, no exaggerated glassmorphism. Target: precise, editorial, minimal, premium, quiet, professional. Consistent spacing, limited border radius, minimal shadow. Hierarchy through typography, spacing, contrast, weight — not multiple colors.
+
+Remove confetti/celebrations from normal professional flow. Phase completion = check mark + concise summary.
+
+### R9. Viewport Compliance
+
+Current question and all response controls (options + Continue button) must be visible without page scroll at 100% zoom on these viewports: 360×640, 390×844, 412×915, 768×1024, 1280×720, 1366×768, 1440×900, 1920×1080. Use 100dvh, layout with Header: auto, Workspace: minmax(0, 1fr), Footer/Actions: auto, body { overflow: hidden }. At 200% zoom, accessibility > no-scroll — controlled scroll is allowed but no content may be clipped or inaccessible.
+
+### R10. Progress Navigation & Back/Edit with Downstream Invalidation
+
+8-phase progress rail always visible showing: Not started, Current, Complete, Needs review. Users can view completed phases but changing an upstream answer must invalidate/recompute all dependent downstream outputs with clear "Needs Review" prompts. Build a dependency graph for answer changes. Silent inconsistency is forbidden.
+
+Users must be able to: view previous questions, change answers, clear answers, change guild, edit prior information. Back/Continue navigation.
+
+### R11. Real Persistence
+
+Page refresh must not destroy the project. Serialize full project state (version, currentPhase, currentQuestion, completedPhases, phaseData, businessContext, facts, decisions, assumptions, unknowns, contradictions, selected guild, timestamps). Use or fix project-state.schema.json. Support: autosave, restore, reset, export JSON, import JSON, schema version migration, corrupted-state recovery. Show a small "ذخیره شد" indicator.
+
+### R12. API Key & Endpoint Security
+
+- Never store raw API keys in localStorage
+- Custom endpoints must not send API keys to arbitrary hosts
+- Preferred: Frontend → /api/ai → Server/Worker → AI Provider (secrets in environment)
+- If BYOK needed: session memory only, persistence opt-in with warning, HTTPS only, endpoint allowlist
+- Never append secrets to arbitrary URLs without validation
+- Handle: timeout, AbortController, retry with backoff, rate-limit (429), auth errors (401/403), server errors (5xx), offline, malformed responses
+
+### R13. Structured AI Output
+
+Replace fragile ---DECISION--- / ---NEXT_QUESTION--- delimiter parsing with structured JSON schema + validation. Schema: { analysisSummary: string, extractedDecision: string|null, nextQuestion: { id, title, text, options[] }|null }. Validate responses; graceful fallback on malformed output. Regression tests ensuring dynamic questions don't cause repeat loops, stale overrides, skipped questions, or duplicate answers.
+
+### R14. 753 Guild Selector Redesign
+
+Current modal requires too much scrolling. New selector: search-first with "صنف یا فعالیت خود را جستجو کنید", auto-suggestions limited to a few results, then "پیدا نکردم / مشاهده دستهها" falls back to 31 industry categories. Use virtualization or indexed search — don't dump 753 cards. Persian normalization: ی/ي, ک/ك, half-space, numbers, common spelling variants. Keyboard accessible: semantic button/listbox, arrow keys + Enter + Escape.
+
+### R15. Performance
+
+Evaluate whether the full 753-record taxonomy and all templates need to be in the initial bundle. If beneficial, implement lazy loading, dynamic import, data chunking, memoized indexing, search index. Report before/after bundle sizes.
+
+### R16. Accessibility
+
+Minimum requirements: keyboard-only navigation, semantic buttons, focus management, visible focus, modal focus trap, Escape close, ARIA labels, aria-current for phase, aria-live for important status only, reduced motion support, color-independent status indicators, 4.5:1 text contrast, ~44px touch targets.
+
+### R17. Persian Free-Text Input Testing
+
+Test free-text inputs beyond option clicks: formal Persian, colloquial Persian, spelling errors, half-spaces, Arabic ي/ك characters, mixed Persian+English, Persian numerals, English numerals, very short text, very long text, ambiguous answers, contradictions with previous answers, "نمیدانم", "مطمئن نیستم", multiple businesses, hybrid business, guild not found. System must not let one wrong keyword completely change context.
+
+### R18. Deep E2E Business Scenarios (30+)
+
+Beyond 753 smoke tests, build deep E2E test scenarios for: small physical shop, chain store, online shop, hybrid sales, restaurant, café, bakery, health, medical, beauty, automotive services, home services, small workshop, B2B factory, consumer goods manufacturer, SaaS B2B, SaaS B2C, marketplace, wholesale, distribution, professional services, agency, training center, creator, personal brand, real estate, construction, transportation, agriculture, finance/insurance, highly regulated business. Each with at least two different business stages.
+
+### R19. Browser E2E Tests
+
+Add Playwright (or equivalent) browser E2E tests covering the full journey: Open → select guild → answer Phase 1 → reload browser → resume exact state → continue to Phase 2 → back → edit previous answer → dependent state updates → Unknown → free text → mobile viewport → phase completion → deliverable → final master document.
+
+Automated viewport assertions on primary viewports: current question visible, all primary response controls visible, Continue visible, no horizontal body overflow, no body scroll in question workspace, header doesn't overlap content, footer doesn't overlap options, keyboard focus visible, modal doesn't escape viewport.
+
+### R20. Deliverable Integrity
+
+Each phase document must clearly distinguish between: User-confirmed Fact, Decision, Hypothesis, Unknown, Recommendation. AI recommendations must not be promoted to Facts. Exact numerical claims without user data are forbidden. Deliverables for one guild must not contain terminology from unrelated industries.
+
+### R21. Error Handling
+
+React Error Boundaries. If AI API is down: project must not corrupt, state must not be lost, internal fallback runs, user sees "این بخش فعلاً در حالت محلی ادامه پیدا میکند" instead of stack traces. API errors only in developer console.
+
+### R22. Test Architecture & CI
+
+Structured test hierarchy:
+- tests/unit/: semantic parser, context classification, phase gates, deliverable serialization
+- tests/integration/: phase transitions, dynamic question lifecycle, unknown blocking, contradiction downstream invalidation
+- tests/e2e/: full 8-phase journey, save/restore, export/import
+- tests/adversarial/: 20+ real diverse Iranian business scenarios + adversarial inputs (Finglish, slang, typos, emojis, HTML/script tags, contradictory statements, rapid sends)
+- tests/data-integrity/: 753 taxonomy validation, canonical knowledge validation
+
+Complete package.json scripts: test, test:unit, test:integration, test:e2e, test:adversarial, test:taxonomy, test:753, validate, build, ci.
+
+GitHub Actions CI (.github/workflows/ci.yml): all linters, tests, builds, taxonomy validations on push/PR.
+
+### R23. Multi-Sector Test Fixtures Fix
+
+test_multi_sector_customization.js comments claim mixed stages but actual fixtures don't match. Rewrite fixtures to include IDEA, PRE_LAUNCH, ACTIVE, and REBRAND business types. Same for geography coverage. Test comments and actual code behavior must be identical.
+
+---
+
+## Acceptance Criteria
+
+### Build & Test Suite
+- [ ] npm ci exits 0
+- [ ] npm run build exits 0 with clean bundle analysis
+- [ ] npm run lint exists and passes with 0 critical errors
+- [ ] npm run test:unit passes 100%
+- [ ] npm run test:integration passes 100%
+- [ ] npm run test:adversarial passes all 20+ diverse Iranian business scenarios without crashes or state corruption
+- [ ] npm run test:taxonomy confirms all 753 entries valid with machine-readable output
+- [ ] npm run test:753 uses empirical assertions only (zero hardcoded base scores) with honest metric scores
+- [ ] python scripts/validate_system.py runs without circular mocking, exits 0
+- [ ] npm run ci runs entire pipeline end-to-end, exits 0
+
+### Architecture & Engine
+- [ ] Phase skipping strictly prevented: startPhase(N) when Phase N-1 incomplete throws explicit error
+- [ ] finalizeCurrentPhase() with unresolved BLOCKING_UNKNOWN or critical contradictions fails the gate
+- [ ] NON_BLOCKING_UNKNOWN allows progression with warning records
+- [ ] Modifying Phase 1 foundational decisions invalidates dependent downstream phases
+- [ ] Dynamic AI question answers don't loop or repeat; questions properly consumed and retired
+- [ ] Malformed LLM responses gracefully fall back without corrupting state or crashing UI
+- [ ] Single canonical knowledge source powers both runtime and documentation
+
+### Persistence & Security
+- [ ] Browser refresh preserves active project state
+- [ ] JSON export/import functions without data loss
+- [ ] API keys never written to exported project JSON or logged to console
+- [ ] Custom endpoints validated (protocol check, no javascript:, timeout enforcement)
+
+### UI/UX
+- [ ] Interface is NOT a chat interface — passes the "remove logo, would user confuse with ChatGPT?" test
+- [ ] Core UI is monochrome black/white (no colored accents in primary interface)
+- [ ] Current question + all response controls visible without scroll at 100% zoom on 8 specified viewports
+- [ ] Back/Edit navigation works with downstream invalidation
+- [ ] 753 guild selector is search-first with Persian normalization and keyboard accessible
+- [ ] No undefined/null/NaN/[object Object] anywhere in UI or deliverables
+- [ ] Keyboard navigation, focus management, ARIA labels working
+- [ ] Accessibility checks pass (4.5:1 contrast, 44px touch targets, focus visible)
+- [ ] No confetti or gamified celebrations in normal professional flow
+
+### Business Logic
+- [ ] No cross-domain leakage: industry-specific vocabulary stays within its domain
+- [ ] Specialization hierarchy: BT → Industry → Archetype → Axes → Stage → Prior answers → Facts → Questions
+- [ ] Deliverables distinguish Fact/Decision/Hypothesis/Unknown/Recommendation with provenance tags
+- [ ] Clean Markdown export without [object Object]
+
+### Documentation Deliverables
+- [ ] AUDIT-BEFORE-REFACTOR.md — pre-change state with exact test results
+- [ ] ARCHITECTURE-AFTER-REFACTOR.md — post-change architecture
+- [ ] BUSINESS-COVERAGE-MATRIX.md — pairwise coverage evidence
+- [ ] 753-REAL-TEST-RESULTS.md — per-BT real test results
+- [ ] UX-ACCEPTANCE-REPORT.md — viewport tests, non-chat verification
+- [ ] SECURITY-AUDIT.md — API key handling, endpoint validation
+- [ ] TEST-EVIDENCE.md — what was tested, root causes found, regressions prevented, known limitations
+
+### Execution Order
+Audit → Test correctness → State architecture → Business specialization → Question engine → Security → New non-chat UX → Persistence → Accessibility → Performance → 753 smoke tests → Pairwise scenario tests → Browser E2E → Regression pass → Final reports
+
+
 
 
 
