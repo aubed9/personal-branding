@@ -13,6 +13,7 @@ export class OrchestratorEngine {
   constructor() {
     this.currentPhase = 1;
     this.currentStepIndex = 0;
+    this.isNavigatingBack = false;
 
     this.completedPhases = {
       1: false, 2: false, 3: false, 4: false, 5: false, 6: false, 7: false, 8: false
@@ -32,6 +33,14 @@ export class OrchestratorEngine {
     this.contradictions = [];
     this.businessContext = null;
     this.dynamicQuestionOverride = null; // { question, consumed: false, createdAt, source }
+  }
+
+  setBusinessContext(context) {
+    this.businessContext = context;
+  }
+
+  setContext(context) {
+    this.businessContext = context;
   }
 
   addStrategicDecision(statement) {
@@ -71,7 +80,19 @@ export class OrchestratorEngine {
       return this.dynamicQuestionOverride.question;
     }
     const questions = this.getCurrentPhaseQuestions();
-    
+    if (!questions || questions.length === 0) return null;
+
+    // If user explicitly navigated back, return the question at currentStepIndex
+    if (this.isNavigatingBack && this.currentStepIndex >= 0 && this.currentStepIndex < questions.length) {
+      return questions[this.currentStepIndex];
+    }
+
+    // Check if all questions in the current phase are already answered
+    const hasUnanswered = questions.some(q => q && !q.isAnswered);
+    if (!hasUnanswered) {
+      return null;
+    }
+
     // Dynamically find the first question in the current phase that has not been answered yet!
     for (let i = 0; i < questions.length; i++) {
       const q = questions[i];
@@ -85,8 +106,26 @@ export class OrchestratorEngine {
   }
 
   canStartPhase(phaseNum) {
+    if (typeof phaseNum !== "number" && typeof phaseNum !== "string") {
+      return {
+        allowed: false,
+        reason: `شماره فاز نامعتبر است (${phaseNum}). فازها باید عددی بین ۱ تا ۸ باشند.`
+      };
+    }
+    if (Array.isArray(phaseNum)) {
+      return {
+        allowed: false,
+        reason: `شماره فاز نامعتبر است (${phaseNum}). فازها باید عددی بین ۱ تا ۸ باشند.`
+      };
+    }
+    if (typeof phaseNum === "string" && phaseNum.trim() === "") {
+      return {
+        allowed: false,
+        reason: `شماره فاز نامعتبر است (${phaseNum}). فازها باید عددی بین ۱ تا ۸ باشند.`
+      };
+    }
     const p = Number(phaseNum);
-    if (isNaN(p) || p < 1 || p > 8) {
+    if (isNaN(p) || !Number.isInteger(p) || p < 1 || p > 8) {
       return {
         allowed: false,
         reason: `شماره فاز نامعتبر است (${phaseNum}). فازها باید عددی بین ۱ تا ۸ باشند.`
@@ -119,8 +158,11 @@ export class OrchestratorEngine {
   }
 
   getPhaseStatus(phaseNum) {
+    if (typeof phaseNum !== "number" && typeof phaseNum !== "string") return "INVALID";
+    if (Array.isArray(phaseNum)) return "INVALID";
+    if (typeof phaseNum === "string" && phaseNum.trim() === "") return "INVALID";
     const p = Number(phaseNum);
-    if (p < 1 || p > 8) return "INVALID";
+    if (isNaN(p) || !Number.isInteger(p) || p < 1 || p > 8) return "INVALID";
 
     if (this.phaseStatus[p] === "INVALIDATED") {
       return "INVALIDATED";
@@ -146,16 +188,8 @@ export class OrchestratorEngine {
     const p = Number(fromPhase);
     const invalidated = [];
 
-    if (p <= 1) {
-      for (let ph = 2; ph <= 8; ph++) {
-        if (this.completedPhases[ph]) {
-          this.completedPhases[ph] = false;
-          invalidated.push(ph);
-        }
-        this.phaseStatus[ph] = "INVALIDATED";
-      }
-    } else if (p === 2) {
-      for (let ph = 3; ph <= 8; ph++) {
+    if (p >= 1 && p < 8) {
+      for (let ph = p + 1; ph <= 8; ph++) {
         if (this.completedPhases[ph]) {
           this.completedPhases[ph] = false;
           invalidated.push(ph);
@@ -175,6 +209,29 @@ export class OrchestratorEngine {
     };
   }
 
+  getQuestionByIndex(index) {
+    const questions = this.getCurrentPhaseQuestions();
+    const idx = Math.max(0, Math.min(index, questions.length - 1));
+    return questions[idx] || null;
+  }
+
+  previousQuestion() {
+    const questions = this.getCurrentPhaseQuestions();
+    if (this.currentStepIndex > 0) {
+      this.currentStepIndex--;
+    }
+    this.isNavigatingBack = true;
+    return questions[this.currentStepIndex] || null;
+  }
+
+  goToQuestion(index) {
+    const questions = this.getCurrentPhaseQuestions();
+    const idx = Math.max(0, Math.min(index, questions.length - 1));
+    this.currentStepIndex = idx;
+    this.isNavigatingBack = true;
+    return questions[idx] || null;
+  }
+
   // Controlled transition to phase (1 to 8) enforcing anti-skip protocol
   startPhase(phaseNum) {
     const check = this.canStartPhase(phaseNum);
@@ -187,6 +244,7 @@ export class OrchestratorEngine {
 
     this.currentPhase = phaseNum;
     this.currentStepIndex = 0;
+    this.isNavigatingBack = false;
     if (this.phaseStatus[phaseNum] === "INVALIDATED") {
       delete this.phaseStatus[phaseNum];
     }
@@ -257,14 +315,19 @@ export class OrchestratorEngine {
   }
 
   processUserResponse(userText, optionValue = null) {
-    const currentQ = this.getCurrentQuestion();
+    let currentQ = null;
+    if (this.dynamicQuestionOverride && !this.dynamicQuestionOverride.consumed) {
+      currentQ = this.dynamicQuestionOverride.question;
+      this.dynamicQuestionOverride.consumed = true;
+    } else if (this.isNavigatingBack) {
+      const questions = this.getCurrentPhaseQuestions();
+      currentQ = questions[this.currentStepIndex] || this.getCurrentQuestion();
+      this.isNavigatingBack = false;
+    } else {
+      currentQ = this.getCurrentQuestion();
+    }
     const qId = currentQ ? currentQ.id : "free_text";
     const phase = this.currentPhase;
-
-    // Mark dynamic override as consumed after retrieving it
-    if (this.dynamicQuestionOverride && !this.dynamicQuestionOverride.consumed) {
-      this.dynamicQuestionOverride.consumed = true;
-    }
 
     // Multi-pattern unknown detection
     const unknownDetection = detectUnknownIntent(userText);
@@ -493,11 +556,21 @@ export class OrchestratorEngine {
       this.decisions.push({ id: `D-P8-${this.decisions.length + 1}`, statement: `فعال‌سازی ${currentQ?.title}: ${userText}` });
     }
 
-    // Downstream Invalidation Trigger: If Phase 1 or 2 is modified while downstream phases are completed
-    if (phase === 1 && (this.completedPhases[2] || this.completedPhases[3])) {
-      this.invalidateDependentPhases(1);
-    } else if (phase === 2 && this.completedPhases[3]) {
-      this.invalidateDependentPhases(2);
+    // Invalidate current phase completion upon re-editing answers
+    if (this.completedPhases[phase]) {
+      this.completedPhases[phase] = false;
+    }
+
+    // Downstream Invalidation Trigger: If any upstream phase is modified while downstream phases are completed
+    let hasDownstreamCompleted = false;
+    for (let k = phase + 1; k <= 8; k++) {
+      if (this.completedPhases[k]) {
+        hasDownstreamCompleted = true;
+        break;
+      }
+    }
+    if (hasDownstreamCompleted) {
+      this.invalidateDependentPhases(phase);
     }
 
     // Detect semantic & factual contradictions across project state

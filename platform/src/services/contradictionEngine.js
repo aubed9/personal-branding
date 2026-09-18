@@ -1,7 +1,4 @@
-/**
- * DIGITAL MARKET — Contradiction Engine (Requirement R3)
- * Semantic & Factual Conflict Detection with Typed Severity
- */
+import { classifyBusinessContext } from "../data/businessContextRouter.js";
 
 export const CONTRADICTION_SEVERITY = {
   CRITICAL: "CRITICAL",
@@ -16,6 +13,8 @@ export const CONTRADICTION_STATUS = {
 };
 
 export class ContradictionEngine {
+  static _counter = 0;
+
   /**
    * Create a typed contradiction entity
    */
@@ -32,7 +31,9 @@ export class ContradictionEngine {
     createdAt = null,
     existingCount = 0
   } = {}) {
-    const generatedId = id || `CTR-${String(existingCount + 1).padStart(3, "0")}`;
+    const countIndex = Math.max(existingCount > 0 ? (existingCount + 1) : 1, (ContradictionEngine._counter || 0) + 1);
+    ContradictionEngine._counter = countIndex;
+    const generatedId = id || `CTR-${String(countIndex).padStart(3, "0")}`;
     return {
       id: generatedId,
       statementA: String(statementA || ""),
@@ -61,7 +62,14 @@ export class ContradictionEngine {
     const p5 = phaseData[5] || {};
     const p8 = phaseData[8] || {};
     const decisions = Array.isArray(projectState.decisions) ? projectState.decisions : [];
-    const context = projectState.businessContext || null;
+    let context = projectState.businessContext || null;
+    if (!context && projectState.phaseData) {
+      try {
+        context = classifyBusinessContext(projectState.phaseData);
+      } catch (e) {
+        // fallback
+      }
+    }
 
     // Helper to gather all text from decisions and phase answers
     const allDecisionTexts = decisions.map(d => (typeof d === "string" ? d : d.statement || "")).join(" ");
@@ -74,9 +82,11 @@ export class ContradictionEngine {
     // If P1 customer model is purely B2C / local walk-in retail, but later states enterprise tenders / RFPs / corporate procurement
     const isB2C = (context?.customerModel === "B2C") || 
                   (p1.customerModel === "B2C") || 
+                  (p1.customerModelValue === "b2c") ||
                   (context?.archetype === "LOCAL_SERVICE" && !p1.customerModel?.includes("B2B"));
 
     const hasEnterpriseB2BTerms = /(مناقصه|مناقصات|تدارکات سازمانی|قراردادهای دولتی|RFP|B2B Enterprise|خرید کلان شرکت‌ها|سامانه ستاد ایران)/i;
+
     
     if (isB2C && hasEnterpriseB2BTerms.test(combinedDownstreamText)) {
       contradictions.push(this.createContradiction({
@@ -89,6 +99,22 @@ export class ContradictionEngine {
       }));
     }
 
+    // RULE 1b: Pure B2B enterprise in P1 vs B2C walk-in / retail consumers downstream
+    const isPureB2B = (context?.customerModel === "B2B") || 
+                      (p1.customerModel === "B2B") || 
+                      (p1.customerModelValue === "b2b");
+    const hasImpulseB2CTerms = /(خرید تک‌فروشی گذری|پاخور مراجعان پیاده|فروش خرد به عموم مردم|فروشگاه خرده‌فروشی خیابانی|B2C Retail)/i;
+    if (isPureB2B && hasImpulseB2CTerms.test(combinedDownstreamText)) {
+      contradictions.push(this.createContradiction({
+        statementA: "مدل مشتری در فاز ۱ به صورت سازمانی و بنگاه‌به‌بنگاه (B2B) ثبت شده است.",
+        statementB: "در استراتژی یا کانال‌ها، به جذب پاخور خرد عمومی و خرده‌فروشی تک‌محصولی B2C اشاره شده است.",
+        severity: CONTRADICTION_SEVERITY.CRITICAL,
+        affectedPhases: [1, 3, 8],
+        resolutionQuestion: "فروش B2B سازمانی با پاخور خرده‌فروشی خیابانی در تضاد کانال توزیع است. کانال اصلی توزیع کدام است؟",
+        existingCount: contradictions.length
+      }));
+    }
+
     // RULE 2: Budget / Capital Constraint vs Expensive Mass Media
     // If user states low budget / bootstrapped / cash-constrained, but plans TV ads / national billboards / celebrities
     const p1BudgetRaw = `${p1.budgetConstraint || ""} ${p1.cashConstraint || ""} ${p1.stage || ""} ${p1.primaryBottleneck || ""}`.toLowerCase();
@@ -97,9 +123,12 @@ export class ContradictionEngine {
                              p1BudgetRaw.includes("صفر") || 
                              p1BudgetRaw.includes("bootstrapped") || 
                              p1BudgetRaw.includes("کمبود نقدینگی") ||
+                             p1BudgetRaw.includes("کمبود سرمایه") ||
+                             p1BudgetRaw.includes("بودجه کم") ||
+                             p1BudgetRaw.includes("نقدینگی پایین") ||
                              (p1.stageValue === "idea" && !p1.budgetConstraint);
 
-    const hasMassMediaTerms = /(کمپین تلویزیونی|بیلبورد بزرگراهی|تبلیغات صدا و سیما|تبلیغ تلویزیون|سلبریتی مارکتینگ میلیاردی|بیلبوردهای سراسری)/i;
+    const hasMassMediaTerms = /(کمپین تلویزیونی|بیلبورد بزرگراهی|تبلیغات صدا و سیما|تبلیغ تلویزیون|سلبریتی مارکتینگ میلیاردی|بیلبوردهای سراسری|تلویزیون ملی)/i;
     if (isCashConstrained && hasMassMediaTerms.test(combinedDownstreamText)) {
       contradictions.push(this.createContradiction({
         statementA: "بودجه اولیه و نقدینگی کسب‌وکار محدود یا در مرحله ایده/بوت‌استرپ اعلام شده است.",
@@ -114,8 +143,9 @@ export class ContradictionEngine {
     // RULE 3: Geographic Scope Conflict (Local 3km radius vs International Export)
     const isLocalScope = (context?.geographicScope === "LOCAL") || 
                          (p1.geographyValue === "local_city") || 
-                         (typeof p1.geography === "string" && p1.geography.includes("محلی"));
-    const hasExportTerms = /(صادرات به کشورهای منطقه|صادرات بین‌المللی|حمل‌ونقل دریایی کانتینری|ارسال به حوزه خلیج فارس)/i;
+                         (p1.geography === "local_city") ||
+                         (typeof p1.geography === "string" && (p1.geography.includes("محلی") || p1.geography.includes("شهری") || p1.geography.includes("local")));
+    const hasExportTerms = /(صادرات به کشورهای منطقه|صادرات بین‌المللی|حمل‌ونقل دریایی کانتینری|ارسال به حوزه خلیج فارس|صادرات خارجی|بازار جهانی)/i;
     if (isLocalScope && hasExportTerms.test(combinedDownstreamText)) {
       contradictions.push(this.createContradiction({
         statementA: "محدوده جغرافیایی کسب‌وکار در فاز ۱ به عنوان خدمت محلی و شهری تعیین شده است.",
@@ -130,8 +160,8 @@ export class ContradictionEngine {
     // RULE 4: Pricing vs Value Proposition Conflict (Cheapest Discount vs Luxury Exclusive)
     const p2Pricing = `${p2.pricingModel || ""} ${p2.pricingModelValue || ""}`.toLowerCase();
     const p3Pos = `${p3.positioning || ""} ${p3.positioningValue || ""}`.toLowerCase();
-    const isUltraCheap = p2Pricing.includes("تخفیف") || p2Pricing.includes("ارزان") || p2Pricing.includes("حراج") || p2Pricing.includes("lowest_price");
-    const isLuxury = p3Pos.includes("لوکس") || p3Pos.includes("اشرافی") || p3Pos.includes("پریمیوم") || p3Pos.includes("گران‌قیمت") || p3Pos.includes("exclusive");
+    const isUltraCheap = p2Pricing.includes("تخفیف") || p2Pricing.includes("ارزان") || p2Pricing.includes("حراج") || p2Pricing.includes("lowest_price") || p2Pricing.includes("ارزان‌ترین");
+    const isLuxury = p3Pos.includes("لوکس") || p3Pos.includes("اشرافی") || p3Pos.includes("پریمیوم") || p3Pos.includes("گران‌قیمت") || p3Pos.includes("exclusive") || p3Pos.includes("اعیانی");
     if (isUltraCheap && isLuxury) {
       contradictions.push(this.createContradiction({
         statementA: "استراتژی قیمت‌گذاری بر مبنای تخفیف تهاجمی و ارزان‌ترین نرخ بازار تعریف شده است.",

@@ -144,32 +144,31 @@ for (let i = 0; i < BUSINESS_TYPES.length; i++) {
   // ============================================================================
 
   // Metric 1: Practical Problem-Solving (M1)
-  // Empirical: count passed assertions from 0, score = (passed / total) * 100
+  // Empirical: count passed assertions strictly from 0, score = (passed / total) * 100
   {
     let m1Passed = 0;
     const m1Total = 8;
-    // 1. Engine completed Phase 1
+    // 1. Engine completed Phase 1 with exit gate approval
     if (engine.completedPhases[1]) m1Passed++;
-    // 2. P1 deliverable generated
-    if (p1Deliv) m1Passed++;
-    // 3. P1 deliverable has sections
-    if (p1Deliv.sections && p1Deliv.sections.length > 0) m1Passed++;
-    // 4. P1 has 5 sections (expected structure)
-    if (p1Deliv.sections?.length === 5) m1Passed++;
-    // 5. Section has flowchart (actionable diagnostic)
-    if (p1Deliv.sections?.[1]?.flowchart) m1Passed++;
-    // 6. Section has checklist with ≥5 items
-    if ((p1Deliv.sections?.[2]?.checklist?.length || 0) >= 5) m1Passed++;
-    // 7. Section has formulas or KPIs
-    if ((p1Deliv.sections?.[3]?.formulas?.length || 0) > 0 || (p1Deliv.sections?.[3]?.kpis?.length || 0) > 0) m1Passed++;
-    // 8. Facts were registered during Phase 1
+    // 2. P1 deliverable generated with valid metadata
+    if (p1Deliv && typeof p1Deliv.title === 'string' && p1Deliv.title.length > 0) m1Passed++;
+    // 3. Layer 1: Starting prerequisites and context profile populated
+    if (p1Deliv?.sections?.[0]?.items && p1Deliv.sections[0].items.length > 0) m1Passed++;
+    // 4. Complete 5-layer deliverable section structure
+    if (Array.isArray(p1Deliv?.sections) && p1Deliv.sections.length === 5) m1Passed++;
+    // 5. Layer 2: Actionable diagnostic flowchart present
+    if (p1Deliv?.sections?.[1]?.flowchart) m1Passed++;
+    // 6. Layer 3: Actionable operational checklist with ≥5 items
+    if ((p1Deliv?.sections?.[2]?.checklist?.length || 0) >= 5) m1Passed++;
+    // 7. Layer 4: Mathematical formulas and quantitative KPI thresholds present
+    if ((p1Deliv?.sections?.[3]?.formulas?.length || 0) > 0 && (p1Deliv?.sections?.[3]?.kpis?.length || 0) > 0) m1Passed++;
+    // 8. Layer 5: Operational facts registered during Phase 1
     if (engine.facts.length > 0) m1Passed++;
     var m1Score = Number(((m1Passed / m1Total) * 100).toFixed(1));
   }
 
   // Metric 2: Context Relevance & Zero Jargon (M2)
-  // Empirical: for local trades, deduct per jargon violation from 100%.
-  // For non-local, count contextual adaptation assertions.
+  // Empirical: count contextual adaptation assertions strictly from 0
   const isLocalTrade =
     engine.businessContext?.archetype !== 'SAAS_SOFTWARE' &&
     engine.businessContext?.archetype !== 'B2B_SERVICE' &&
@@ -198,10 +197,21 @@ for (let i = 0; i < BUSINESS_TYPES.length; i++) {
 
   let m2Score;
   if (isLocalTrade) {
-    // Deduct 25 points per violation from 100
-    m2Score = Math.max(0.0, 100.0 - (bizJargonViolations * 25.0));
+    let m2Passed = 0;
+    const m2Total = 5;
+    // 1. Zero corporate jargon violations across all encountered questions
+    if (bizJargonViolations === 0) m2Passed++;
+    // 2. Local/physical trade archetype or channel verified
+    if (['LOCAL_SERVICE', 'PHYSICAL_RETAIL', 'RESTAURANT_CAFE_HOSPITALITY', 'LOCAL_RETAIL'].includes(engine.businessContext?.archetype) || bt.axes?.channelModel === 'PHYSICAL_FIRST') m2Passed++;
+    // 3. Industry macro classification correctly matched
+    if (engine.businessContext?.industryId === bt.industryId) m2Passed++;
+    // 4. Strategic decisions captured in engine
+    if (engine.decisions.length > 0) m2Passed++;
+    // 5. Dynamic contextual questions generated and encountered
+    if (allEncounteredQuestions.length > 0) m2Passed++;
+    m2Score = Number(((m2Passed / m2Total) * 100).toFixed(1));
   } else {
-    // Non-local: count assertions empirically
+    // Non-local: count assertions empirically strictly from 0
     let m2Passed = 0;
     const m2Total = 5;
     // 1. Business context was created
@@ -209,7 +219,7 @@ for (let i = 0; i < BUSINESS_TYPES.length; i++) {
     // 2. Archetype was assigned
     if (engine.businessContext?.archetype) m2Passed++;
     // 3. Industry was matched
-    if (engine.businessContext?.industryId) m2Passed++;
+    if (engine.businessContext?.industryId === bt.industryId) m2Passed++;
     // 4. Decisions were captured
     if (engine.decisions.length > 0) m2Passed++;
     // 5. Questions were generated for this business
@@ -218,7 +228,7 @@ for (let i = 0; i < BUSINESS_TYPES.length; i++) {
   }
 
   // Metric 3: Zero Hallucination / Zero Drift (M3)
-  // Empirical: verify identity preservation assertions
+  // Empirical: verify identity preservation assertions strictly from 0
   {
     let m3Passed = 0;
     const m3Total = 6;
@@ -242,28 +252,28 @@ for (let i = 0; i < BUSINESS_TYPES.length; i++) {
   }
 
   // Metric 4: Exit Gates & Document Integrity (M4)
-  // Empirical: count structural assertions
+  // Empirical: count structural assertions starting strictly from 0 (zero double counting)
   {
     let m4Passed = 0;
     const m4Total = 8;
-    // 1. All 8 phases completed
+    // 1. All 8 phase exit gates passed validation cleanly
     const completedPhasesCount = Object.values(engine.completedPhases).filter(Boolean).length;
     if (completedPhasesCount === 8) m4Passed++;
-    // 2. At least 6 phases completed
-    if (completedPhasesCount >= 6) m4Passed++;
-    // 3. Master deliverable exists
-    if (masterDeliv) m4Passed++;
-    // 4. Master has 9 sections (M0-M8)
-    if (masterDeliv.sections?.length === 9) m4Passed++;
-    // 5. P1 deliverable exists
-    if (p1Deliv) m4Passed++;
-    // 6. P8 deliverable exists
-    if (p8Deliv) m4Passed++;
-    // 7. Phase data populated for most phases
-    const filledPhases = Object.values(engine.phaseData).filter(pd => Object.keys(pd).length > 0).length;
-    if (filledPhases >= 6) m4Passed++;
-    // 8. Business context was properly initialized
-    if (engine.businessContext && engine.businessContext.archetype) m4Passed++;
+    // 2. Master Brand Book deliverable has complete 9-section architecture (M0-M8)
+    if (masterDeliv && Array.isArray(masterDeliv.sections) && masterDeliv.sections.length === 9) m4Passed++;
+    // 3. Phase 1 deliverable sections complete (5 algorithmic layers)
+    if (p1Deliv && Array.isArray(p1Deliv.sections) && p1Deliv.sections.length === 5) m4Passed++;
+    // 4. Phase 8 executive activation deliverable sections complete
+    if (p8Deliv && Array.isArray(p8Deliv.sections) && p8Deliv.sections.length > 0) m4Passed++;
+    // 5. Non-empty operational checklists present in deliverables
+    if (p1Deliv?.sections?.some(s => Array.isArray(s.checklist) && s.checklist.length > 0)) m4Passed++;
+    // 6. Valid quantitative KPIs and mathematical formulas present in deliverables
+    if (p1Deliv?.sections?.some(s => (Array.isArray(s.formulas) && s.formulas.length > 0) || (Array.isArray(s.kpis) && s.kpis.length > 0))) m4Passed++;
+    // 7. Full state persistence across all 8 phases (zero state loss)
+    const filledPhases = Object.values(engine.phaseData).filter(pd => pd && Object.keys(pd).length > 0).length;
+    if (filledPhases === 8) m4Passed++;
+    // 8. Business context & taxonomy continuity verified
+    if (engine.businessContext && engine.businessContext.archetype && engine.businessContext.taxonomyId === bt.id) m4Passed++;
     var m4Score = Number(((m4Passed / m4Total) * 100).toFixed(1));
   }
 

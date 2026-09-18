@@ -5,7 +5,9 @@
 
 export const UNKNOWN_SEVERITY = {
   BLOCKING_UNKNOWN: "BLOCKING_UNKNOWN",
-  NON_BLOCKING_UNKNOWN: "NON_BLOCKING_UNKNOWN"
+  NON_BLOCKING_UNKNOWN: "NON_BLOCKING_UNKNOWN",
+  BLOCKING: "BLOCKING_UNKNOWN",
+  NON_BLOCKING: "NON_BLOCKING_UNKNOWN"
 };
 
 export const UNKNOWN_STATUS = {
@@ -69,6 +71,8 @@ export const QUESTION_SEVERITY_MAP = {
 };
 
 export class UnknownsManager {
+  static _counter = 0;
+
   /**
    * Determine whether a question's unknown is blocking
    */
@@ -107,7 +111,9 @@ export class UnknownsManager {
     const isBlocking = (blocking !== null)
       ? Boolean(blocking)
       : (resolvedSeverity === UNKNOWN_SEVERITY.BLOCKING_UNKNOWN);
-    const generatedId = id || `UNK-P${phase}-${String(existingCount + 1).padStart(3, "0")}`;
+    const countIndex = Math.max(existingCount > 0 ? (existingCount + 1) : 1, (UnknownsManager._counter || 0) + 1);
+    UnknownsManager._counter = countIndex;
+    const generatedId = id || `UNK-P${phase}-${String(countIndex).padStart(3, "0")}`;
 
     return {
       id: generatedId,
@@ -159,7 +165,15 @@ export class UnknownsManager {
    */
   static isBlocking(unknown) {
     if (!unknown) return false;
-    const isBlockType = unknown.blocking === true || unknown.severity === UNKNOWN_SEVERITY.BLOCKING_UNKNOWN;
+    if (unknown.severity === UNKNOWN_SEVERITY.NON_BLOCKING_UNKNOWN || unknown.severity === UNKNOWN_SEVERITY.NON_BLOCKING) {
+      return false;
+    }
+    if (unknown.blocking === false && unknown.severity !== UNKNOWN_SEVERITY.BLOCKING_UNKNOWN && unknown.severity !== UNKNOWN_SEVERITY.BLOCKING) {
+      return false;
+    }
+    const isBlockType = unknown.blocking === true || 
+                        unknown.severity === UNKNOWN_SEVERITY.BLOCKING_UNKNOWN || 
+                        unknown.severity === UNKNOWN_SEVERITY.BLOCKING;
     const isUnresolved = unknown.status !== UNKNOWN_STATUS.RESOLVED && unknown.status !== UNKNOWN_STATUS.ACCEPTED_RISK;
     return isBlockType && isUnresolved;
   }
@@ -186,4 +200,32 @@ export class UnknownsManager {
       return !isBlock && (u.status === UNKNOWN_STATUS.OPEN || u.status === UNKNOWN_STATUS.IN_RESEARCH);
     });
   }
+
+  /**
+   * Get all unknowns for a phase (or all phases)
+   */
+  static getUnknowns(unknownsList = [], phase = null) {
+    if (!Array.isArray(unknownsList)) return [];
+    if (phase === null) return [...unknownsList];
+    return unknownsList.filter(u => Number(u.phase) === Number(phase));
+  }
+
+  /**
+   * Update status of an unknown
+   */
+  static updateUnknownStatus(unknownsList, id, newStatus, resolution = null) {
+    if (!Array.isArray(unknownsList)) return null;
+    const item = unknownsList.find(u => u.id === id);
+    if (!item) return null;
+    if (!Object.values(UNKNOWN_STATUS).includes(newStatus)) {
+      throw new Error(`وضعیت نامعتبر برای مجهول: ${newStatus}`);
+    }
+    item.status = newStatus;
+    if (newStatus === UNKNOWN_STATUS.RESOLVED || newStatus === UNKNOWN_STATUS.ACCEPTED_RISK) {
+      item.resolvedAt = new Date().toISOString();
+      if (resolution) item.resolution = resolution;
+    }
+    return item;
+  }
 }
+
