@@ -5,6 +5,8 @@
  * Supports: GeminiProvider, MockProvider, CustomEndpointProvider
  */
 
+import { buildSecureEndpoint, secureFetchJson, validateEndpointUrl } from "./endpointSecurity.js";
+
 // ====================================================================
 // Base Interface
 // ====================================================================
@@ -41,30 +43,14 @@ export class GeminiProvider extends LLMProvider {
   }
 
   async generateResponse({ systemPrompt, messages, temperature = 0.4 }) {
-    const { apiKey, model = 'gemini-2.0-flash', customEndpoint = '' } = this.config;
+    const { apiKey = '', model = 'gemini-2.0-flash', customEndpoint = '' } = this.config;
 
-    // Build endpoint URL
-    let endpoint = '';
-    if (customEndpoint && customEndpoint.trim()) {
-      const base = customEndpoint.trim().replace(/\/+$/, '');
-
-      // Validate endpoint security
-      const lower = base.toLowerCase();
-      if (lower.startsWith('javascript:') || lower.startsWith('data:')) {
-        throw new Error('آدرس سرور نامعتبر است. فقط پروتکل‌های HTTP و HTTPS مجازند.');
-      }
-      if (!lower.startsWith('http://') && !lower.startsWith('https://')) {
-        throw new Error('آدرس سرور باید با http:// یا https:// شروع شود.');
-      }
-
-      if (base.includes('generateContent')) {
-        endpoint = base.includes('key=') ? base : `${base}?key=${apiKey}`;
-      } else {
-        endpoint = `${base}/v1beta/models/${model}:generateContent?key=${apiKey}`;
-      }
-    } else {
-      endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-    }
+    // Build and sanitize endpoint with HTTPS guarantee
+    const endpoint = buildSecureEndpoint({
+      customEndpoint,
+      model,
+      apiKey
+    });
 
     // Format messages into Gemini format
     const contents = messages.map(msg => ({
@@ -83,60 +69,20 @@ export class GeminiProvider extends LLMProvider {
       }
     };
 
-    // AbortController for timeout
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30s timeout
+    const data = await secureFetchJson({
+      url: endpoint,
+      payload,
+      apiKey,
+      timeoutMs: 30000,
+      maxRetries: 3
+    });
 
-    let lastError = null;
-    const maxRetries = 3;
-
-    for (let attempt = 0; attempt < maxRetries; attempt++) {
-      try {
-        const response = await fetch(endpoint, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-          signal: controller.signal
-        });
-
-        clearTimeout(timeoutId);
-
-        if (response.status === 429) {
-          // Rate limited - exponential backoff
-          const wait = Math.pow(2, attempt) * 1000;
-          await new Promise(r => setTimeout(r, wait));
-          lastError = new Error(`محدودیت نرخ درخواست (429). تلاش ${attempt + 1}/${maxRetries}`);
-          continue;
-        }
-
-        if (!response.ok) {
-          const errorData = await response.json().catch(() => ({}));
-          const errorMsg = errorData.error?.message || response.statusText;
-          throw new Error(`خطا در ارتباط با API هوش مصنوعی (${response.status}): ${errorMsg}`);
-        }
-
-        const data = await response.json();
-        const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-        if (!replyText) {
-          throw new Error('مدل هیچ پاسخی تولید نکرد.');
-        }
-
-        return replyText;
-
-      } catch (err) {
-        clearTimeout(timeoutId);
-        if (err.name === 'AbortError') {
-          throw new Error('زمان پاسخ‌گویی سرور هوش مصنوعی به اتمام رسید (Timeout 30s).');
-        }
-        lastError = err;
-        if (attempt < maxRetries - 1) {
-          const wait = Math.pow(2, attempt) * 1000;
-          await new Promise(r => setTimeout(r, wait));
-        }
-      }
+    const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!replyText) {
+      throw new Error('مدل هیچ پاسخی تولید نکرد.');
     }
 
-    throw lastError || new Error('خطای نامشخص در ارتباط با API');
+    return replyText;
   }
 }
 
@@ -204,14 +150,8 @@ export class CustomEndpointProvider extends LLMProvider {
     if (!config.customEndpoint) {
       throw new Error('CustomEndpointProvider requires customEndpoint');
     }
-    // Validate endpoint at construction time
-    const url = config.customEndpoint.trim().toLowerCase();
-    if (url.startsWith('javascript:') || url.startsWith('data:')) {
-      throw new Error('آدرس سرور نامعتبر است.');
-    }
-    if (!url.startsWith('http://') && !url.startsWith('https://')) {
-      throw new Error('آدرس سرور باید با http:// یا https:// شروع شود.');
-    }
+    // Validate endpoint at construction time strictly with HTTPS guarantee
+    validateEndpointUrl(config.customEndpoint);
   }
 
   async generateResponse(params) {

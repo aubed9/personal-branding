@@ -10,6 +10,7 @@
 
 import { WIKI_PLAYBOOKS } from "../data/wikiKnowledge.js";
 import { sanitizeJargonForLocalTrades } from "./dynamicQuestionEngine.js";
+import { buildSecureEndpoint, secureFetchJson, validateEndpointUrl } from "./endpointSecurity.js";
 
 // Canonical Phase Grounding Map
 const PHASE_PLAYBOOK_MAP = {
@@ -114,18 +115,12 @@ export async function callGeminiApi({
     throw new Error("کلید API یا آدرس سرور هوش مصنوعی وارد نشده است.");
   }
 
-  // Support custom base URL or default Google Gemini endpoint
-  let endpoint = "";
-  if (customEndpoint && customEndpoint.trim()) {
-    const base = customEndpoint.trim().replace(/\/+$/, "");
-    if (base.includes("generateContent")) {
-      endpoint = base.includes("key=") ? base : `${base}?key=${apiKey}`;
-    } else {
-      endpoint = `${base}/v1beta/models/${model}:generateContent?key=${apiKey}`;
-    }
-  } else {
-    endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-  }
+  // Build and sanitize endpoint with HTTPS guarantee
+  const endpoint = buildSecureEndpoint({
+    customEndpoint,
+    model,
+    apiKey
+  });
 
   // Format messages into Gemini format
   const contents = messages.map(msg => ({
@@ -144,21 +139,14 @@ export async function callGeminiApi({
     }
   };
 
-  const response = await fetch(endpoint, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(payload)
+  const data = await secureFetchJson({
+    url: endpoint,
+    payload,
+    apiKey,
+    timeoutMs: 30000,
+    maxRetries: 3
   });
 
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    const errorMsg = errorData.error?.message || response.statusText;
-    throw new Error(`خطا در ارتباط با API هوش مصنوعی (${response.status}): ${errorMsg}`);
-  }
-
-  const data = await response.json();
   const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text;
   if (!replyText) {
     throw new Error("مدل هیچ پاسخی تولید نکرد.");

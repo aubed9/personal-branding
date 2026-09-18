@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { X, Key, Cpu, Sparkles, Check, ExternalLink, Globe, ShieldCheck } from "lucide-react";
+import { X, Key, Cpu, Sparkles, Check, ExternalLink, Globe, ShieldCheck, AlertCircle, Lock } from "lucide-react";
+import { validateEndpointUrl, SessionKeyManager } from "../services/endpointSecurity";
 
 export default function SettingsModal({
   isOpen,
@@ -17,17 +18,33 @@ export default function SettingsModal({
   const [localModel, setLocalModel] = useState(model || "gemini-1.5-flash");
   const [localMode, setLocalMode] = useState(engineMode || "gemini");
   const [localEndpoint, setLocalEndpoint] = useState(customEndpoint || "");
+  const [endpointError, setEndpointError] = useState("");
   const [saved, setSaved] = useState(false);
 
   if (!isOpen) return null;
 
   const handleSave = () => {
+    setEndpointError("");
+
+    // Strict validation of custom endpoint URL if provided
+    if (localEndpoint && localEndpoint.trim()) {
+      try {
+        validateEndpointUrl(localEndpoint.trim());
+      } catch (err) {
+        setEndpointError(err.message || "آدرس سرور سفارشی نامعتبر است.");
+        return;
+      }
+    }
+
+    // Save API key strictly in Session Memory (Requirement R12)
+    SessionKeyManager.setApiKey(localKey);
     setApiKey(localKey);
+
+    // Save non-sensitive preferences
     setModel(localModel);
     setEngineMode(localMode);
     if (setCustomEndpoint) setCustomEndpoint(localEndpoint);
 
-    localStorage.setItem("gemini_api_key", localKey);
     localStorage.setItem("gemini_model", localModel);
     localStorage.setItem("engine_mode", localMode);
     localStorage.setItem("custom_api_endpoint", localEndpoint);
@@ -122,6 +139,10 @@ export default function SettingsModal({
               placeholder="AIzaSy..."
               className="w-full bg-black border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500 font-mono"
             />
+            <div className="flex items-center gap-1.5 text-[11px] text-zinc-400 font-mono">
+              <Lock className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+              <span>کلید API فقط در نشست موقت (Session) مرورگر نگهداری شده و در localStorage ذخیره نمی‌شود.</span>
+            </div>
 
             {/* Custom Endpoint / Reverse Proxy Input */}
             <div className="space-y-1.5 pt-1">
@@ -134,13 +155,22 @@ export default function SettingsModal({
               <input
                 type="text"
                 value={localEndpoint}
-                onChange={(e) => setLocalEndpoint(e.target.value)}
-                placeholder="پیش‌فرض: generativelanguage.googleapis.com"
+                onChange={(e) => {
+                  setLocalEndpoint(e.target.value);
+                  if (endpointError) setEndpointError("");
+                }}
+                placeholder="پیش‌فرض: https://generativelanguage.googleapis.com"
                 className="w-full bg-black border border-white/15 rounded-xl px-3.5 py-2 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500 font-mono text-left"
                 dir="ltr"
               />
+              {endpointError && (
+                <div className="p-2 rounded-xl bg-red-500/10 border border-red-500/30 flex items-center gap-2 text-red-400 text-xs font-mono">
+                  <AlertCircle className="w-4 h-4 shrink-0" />
+                  <span>{endpointError}</span>
+                </div>
+              )}
               <p className="text-[10px] text-zinc-500 font-mono">
-                در صورت نیاز به ریورس‌پروکسی یا کلادفلر جهت عبور از محدودیت‌های شبکه، آدرس را وارد فرمایید.
+                در صورت نیاز به ریورس‌پروکسی یا سرور امن جهت عبور از محدودیت‌های شبکه، آدرس HTTPS را وارد فرمایید.
               </p>
             </div>
 

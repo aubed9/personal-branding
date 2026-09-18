@@ -8,8 +8,8 @@
 const STORAGE_KEY = 'dm_project_state';
 const SCHEMA_VERSION = 1;
 
-// Fields that must NEVER be persisted or exported
-const SENSITIVE_FIELDS = ['apiKey', 'api_key', 'token', 'secret', 'password', 'credential'];
+// Fields that must NEVER be persisted or exported (all lowercase for case-insensitive matching)
+const SENSITIVE_FIELDS = ['apikey', 'api_key', 'token', 'secret', 'password', 'credential', 'auth', 'bearer'];
 
 /**
  * Strips sensitive fields recursively from an object
@@ -22,7 +22,7 @@ function sanitizeForPersistence(obj) {
   const clean = {};
   for (const [key, value] of Object.entries(obj)) {
     const lower = key.toLowerCase();
-    if (SENSITIVE_FIELDS.some(s => lower.includes(s))) {
+    if (SENSITIVE_FIELDS.some(s => lower.includes(s.toLowerCase()))) {
       continue; // Skip sensitive fields
     }
     clean[key] = sanitizeForPersistence(value);

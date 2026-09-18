@@ -10,6 +10,7 @@ import WikiModal from "./components/WikiModal";
 import GuildSelectorModal from "./components/GuildSelectorModal";
 import { OrchestratorEngine } from "./services/orchestratorEngine";
 import { runKnowledgeBrain } from "./services/geminiService";
+import { SessionKeyManager } from "./services/endpointSecurity";
 
 export default function App() {
   const [engine, setEngine] = useState(() => new OrchestratorEngine());
@@ -38,14 +39,19 @@ export default function App() {
   const [deliverableData, setDeliverableData] = useState(null);
   const [markdownContent, setMarkdownContent] = useState("");
 
-  // Settings
-  const [apiKey, setApiKey] = useState(() => localStorage.getItem("gemini_api_key") || "");
+  // Settings (API key stored strictly in Session Memory, never in localStorage)
+  const [apiKey, setApiKeyState] = useState(() => SessionKeyManager.getApiKey());
+  const setApiKey = (newKey) => {
+    SessionKeyManager.setApiKey(newKey);
+    setApiKeyState(newKey);
+  };
   const [model, setModel] = useState(() => localStorage.getItem("gemini_model") || "gemini-1.5-flash");
   const [engineMode, setEngineMode] = useState(() => localStorage.getItem("engine_mode") || "simulator");
   const [customEndpoint, setCustomEndpoint] = useState(() => localStorage.getItem("custom_api_endpoint") || "");
 
-  // Mount First Question
+  // Mount First Question & Purge any legacy localStorage keys
   useEffect(() => {
+    SessionKeyManager.purgeLegacyKeys();
     initEngine(engine);
   }, []);
 
