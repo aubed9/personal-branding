@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef, Suspense, lazy } from "react";
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
 import PhaseProgressRail from "./components/PhaseProgressRail";
 import ContextSummaryLedger from "./components/ContextSummaryLedger";
 import QuestionCard from "./components/QuestionCard";
-import DeliverableModal from "./components/DeliverableModal";
-import SettingsModal from "./components/SettingsModal";
-import WikiModal from "./components/WikiModal";
-import GuildSelectorModal from "./components/GuildSelectorModal";
+
+const DeliverableModal = lazy(() => import("./components/DeliverableModal"));
+const SettingsModal = lazy(() => import("./components/SettingsModal"));
+const WikiModal = lazy(() => import("./components/WikiModal"));
+const GuildSelectorModal = lazy(() => import("./components/GuildSelectorModal"));
 import { OrchestratorEngine } from "./services/orchestratorEngine";
 import { runKnowledgeBrain } from "./services/geminiService";
 import { SessionKeyManager } from "./services/endpointSecurity";
@@ -415,48 +416,55 @@ export default function App() {
         </div>
       </footer>
 
-      {/* Deliverable Modal */}
-      <DeliverableModal
-        isOpen={isDeliverableOpen}
-        onClose={() => setIsDeliverableOpen(false)}
-        deliverableData={deliverableData}
-        markdownContent={markdownContent}
-        activeDeliverablePhase={activeDeliverablePhase}
-        onSelectPhaseTab={(pNum) => handleOpenDeliverable(pNum)}
-        completedPhases={completedPhases}
-        onStartNextPhase={handleStartNextPhase}
-      />
+      {/* Lazily Loaded Secondary Modals */}
+      <Suspense fallback={null}>
+        {isDeliverableOpen && (
+          <DeliverableModal
+            isOpen={isDeliverableOpen}
+            onClose={() => setIsDeliverableOpen(false)}
+            deliverableData={deliverableData}
+            markdownContent={markdownContent}
+            activeDeliverablePhase={activeDeliverablePhase}
+            onSelectPhaseTab={(pNum) => handleOpenDeliverable(pNum)}
+            completedPhases={completedPhases}
+            onStartNextPhase={handleStartNextPhase}
+          />
+        )}
 
-      {/* Marketing Knowledge Wiki Modal */}
-      <WikiModal
-        isOpen={isWikiOpen}
-        onClose={() => setIsWikiOpen(false)}
-      />
+        {isWikiOpen && (
+          <WikiModal
+            isOpen={isWikiOpen}
+            onClose={() => setIsWikiOpen(false)}
+          />
+        )}
 
-      {/* Settings Modal */}
-      <SettingsModal
-        isOpen={isSettingsOpen}
-        onClose={() => setIsSettingsOpen(false)}
-        apiKey={apiKey}
-        setApiKey={setApiKey}
-        model={model}
-        setModel={setModel}
-        engineMode={engineMode}
-        setEngineMode={setEngineMode}
-        customEndpoint={customEndpoint}
-        setCustomEndpoint={setCustomEndpoint}
-        onExportProject={handleExportProject}
-        onImportProject={handleImportProject}
-        onResetProject={handleReset}
-      />
+        {isSettingsOpen && (
+          <SettingsModal
+            isOpen={isSettingsOpen}
+            onClose={() => setIsSettingsOpen(false)}
+            apiKey={apiKey}
+            setApiKey={setApiKey}
+            model={model}
+            setModel={setModel}
+            engineMode={engineMode}
+            setEngineMode={setEngineMode}
+            customEndpoint={customEndpoint}
+            setCustomEndpoint={setCustomEndpoint}
+            onExportProject={handleExportProject}
+            onImportProject={handleImportProject}
+            onResetProject={handleReset}
+          />
+        )}
 
-      {/* 753 Guild Selector Modal */}
-      <GuildSelectorModal
-        isOpen={isGuildSelectorOpen}
-        onClose={() => setIsGuildSelectorOpen(false)}
-        onSelectGuild={handleSelectGuild}
-        selectedGuildId={engine.businessContext?.taxonomyId}
-      />
+        {isGuildSelectorOpen && (
+          <GuildSelectorModal
+            isOpen={isGuildSelectorOpen}
+            onClose={() => setIsGuildSelectorOpen(false)}
+            onSelectGuild={handleSelectGuild}
+            selectedGuildId={engine.businessContext?.taxonomyId}
+          />
+        )}
+      </Suspense>
 
     </div>
   );

@@ -7,5 +7,32 @@ export default defineConfig({
     port: 5188,
     open: false,
     host: true
+  },
+  build: {
+    chunkSizeWarningLimit: 2000,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes("node_modules/react/") || id.includes("node_modules/react-dom/")) {
+            return "vendor-react";
+          }
+          if (id.includes("node_modules/lucide-react/")) {
+            return "vendor-icons";
+          }
+          if (id.includes("businessTaxonomy753")) {
+            return "data-taxonomy-753";
+          }
+          if (id.includes("wikiKnowledge")) {
+            return "data-wiki-knowledge";
+          }
+          if (id.includes("allPhasesTemplates") || id.includes("phase1Templates") || id.includes("phase2Templates")) {
+            return "data-templates";
+          }
+          if (id.includes("industryVocabularyMap")) {
+            return "data-vocabulary-map";
+          }
+        }
+      }
+    }
   }
 });
