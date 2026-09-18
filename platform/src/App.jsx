@@ -88,9 +88,13 @@ export default function App() {
     setLastSavedTime(new Date().toLocaleTimeString("fa-IR", { hour: "2-digit", minute: "2-digit", second: "2-digit" }));
   }, []);
 
-  // Initialize Engine & Purge any legacy localStorage keys on startup
+  // Initialize Engine, safely restore saved state (or recover if corrupt), & purge legacy keys
   useEffect(() => {
     SessionKeyManager.purgeLegacyKeys();
+    const loadRes = persistenceManagerRef.current.safeLoadOrInitialize(engine);
+    if (loadRes?.success) {
+      setCurrentPhase(engine.currentPhase || 1);
+    }
     syncFromEngine(engine);
   }, [engine, syncFromEngine]);
 
@@ -270,6 +274,7 @@ export default function App() {
   // Complete Reset
   const handleReset = () => {
     if (window.confirm("آیا مایلید تمام فرآیند برندینگ را از فاز ۱ دوباره شروع کنید؟ تمام داده‌ها بازنشانی خواهند شد.")) {
+      persistenceManagerRef.current.resetProjectState();
       const newEng = new OrchestratorEngine();
       setEngine(newEng);
       setCurrentPhase(1);
@@ -277,6 +282,29 @@ export default function App() {
       setStats({ facts: 0, decisions: 0, assumptions: 0, unknowns: 0 });
       syncFromEngine(newEng);
     }
+  };
+
+  // Export Project State to JSON file
+  const handleExportProject = () => {
+    const jsonStr = persistenceManagerRef.current.exportProjectJSON(engine);
+    if (!jsonStr) return;
+    const blob = new Blob([jsonStr], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `digital-market-project-state-${Date.now()}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  // Import Project State from JSON file
+  const handleImportProject = (jsonString) => {
+    const res = persistenceManagerRef.current.importProjectJSON(jsonString);
+    if (!res.success) return res;
+    persistenceManagerRef.current.restoreToEngine(engine, res.state);
+    setCurrentPhase(engine.currentPhase || 1);
+    syncFromEngine(engine);
+    return { success: true };
   };
 
   const activeGuild = engine.businessContext?.resolvedType;
@@ -417,6 +445,9 @@ export default function App() {
         setEngineMode={setEngineMode}
         customEndpoint={customEndpoint}
         setCustomEndpoint={setCustomEndpoint}
+        onExportProject={handleExportProject}
+        onImportProject={handleImportProject}
+        onResetProject={handleReset}
       />
 
       {/* 753 Guild Selector Modal */}

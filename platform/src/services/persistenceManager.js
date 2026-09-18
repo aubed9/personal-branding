@@ -157,6 +157,67 @@ export class PersistenceManager {
   }
 
   /**
+   * Safe load with corrupted state recovery (Requirement R11)
+   * Recovers from corrupt JSON, invalid schema, or missing fields without crashing.
+   */
+  safeLoadOrInitialize(engine) {
+    try {
+      if (typeof localStorage === 'undefined') {
+        return { success: false, reason: 'localStorage not available' };
+      }
+
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) {
+        return { success: false, reason: 'no_saved_state' };
+      }
+
+      let envelope = null;
+      try {
+        envelope = JSON.parse(raw);
+      } catch (parseErr) {
+        console.warn('[PersistenceManager] Corrupted JSON detected. Backing up and resetting:', parseErr.message);
+        try {
+          localStorage.setItem(`${STORAGE_KEY}_corrupt_backup`, raw);
+          localStorage.removeItem(STORAGE_KEY);
+        } catch {}
+        return { success: false, corrupted: true, reason: 'corrupted_json' };
+      }
+
+      if (!envelope || typeof envelope !== 'object' || !envelope.state) {
+        console.warn('[PersistenceManager] Malformed state envelope. Resetting.');
+        return { success: false, corrupted: true, reason: 'malformed_envelope' };
+      }
+
+      const version = envelope.schemaVersion || 0;
+      let state = envelope.state;
+
+      if (version < SCHEMA_VERSION) {
+        state = this.migrateState(state, version);
+      }
+
+      const validation = validateStateStructure(state);
+      if (!validation.valid) {
+        console.warn('[PersistenceManager] Invalid state structure:', validation.errors);
+        return { success: false, corrupted: true, reason: 'validation_failed', errors: validation.errors };
+      }
+
+      const restored = this.restoreToEngine(engine, state);
+      if (!restored) {
+        return { success: false, corrupted: true, reason: 'restore_failed' };
+      }
+
+      return {
+        success: true,
+        savedAt: envelope.savedAt,
+        schemaVersion: version
+      };
+    } catch (err) {
+      console.warn('[PersistenceManager] Unexpected error during safe load:', err.message);
+      return { success: false, corrupted: true, reason: err.message };
+    }
+  }
+
+  /**
    * Restore state into engine instance
    */
   restoreToEngine(engine, savedState) {
