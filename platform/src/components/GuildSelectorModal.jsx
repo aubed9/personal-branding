@@ -109,7 +109,12 @@ export default function GuildSelectorModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-xl flex items-center justify-center p-2 sm:p-6 select-text">
+    <div 
+      className="fixed inset-0 z-50 bg-black/85 backdrop-blur-xl flex items-center justify-center p-2 sm:p-6 select-text"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="guild-selector-title"
+    >
       <div className="w-full max-w-5xl h-[92vh] max-h-[860px] bg-[#09090B] border border-white/20 rounded-2xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden text-white">
         
         {/* Header (Monochrome, editorial) */}
@@ -120,7 +125,7 @@ export default function GuildSelectorModal({
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="font-black text-sm sm:text-base text-white">
+                <h2 id="guild-selector-title" className="font-black text-sm sm:text-base text-white">
                   کاتالوگ جامع ۷۵۳ صنف و پیشه تخصصی
                 </h2>
                 <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/10 text-white border border-white/20">

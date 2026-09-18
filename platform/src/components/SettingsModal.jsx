@@ -102,7 +102,12 @@ export default function SettingsModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-xl flex items-center justify-center p-3 sm:p-4 select-text">
+    <div 
+      className="fixed inset-0 z-50 bg-black/85 backdrop-blur-xl flex items-center justify-center p-3 sm:p-4 select-text"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="settings-modal-title"
+    >
       <div className="w-full max-w-lg bg-[#09090B] border border-white/20 rounded-2xl sm:rounded-3xl p-5 sm:p-6 shadow-2xl space-y-5 text-white max-h-[90vh] overflow-y-auto">
         
         {/* Header (Monochrome) */}
@@ -112,7 +117,7 @@ export default function SettingsModal({
               <Cpu className="w-5 h-5 stroke-[2.5]" />
             </div>
             <div>
-              <h2 className="font-black text-base text-white tracking-tight">
+              <h2 id="settings-modal-title" className="font-black text-base text-white tracking-tight">
                 تنظیمات سیستم و پیکربندی داده‌ها
               </h2>
               <p className="text-xs text-zinc-400 font-mono">

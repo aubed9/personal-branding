@@ -4,9 +4,15 @@
 
 @layer base {
   * {
-    border-color: rgba(255, 255, 255, 0.09);
-    outline-color: rgba(37, 99, 235, 0.5);
+    border-color: rgba(255, 255, 255, 0.1);
   }
+  
+  /* WCAG AA Visible Focus Ring (2px solid white with offset) */
+  :focus-visible {
+    outline: 2px solid #ffffff !important;
+    outline-offset: 2px !important;
+  }
+
   body {
     font-feature-settings: "ss01", "ss02", "cv01", "cv02";
     text-rendering: optimizeLegibility;
@@ -14,16 +20,18 @@
     -moz-osx-font-smoothing: grayscale;
     background-color: #000000;
     color: #ffffff;
-    selection-background-color: #2563eb;
-    selection-color: #ffffff;
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
   }
+  
   ::selection {
-    background-color: #2563eb;
-    color: #ffffff;
+    background-color: #ffffff;
+    color: #000000;
   }
 }
 
-/* Executive Glass & Micro-Surfaces */
+/* Executive Glass & Micro-Surfaces (Monochrome) */
 .obsidian-surface {
   background: #08080a;
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -41,8 +49,8 @@
 }
 .obsidian-card-hover:hover {
   background: #17171c;
-  border-color: rgba(37, 99, 235, 0.45);
-  box-shadow: 0 8px 30px -4px rgba(37, 99, 235, 0.15), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 8px 30px -4px rgba(255, 255, 255, 0.05), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
   transform: translateY(-1px);
 }
 
@@ -59,7 +67,7 @@
   border-right: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Luxury Custom Scrollbar */
+/* Luxury Custom Scrollbar (Monochrome) */
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;
@@ -73,7 +81,17 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #2563eb;
+  background: #ffffff;
+}
+
+/* WCAG AA Prefers-Reduced-Motion */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Print Styles for PDF export */
@@ -81,6 +99,8 @@
   body {
     background: white !important;
     color: black !important;
+    overflow: visible !important;
+    height: auto !important;
   }
   .no-print {
     display: none !important;

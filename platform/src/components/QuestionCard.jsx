@@ -145,7 +145,11 @@ export default function QuestionCard({
     : options;
 
   return (
-    <div className="h-full flex flex-col justify-between p-4 sm:p-8 max-w-4xl mx-auto w-full select-text overflow-y-auto">
+    <div 
+      className="h-full flex flex-col justify-between p-4 sm:p-8 max-w-4xl mx-auto w-full select-text overflow-y-auto"
+      role="region"
+      aria-labelledby="strategic-question-heading"
+    >
       
       {/* Top Question Header */}
       <div className="space-y-3">
@@ -176,7 +180,11 @@ export default function QuestionCard({
               {currentQuestion.title}
             </span>
           )}
-          <h1 className="text-lg sm:text-xl md:text-2xl font-black text-white leading-snug">
+          <h1 
+            id="strategic-question-heading"
+            aria-live="polite"
+            className="text-lg sm:text-xl md:text-2xl font-black text-white leading-snug"
+          >
             {currentQuestion?.text || "در حال بارگذاری پرسش استراتژیک..."}
           </h1>
         </div>
@@ -213,12 +221,19 @@ export default function QuestionCard({
             )}
 
             {/* Options Grid (2x2 on desktop for <= 4 options, compact grid for > 4) */}
-            <div className={`grid gap-2.5 sm:gap-3 ${hasManyOptions ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1 sm:grid-cols-2"}`}>
+            <div 
+              role="radiogroup"
+              aria-labelledby="strategic-question-heading"
+              className={`grid gap-2.5 sm:gap-3 ${hasManyOptions ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1 sm:grid-cols-2"}`}
+            >
               {filteredOptions.map((option, idx) => {
                 const isSelected = selectedOption?.value === option.value;
                 return (
                   <button
                     key={option.value || idx}
+                    role="radio"
+                    aria-checked={isSelected}
+                    aria-label={`${option.text || option.label}${option.description ? `: ${option.description}` : ""}`}
                     onClick={() => setSelectedOption(option)}
                     onDoubleClick={() => onSelectOption(option)}
                     className={`p-3.5 sm:p-4 rounded-xl text-right transition-all flex items-start justify-between gap-3 border ${
@@ -284,6 +299,7 @@ export default function QuestionCard({
               rows={4}
               value={customText}
               onChange={(e) => setCustomText(e.target.value)}
+              aria-label="دیدگاه، توضیحات یا راهبرد مدنظرتان"
               placeholder="دیدگاه، توضیحات یا راهبرد مدنظرتان را بنویسید (با فشردن Ctrl+Enter ثبت می‌شود)..."
               className="w-full p-3 text-xs sm:text-sm rounded-xl bg-black border border-white/15 text-white placeholder-zinc-500 focus:outline-none focus:border-white transition-all resize-none leading-relaxed"
               autoFocus
@@ -296,6 +312,7 @@ export default function QuestionCard({
               <button
                 onClick={handleCustomSubmit}
                 disabled={!customText.trim() || isProcessing}
+                aria-label="ثبت پاسخ اختصاصی و ادامه"
                 className="py-2 px-4 rounded-xl bg-white hover:bg-zinc-200 disabled:opacity-30 text-black text-xs font-bold flex items-center gap-1.5 transition-all"
               >
                 <span>ثبت و ادامه</span>
@@ -316,6 +333,7 @@ export default function QuestionCard({
             <button
               onClick={onNavigateBack}
               disabled={isProcessing}
+              aria-label="بازگشت به پرسش قبلی"
               className="py-2.5 px-3 rounded-xl border border-white/15 hover:border-white/30 text-zinc-300 hover:text-white text-xs font-mono flex items-center gap-1 transition-all"
               title="بازگشت به پرسش قبلی"
             >
@@ -327,6 +345,7 @@ export default function QuestionCard({
           <button
             onClick={onUnknownSelect}
             disabled={isProcessing}
+            aria-label="ثبت این سنجه به عنوان مجهول یا نیازمند بررسی"
             className="py-2.5 px-3 rounded-xl border border-white/10 hover:border-white/25 bg-[#0D0D0D] text-zinc-400 hover:text-white text-xs flex items-center gap-1.5 transition-all font-mono"
             title="ثبت این سنجه به عنوان مجهول یا نیازمند بررسی"
           >
@@ -340,6 +359,7 @@ export default function QuestionCard({
           <button
             onClick={handleConfirmContinue}
             disabled={!selectedOption || isProcessing}
+            aria-label="تأیید پاسخ و ادامه به گام بعدی"
             className="py-2.5 px-6 rounded-xl bg-white hover:bg-zinc-200 disabled:opacity-25 text-black text-xs sm:text-sm font-black flex items-center gap-2 transition-all shadow-md active:scale-98"
           >
             <span>{isProcessing ? "در حال ثبت..." : "تأیید و ادامه"}</span>
