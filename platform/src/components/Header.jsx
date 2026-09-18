@@ -1,5 +1,15 @@
 import React from "react";
-import { Menu, FileDown, BookOpen, Award, ArrowLeft, CheckCircle2, ShieldCheck, Building2 } from "lucide-react";
+import { 
+  Menu, 
+  FileDown, 
+  BookOpen, 
+  Award, 
+  ArrowLeft, 
+  Check, 
+  ShieldCheck, 
+  Building2,
+  Layers
+} from "lucide-react";
 import { PHASES_DATA } from "../data/phase1Templates";
 
 export default function Header({
@@ -11,50 +21,57 @@ export default function Header({
   onOpenWiki,
   onStartNextPhase,
   engineMode = "simulator",
-  onOpenGuildSelector = null
+  onOpenGuildSelector = null,
+  activeGuildTitle = null
 }) {
-  const isCurrentCompleted = completedPhases[currentPhase];
+  const isCurrentCompleted = Boolean(completedPhases[currentPhase]);
   const allCompleted = Object.values(completedPhases).filter(Boolean).length >= 8;
   const currentPhaseMeta = PHASES_DATA.find(p => p.id === currentPhase) || PHASES_DATA[0];
 
   return (
-    <header className="h-16 hairline-b bg-black/85 backdrop-blur-2xl px-3 sm:px-6 flex items-center justify-between sticky top-0 z-30 transition-all">
+    <header className="h-14 sm:h-16 border-b border-white/10 bg-[#000000] px-3 sm:px-6 flex items-center justify-between shrink-0 select-text text-white z-20">
+      
+      {/* Left: Sidebar Toggle + Brand Title + Phase Meta */}
       <div className="flex items-center gap-3">
         <button
           onClick={onToggleSidebar}
-          className="lg:hidden p-2 text-zinc-400 hover:text-white hover:bg-[#121216] rounded-xl transition-colors border border-white/[0.08]"
-          aria-label="باز کردن منو"
+          className="lg:hidden p-2 text-zinc-400 hover:text-white hover:bg-white/10 rounded-xl transition-colors border border-white/10"
+          aria-label="نمایش منوی فازها"
         >
-          <Menu className="w-5 h-5" />
+          <Menu className="w-4 h-4" />
         </button>
 
-        <div className="flex items-center gap-3">
-          <div className="relative flex items-center justify-center">
-            <span className="animate-ping absolute inline-flex h-3 w-3 rounded-full bg-blue-400 opacity-60"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500 shadow-cobalt-sm"></span>
+        <div className="flex items-center gap-2.5">
+          <div className="w-7 h-7 rounded-lg bg-white text-black flex items-center justify-center font-mono font-black text-xs">
+            DM
           </div>
-          
+
           <div className="flex flex-col">
             <div className="flex items-center gap-2">
               <span className="text-[10px] text-zinc-400 uppercase tracking-wider font-mono">
-                رادار تصمیم‌گیری • مرحله {currentPhase} از ۸
+                فضای تدوین برند • فاز {currentPhase} از ۸
               </span>
-              <span className="text-[10px] text-zinc-600 hidden md:inline">•</span>
-              <span className="text-[10px] text-zinc-400 hidden md:inline font-mono">
-                ۱۶۵ منبع فعال
-              </span>
+              {activeGuildTitle && (
+                <>
+                  <span className="text-[10px] text-zinc-600 hidden sm:inline">•</span>
+                  <span className="text-[10px] text-zinc-300 hidden sm:inline font-mono truncate max-w-[140px]">
+                    {activeGuildTitle}
+                  </span>
+                </>
+              )}
             </div>
+            
             <div className="flex items-center gap-2 mt-0.5">
               <span className="text-xs sm:text-sm font-black text-white tracking-tight">
                 {currentPhaseMeta.title}
               </span>
               {isCurrentCompleted ? (
-                <span className="text-[10px] bg-white/10 text-white border border-white/20 px-2 py-0.5 rounded-full flex items-center gap-1 font-bold">
-                  <CheckCircle2 className="w-3 h-3 text-blue-400" /> مصوب و تایید شد
+                <span className="text-[9px] bg-white text-black font-bold px-2 py-0.5 rounded flex items-center gap-1">
+                  <Check className="w-3 h-3 stroke-[3]" /> مصوب شد
                 </span>
               ) : (
-                <span className="text-[10px] bg-blue-950/60 text-blue-300 border border-blue-500/40 px-2 py-0.5 rounded-full font-bold">
-                  تحلیل و ثبت مواضع
+                <span className="text-[9px] bg-white/10 text-zinc-300 border border-white/20 px-2 py-0.5 rounded font-mono">
+                  در حال ارزیابی
                 </span>
               )}
             </div>
@@ -62,74 +79,77 @@ export default function Header({
         </div>
       </div>
 
-      <div className="flex items-center gap-2 sm:gap-2.5">
-        {/* Next Phase Quick Button */}
+      {/* Right: Action Buttons (Monochrome, no color accents) */}
+      <div className="flex items-center gap-2">
+        
+        {/* Next Phase CTA if current phase completed */}
         {isCurrentCompleted && currentPhase < 8 && (
           <button
             onClick={onStartNextPhase}
-            className="flex items-center gap-1.5 text-xs font-black px-3.5 py-2 rounded-xl bg-white hover:bg-zinc-200 text-black shadow-white-subtle transition-all active:scale-95"
+            className="flex items-center gap-1.5 text-xs font-black px-3.5 py-2 rounded-xl bg-white hover:bg-zinc-200 text-black transition-all shadow-md active:scale-95"
           >
             <span>ورود به فاز {currentPhase + 1}</span>
             <ArrowLeft className="w-3.5 h-3.5" />
           </button>
         )}
 
-        {/* Master Brand Book button if all completed */}
+        {/* Master Deliverable button if all completed */}
         {allCompleted && (
           <button
             onClick={() => onOpenDeliverable("master")}
-            className="flex items-center gap-1.5 text-xs font-black px-3.5 py-2 rounded-xl bg-white text-black hover:bg-zinc-100 shadow-white-subtle border border-white transition-all active:scale-95"
+            className="flex items-center gap-1.5 text-xs font-black px-3.5 py-2 rounded-xl bg-white text-black hover:bg-zinc-200 border border-white transition-all active:scale-95"
           >
-            <Award className="w-4 h-4 text-blue-600" />
+            <Award className="w-4 h-4 text-black" />
             <span>کتابچه جامع استراتژی</span>
           </button>
         )}
 
-        {/* 753 Guilds Catalog Button */}
+        {/* 753 Guild Selector Trigger */}
         {onOpenGuildSelector && (
           <button
             onClick={onOpenGuildSelector}
-            className="hidden sm:flex items-center gap-1.5 text-xs obsidian-card obsidian-card-hover text-blue-300 hover:text-white px-3 py-2 rounded-xl border border-blue-500/30 font-mono"
-            title="کاتالوگ و جستجوی جامع ۷۵۳ صنف"
+            className="hidden sm:flex items-center gap-1.5 text-xs text-zinc-300 hover:text-white px-3 py-2 rounded-xl border border-white/15 hover:border-white/30 bg-[#0C0C0C] font-mono transition-all"
+            title="انتخاب و جستجوی صنف از بین ۷۵۳ صنف رسمی"
           >
-            <Building2 className="w-3.5 h-3.5 text-blue-400" />
-            <span className="font-semibold">۷۵۳ صنف</span>
+            <Building2 className="w-3.5 h-3.5 text-white" />
+            <span>۷۵۳ صنف</span>
           </button>
         )}
 
-        {/* Marketing Wiki Button */}
+        {/* Knowledge Wiki Trigger */}
         <button
           onClick={onOpenWiki}
-          className="hidden md:flex items-center gap-1.5 text-xs obsidian-card obsidian-card-hover text-zinc-200 hover:text-white px-3 py-2 rounded-xl"
-          title="پایگاه ۱۶۵ منبع و فریم‌ورک‌های تصمیم‌گیری بازاریابی"
+          className="hidden md:flex items-center gap-1.5 text-xs text-zinc-300 hover:text-white px-3 py-2 rounded-xl border border-white/15 hover:border-white/30 bg-[#0C0C0C] transition-all"
+          title="پایگاه دانش و ۱۶۵ فریم‌ورک بازاریابی"
         >
-          <BookOpen className="w-3.5 h-3.5 text-blue-400" />
-          <span className="font-semibold">پایگاه دانش</span>
+          <BookOpen className="w-3.5 h-3.5 text-white" />
+          <span>پایگاه دانش</span>
         </button>
 
-        {/* Deliverable button */}
+        {/* Deliverable Modal Trigger */}
         <button
           onClick={() => onOpenDeliverable(currentPhase)}
-          className={`flex items-center gap-2 text-xs font-black px-3.5 py-2 rounded-xl transition-all ${
+          className={`flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-xl transition-all border ${
             isCurrentCompleted
-              ? "bg-blue-600 hover:bg-blue-500 text-white shadow-cobalt-glow border border-blue-400/50"
-              : "obsidian-card obsidian-card-hover text-zinc-300"
+              ? "bg-white text-black border-white shadow-sm"
+              : "bg-[#0C0C0C] hover:bg-[#141414] text-zinc-300 hover:text-white border-white/15 hover:border-white/30"
           }`}
+          title="مشاهده پیش‌نویس یا سند رسمی فاز"
         >
-          <FileDown className="w-4 h-4 text-blue-300" />
-          <span className="hidden sm:inline">سند رسمی فاز {currentPhase}</span>
-          <span className="sm:hidden">سند {currentPhase}</span>
+          <FileDown className="w-3.5 h-3.5" />
+          <span className="hidden sm:inline">سند فاز {currentPhase}</span>
         </button>
 
-        {/* Settings button */}
+        {/* Settings Modal Trigger */}
         <button
           onClick={onOpenSettings}
-          className="p-2 text-zinc-400 hover:text-white obsidian-card obsidian-card-hover rounded-xl"
-          title="تنظیمات سامانه و اتصال مدل"
+          className="p-2 text-zinc-400 hover:text-white rounded-xl border border-white/15 hover:border-white/30 bg-[#0C0C0C] transition-all"
+          title="تنظیمات سیستم و کلید ارتباطی"
         >
           <ShieldCheck className="w-4 h-4 text-zinc-300" />
         </button>
       </div>
+
     </header>
   );
 }

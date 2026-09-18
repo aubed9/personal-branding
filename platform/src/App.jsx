@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import confetti from "canvas-confetti";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
-import ChatContainer from "./components/ChatContainer";
-import ChatInput from "./components/ChatInput";
+import PhaseProgressRail from "./components/PhaseProgressRail";
+import ContextSummaryLedger from "./components/ContextSummaryLedger";
+import QuestionCard from "./components/QuestionCard";
 import DeliverableModal from "./components/DeliverableModal";
 import SettingsModal from "./components/SettingsModal";
 import WikiModal from "./components/WikiModal";
@@ -11,30 +11,39 @@ import GuildSelectorModal from "./components/GuildSelectorModal";
 import { OrchestratorEngine } from "./services/orchestratorEngine";
 import { runKnowledgeBrain } from "./services/geminiService";
 import { SessionKeyManager } from "./services/endpointSecurity";
+import { PersistenceManager } from "./services/persistenceManager";
+import { validatePhaseGate } from "./services/phaseGateValidator";
+import { classifyBusinessContext } from "./data/businessContextRouter";
 
 export default function App() {
   const [engine, setEngine] = useState(() => new OrchestratorEngine());
+  const persistenceManagerRef = useRef(new PersistenceManager());
 
   // Multi-Phase Tracking (1 to 8)
   const [currentPhase, setCurrentPhase] = useState(1);
   const [completedPhases, setCompletedPhases] = useState({
     1: false, 2: false, 3: false, 4: false, 5: false, 6: false, 7: false, 8: false
   });
+  const [phaseStatus, setPhaseStatus] = useState({});
 
-  // Conversation State
-  const [messages, setMessages] = useState([]);
+  // Question & Workstation State
   const [currentQuestion, setCurrentQuestion] = useState(null);
-  const [isTyping, setIsTyping] = useState(false);
+  const [questionIndex, setQuestionIndex] = useState(0);
+  const [totalQuestions, setTotalQuestions] = useState(5);
+  const [isPhaseCompleted, setIsPhaseCompleted] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [lastSavedTime, setLastSavedTime] = useState("");
 
-  // UI Modals
+  // UI Modals & Drawers
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isDeliverableOpen, setIsDeliverableOpen] = useState(false);
   const [activeDeliverablePhase, setActiveDeliverablePhase] = useState(1);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isWikiOpen, setIsWikiOpen] = useState(false);
   const [isGuildSelectorOpen, setIsGuildSelectorOpen] = useState(false);
+  const [isLedgerMobileOpen, setIsLedgerMobileOpen] = useState(false);
 
-  // Deliverable & Stats
+  // Strategic Deliverable & Telemetry Stats
   const [stats, setStats] = useState({ facts: 0, decisions: 0, assumptions: 0, unknowns: 0 });
   const [deliverableData, setDeliverableData] = useState(null);
   const [markdownContent, setMarkdownContent] = useState("");
@@ -49,70 +58,205 @@ export default function App() {
   const [engineMode, setEngineMode] = useState(() => localStorage.getItem("engine_mode") || "simulator");
   const [customEndpoint, setCustomEndpoint] = useState(() => localStorage.getItem("custom_api_endpoint") || "");
 
-  // Mount First Question & Purge any legacy localStorage keys
-  useEffect(() => {
-    SessionKeyManager.purgeLegacyKeys();
-    initEngine(engine);
-  }, []);
+  // Sync state from engine and perform autosave
+  const syncFromEngine = useCallback((eng) => {
+    const q = eng.getCurrentQuestion();
+    const questions = eng.getCurrentPhaseQuestions ? eng.getCurrentPhaseQuestions() : [];
+    
+    setCurrentQuestion(q);
+    setTotalQuestions(questions?.length || 5);
+    setQuestionIndex(eng.currentStepIndex || 0);
 
-  const initEngine = (eng) => {
-    const firstQ = eng.getCurrentQuestion();
-    setCurrentQuestion(firstQ);
-    setDeliverableData(eng.generateDeliverableData(1));
-    setMarkdownContent(eng.generateMarkdownText(1));
-    setMessages([
-      {
-        id: "msg-0",
-        sender: "assistant",
-        text: firstQ ? firstQ.text : "سلام! به دستیار هوشمند استراتژی و برندسازی دیجیتال مارکت خوش آمدید. برای شروع صنف خود را مشخص فرمایید:",
-        timestamp: new Date().toLocaleTimeString("fa-IR", { hour: "2-digit", minute: "2-digit" })
-      }
-    ]);
-  };
+    const isDone = !q && questions?.length > 0 && questions.every(item => item?.isAnswered);
+    setIsPhaseCompleted(isDone);
 
-  const updateStatsAndDeliverable = (eng) => {
     setStats({
-      facts: eng.facts.length,
-      decisions: eng.decisions.length,
-      assumptions: eng.assumptions.length,
-      unknowns: eng.unknowns.length
+      facts: eng.facts?.length || 0,
+      decisions: eng.decisions?.length || 0,
+      assumptions: eng.assumptions?.length || 0,
+      unknowns: eng.unknowns?.length || 0
     });
+
     setCompletedPhases({ ...eng.completedPhases });
+    setPhaseStatus({ ...(eng.phaseStatus || {}) });
+
     setDeliverableData(eng.generateDeliverableData(eng.currentPhase));
     setMarkdownContent(eng.generateMarkdownText(eng.currentPhase));
-  };
 
-  const triggerConfetti = (isGrand = false) => {
+    // Autosave state securely via PersistenceManager (Requirement R8.1 / R11)
+    persistenceManagerRef.current.saveProjectState(eng);
+    setLastSavedTime(new Date().toLocaleTimeString("fa-IR", { hour: "2-digit", minute: "2-digit", second: "2-digit" }));
+  }, []);
+
+  // Initialize Engine & Purge any legacy localStorage keys on startup
+  useEffect(() => {
+    SessionKeyManager.purgeLegacyKeys();
+    syncFromEngine(engine);
+  }, [engine, syncFromEngine]);
+
+  // Handle Option Selection
+  const handleSelectOption = async (option) => {
+    if (!option || isProcessing) return;
+    setIsProcessing(true);
+
     try {
-      confetti({
-        particleCount: isGrand ? 160 : 80,
-        spread: isGrand ? 100 : 70,
-        origin: { y: 0.6 }
-      });
-    } catch (e) {
-      console.warn("Confetti:", e);
+      const userText = option.text || option.label;
+      const optionValue = option.value;
+
+      if (engineMode === "gemini" && apiKey && apiKey.trim()) {
+        try {
+          const brainResult = await runKnowledgeBrain({
+            apiKey,
+            model,
+            customEndpoint,
+            phaseNum: currentPhase,
+            context: engine.businessContext,
+            userText,
+            optionValue,
+            priorAnswers: engine.phaseData,
+            facts: engine.facts,
+            decisions: engine.decisions
+          });
+
+          engine.processUserResponse(userText, optionValue);
+
+          if (brainResult?.extractedDecision) {
+            engine.addStrategicDecision(brainResult.extractedDecision);
+          }
+
+          if (brainResult?.nextQuestion) {
+            engine.setDynamicNextQuestion(brainResult.nextQuestion);
+          }
+        } catch (brainErr) {
+          console.warn("[Knowledge Brain] Fallback to simulator:", brainErr.message);
+          engine.processUserResponse(userText, optionValue);
+        }
+      } else {
+        engine.processUserResponse(userText, optionValue);
+      }
+
+      // Check if phase gate is ready to validate
+      const phaseQuestions = engine.getCurrentPhaseQuestions();
+      const allAnswered = phaseQuestions?.every(item => item?.isAnswered);
+      if (allAnswered) {
+        const gate = validatePhaseGate(currentPhase, engine);
+        if (gate.passed) {
+          engine.completedPhases[currentPhase] = true;
+        }
+      }
+
+      syncFromEngine(engine);
+    } catch (err) {
+      console.error("[Question Workflow] Error processing selection:", err);
+    } finally {
+      setIsProcessing(false);
     }
   };
 
-  // Move to Next Phase (e.g. 1 -> 2, 2 -> 3, ..., 7 -> 8)
+  // Handle Custom Free-Text Input
+  const handleSubmitCustomAnswer = async (customText) => {
+    if (!customText || !customText.trim() || isProcessing) return;
+    setIsProcessing(true);
+
+    try {
+      if (engineMode === "gemini" && apiKey && apiKey.trim()) {
+        try {
+          const brainResult = await runKnowledgeBrain({
+            apiKey,
+            model,
+            customEndpoint,
+            phaseNum: currentPhase,
+            context: engine.businessContext,
+            userText: customText.trim(),
+            optionValue: null,
+            priorAnswers: engine.phaseData,
+            facts: engine.facts,
+            decisions: engine.decisions
+          });
+
+          engine.processUserResponse(customText.trim(), null);
+
+          if (brainResult?.extractedDecision) {
+            engine.addStrategicDecision(brainResult.extractedDecision);
+          }
+
+          if (brainResult?.nextQuestion) {
+            engine.setDynamicNextQuestion(brainResult.nextQuestion);
+          }
+        } catch (brainErr) {
+          console.warn("[Knowledge Brain] Fallback to simulator:", brainErr.message);
+          engine.processUserResponse(customText.trim(), null);
+        }
+      } else {
+        engine.processUserResponse(customText.trim(), null);
+      }
+
+      const phaseQuestions = engine.getCurrentPhaseQuestions();
+      const allAnswered = phaseQuestions?.every(item => item?.isAnswered);
+      if (allAnswered) {
+        const gate = validatePhaseGate(currentPhase, engine);
+        if (gate.passed) {
+          engine.completedPhases[currentPhase] = true;
+        }
+      }
+
+      syncFromEngine(engine);
+    } catch (err) {
+      console.error("[Question Workflow] Error processing custom answer:", err);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  // Handle Unknown / Uncertainty ("نمی‌دانم")
+  const handleUnknownSelect = () => {
+    handleSelectOption({
+      text: "این سنجه را به عنوان مجهول رسمی دوسیه ثبت فرما",
+      value: "unknown"
+    });
+  };
+
+  // Handle Navigate Back to Previous Question
+  const handleNavigateBack = () => {
+    if (engine.navigateBack) {
+      engine.navigateBack();
+      syncFromEngine(engine);
+    }
+  };
+
+  // Handle Guild Selection from 753 catalog
+  const handleSelectGuild = (guild) => {
+    if (!guild) return;
+    const classified = classifyBusinessContext({
+      guild: guild.id,
+      stage: "ACTIVE"
+    });
+    engine.setBusinessContext(classified);
+    engine.processUserResponse(`صنف انتخابی: ${guild.titleFa} (${guild.id})`, guild.id);
+    syncFromEngine(engine);
+  };
+
+  // Transition to Next Phase (e.g. 1 -> 2, 2 -> 3, ..., 7 -> 8)
   const handleStartNextPhase = () => {
     if (currentPhase >= 8) return;
     const nextPhaseNum = currentPhase + 1;
-    const { welcomeMessage, firstQuestion } = engine.startPhase(nextPhaseNum);
+    const check = engine.canStartPhase(nextPhaseNum);
+    if (check && !check.allowed) {
+      alert(`ورود به فاز ${nextPhaseNum} مسدود است:\n${check.reason}`);
+      return;
+    }
 
+    engine.startPhase(nextPhaseNum);
     setCurrentPhase(nextPhaseNum);
-    setCurrentQuestion(firstQuestion);
-    updateStatsAndDeliverable(engine);
-    triggerConfetti(false);
+    syncFromEngine(engine);
+  };
 
-    const transitionMessage = {
-      id: `phase-start-${nextPhaseNum}-${Date.now()}`,
-      sender: "assistant",
-      text: `${welcomeMessage}\n\n${firstQuestion ? firstQuestion.text : ""}`,
-      timestamp: new Date().toLocaleTimeString("fa-IR", { hour: "2-digit", minute: "2-digit" })
-    };
-
-    setMessages((prev) => [...prev, transitionMessage]);
+  // Jump to specific phase (for reviewing deliverables)
+  const handleSelectPhase = (phaseId) => {
+    if (completedPhases[phaseId] || phaseId === currentPhase) {
+      setActiveDeliverablePhase(phaseId);
+      setIsDeliverableOpen(true);
+    }
   };
 
   // Open Deliverable Modal
@@ -123,181 +267,127 @@ export default function App() {
     setIsDeliverableOpen(true);
   };
 
-  // Handle Send Message
-  const handleSendMessage = async (userText, optionValue = null) => {
-    if (!userText || !userText.trim()) return;
-
-    const userMessage = {
-      id: `user-${Date.now()}`,
-      sender: "user",
-      text: userText,
-      timestamp: new Date().toLocaleTimeString("fa-IR", { hour: "2-digit", minute: "2-digit" })
-    };
-
-    setMessages((prev) => [...prev, userMessage]);
-    setIsTyping(true);
-
-    setTimeout(async () => {
-      let botReply = "";
-      let result = null;
-
-      if (engineMode === "gemini" && apiKey.trim()) {
-        try {
-          const brainResult = await runKnowledgeBrain({
-            apiKey,
-            model,
-            customEndpoint,
-            phaseNum: currentPhase,
-            context: engine.businessContext,
-            userText,
-            optionValue,
-            messages,
-            priorAnswers: engine.phaseData,
-            facts: engine.facts,
-            decisions: engine.decisions
-          });
-
-          result = engine.processUserResponse(userText, optionValue);
-
-          if (brainResult.extractedDecision) {
-            engine.addStrategicDecision(brainResult.extractedDecision);
-          }
-
-          if (brainResult.dynamicNextQuestion) {
-            const dynQ = {
-              id: result.nextQuestion?.id || `dynamic_q_${Date.now()}`,
-              title: "تحلیل و پرسش تکمیلی مبتنی بر دیدگاه شما",
-              text: brainResult.dynamicNextQuestion,
-              options: brainResult.dynamicOptions?.length > 0 ? brainResult.dynamicOptions : (result.nextQuestion?.options || [])
-            };
-            engine.setDynamicNextQuestion(dynQ);
-            setCurrentQuestion(dynQ);
-          } else {
-            setCurrentQuestion(result.nextQuestion);
-          }
-
-          botReply = brainResult.mainReply || result.reply;
-        } catch (err) {
-          console.error("Knowledge Brain fallback to simulator:", err);
-          result = engine.processUserResponse(userText, optionValue);
-          botReply = result.reply;
-          setCurrentQuestion(result.nextQuestion);
-        }
-      } else {
-        result = engine.processUserResponse(userText, optionValue);
-        botReply = result.reply;
-        setCurrentQuestion(result.nextQuestion);
-      }
-
-      updateStatsAndDeliverable(engine);
-
-      const botMessage = {
-        id: `bot-${Date.now()}`,
-        sender: "assistant",
-        text: botReply,
-        timestamp: new Date().toLocaleTimeString("fa-IR", { hour: "2-digit", minute: "2-digit" })
-      };
-
-      setMessages((prev) => [...prev, botMessage]);
-      setIsTyping(false);
-
-      if (result && result.isCompleted) {
-        setCompletedPhases({ ...engine.completedPhases });
-        triggerConfetti(result.isFinalGrandFinale);
-      }
-    }, 600);
-  };
-
-  const handleSelectOption = (option) => {
-    handleSendMessage(option.text, option.value);
-  };
-
-  const handleSelectGuild = (guild) => {
-    handleSendMessage(`صنف انتخابی: ${guild.titleFa} (${guild.id})`, guild.id);
-  };
-
-  const handleUnknownSelect = () => {
-    handleSendMessage("نمی‌دانم / این مورد را به عنوان مجهول رسمی ثبت کن", "unknown");
-  };
-
+  // Complete Reset
   const handleReset = () => {
-    if (window.confirm("آیا مایلید تمام فرآیند برندینگ را از فاز ۱ دوباره شروع کنید؟")) {
+    if (window.confirm("آیا مایلید تمام فرآیند برندینگ را از فاز ۱ دوباره شروع کنید؟ تمام داده‌ها بازنشانی خواهند شد.")) {
       const newEng = new OrchestratorEngine();
       setEngine(newEng);
       setCurrentPhase(1);
       setCompletedPhases({ 1: false, 2: false, 3: false, 4: false, 5: false, 6: false, 7: false, 8: false });
       setStats({ facts: 0, decisions: 0, assumptions: 0, unknowns: 0 });
-      initEngine(newEng);
+      syncFromEngine(newEng);
     }
   };
 
+  const activeGuild = engine.businessContext?.resolvedType;
+
   return (
-    <div className="flex h-screen bg-black text-white overflow-hidden font-sans select-text antialiased">
+    <div className="h-[100dvh] w-screen bg-[#000000] text-white flex flex-col overflow-hidden font-sans select-text antialiased">
       
-      {/* Sidebar: Phases 1 to 8 + Wiki button + Realtime stats */}
-      <Sidebar
-        isOpen={isSidebarOpen}
-        onClose={() => setIsSidebarOpen(false)}
-        stats={stats}
+      {/* 1. Header (auto height, strict monochrome) */}
+      <Header
+        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
         currentPhase={currentPhase}
         completedPhases={completedPhases}
         onOpenDeliverable={handleOpenDeliverable}
         onOpenSettings={() => setIsSettingsOpen(true)}
         onOpenWiki={() => setIsWikiOpen(true)}
-        onReset={handleReset}
         onStartNextPhase={handleStartNextPhase}
+        engineMode={engineMode}
+        onOpenGuildSelector={() => setIsGuildSelectorOpen(true)}
+        activeGuildTitle={activeGuild?.titleFa}
       />
 
-      {/* Main Workspace */}
-      <div className="flex-1 flex flex-col min-w-0 bg-[#000000] relative">
-        {/* Subtle Ambient Radial Spotlight */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-72 bg-gradient-to-b from-blue-600/[0.08] via-blue-900/[0.02] to-transparent blur-3xl pointer-events-none -z-0" />
+      {/* 2. Phase Progress Rail (8-Phase status) */}
+      <PhaseProgressRail
+        currentPhase={currentPhase}
+        completedPhases={completedPhases}
+        phaseStatus={phaseStatus}
+        onSelectPhase={handleSelectPhase}
+      />
+
+      {/* 3. Main Workspace Area (2-Column Desktop Grid, 100% Viewport Compliance) */}
+      <div className="flex-1 min-h-0 flex flex-row overflow-hidden relative">
         
-        {/* Top Header */}
-        <Header
-          onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+        {/* Sidebar Drawer */}
+        <Sidebar
+          isOpen={isSidebarOpen}
+          onClose={() => setIsSidebarOpen(false)}
+          stats={stats}
           currentPhase={currentPhase}
           completedPhases={completedPhases}
+          onSelectPhase={(pId) => {
+            handleSelectPhase(pId);
+            setIsSidebarOpen(false);
+          }}
           onOpenDeliverable={handleOpenDeliverable}
           onOpenSettings={() => setIsSettingsOpen(true)}
           onOpenWiki={() => setIsWikiOpen(true)}
+          onReset={handleReset}
           onStartNextPhase={handleStartNextPhase}
-          engineMode={engineMode}
-          onOpenGuildSelector={() => setIsGuildSelectorOpen(true)}
         />
 
-        {/* Chat Stream */}
-        <ChatContainer
-          messages={messages}
-          currentQuestion={currentQuestion}
-          currentPhase={currentPhase}
-          completedPhases={completedPhases}
-          onSelectOption={handleSelectOption}
-          onUnknownSelect={handleUnknownSelect}
-          onStartNextPhase={handleStartNextPhase}
-          onOpenDeliverable={handleOpenDeliverable}
-          onOpenGuildSelector={() => setIsGuildSelectorOpen(true)}
-          isTyping={isTyping}
-        />
-
-        {/* Precision Input Dock */}
-        <div className="p-3.5 sm:p-5 bg-black/85 hairline-t backdrop-blur-2xl z-20">
-          <div className="max-w-4xl mx-auto">
-            <ChatInput
-              onSendMessage={(text) => handleSendMessage(text)}
-              disabled={isTyping}
-              placeholder={
-                completedPhases[currentPhase]
-                  ? `فاز ${currentPhase} تایید و نهایی شد. دکمه بالا را برای ورود به فاز بعدی بزنید...`
-                  : "پاسخ یا تحلیل خود را بنویسید یا از گزینه‌های راهبردی بالا انتخاب کنید..."
-              }
-            />
-          </div>
+        {/* Right Column: Strategic Context Ledger (Desktop 320px-380px) */}
+        <div className="hidden lg:block w-80 xl:w-96 shrink-0 h-full overflow-hidden">
+          <ContextSummaryLedger
+            businessContext={engine.businessContext}
+            facts={engine.facts}
+            decisions={engine.decisions}
+            unknowns={engine.unknowns}
+            contradictions={engine.contradictions}
+            currentPhase={currentPhase}
+            onOpenGuildSelector={() => setIsGuildSelectorOpen(true)}
+            onOpenDeliverable={() => handleOpenDeliverable(currentPhase)}
+          />
         </div>
+
+        {/* Left Column: Strategic Question Workstation */}
+        <main className="flex-1 flex flex-col min-w-0 bg-[#000000] h-full overflow-hidden relative">
+          <QuestionCard
+            currentQuestion={currentQuestion}
+            currentPhase={currentPhase}
+            totalQuestions={totalQuestions}
+            questionIndex={questionIndex}
+            isPhaseCompleted={isPhaseCompleted}
+            onSelectOption={handleSelectOption}
+            onSubmitCustomAnswer={handleSubmitCustomAnswer}
+            onUnknownSelect={handleUnknownSelect}
+            onNavigateBack={handleNavigateBack}
+            canNavigateBack={engine.currentStepIndex > 0}
+            onStartNextPhase={handleStartNextPhase}
+            onOpenDeliverable={handleOpenDeliverable}
+            isProcessing={isProcessing}
+          />
+        </main>
 
       </div>
 
-      {/* Deliverable Modal for all 8 phases + Master Brand Book */}
+      {/* 4. Bottom Status & Telemetry Bar (Autosave, Phase progress, Keyboard hint) */}
+      <footer className="h-7 sm:h-8 border-t border-white/10 bg-[#060606] px-3 sm:px-6 flex items-center justify-between text-[10px] sm:text-[11px] text-zinc-400 font-mono shrink-0 select-none">
+        <div className="flex items-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-white" />
+          <span>ذخیره خودکار در نشست جاری</span>
+          {lastSavedTime && <span className="text-zinc-500 hidden sm:inline">({lastSavedTime})</span>}
+        </div>
+
+        <div className="flex items-center gap-3">
+          <span className="text-zinc-300 font-bold">
+            فاز {currentPhase} از ۸
+          </span>
+          <span className="text-zinc-600 hidden sm:inline">•</span>
+          <span className="hidden sm:inline text-zinc-400">
+            پرسش {questionIndex + 1} از {totalQuestions || 5}
+          </span>
+        </div>
+
+        <div className="hidden md:flex items-center gap-3 text-zinc-500 text-[10px]">
+          <span>۱ تا ۴: انتخاب گزینه</span>
+          <span>Enter: تایید</span>
+          <span>Esc: بستن مودال</span>
+        </div>
+      </footer>
+
+      {/* Deliverable Modal */}
       <DeliverableModal
         isOpen={isDeliverableOpen}
         onClose={() => setIsDeliverableOpen(false)}

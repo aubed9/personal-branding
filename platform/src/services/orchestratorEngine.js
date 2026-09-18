@@ -177,6 +177,20 @@ export class OrchestratorEngine {
     return null;
   }
 
+  /**
+   * Navigates back to the previous question in the current phase
+   */
+  navigateBack() {
+    const questions = this.getCurrentPhaseQuestions();
+    if (!questions || this.currentStepIndex <= 0) return null;
+    this.currentStepIndex = Math.max(0, this.currentStepIndex - 1);
+    this.isNavigatingBack = true;
+    if (questions[this.currentStepIndex]) {
+      questions[this.currentStepIndex].isAnswered = false;
+    }
+    return this.getCurrentQuestion();
+  }
+
   canStartPhase(phaseNum) {
     if (typeof phaseNum !== "number" && typeof phaseNum !== "string") {
       return {

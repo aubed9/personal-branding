@@ -9,12 +9,14 @@ import {
   Palette, 
   TrendingUp,
   Lock, 
-  CheckCircle2, 
+  Check, 
   X,
   Layers,
   ArrowLeft,
   BookOpen,
-  Award
+  Award,
+  ShieldCheck,
+  RotateCcw
 } from "lucide-react";
 import { PHASES_DATA } from "../data/phase1Templates";
 
@@ -35,13 +37,14 @@ export default function Sidebar({
   stats,
   currentPhase = 1,
   completedPhases = {},
+  onSelectPhase,
   onOpenDeliverable,
   onOpenSettings,
   onOpenWiki,
   onReset,
   onStartNextPhase
 }) {
-  const isCurrentCompleted = completedPhases[currentPhase];
+  const isCurrentCompleted = Boolean(completedPhases[currentPhase]);
   const canGoNext = isCurrentCompleted && currentPhase < 8;
 
   return (
@@ -55,177 +58,161 @@ export default function Sidebar({
       )}
 
       <aside
-        className={`fixed lg:static top-0 right-0 z-50 h-full w-80 bg-[#08080a] hairline-l flex flex-col transition-transform duration-300 ease-in-out backdrop-blur-2xl ${
+        className={`fixed lg:static top-0 right-0 z-50 h-full w-80 bg-[#080808] border-l border-white/10 flex flex-col transition-transform duration-300 ease-in-out select-text text-white ${
           isOpen ? "translate-x-0" : "translate-x-full lg:translate-x-0"
         }`}
       >
-        {/* Header / Brand with Bespoke Insignia */}
-        <div className="p-4 sm:p-5 hairline-b flex items-center justify-between bg-black/50">
+        {/* Header / Brand Title */}
+        <div className="p-4 sm:p-5 border-b border-white/10 flex items-center justify-between bg-[#0A0A0A] shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-black border border-white/20 p-1.5 shadow-cobalt-sm flex items-center justify-center">
-              <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="2" y="2" width="20" height="20" rx="5" stroke="rgba(255,255,255,0.2)" strokeWidth="1.5" />
-                <path d="M12 4L19 12L12 20L5 12Z" fill="#2563eb" />
-                <circle cx="12" cy="12" r="2.5" fill="#ffffff" />
-              </svg>
+            <div className="w-8 h-8 rounded-xl bg-white text-black font-mono font-black text-sm flex items-center justify-center">
+              DM
             </div>
             <div>
-              <h1 className="font-black text-white text-base tracking-tight leading-tight">دیجیتال مارکت</h1>
-              <p className="text-[10px] text-zinc-400 font-mono tracking-wide">سامانه جامع استراتژی و هویت</p>
+              <h1 className="font-black text-white text-sm tracking-tight leading-tight">دیجیتال مارکت</h1>
+              <p className="text-[10px] text-zinc-400 font-mono tracking-wide">سامانه تخصصی تدوین استراتژی برند</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="lg:hidden p-1.5 text-zinc-400 hover:text-white hover:bg-zinc-900 rounded-lg"
+            className="lg:hidden p-1.5 text-zinc-400 hover:text-white hover:bg-white/10 rounded-lg"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Executive HUD Telemetry Bar */}
-        <div className="p-3.5 hairline-b bg-black/70">
+        {/* Telemetry Counter */}
+        <div className="p-3.5 border-b border-white/10 bg-[#0A0A0A] shrink-0">
           <div className="flex items-center justify-between text-[11px] text-zinc-400 mb-2 font-mono px-0.5">
-            <span className="flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
-              <span>پایش دوسیه راهبردی</span>
+            <span className="flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+              <span>پایش دوسیه برند</span>
             </span>
-            <span className="text-blue-400 font-bold">
-              {isCurrentCompleted ? `فاز ${currentPhase} تایید شد` : `تحلیل فاز ${currentPhase}`}
+            <span className="text-zinc-200 font-bold">
+              {isCurrentCompleted ? `فاز ${currentPhase} تایید شد` : `فاز ${currentPhase} جاری`}
             </span>
           </div>
 
-          <div className="grid grid-cols-4 rounded-xl obsidian-surface overflow-hidden divide-x divide-x-reverse divide-white/[0.08]">
+          <div className="grid grid-cols-4 rounded-xl bg-[#111111] border border-white/10 divide-x divide-x-reverse divide-white/10 overflow-hidden">
             <div className="p-2 text-center" title="حقایق تایید شده">
-              <span className="block text-white font-black text-sm font-mono">{stats.facts || 0}</span>
-              <span className="text-[10px] text-zinc-400 font-medium">حقایق</span>
+              <span className="block text-white font-black text-xs sm:text-sm font-mono">{stats.facts || 0}</span>
+              <span className="text-[10px] text-zinc-400">حقایق</span>
             </div>
-            <div className="p-2 text-center bg-blue-950/20" title="تصمیمات راهبردی مصوب">
-              <span className="block text-blue-400 font-black text-sm font-mono">{stats.decisions || 0}</span>
-              <span className="text-[10px] text-blue-300 font-bold">تصمیم</span>
+            <div className="p-2 text-center" title="تصمیم‌های راهبردی">
+              <span className="block text-white font-black text-xs sm:text-sm font-mono">{stats.decisions || 0}</span>
+              <span className="text-[10px] text-zinc-400">تصمیم‌ها</span>
             </div>
-            <div className="p-2 text-center" title="فرضیات باز">
-              <span className="block text-zinc-300 font-black text-sm font-mono">{stats.assumptions || 0}</span>
-              <span className="text-[10px] text-zinc-400 font-medium">فرضیه</span>
+            <div className="p-2 text-center" title="فرضیات">
+              <span className="block text-white font-black text-xs sm:text-sm font-mono">{stats.assumptions || 0}</span>
+              <span className="text-[10px] text-zinc-400">فرضیات</span>
             </div>
-            <div className="p-2 text-center bg-amber-950/20" title="مجهولات رسمی">
-              <span className="block text-amber-400 font-black text-sm font-mono">{stats.unknowns || 0}</span>
-              <span className="text-[10px] text-amber-400/90 font-bold">مجهول</span>
+            <div className="p-2 text-center" title="مجهولات بحرانی">
+              <span className="block text-white font-black text-xs sm:text-sm font-mono">{stats.unknowns || 0}</span>
+              <span className="text-[10px] text-zinc-400">مجهولات</span>
             </div>
           </div>
         </div>
 
-        {/* Phase Transition Callout Button */}
-        {canGoNext && (
-          <div className="p-3 bg-blue-950/30 hairline-b text-center">
+        {/* 8-Phase Navigation Tree */}
+        <div className="flex-1 overflow-y-auto p-3 space-y-1">
+          <div className="px-2 py-1 text-[10px] font-mono text-zinc-400 uppercase tracking-wider">
+            مراحل هشت‌گانه خلق برند
+          </div>
+
+          {PHASES_DATA.map((phase) => {
+            const Icon = ICON_MAP[phase.icon] || Compass;
+            const isCurrent = currentPhase === phase.id;
+            const isCompleted = Boolean(completedPhases[phase.id]);
+            const isLocked = phase.id > currentPhase && !isCompleted;
+
+            return (
+              <button
+                key={phase.id}
+                disabled={isLocked}
+                onClick={() => {
+                  if (onSelectPhase) {
+                    onSelectPhase(phase.id);
+                  } else {
+                    onOpenDeliverable(phase.id);
+                  }
+                }}
+                className={`w-full p-2.5 rounded-xl text-right transition-all flex items-center justify-between gap-3 border ${
+                  isCurrent
+                    ? "bg-white text-black font-bold border-white shadow-sm"
+                    : isCompleted
+                    ? "bg-[#111111] hover:bg-[#161616] text-zinc-200 border-white/15"
+                    : "bg-transparent text-zinc-500 border-transparent hover:text-zinc-400 cursor-not-allowed"
+                }`}
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className={`p-1.5 rounded-lg shrink-0 ${
+                    isCurrent ? "bg-black text-white" : isCompleted ? "bg-white/10 text-white" : "text-zinc-600"
+                  }`}>
+                    <Icon className="w-4 h-4" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-xs font-bold truncate">{phase.title}</span>
+                    </div>
+                    <p className={`text-[10px] truncate ${isCurrent ? "text-zinc-700" : "text-zinc-400"}`}>
+                      {phase.subtitle}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="shrink-0">
+                  {isCompleted ? (
+                    <Check className={`w-4 h-4 stroke-[3] ${isCurrent ? "text-black" : "text-white"}`} />
+                  ) : isLocked ? (
+                    <Lock className="w-3.5 h-3.5 text-zinc-600" />
+                  ) : (
+                    <div className="w-2 h-2 rounded-full bg-black animate-pulse" />
+                  )}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Sidebar Footer Controls */}
+        <div className="p-3 border-t border-white/10 bg-[#0A0A0A] shrink-0 space-y-2">
+          {canGoNext && (
             <button
               onClick={onStartNextPhase}
-              className="w-full py-2.5 px-3 rounded-xl bg-white hover:bg-zinc-200 text-black text-xs font-black flex items-center justify-center gap-1.5 shadow-white-subtle transition-all active:scale-[0.98]"
+              className="w-full py-2.5 px-3 rounded-xl bg-white hover:bg-zinc-200 text-black text-xs font-black flex items-center justify-center gap-2 transition-all shadow-sm"
             >
               <span>ورود به فاز {currentPhase + 1}</span>
               <ArrowLeft className="w-4 h-4" />
             </button>
-          </div>
-        )}
+          )}
 
-        {/* Phases Roadmap Timeline (1 to 8) */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-2">
-          <div className="flex items-center justify-between text-[11px] font-bold text-zinc-400 px-1 mb-2 font-mono uppercase tracking-wider">
-            <span>نقشه راه مراحل ۸ گانه</span>
-            <span className="text-zinc-600">۱۰۰٪ پوشش</span>
-          </div>
+          <div className="flex items-center gap-1.5 pt-1">
+            <button
+              onClick={onOpenWiki}
+              className="flex-1 py-2 px-2.5 rounded-lg border border-white/10 hover:border-white/25 text-zinc-300 hover:text-white text-xs font-mono flex items-center justify-center gap-1.5 transition-colors"
+            >
+              <BookOpen className="w-3.5 h-3.5" />
+              <span>پایگاه دانش</span>
+            </button>
 
-          <div className="space-y-2 relative">
-            {PHASES_DATA.map((phase) => {
-              const Icon = ICON_MAP[phase.icon] || Compass;
-              const pId = phase.id;
+            <button
+              onClick={onOpenSettings}
+              className="py-2 px-2.5 rounded-lg border border-white/10 hover:border-white/25 text-zinc-300 hover:text-white text-xs font-mono flex items-center justify-center transition-colors"
+              title="تنظیمات"
+            >
+              <ShieldCheck className="w-3.5 h-3.5" />
+            </button>
 
-              const isCurrent = currentPhase === pId;
-              const isCompleted = completedPhases[pId];
-              const isUnlocked = isCompleted || isCurrent || completedPhases[pId - 1];
-
-              return (
-                <div
-                  key={pId}
-                  onClick={() => {
-                    if (isCompleted) {
-                      onOpenDeliverable(pId);
-                    } else if (isUnlocked && !isCurrent && pId === currentPhase + 1 && completedPhases[currentPhase]) {
-                      onStartNextPhase();
-                    }
-                  }}
-                  className={`p-3 rounded-xl border transition-all duration-200 relative ${
-                    isCurrent
-                      ? "bg-[#121217] border-blue-500/80 text-white shadow-cobalt-glow ring-1 ring-blue-500/40"
-                      : isCompleted
-                      ? "obsidian-surface text-zinc-200 cursor-pointer hover:border-white/20 hover:bg-[#121216]"
-                      : isUnlocked
-                      ? "bg-black/40 border-white/[0.05] text-zinc-400 cursor-pointer hover:bg-[#101014] hover:text-zinc-200"
-                      : "bg-transparent border-transparent text-zinc-600 opacity-40 cursor-not-allowed"
-                  }`}
-                >
-                  <div className="flex items-start gap-2.5">
-                    <div
-                      className={`mt-0.5 p-1.5 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
-                        isCurrent
-                          ? "bg-blue-600 text-white shadow-cobalt-sm"
-                          : isCompleted
-                          ? "bg-white/10 text-white"
-                          : isUnlocked
-                          ? "bg-zinc-800/80 text-zinc-400"
-                          : "bg-zinc-900 text-zinc-600"
-                      }`}
-                    >
-                      <Icon className="w-3.5 h-3.5" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between gap-1">
-                        <h3 className="text-xs font-bold truncate text-white">{phase.title}</h3>
-                        {isCompleted ? (
-                          <span className="inline-flex items-center gap-1 text-[10px] text-white bg-white/10 px-1.5 py-0.5 rounded-full font-mono">
-                            <CheckCircle2 className="w-3 h-3 text-blue-400" /> تایید
-                          </span>
-                        ) : isCurrent ? (
-                          <span className="inline-flex items-center gap-1 text-[10px] text-blue-300 bg-blue-500/20 border border-blue-500/30 px-1.5 py-0.5 rounded-full font-mono font-bold">
-                            فعال
-                          </span>
-                        ) : isUnlocked ? (
-                          <span className="inline-flex items-center gap-1 text-[10px] text-zinc-400 bg-zinc-800 px-1.5 py-0.5 rounded-full font-mono">
-                            آماده
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center gap-1 text-[10px] text-zinc-600">
-                            <Lock className="w-3 h-3" />
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-[11px] text-zinc-400 mt-1 line-clamp-2 leading-relaxed">
-                        {phase.description}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+            <button
+              onClick={onReset}
+              className="py-2 px-2.5 rounded-lg border border-white/10 hover:border-white/25 text-zinc-400 hover:text-white text-xs font-mono flex items-center justify-center transition-colors"
+              title="شروع مجدد از فاز ۱"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+            </button>
           </div>
         </div>
 
-        {/* Footer Actions */}
-        <div className="p-3.5 hairline-t bg-black/60 space-y-2">
-          <button
-            onClick={onOpenWiki}
-            className="w-full py-2.5 px-3 rounded-xl obsidian-card obsidian-card-hover text-zinc-200 hover:text-white text-xs font-bold flex items-center justify-center gap-2"
-          >
-            <BookOpen className="w-4 h-4 text-blue-400" />
-            <span>پایگاه دانش ۱۶۵ منبع</span>
-          </button>
-
-          <button
-            onClick={onReset}
-            className="w-full py-2 px-3 rounded-xl bg-transparent hover:bg-zinc-900/60 text-zinc-500 hover:text-zinc-300 border border-transparent hover:border-white/[0.06] text-[11px] font-mono flex items-center justify-center gap-1.5 transition-all"
-          >
-            <span>بازنشانی فرآیند از نقطه صفر</span>
-          </button>
-        </div>
       </aside>
     </>
   );
