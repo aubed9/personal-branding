@@ -354,4 +354,4 @@ export class PersistenceManager {
   }
 }
 
-export { sanitizeForPersistence, validateStateStructure, SCHEMA_VERSION };
+export { sanitizeForPersistence, validateStateStructure, SCHEMA_VERSION, STORAGE_KEY };
