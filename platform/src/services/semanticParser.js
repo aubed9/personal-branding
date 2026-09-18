@@ -16,16 +16,32 @@
 import { BUSINESS_TYPES_MAP, resolveBusinessType } from "../data/businessTaxonomy753.js";
 
 /**
- * Normalizes Persian string (unifies letters, converts half-spaces, collapses spaces)
+ * Converts Persian and Arabic numerals to standard Latin digits (0-9)
+ */
+export function convertPersianDigitsToEnglish(str) {
+  if (!str) return "";
+  const faDigits = "۰۱۲۳۴۵۶۷۸۹";
+  const arDigits = "٠١٢٣٤٥٦٧٨٩";
+  return String(str)
+    .replace(/[۰-۹]/g, d => faDigits.indexOf(d))
+    .replace(/[٠-٩]/g, d => arDigits.indexOf(d));
+}
+
+/**
+ * Normalizes Persian string (unifies letters, converts half-spaces, collapses spaces, handles Arabic glyphs and harakat)
  */
 export function normalizePersianText(text) {
   if (!text || typeof text !== "string") return "";
   return text
-    .replace(/[\u200c\u200b\u00a0]/g, " ")
+    .replace(/[\u200c\u200b\u00a0\uFEFF]/g, " ") // half spaces, zero-width spaces, BOM
     .replace(/ي/g, "ی")
     .replace(/ك/g, "ک")
     .replace(/ة/g, "ه")
-    .replace(/[ـ\r\n\t]/g, " ")
+    .replace(/[إأآا]/g, "ا")
+    .replace(/ؤ/g, "و")
+    .replace(/ئ/g, "ی")
+    .replace(/[\u064B-\u065F\u0670]/g, "") // tashkeel / harakat (fathe, zamme, tanvin, etc.)
+    .replace(/[ـ\r\n\t]/g, " ") // kashida elongation, newlines, tabs
     .replace(/\s+/g, " ")
     .trim()
     .toLowerCase();
@@ -44,14 +60,25 @@ export function condensePersianText(text) {
  */
 export function hasAnyTerm(text, terms) {
   if (!text || !Array.isArray(terms)) return false;
-  const padded = " " + text + " ";
+  const normText = normalizePersianText(text);
+  const withLatinDigits = convertPersianDigitsToEnglish(normText);
+  const padded = " " + normText + " ";
+  const paddedDigits = " " + withLatinDigits + " ";
+
   return terms.some(t => {
     if (!t) return false;
     const normT = normalizePersianText(t);
+    const normTDigits = convertPersianDigitsToEnglish(normT);
+
     if (normT.includes(" ")) {
-      return text.includes(normT);
+      return normText.includes(normT) || withLatinDigits.includes(normTDigits);
     }
-    return padded.includes(" " + normT + " ") || text.includes(normT);
+    return (
+      padded.includes(" " + normT + " ") ||
+      normText.includes(normT) ||
+      paddedDigits.includes(" " + normTDigits + " ") ||
+      withLatinDigits.includes(normTDigits)
+    );
   });
 }
 
@@ -246,9 +273,27 @@ export function parseFreeformSemanticSlots(text, currentContext = null) {
 
   // 1. Business Type Resolution (BT-xxxx)
   let businessTypeMatch = null;
-  const resolved = resolveBusinessType(text);
-  if (resolved && resolved.id) {
-    businessTypeMatch = resolved;
+  // Keyword spoofing defense (R17): If currentContext already has an established taxonomyId,
+  // do not let casual off-hand mentions of secondary goods/services flip the primary business type,
+  // unless user explicitly indicates an intent to change or pivot trade.
+  const isExplicitPivot = hasAnyTerm(norm, ["تغییر صنف", "تغییر شغل", "تغییر رسته", "پیووت", "شغل جدید", "برند جدید", "صنف جدید"]);
+  if (!currentContext || !currentContext.taxonomyId || isExplicitPivot) {
+    const resolved = resolveBusinessType(text);
+    if (resolved && resolved.id) {
+      businessTypeMatch = resolved;
+    }
+  } else {
+    businessTypeMatch = currentContext.businessType || {
+      id: currentContext.taxonomyId,
+      nameFa: currentContext.taxonomyTitleFa || currentContext.archetypeTitle || ""
+    };
+  }
+
+  // 1.1 Hybrid Business Detection (R17)
+  let isHybrid = false;
+  const hybridTokens = ["هم کافه", "هم رستوران", "هم فروشگاه", "هم انلاین", "هم آنلاین", "هم حضوری", "هم خدمات", "هم اموزش", "هم آموزش", "هم تولید", "چند منظوره", "هیبرید", "ترکیبی"];
+  if (hasAnyTerm(norm, hybridTokens)) {
+    isHybrid = true;
   }
 
   // 2. Customer Model Extraction (B2B / B2C / Hybrid)
@@ -269,7 +314,7 @@ export function parseFreeformSemanticSlots(text, currentContext = null) {
     scale = "SOLO";
   } else if (hasAnyTerm(norm, ["خرد", "۱ تا ۲ نفر", "۲ تا ۳ نفر", "۲ الی ۳ نفر", "زیر ۵ نفر", "مغازه کوچک", "۱-۲ نفر", "۲-۳ نفر", "۱ الی ۳ نفر"])) {
     scale = "MICRO";
-  } else if (hasAnyTerm(norm, ["کوچک", "۵ تا ۱۰ نفر", "۱۰ تا ۲۰ نفر", "تیم کوچک", "کارگاه کوچک", "۳ تا ۵ نفر", "۳ الی ۵ نفر", "زیر ۲۰ نفر", "زیر ۱۰ نفر"])) {
+  } else if (hasAnyTerm(norm, ["کوچک", "۵ تا ۱۰ نفر", "۵ الی ۱۰ نفر", "5 تا 10 نفر", "5 الی 10 نفر", "۵-۱۰ نفر", "5-10 نفر", "۱۰ تا ۲۰ نفر", "۱۰ الی ۲۰ نفر", "تیم کوچک", "کارگاه کوچک", "۳ تا ۵ نفر", "۳ الی ۵ نفر", "زیر ۲۰ نفر", "زیر ۱۰ نفر"])) {
     scale = "SMALL";
   } else if (hasAnyTerm(norm, ["متوسط", "۲۰ تا ۵۰ نفر", "۵۰ تا ۱۰۰ نفر", "شرکت در حال رشد", "کارگاه متوسط"])) {
     scale = "MEDIUM";
@@ -280,7 +325,7 @@ export function parseFreeformSemanticSlots(text, currentContext = null) {
   // 4. Channels Extraction
   let channels = null;
   const hasPhysical = hasAnyTerm(norm, ["مغازه", "فروشگاه فیزیکی", "حضوری", "محل کارگاه", "مکان ثابت", "تابلو خیابان", "مطب", "تعمیرگاه", "دفتر کار", "فروشگاه", "نمایشگاه"]);
-  const hasOnline = hasAnyTerm(norm, ["آنلاین", "اینترنتی", "سایت", "وبسایت", "پیج اینستاگرام", "اینستاگرام", "اپلیکیشن", "سامانه ابری", "فروشگاه اینترنتی", "مجازی"]);
+  const hasOnline = hasAnyTerm(norm, ["آنلاین", "اینترنتی", "سایت", "وبسایت", "پیج اینستاگرام", "اینستاگرام", "اپلیکیشن", "سامانه ابری", "فروشگاه اینترنتی", "مجازی", "saas", "پلتفرم", "نرم افزار ابری", "نرم‌افزار ابری", "cloud"]);
   const hasDirectB2B = hasAnyTerm(norm, ["مذاکره حضوری سازمانی", "ویزیتوری", "جلسات b2b", "مناقصات", "تیم فروش سازمانی", "فروش مستقیم سازمانی", "فروش مستقیم"]);
 
   if (hasPhysical && hasOnline) {
@@ -355,7 +400,8 @@ export function parseFreeformSemanticSlots(text, currentContext = null) {
     channels,
     geography,
     primaryBottleneck,
-    unmeasuredFields
+    unmeasuredFields,
+    isHybrid
   };
 }
 
@@ -390,6 +436,7 @@ export function parseSemanticInput(text, currentContext = null) {
     unknownActionItem: unknown.actionItem,
     hypothesis: hypothesis,
     extractedSlots: slots,
-    businessTypeMatch: slots.businessTypeMatch
+    businessTypeMatch: slots.businessTypeMatch,
+    isHybrid: slots.isHybrid
   };
 }

@@ -71,12 +71,15 @@ export class ContradictionEngine {
       }
     }
 
-    // Helper to gather all text from decisions and phase answers
+    // Helper to gather all text from decisions, facts, and phase answers
     const allDecisionTexts = decisions.map(d => (typeof d === "string" ? d : d.statement || "")).join(" ");
+    const allFactTexts = (projectState.facts || []).map(f => (typeof f === "string" ? f : f.statement || "")).join(" ");
+    const allP1NonModel = Object.entries(p1).filter(([k]) => !k.includes("customerModel")).map(([_, v]) => v).join(" ");
+    const allP2Text = Object.values(p2).join(" ");
     const allP8Text = Object.values(p8).join(" ");
     const allP5Text = Object.values(p5).join(" ");
     const allP3Text = Object.values(p3).join(" ");
-    const combinedDownstreamText = `${allDecisionTexts} ${allP3Text} ${allP5Text} ${allP8Text}`;
+    const combinedDownstreamText = `${allDecisionTexts} ${allFactTexts} ${allP1NonModel} ${allP2Text} ${allP3Text} ${allP5Text} ${allP8Text}`;
 
     // RULE 1: Customer Model Conflict (B2C vs B2B Enterprise RFP)
     // If P1 customer model is purely B2C / local walk-in retail, but later states enterprise tenders / RFPs / corporate procurement

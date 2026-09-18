@@ -165,18 +165,24 @@ export class MockProvider extends LLMProvider {
       return response;
     }
 
-    // Default mock response with structured format
-    return `تحلیل ورودی شما ثبت شد و در پرونده استراتژیک ذخیره گردید.
-
----DECISION---
-تصمیم استراتژیک: ورودی کاربر مورد تایید قرار گرفت.
----NEXT_QUESTION---
-آیا اطلاعات بیشتری برای تکمیل این بخش دارید؟
----OPTIONS---
-- بله، اطلاعات تکمیلی دارم
-- خیر، به مرحله بعد برویم
-- نیاز به بررسی بیشتر دارم
-- نمی‌دانم`;
+    // Default mock response with structured JSON format
+    return JSON.stringify({
+      analysisSummary: "تحلیل ورودی شما ثبت شد و در پرونده استراتژیک ذخیره گردید.",
+      extractedDecision: "تصمیم استراتژیک: ورودی کاربر مورد تایید قرار گرفت.",
+      nextQuestion: {
+        id: `mock_q_${this.callCount}`,
+        title: "پرسش تکمیلی استراتژیک",
+        text: "آیا اطلاعات بیشتری برای تکمیل این بخش دارید؟",
+        whyItMatters: "شفاف‌سازی متغیرهای بنیادین برند",
+        options: [
+          { id: "opt_1", label: "بله، اطلاعات تکمیلی دارم", detail: "افزودن جزئیات عملیاتی" },
+          { id: "opt_2", label: "خیر، به مرحله بعد برویم", detail: "تایید و ادامه مسیر" },
+          { id: "opt_3", label: "نیاز به بررسی بیشتر دارم", detail: "ثبت به عنوان موضوع باز" },
+          { id: "opt_4", label: "نمی‌دانم", detail: "ثبت مجهول رسمی" }
+        ],
+        allowCustomAnswer: true
+      }
+    }, null, 2);
   }
 
   getCallLog() {
