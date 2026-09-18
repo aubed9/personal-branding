@@ -807,7 +807,16 @@ export class OrchestratorEngine {
       md += `## ${sec.title}\n\n`;
       if (sec.content && typeof sec.content === "object") {
         Object.entries(sec.content).forEach(([k, v]) => {
-          md += `- **${k}:** ${v}\n`;
+          let tag = "[FACT]";
+          const vStr = String(v);
+          if (vStr.includes("[فرضیه") || vStr.includes("مجهول رسمی") || vStr.includes("UNCERTAINTY")) {
+            tag = "[HYPOTHESIS]";
+          } else if (k.includes("کد") || k.includes("شناسه") || k.includes("آرکی‌تایپ") || k.includes("۱۵ محور")) {
+            tag = "[BENCHMARK]";
+          } else if (k.includes("تصمیم") || k.includes("استراتژی")) {
+            tag = "[DECISION]";
+          }
+          md += `- ${tag} **${k}:** ${v}\n`;
         });
         md += `\n`;
       }
@@ -816,14 +825,15 @@ export class OrchestratorEngine {
       }
       if (Array.isArray(sec.checklist)) {
         sec.checklist.forEach(chk => {
-          md += `- [ ] ${chk}\n`;
+          const tag = String(chk).includes("مجهول") || String(chk).includes("فرضیه") ? "[HYPOTHESIS]" : "[FACT]";
+          md += `- [ ] ${tag} ${chk}\n`;
         });
         md += `\n`;
       }
       if (Array.isArray(sec.formulas)) {
         md += `### فرمول‌های محاسباتی:\n`;
         sec.formulas.forEach(f => {
-          md += `- **${f.name}:** \`${f.formula}\` — *${f.description}*\n`;
+          md += `- [FORMULA] **${f.name}:** \`${f.formula}\` — *${f.description}*\n`;
         });
         md += `\n`;
       }
@@ -832,17 +842,34 @@ export class OrchestratorEngine {
         md += `| شاخص | فرمول / مبنا | هدف مطلوب (سبز) | هشدار (زرد) | بحران (قرمز) |\n`;
         md += `|---|---|---|---|---|\n`;
         sec.kpis.forEach(k => {
-          md += `| ${k.metric} | ${k.formula} | ${k.green} | ${k.yellow} | ${k.red} |\n`;
+          md += `| [BENCHMARK] ${k.metric} | ${k.formula} | ${k.green} | ${k.yellow} | ${k.red} |\n`;
         });
         md += `\n`;
       }
       if (Array.isArray(sec.items)) {
         sec.items.forEach(it => {
-          md += `- ${it}\n`;
+          let tag = "[BENCHMARK]";
+          const itStr = String(it);
+          if (itStr.includes("[فرضیه") || itStr.includes("مجهول")) {
+            tag = "[HYPOTHESIS]";
+          } else if (itStr.includes("دیدگاه") || itStr.includes("بنیان‌گذار") || itStr.includes("پاسخ")) {
+            tag = "[FACT]";
+          } else if (itStr.includes("تصمیم") || itStr.includes("انتخاب")) {
+            tag = "[DECISION]";
+          }
+          md += `- ${tag} ${it}\n`;
         });
       }
       md += `\n`;
     });
+
+    md += `---\n\n`;
+    md += `### راهنمای منشأ و استناد داده‌ها (Data Provenance & Verification):\n`;
+    md += `- \`[FACT]\` حقایق و داده‌های قطعی ثبت‌شده بر مبنای پاسخ‌های رسمی بنیان‌گذار در فازها\n`;
+    md += `- \`[DECISION]\` تصمیم‌ها و مصوبات راهبردی انتخاب‌شده در ایستگاه‌های تصمیم‌گیری\n`;
+    md += `- \`[FORMULA]\` روابط ریاضی، شاخص‌ها و محاسبات اقتصاد واحد و نقطه سربه‌سر\n`;
+    md += `- \`[BENCHMARK]\` چارچوب‌ها و الگوهای تخصصی طبقه‌بندی جامع ۷۵۳ کسب‌وکار و ۳۱ صنعت کلان\n`;
+    md += `- \`[HYPOTHESIS]\` فرضیات و مجهولات رسمی نیازمند سنجش میدانی در چک‌لیست حقیقت‌یابی\n\n`;
 
     return md;
   }

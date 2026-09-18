@@ -31,19 +31,19 @@ export class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen bg-slate-900 text-slate-100 flex items-center justify-center p-6" dir="rtl">
-          <div className="max-w-lg w-full bg-slate-800 border border-rose-500/30 rounded-2xl p-8 shadow-2xl space-y-6">
-            <div className="flex items-center space-x-3 space-x-reverse text-rose-400">
-              <span className="text-3xl">⚠️</span>
-              <h2 className="text-xl font-bold">خطایی در نمایش صفحه رخ داد</h2>
+        <div className="min-h-screen bg-black text-white flex items-center justify-center p-6" dir="rtl">
+          <div className="max-w-lg w-full bg-[#0D0D0D] border border-white/20 rounded-xl p-8 space-y-6">
+            <div className="flex items-center space-x-3 space-x-reverse text-white">
+              <span className="text-2xl">⚠️</span>
+              <h2 className="text-lg font-bold">خطایی در نمایش بخش رخ داد</h2>
             </div>
 
-            <p className="text-sm text-slate-300 leading-relaxed">
-              متأسفانه در اجرای این بخش از سامانه خطایی رخ داده است. داده‌های استراتژیک و پیشرفت پرونده شما در حافظه سیستم امن است.
+            <p className="text-sm text-zinc-400 leading-relaxed">
+              در اجرای این نما خطایی شناسایی شد. اطلاعات ثبت‌شده در حافظه ایمن است و آسیبی ندیده است.
             </p>
 
             {this.state.error && (
-              <div className="bg-slate-950/70 border border-slate-700/50 rounded-lg p-3 text-xs font-mono text-rose-300 overflow-x-auto max-h-36">
+              <div className="bg-[#050505] border border-white/10 rounded-lg p-3 text-xs font-mono text-zinc-300 overflow-x-auto max-h-36">
                 {this.state.error.toString()}
               </div>
             )}
@@ -51,15 +51,15 @@ export class ErrorBoundary extends React.Component {
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
               <button
                 onClick={this.handleReset}
-                className="flex-1 py-2.5 px-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-sm font-semibold transition"
+                className="flex-1 py-2.5 px-4 bg-white text-black hover:bg-zinc-200 rounded-lg text-sm font-semibold transition"
               >
                 تلاش مجدد
               </button>
               <button
                 onClick={this.handleReload}
-                className="flex-1 py-2.5 px-4 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-xl text-sm font-semibold transition"
+                className="flex-1 py-2.5 px-4 bg-transparent border border-white/30 hover:border-white text-white rounded-lg text-sm font-semibold transition"
               >
-                بارگذاری مجدد صفحه
+                بارگذاری مجدد
               </button>
             </div>
           </div>
