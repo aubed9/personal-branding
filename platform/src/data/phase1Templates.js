@@ -92,6 +92,7 @@ export const INITIAL_QUESTIONS = [
       { text: "کافه، رستری و صنعت مهمان‌نوازی (کافی‌شاپ، رستری دانه قهوه، کافه‌رستوران و قنادی)", value: "hospitality_cafe_roastery", icon: "Coffee", badge: "پذیرایی و رستری" },
       { text: "کارخانه صنعتی و قالب‌سازی (تولید قطعات صنعتی، قالب‌سازی دقیق و ماشین‌کاری B2B)", value: "industrial_manufacturing", icon: "Factory", badge: "تولید صنعتی B2B" },
       { text: "نرم‌افزار ابری و فناوری B2B (حسابداری ابری SaaS، سامانه مودیان، ERP و پلتفرم شرکتی)", value: "b2b_saas_software", icon: "Code", badge: "نرم‌افزار ابری SaaS" },
+      { text: "سلامت، درمان، مراقبت و کلینیک‌های تخصصی و زیبایی", value: "health_beauty_wellness", icon: "Heart", badge: "سلامت و زیبایی" },
       { text: "برند شخصی، کریتور و مربی‌گری (کوچینگ تخصصی، آموزش، مشاوره فردی و تولید محتوا)", value: "creator_coaching_personal", icon: "Briefcase", badge: "برند شخصی و آموزش" },
       { text: "آنلاین‌شاپ یا فروشگاه فیزیکی خرده‌فروشی (پوشاک، اکسسوری، کالای مصرفی)", value: "ecommerce_products", icon: "ShoppingBag", badge: "فروش کالا" }
     ]

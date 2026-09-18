@@ -138,7 +138,7 @@ export function getAdaptivePhase2Questions(context) {
         text: "کدام اقدام راهبردی، مرکز شما را به انتخاب اول و بدون تردید رانندگان در این منطقه بدل می‌کند؟",
         options: [
           { text: "شکستن پلمپ اصالت روغن و قطعات دقیقاً در برابر چشمان مالک خودرو همراه با کارت ضمانت کتبی", value: "live_unsealing_guarantee", icon: "ShieldCheck", badge: "شکستن پلمپ در حضور مشتری" },
-          { text: "تضمین تحویل در زمان مشخص (مثلاً تعویض روغن زیر ۲۰ دقیقه) همراه با سالن انتظار مدرن و تمیز", value: "speed_guarantee_modern_lounge", icon: "Zap", badge: "سرعت تضمینی + سالن مدرن" },
+          { text: "تضمین تحویل در زمان مشخص (مثلاً تعویض روغن زیر ۲۰ دقیقه) [هدف عملیاتی] همراه با سالن انتظار مدرن و تمیز", value: "speed_guarantee_modern_lounge", icon: "Zap", badge: "سرعت تضمینی + سالن مدرن" },
           { text: "ارائه چک‌لیست رایگان بازرسی ۱۰ نقطه‌ای سلامت فنی خودرو در هر نوبت مراجعه", value: "free_10point_inspection", icon: "CheckCircle", badge: "چک‌لیست رایگان سلامت" },
           { text: "طرح اشتراک فصلی نگهداری خودرو با تخفیف شستشو و تعویض رایگان مایعات ضروری", value: "seasonal_maintenance_subscription", icon: "Sparkles", badge: "اشتراک نگهداری فصلی" }
         ]
@@ -146,13 +146,97 @@ export function getAdaptivePhase2Questions(context) {
     ];
   }
 
+  // 1B. Local Building, Facility & Technical Maintenance Services (Locksmith, Plumbing, Elevator, Facility Care)
+  const isBeautyLocal =
+    arch === "HEALTH_BEAUTY_WELLNESS" ||
+    context.industryCode === "IND-04" ||
+    context.industryId === "IND-04" ||
+    (context.taxonomyTitleFa && (context.taxonomyTitleFa.includes("زیبایی") || context.taxonomyTitleFa.includes("آرایش") || context.taxonomyTitleFa.includes("پوست") || context.taxonomyTitleFa.includes("کلینیک") || context.taxonomyTitleFa.includes("سالن"))) ||
+    overlays.includes("HEALTHCARE_COMPLIANCE");
+
+  if (arch === "LOCAL_SERVICE" && !isAutomotive && !isBeautyLocal) {
+    const tradeName = context.taxonomyTitleFa || "خدمات فنی و ساختمانی محلی";
+    return [
+      {
+        id: "p2_step0_competitors",
+        step: 0,
+        title: `تحلیل فضای رقابتی در صنف ${tradeName}`,
+        text: `به **فاز ۲: هوش بازار و تحلیل محیط رقابتی (${tradeName})** خوش آمدید! 🔍\n\nدر محدوده فعالیت شما، مشتریان و ساکنان در حال حاضر این خدمات را از چه منابعی دریافت می‌کنند؟`,
+        options: [
+          { text: "سرویس‌کاران سنتی و تجربی محلی بدون گواهینامه معتبر، نرخ شفاف و فاکتور رسمی", value: "traditional_local_handymen", icon: "Users", badge: "سرویس‌کاران سنتی محلی" },
+          { text: "اپلیکیشن‌ها و واسطه‌های آنلاین خدماتی با پورسانت‌های بالا و اعزام افراد ناآشنا", value: "online_aggregator_apps", icon: "Building", badge: "واسطه‌های آنلاین" },
+          { text: "اقدام خودسرانه یا به تعویق انداختن سرویس تا زمان خرابی کامل و ایجاد خسارت سنگین", value: "delayed_maintenance_risk", icon: "HelpCircle", badge: "تعویق سرویس و ریسک" },
+          { text: "شرکت‌های تخصصی بزرگ صنعتی با هزینه‌های بالا که به کارهای خرد مراجعه نمی‌کنند", value: "corporate_heavy_contractors", icon: "Compass", badge: "پیمانکاران بزرگ گران" }
+        ]
+      },
+      {
+        id: "p2_step1_customer_pain",
+        step: 1,
+        title: "شناسایی اصلی‌ترین ترس و نارضایتی مراجعان خدمات فنی",
+        text: "مشتریان و مدیران ساختمان از کدام معضلات سرویس‌کاران فعلی بیشترین نارضایتی را دارند؟",
+        options: [
+          { text: "بدقولی در زمان حضور، تاخیرهای طولانی و معطل کردن مشتری در طول روز", value: "chronic_delays_broken_promises", icon: "Clock", badge: "معطلی و بدقولی" },
+          { text: "استفاده از قطعات یدکی بی‌کیفیت یا نامطمئن و بازگشت مجدد نقص پس از چند روز", value: "faulty_parts_repeated_failure", icon: "AlertTriangle", badge: "خرابی مجدد قطعات" },
+          { text: "قیمت‌های سلیقه‌ای و غافلگیرکننده پس از باز کردن دستگاه بدون هماهنگی قبلی", value: "opaque_inflated_pricing", icon: "DollarSign", badge: "قیمت‌های غیرشفاف" },
+          { text: "کثیف‌کاری در محیط، عدم رعایت نظافت و رفتارهای غیرحرفه‌ای و فاقد ادب", value: "messy_unprofessional_conduct", icon: "UserX", badge: "برخورد و محیط نامناسب" }
+        ]
+      },
+      {
+        id: "p2_step2_pricing_models",
+        step: 2,
+        title: "تحلیل الگوهای قیمت‌گذاری و تسویه هزینه خدمات",
+        text: "کدام ساختار تعرفه، بالاترین حس آرامش و رضایت را برای مشتریان شما ایجاد می‌کند؟",
+        options: [
+          { text: "تعرفه شفاف و مصوب همراه با اعلام قطعی هزینه اجرت و قطعه پیش از آغاز کار", value: "transparent_official_estimate", icon: "CheckCircle", badge: "اعلام شفاف قبل از کار" },
+          { text: "قراردادهای اشتراک دوره‌ای و بازرسی منظم پیشگیرانه ساختمان با تخفیف ثابت", value: "preventative_periodic_contracts", icon: "Layers", badge: "اشتراک دوره‌ای پیشگیرانه" },
+          { text: "تعرفه اقتصادی رقابتی برای کارهای جزئی و خدمات اورژانسی در محدوده محله", value: "economy_emergency_rate", icon: "TrendingDown", badge: "اقتصادی اورژانسی" },
+          { text: "خدمات پریمیوم با تامین قطعات اصلی با گارانتی تعویض کتبی و پشتیبانی شبانه‌روزی", value: "premium_guaranteed_parts_service", icon: "Crown", badge: "پریمیوم با گارانتی تعویض" }
+        ]
+      },
+      {
+        id: "p2_step3_primary_channel",
+        step: 3,
+        title: "شناسایی موثرترین کانال جذب مشتریان محلی و ساختمانی",
+        text: "ساکنان، مالکان و مدیران ساختمان شما را از کدام کانال‌ها پیدا می‌کنند؟",
+        options: [
+          { text: "حضور قوی در نقشه‌های مسیریابی (نشان، بلد، گوگل مپ) و سئوی جستجوی محلی محله", value: "local_maps_search_seo", icon: "MapPin", badge: "نقشه‌های محلی و مپ" },
+          { text: "معرفی دهان‌به‌دهان ساکنان راضی و توصیه‌های مدیران مجتمع‌های همسایه", value: "building_manager_word_of_mouth", icon: "Users", badge: "توصیه مدیران ساختمان" },
+          { text: "برچسب‌های استاندارد تمیز با شماره تماس مستقیم و شناسه خدمت روی تاسیسات", value: "equipment_service_stickers", icon: "Search", badge: "برچسب استاندارد تاسیسات" },
+          { text: "اینستاگرام یا پیام‌رسان‌های محلی با ویدیوهای آموزشی پیشگیری از خرابی", value: "educational_local_content", icon: "Instagram", badge: "ویدیوهای آموزشی پیشگیری" }
+        ]
+      },
+      {
+        id: "p2_step4_golden_opportunity",
+        step: 4,
+        title: "کشف فرصت طلایی تمایز و تبدیل شدن به مرجع خدمات فنی",
+        text: "کدام تعهد حرفه‌ای، مرکز شما را به شماره تلفن اول و مطمئن اهالی منطقه تبدیل می‌کند؟",
+        options: [
+          { text: "تضمین کتبی کیفیت کار با تعهد رفع عیب مجدد رایگان تا ۶ ماه [فرضیه استراتژیک]", value: "six_month_free_rework_warranty", icon: "ShieldCheck", badge: "گارانتی ۶ ماهه رفع عیب" },
+          { text: "تعهد حضور سریع در محل کارفرما در کمتر از ۴۵ دقیقه برای خدمات اضطراری [هدف عملیاتی]", value: "rapid_45min_dispatch", icon: "Zap", badge: "اعزام زیر ۴۵ دقیقه" },
+          { text: "ارائه فاکتور رسمی دقیق با تفکیک اجرت، شناسه اصالت قطعات و مهر معتبر", value: "itemized_official_invoicing", icon: "FileText", badge: "فاکتور رسمی تفکیک‌شده" },
+          { text: "بسته‌بندی و تحویل کامل داغی قطعات فرسوده به مشتری همراه با تست سلامت قطعه جدید", value: "transparent_parts_return_testing", icon: "HeartHandshake", badge: "تحویل قطعات فرسوده و تست" }
+        ]
+      }
+    ];
+  }
+
   // 2. Specialty Coffee Roastery & Cafe Hospitality
-  if (
+  const isSpecialtyCafe =
+    (context.industryCode === "IND-03" || context.industryId === "IND-03" || arch === "RESTAURANT_CAFE_HOSPITALITY") &&
+    (context.taxonomyId === "BT-0066" ||
+     context.taxonomyId === "BT-0067" ||
+     (context.taxonomyTitleFa && (context.taxonomyTitleFa.includes("کافه") || context.taxonomyTitleFa.includes("قهوه") || context.taxonomyTitleFa.includes("رستری"))) ||
+     (context.archetypeTitle && (context.archetypeTitle.includes("کافه") || context.archetypeTitle.includes("قهوه") || context.archetypeTitle.includes("رستری"))) ||
+     (context.keywords && (context.keywords.includes("قهوه") || context.keywords.includes("رستری"))));
+
+  const isDiningRestaurant =
     arch === "RESTAURANT_CAFE_HOSPITALITY" ||
-    context.archetypeTitle?.includes("کافه") ||
-    context.archetypeTitle?.includes("پذیرایی") ||
-    overlays.includes("FOOD_SAFETY_REGULATION")
-  ) {
+    context.industryCode === "IND-03" ||
+    context.industryId === "IND-03" ||
+    overlays.includes("FOOD_SAFETY_REGULATION") ||
+    (context.archetypeTitle && (context.archetypeTitle.includes("رستوران") || context.archetypeTitle.includes("غذا") || context.archetypeTitle.includes("پذیرایی")));
+
+  if (isSpecialtyCafe) {
     return [
       {
         id: "p2_step0_competitors",
@@ -208,22 +292,99 @@ export function getAdaptivePhase2Questions(context) {
         title: "کشف فرصت طلایی تمایز در صنعت کافه و قهوه",
         text: "کدام پیشنهاد منحصربه‌فرد، کافه شما را به پاتوق محبوب و ماندگار با مراجعان تکراری تبدیل می‌کند؟",
         options: [
-          { text: "درج شفاف تاریخ برشته‌کاری (Roast Date)، ارتفاع مزرعه و شناسنامه کامل ژنتیکی روی هر بسته", value: "roast_date_transparency_passport", icon: "ShieldCheck", badge: "شناسنامه مزرعه و تاریخ رست" },
+          { text: "درج شفاف تاریخ برشته‌کاری (Roast Date)، ارتفاع مزرعه و شناسنامه کامل ژنتیکی روی هر بسته [فرضیه استراتژیک]", value: "roast_date_transparency_passport", icon: "ShieldCheck", badge: "شناسنامه مزرعه و تاریخ رست" },
           { text: "اتمسفر بدون دود با تفکیک هوشمند فضاهای کاری/مطالعه آرام از سالن گپ و دورهمی دوستانه", value: "smokefree_coworking_quiet_zones", icon: "Sparkles", badge: "محیط بدون دود و آرام" },
-          { text: "طراحی پروفایل‌های طعمی اختصاصی (Signature Blends) غیرقابل تقلید برای امضای کافه", value: "signature_taste_profiles", icon: "Award", badge: "طعم‌های امضادار انحصاری" },
+          { text: "طراحی پروفایل‌های طعمی اختصاصی (Signature Blends) غیرقابل تقلید برای امضای کافه [هدف کیفی]", value: "signature_taste_profiles", icon: "Award", badge: "طعم‌های امضادار انحصاری" },
           { text: "آموزش گام‌به‌گام و رایگان تکنیک‌های دم‌آوری خانگی به مشتریان در ازای هر بار خرید دانه", value: "home_brewing_workshops", icon: "HeartHandshake", badge: "آموزش دم‌آوری خانگی" }
         ]
       }
     ];
   }
 
+  if (isDiningRestaurant) {
+    const tradeName = context.taxonomyTitleFa || "رستوران و غذاخوری";
+    return [
+      {
+        id: "p2_step0_competitors",
+        step: 0,
+        title: `تحلیل فضای رقابتی در صنف ${tradeName}`,
+        text: `به **فاز ۲: هوش بازار و رفتار مشتریان غذا و مهمان‌نوازی (${tradeName})** خوش آمدید! 🔍\n\nعلاقه‌مندان به صرف غذا و سفارشات غذایی در این منطقه، نیاز خود را با کدام گزینه‌ها تامین می‌کنند؟`,
+        options: [
+          { text: "رستوران‌های سنتی و چلوکبابی‌های قدیمی با منوی تکراری، دکور فرسوده و افت کیفیت", value: "legacy_traditional_kebab_restaurants", icon: "Building", badge: "رستوران‌های سنتی قدیمی" },
+          { text: "فست‌فودها و کترینگ‌های زنجیره‌ای با روغن‌های چندبارمصرف و قیمت‌های اقتصادی", value: "chain_fastfood_caterings", icon: "ShoppingBag", badge: "زنجیره‌ای و کترینگ اقتصادی" },
+          { text: "رستوران‌های لوکس و پرادعا با قیمت‌های نجومی و تمرکز صرف بر شوآف دکوراسیون", value: "luxury_showcase_dining", icon: "Crown", badge: "رستوران‌های لوکس گران" },
+          { text: "غذاهای خانگی و تهیه غذاهای محلی بدون تاییدیه بهداشتی و بدون فضای سالن", value: "unregulated_home_kitchens", icon: "HelpCircle", badge: "تهیه غذاهای غیررسمی" }
+        ]
+      },
+      {
+        id: "p2_step1_customer_pain",
+        step: 1,
+        title: "شناسایی اصلی‌ترین نارضایتی مشتریان رستوران و غذاخوری",
+        text: "مهم‌ترین اصطکاک و دافعه‌ای که مشتریان از رستوران‌های فعلی بازار تجربه می‌کنند چیست؟",
+        options: [
+          { text: "افت کیفیت گوشت و برنج، ثبات نداشتن طعم در دفعات بعدی و استفاده از مواد اولیه نامرغوب", value: "inconsistent_food_quality_stale_meat", icon: "AlertTriangle", badge: "افت کیفیت و طعم ناپایدار" },
+          { text: "بهداشت نامطمئن آشپزخانه، بوی نامطبوع در سالن، ظروف کدر و عدم رعایت نظافت پرسنل", value: "unhygienic_kitchen_ambiance", icon: "UserX", badge: "بهداشت نامطمئن" },
+          { text: "تاخیر زیاد در آماده‌سازی، رسیدن غذای سرد و بسته‌بندی نشتی‌دار در سفارشات ارسالی", value: "slow_fulfillment_cold_delivery", icon: "Clock", badge: "غذای سرد و تاخیر پیک" },
+          { text: "قیمت‌گذاری غیرمنصفانه، حجم کم پرس غذا و فاکتورهای غافلگیرکننده با حق سرویس بالا", value: "overpriced_small_portions_fees", icon: "DollarSign", badge: "قیمت بالا و حجم اندک" }
+        ]
+      },
+      {
+        id: "p2_step2_pricing_models",
+        step: 2,
+        title: "تحلیل ترکیب سبد سفارش و الگوی درآمدی رستوران",
+        text: "ترکیب فروش و تعرفه‌گذاری در منوی شما چگونه بیشترین سودآوری و استقبال را به همراه دارد؟",
+        options: [
+          { text: "ترکیب بهینه سالن‌پذیری باکیفیت + سفارشات بیرون‌بر با بسته‌بندی عایق حرارتی اختصاصی", value: "balanced_dinein_insulated_takeaway", icon: "DollarSign", badge: "سالن و بیرون‌بر بهینه" },
+          { text: "سینی‌های چندنفره خانوادگی و اقتصادی با ترکیب کباب‌ها و غذاهای محبوب و ارزش خرید بالا", value: "family_platter_value_bundles", icon: "Layers", badge: "سینی‌های اقتصادی خانواده" },
+          { text: "قراردادهای تامین ناهار پرسنلی برای شرکت‌ها و سازمان‌های منطقه با تسویه اعتباری منظم", value: "corporate_catering_b2b_contracts", icon: "Repeat", badge: "کترینگ اداری B2B" },
+          { text: "منوی تشریفاتی پریمیوم با گوشت تازه گوسفندی روز، برنج صددرصد ایرانی و سرو VIP", value: "premium_iranian_gourmet_menu", icon: "Crown", badge: "منوی اصیل پریمیوم VIP" }
+        ]
+      },
+      {
+        id: "p2_step3_primary_channel",
+        step: 3,
+        title: "شناسایی موثرترین کانال جذب مشتریان جدید و سفارشات",
+        text: "مشتریان وفادار رستوران و سفارش‌دهندگان غذا از کدام مسیرها شما را انتخاب می‌کنند؟",
+        options: [
+          { text: "موقعیت محلی عالی، تابلو و نمای دعوت‌کننده خیابان و عطر مطبوع غذای اصیل", value: "prime_street_location_facade", icon: "MapPin", badge: "موقعیت خیابان و نما" },
+          { text: "اینستاگرام با ویدیوهای شفاف از طبخ، سیخ‌گیری گوشت تازه و بهداشت مثال‌زدنی آشپزخانه", value: "behind_kitchen_craft_instagram", icon: "Instagram", badge: "پشت صحنه آشپزخانه" },
+          { text: "پلتفرم‌های سفارش آنلاین (اسنپ‌فود) با رتبه و امتیاز بالا و پاسخگویی محترمانه به نظرات", value: "snappfood_high_ratings_reviews", icon: "Star", badge: "پلتفرم‌های سفارش آنلاین" },
+          { text: "معرفی دهان‌به‌دهان خانواده‌ها و مهمانی‌هایی که به دلیل طعم و پذیرش محترمانه مشتری دائم شدند", value: "family_word_of_mouth_loyalty", icon: "Users", badge: "معرفی خانواده‌ها و مهمانان" }
+        ]
+      },
+      {
+        id: "p2_step4_golden_opportunity",
+        step: 4,
+        title: "کشف فرصت طلایی تمایز در صنعت غذا و پذیرایی",
+        text: "کدام پیشنهاد منحصربه‌فرد، رستوران شما را به پاتوق محبوب خانواده‌ها و سازمان‌ها تبدیل می‌کند؟",
+        options: [
+          { text: "تضمین ۱۰۰٪ استفاده از گوشت گرم کشتار روز و برنج ممتاز ایرانی همراه با تست طعم [فرضیه استراتژیک]", value: "fresh_meat_iranian_rice_guarantee", icon: "ShieldCheck", badge: "ضمانت گوشت گرم و برنج اصیل" },
+          { text: "بسته‌بندی عایق حرارتی ۳ لایه که غذا را تا ۴۵ دقیقه کاملاً داغ و تازه نگه می‌دارد [هدف عملیاتی]", value: "triple_layer_hot_insulation", icon: "Box", badge: "بسته‌بندی داغ ۳ لایه" },
+          { text: "طراحی رسپی‌ها و چاشنی‌های دست‌ساز انحصاری که در هیچ کجای دیگر قابل تجربه نیست", value: "exclusive_secret_sauces_recipes", icon: "Award", badge: "چاشنی‌های دست‌ساز اختصاصی" },
+          { text: "پروتکل جبران فوری بدون بحث (تعویض فوری غذا + دسر رایگان هدیه سرآشپز در صورت کوچک‌ترین نارضایتی)", value: "no_questions_instant_dish_replacement", icon: "HeartHandshake", badge: "تعویض آنی غذا + دسر هدیه" }
+        ]
+      }
+    ];
+  }
+
   // 3. Heavy Industrial B2B & Parts/Mold Manufacturing Factory
+  const isMachiningTooling =
+    context.industryCode === "IND-08" ||
+    context.industryId === "IND-08" ||
+    (context.taxonomyTitleFa && (context.taxonomyTitleFa.includes("قالب") || context.taxonomyTitleFa.includes("تراش") || context.taxonomyTitleFa.includes("ماشین‌کاری") || context.taxonomyTitleFa.includes("قطعه‌سازی") || context.taxonomyTitleFa.includes("سی‌ان‌سی") || context.taxonomyTitleFa.includes("متالورژی")));
+
+  const isTextileApparel =
+    context.industryCode === "IND-25" ||
+    context.industryId === "IND-25" ||
+    (context.taxonomyTitleFa && (context.taxonomyTitleFa.includes("نساجی") || context.taxonomyTitleFa.includes("پوشاک") || context.taxonomyTitleFa.includes("تریکو") || context.taxonomyTitleFa.includes("بافت") || context.taxonomyTitleFa.includes("پارچه") || context.taxonomyTitleFa.includes("خیاطی") || context.taxonomyTitleFa.includes("دوخت")));
+
   if (
-    arch === "MANUFACTURER" ||
-    context.archetypeTitle?.includes("تولید") ||
-    context.archetypeTitle?.includes("کارخانه") ||
-    overlays.includes("HEAVY_CAPEX_SUPPLY_CHAIN") ||
-    overlays.includes("ISO_STANDARDS_COMPLIANCE")
+    (arch === "MANUFACTURER" ||
+     context.archetypeTitle?.includes("تولید") ||
+     context.archetypeTitle?.includes("کارخانه") ||
+     overlays.includes("HEAVY_CAPEX_SUPPLY_CHAIN") ||
+     overlays.includes("ISO_STANDARDS_COMPLIANCE")) &&
+    isMachiningTooling
   ) {
     return [
       {
@@ -244,7 +405,7 @@ export function getAdaptivePhase2Questions(context) {
         title: "شناسایی کشنده‌ترین ریسک‌ها و دردهای کارفرمایان صنعتی",
         text: "مدیران تولید، فنی و تدارکات کارخانجات بزرگ از کدام معضلات قطعه‌سازان بیشترین ضربه مالی را می‌خورند؟",
         options: [
-          { text: "خطای ابعادی و انحراف تلرانسی میکرونی که باعث پس‌زدگی در کنترل کیفیت و توقف خط مونتاژ می‌شود", value: "tolerance_deviation_line_stops", icon: "AlertTriangle", badge: "توقف خط مونتاژ کارفرما" },
+          { text: "خطای ابعادی و انحراف تلرانسی که باعث پس‌زدگی در کنترل کیفیت و توقف خط مونتاژ می‌شود", value: "tolerance_deviation_line_stops", icon: "AlertTriangle", badge: "توقف خط مونتاژ کارفرما" },
           { text: "تاخیرهای مزمن در موعد تحویل و بدقولی‌های مداوم که برنامه زمانی کل کارخانه خریدار را فلج می‌کند", value: "chronic_delivery_leadtime_delays", icon: "Clock", badge: "تاخیر در زمان تحویل" },
           { text: "نبود شناسنامه آنالیز مواد (MTR)، فقدان دستگاه اندازه‌گیری دقیق (CMM) و نبود مدارک استاندارد", value: "missing_mtr_qc_inspection", icon: "FileText", badge: "فقدان شناسنامه متریال و QC" },
           { text: "نوسان مداوم قیمت، شرایط پرداخت غیرمنعطف و شانه خالی کردن از گارانتی عیوب پنهان قطعه یا قالب", value: "unstable_terms_no_defect_warranty", icon: "DollarSign", badge: "شانه خالی کردن از گارانتی" }
@@ -280,22 +441,168 @@ export function getAdaptivePhase2Questions(context) {
         title: "کشف فرصت طلایی تمایز غیرقابل رقابت صنعتی",
         text: "کدام مزیت سخت‌افزاری و حقوقی، کارخانه شما را به شریک استراتژیک و بدون جانشین صنایع تبدیل می‌کند؟",
         options: [
-          { text: "تضمین کتبی تلرانس زیر ۳ میکرون همراه با بیمه‌نامه معتبر جبران خسارت توقف خط مونتاژ کارفرما", value: "sub_3micron_downtime_insurance", icon: "ShieldCheck", badge: "تعهد زیر ۳ میکرون + بیمه خط" },
-          { text: "قابلیت مهندسی معکوس و تحویل نمونه اولیه قطعات پیچیده تحریمی در نصف زمان معمول بازار", value: "rapid_reverse_engineering_half_time", icon: "Zap", badge: "مهندسی معکوس سریع" },
+          { text: "تضمین کتبی تلرانس زیر ۳ میکرون همراه با بیمه‌نامه معتبر جبران خسارت توقف خط مونتاژ کارفرما [فرضیه استراتژیک / نمونه]", value: "sub_3micron_downtime_insurance", icon: "ShieldCheck", badge: "تعهد زیر ۳ میکرون + بیمه خط" },
+          { text: "قابلیت مهندسی معکوس و تحویل نمونه اولیه قطعات پیچیده در نصف زمان معمول بازار", value: "rapid_reverse_engineering_half_time", icon: "Zap", badge: "مهندسی معکوس سریع" },
           { text: "پیاده‌سازی سیستم مدیریت کیفیت خودرویی IATF 16949 و آزمایشگاه مترولوژی مجهز به CMM", value: "iatf_16949_cmm_accreditation", icon: "Award", badge: "گواهینامه IATF و اتاق CMM" },
-          { text: "ارائه خدمات نگهداری و تعمیرات اضطراری قالب‌ها در محل کارفرما ظرف کمتر از ۴ ساعت", value: "rapid_onsite_die_maintenance", icon: "HeartHandshake", badge: "امداد فنی قالب در محل کارفرما" }
+          { text: "ارائه خدمات نگهداری و تعمیرات اضطراری قالب‌ها در محل کارفرما ظرف کمتر از ۴ ساعت [هدف عملیاتی]", value: "rapid_onsite_die_maintenance", icon: "HeartHandshake", badge: "امداد فنی قالب در محل کارفرما" }
+        ]
+      }
+    ];
+  }
+
+  if (isTextileApparel) {
+    const tradeName = context.taxonomyTitleFa || "صنایع نساجی و پوشاک";
+    return [
+      {
+        id: "p2_step0_competitors",
+        step: 0,
+        title: `تحلیل فضای رقابتی در ${tradeName}`,
+        text: `به **فاز ۲: هوش بازار و زنجیره تامین نساجی و پوشاک (${tradeName})** خوش آمدید! 🔍\n\nبنکداران، برندهای پوشاک و خریداران عمده در حال حاضر سفارشات خود را از چه منابعی تامین می‌کنند؟`,
+        options: [
+          { text: "کارگاه‌های سنتی خرد با ماشین‌آلات فرسوده، آبرفت بالای پارچه و نبود ثبات رنگ", value: "traditional_loose_sewing_workshops", icon: "Building", badge: "کارگاه‌های سنتی با دوخت نوسانی" },
+          { text: "واردات انبوه پوشاک قاچاق از چین و ترکیه با ریسک بالای نوسان ارز و عدم دسترسی دائم", value: "smuggled_foreign_apparel_imports", icon: "Globe", badge: "واردات پرریسک قاچاق" },
+          { text: "تولیدکنندگان بزرگ صنعتی با انعطاف پایین در تیراژ و عدم پذیرش اصلاحات سفارشی", value: "rigid_large_apparel_mills", icon: "TrendingUp", badge: "کارخانجات صلب بزرگ" },
+          { text: "کارگاه‌های خانگی یا غیررسمی با قیمت ارزان اما فقدان شناسنامه الیاف و بدقولی تحویل", value: "informal_low_cost_sewers", icon: "HelpCircle", badge: "کارگاه‌های ارزان غیررسمی" }
+        ]
+      },
+      {
+        id: "p2_step1_customer_pain",
+        step: 1,
+        title: "شناسایی اصلی‌ترین ریسک‌ها و دغدغه‌های خریداران عمده پوشاک و پارچه",
+        text: "بنکداران، فروشگاه‌های زنجیره‌ای و طراحان لباس از کدام معضلات تولیدکنندگان بیشترین آسیب را می‌بینند؟",
+        options: [
+          { text: "آبرفت، پرزدهی، بور شدن رنگ پارچه پس از شستشو و مغایرت با کالیته اولیه", value: "shrinkage_colorfastness_defects", icon: "AlertTriangle", badge: "آبرفت و ثبات رنگ نامرغوب" },
+          { text: "ناهمگونی در دوخت، انحراف در الگوی سایزبندی و پرتی بالای طاقه‌های پارچه", value: "pattern_sizing_stitching_defects", icon: "Scissors", badge: "نقص الگوی سایزبندی و دوخت" },
+          { text: "تاخیر در تحویل محموله‌های فصلی که باعث از دست رفتن پنجره طلایی فروش نوروز یا پاییز می‌شود", value: "seasonal_leadtime_misses", icon: "Clock", badge: "تاخیر در عرضه فصلی" },
+          { text: "نوسان مداوم قیمت نخ و پارچه در میانه تولید و خلف وعده در نرخ نهایی فاکتور", value: "yarn_fabric_cost_volatility", icon: "DollarSign", badge: "نوسان نرخ پارچه و نخ" }
+        ]
+      },
+      {
+        id: "p2_step2_pricing_models",
+        step: 2,
+        title: "تحلیل الگوهای قراردادی و مدل تسویه در صنعت پوشاک و نساجی",
+        text: "در سفارشات عمده و تولید انبوه، کدام مدل تسویه بیشترین استقبال را دارد؟",
+        options: [
+          { text: "قراردادهای تیراژ بالا بر پایه متراژ یا تعداد، با قیمت شفاف بر مبنای نرخ روز الیاف و اجرت دوخت", value: "transparent_yarn_labor_pricing", icon: "DollarSign", badge: "فرمول شفاف الیاف و دوخت" },
+          { text: "تولید سفارشی بر اساس نمونه اولیه (Sample Approval) با پیش‌پرداخت تامین پارچه و تسویه تحویل", value: "sample_approval_staged_terms", icon: "CheckCircle", badge: "تایید نمونه + تسویه مرحله‌ای" },
+          { text: "تامین پیوسته کالیته و پارت‌های فصلی برای فروشگاه‌ها با شرایط چک صیادی مدت‌دار", value: "seasonal_credit_terms", icon: "Repeat", badge: "تامین فصلی با چک صیادی" },
+          { text: "سفارشات پرایوت لیبل (Private Label) با بسته‌بندی، مارک و برچسب اختصاصی مشتری", value: "private_label_full_package", icon: "Crown", badge: "تولید پرایوت‌لیبل کامل" }
+        ]
+      },
+      {
+        id: "p2_step3_primary_channel",
+        step: 3,
+        title: "شناسایی مسیر دستیابی به خریداران عمده و بنکداران",
+        text: "خریداران سازمانی، برندهای لباس و بنکداران از چه کانال‌هایی تامین‌کننده خود را انتخاب می‌کنند؟",
+        options: [
+          { text: "ارائه کالیته فیزیکی پارچه، دفترچه الگوها و بررسی حضوری نمونه دوخت نهایی در شوروم", value: "physical_swatch_showroom_audits", icon: "Users", badge: "کالیته حضوری و شوروم کارخانه" },
+          { text: "حضور مستقیم در بازارهای اصلی بنکداری (بازار بزرگ، خیابان جمهوری، مولوی) و شبکه دفاتر پخش", value: "bazaar_wholesaler_distribution", icon: "FileText", badge: "ارتباط مستقیم با بنکداران بازار" },
+          { text: "حضور فعال در نمایشگاه‌های بین‌المللی نساجی، پوشاک و زنجیره تامین مد ایران (ایران‌تکس)", value: "irantex_apparel_expos", icon: "Search", badge: "نمایشگاه تخصصی ایران‌تکس" },
+          { text: "اینستاگرام و کاتالوگ آنلاین تخصصی B2B با نمایش خطوط تولید، بافت پارچه و جزئیات دوخت", value: "b2b_apparel_instagram_catalog", icon: "Instagram", badge: "کاتالوگ دیجیتال و خط تولید" }
+        ]
+      },
+      {
+        id: "p2_step4_golden_opportunity",
+        step: 4,
+        title: "کشف فرصت طلایی تمایز در صنعت نساجی و پوشاک",
+        text: "کدام قابلیت فنی و کیفی، کارخانه شما را به انتخاب قطعی برندهای مطرح پوشاک تبدیل می‌کند؟",
+        options: [
+          { text: "تضمین کتبی عدم آبرفت و ثبات رنگ با شناسنامه آزمون آزمایشگاهی پارچه [فرضیه استراتژیک]", value: "zero_shrinkage_colorfast_guarantee", icon: "ShieldCheck", badge: "تضمین ثبات رنگ و عدم آبرفت" },
+          { text: "سیستم الگوبرداری صنعتی کامپیوتری (CAD/CAM) با دورریز پارچه زیر ۵٪ [هدف عملیاتی]", value: "cad_cam_minimal_waste", icon: "Scissors", badge: "برش دقیق با ضایعات زیر ۵٪" },
+          { text: "تحویل پارت‌های تکمیلی در نصف زمان مرسوم بازار برای جلوگیری از خالی شدن رگال فروشگاه‌ها", value: "rapid_replenishment_cycle", icon: "Zap", badge: "شارژ سریع رگال در نصف زمان" },
+          { text: "ارائه نمونه اولیه دوخته‌شده کاملاً رایگان قبل از عقد قرارداد تیراژ بالا", value: "free_fit_sample_testing", icon: "Box", badge: "تست نمونه اولیه رایگان" }
+        ]
+      }
+    ];
+  }
+
+  if (
+    arch === "MANUFACTURER" ||
+    context.archetypeTitle?.includes("تولید") ||
+    context.archetypeTitle?.includes("کارخانه") ||
+    overlays.includes("HEAVY_CAPEX_SUPPLY_CHAIN") ||
+    overlays.includes("ISO_STANDARDS_COMPLIANCE")
+  ) {
+    const tradeName = context.taxonomyTitleFa || "تولید صنعتی و کارخانه‌ای";
+    return [
+      {
+        id: "p2_step0_competitors",
+        step: 0,
+        title: `تحلیل نقشه رقبا در حوزه ${tradeName}`,
+        text: `به **فاز ۲: هوش بازار و محیط رقابتی صنایع تولیدی (${tradeName})** خوش آمدید! 🔍\n\nخریداران صنعتی و کارفرمایان در حال حاضر نیاز خود را از چه منابعی تامین می‌کنند؟`,
+        options: [
+          { text: "کارگاه‌های سنتی با ماشین‌آلات فرسوده، نوسان کیفی بالا و نبود مدارک استاندارد", value: "traditional_loose_tolerance_shops", icon: "Building", badge: "کارگاه‌های سنتی متفرقه" },
+          { text: "واردات محصولات آماده از چین و کشورهای همسایه با ریسک بالای نوسان ارز و تاخیر گمرکی", value: "foreign_import_brokers", icon: "Globe", badge: "واردات پرریسک خارجی" },
+          { text: "کارخانجات بزرگ صنعتی با ظرفیت بالا اما صلبیت شدید اداری و عدم انعطاف در سفارش", value: "massive_rigid_manufacturers", icon: "TrendingUp", badge: "تولیدکنندگان صلب سازمانی" },
+          { text: "تلاش کارفرمایان برای راه‌اندازی واحد تولیدی داخلی با هزینه‌های سنگین بالاسری", value: "inhouse_costly_machining", icon: "HelpCircle", badge: "تولید داخلی پرهزینه کارفرما" }
+        ]
+      },
+      {
+        id: "p2_step1_customer_pain",
+        step: 1,
+        title: "شناسایی اصلی‌ترین ریسک‌ها و دغدغه‌های خریداران صنعتی",
+        text: "مدیران خرید، تولید و تدارکات از کدام معضلات تولیدکنندگان بیشترین آسیب مالی را می‌خورند؟",
+        options: [
+          { text: "عدم تطابق با استانداردهای کیفی توافق‌شده، مغایرت در نمونه‌های پارت انبوه و ضایعات بالا", value: "quality_deviation_line_stops", icon: "AlertTriangle", badge: "ضایعات و افت کیفیت در تیراژ" },
+          { text: "تاخیرهای مزمن در موعد تحویل که برنامه زمانی کل زنجیره خریدار را دچار توقف می‌کند", value: "chronic_delivery_leadtime_delays", icon: "Clock", badge: "تاخیر در تحویل محموله" },
+          { text: "نبود شناسنامه آنالیز مواد اولیه و فقدان گزارش‌های مدون کنترل کیفی (QC Inspection)", value: "missing_mtr_qc_inspection", icon: "FileText", badge: "فقدان شناسنامه متریال و QC" },
+          { text: "نوسان مداوم قیمت در طول اجرای پروژه و شانه خالی کردن از گارانتی عیوب محموله", value: "unstable_terms_no_defect_warranty", icon: "DollarSign", badge: "عدم ثبات قیمت و گارانتی" }
+        ]
+      },
+      {
+        id: "p2_step2_pricing_models",
+        step: 2,
+        title: "تحلیل الگوهای قراردادی و مدل تسویه مالی سازمانی",
+        text: "در معاملات و مناقصات صنعتی شما، کدام ساختار قیمت‌گذاری و تسویه بیشترین مزیت را دارد؟",
+        options: [
+          { text: "قراردادهای تیراژ بالا با قیمت تمام‌شده شفاف بر پایه نرخ متریال اولیه و دستمزد تولید", value: "transparent_material_index_contract", icon: "DollarSign", badge: "فرمول شفاف متریال و دستمزد" },
+          { text: "قراردادهای پیمانکاری سالانه تامین با بازپرداخت اعتباری مدت‌دار (چک صیادی یا ضمانت‌نامه)", value: "annual_credit_procurement_terms", icon: "Repeat", badge: "تامین سالانه اعتباری B2B" },
+          { text: "تولید دسته‌ای سفارشی بر مبنای مشخصات فنی و استانداردهای مورد نیاز کارفرما", value: "hourly_precision_machining_rate", icon: "BarChart3", badge: "تولید سفارشی دسته‌ای" },
+          { text: "پیش‌دریافت هزینه تجهیز خط و ساخت قالب با استهلاک مرحله‌ای در تیراژ سفارشات آتی", value: "tooling_cost_amortization", icon: "Crown", badge: "استهلاک تجهیزات در تیراژ" }
+        ]
+      },
+      {
+        id: "p2_step3_primary_channel",
+        step: 3,
+        title: "شناسایی مسیر ورود به وندورلیست و جذب مشتریان صنعتی",
+        text: "کمیته‌های خرید و مدیران تدارکات از چه مجراهایی توان تولیدی شما را اعتبارسنجی می‌کنند؟",
+        options: [
+          { text: "جلسات فنی حضوری، بازدید ارزیابان کنترل کیفی کارفرما از خط تولید و تست نمونه اولیه", value: "plant_audits_sample_evaluation", icon: "Users", badge: "بازدید کارخانه و تست نمونه" },
+          { text: "حضور مستقیم در وندورلیست‌های رسمی صنایع و شرکت در مناقصات بزرگ تامین", value: "approved_vendor_lists_tenders", icon: "FileText", badge: "وندورلیست رسمی صنایع" },
+          { text: "لینکدین تخصصی و انتشار گزارش‌های فنی، استانداردهای کارگاهی و کیس‌استادی‌های موفق", value: "industrial_linkedin_authority", icon: "Linkedin", badge: "لینکدین صنعتی و اسناد فنی" },
+          { text: "حضور در نمایشگاه‌های بین‌المللی تخصصی صنایع مادر و زنجیره تامین مرتبط", value: "specialized_industrial_expos", icon: "Search", badge: "نمایشگاه‌های تخصصی صنعت" }
+        ]
+      },
+      {
+        id: "p2_step4_golden_opportunity",
+        step: 4,
+        title: "کشف فرصت طلایی تمایز غیرقابل رقابت صنعتی",
+        text: "کدام مزیت کیفی و تعهد اجرایی، کارخانه شما را به شریک استراتژیک مشتریان بدل می‌کند؟",
+        options: [
+          { text: "تضمین کتبی جبران خسارت و تعویض بدون قیدوشرط هرگونه محموله معیوب [فرضیه استراتژیک]", value: "sub_3micron_downtime_insurance", icon: "ShieldCheck", badge: "ضمانت قطعی تعویض محموله" },
+          { text: "تحویل سفارشات در کمتر از میانگین زمان معمول بازار با بهینه‌سازی ظرفیت خط تولید [هدف عملیاتی]", value: "rapid_reverse_engineering_half_time", icon: "Zap", badge: "تحویل سریع با خط بهینه" },
+          { text: "استقرار سیستم مدیریت کیفیت یکپارچه (ISO 9001) و آزمایشگاه مجهز کنترل کیفی", value: "iatf_16949_cmm_accreditation", icon: "Award", badge: "استاندارد کیفی ایزو و آزمایشگاه" },
+          { text: "ارائه نمونه اولیه جهت آزمون در خط خریدار به صورت کاملاً رایگان قبل از عقد قرارداد نهایی", value: "free_pilot_sample_testing", icon: "Box", badge: "ارائه نمونه تست اولیه رایگان" }
         ]
       }
     ];
   }
 
   // 4. B2B Cloud Accounting SaaS & Technology Platforms
+  const isTaxAccountingSaaS =
+    context.taxonomyId === "BT-0166" ||
+    context.taxonomyId === "BT-0171" ||
+    (context.taxonomyTitleFa && (context.taxonomyTitleFa.includes("مالیاتی") || context.taxonomyTitleFa.includes("حسابداری") || context.taxonomyTitleFa.includes("مودیان") || context.taxonomyTitleFa.includes("فاکتور"))) ||
+    overlays.includes("TAX_SYSTEM_INTEGRATION") ||
+    (context.keywords && (context.keywords.includes("مالیات") || context.keywords.includes("حسابداری") || context.keywords.includes("مودیان")));
+
   if (
-    arch === "SAAS_SOFTWARE" ||
-    context.archetypeTitle?.includes("نرم‌افزار") ||
-    context.archetypeTitle?.includes("ابری") ||
-    overlays.includes("RECURRING_SUBSCRIPTION_METRICS") ||
-    overlays.includes("TAX_SYSTEM_INTEGRATION")
+    (arch === "SAAS_SOFTWARE" ||
+     context.archetypeTitle?.includes("نرم‌افزار") ||
+     context.archetypeTitle?.includes("ابری") ||
+     overlays.includes("RECURRING_SUBSCRIPTION_METRICS") ||
+     overlays.includes("TAX_SYSTEM_INTEGRATION")) &&
+    isTaxAccountingSaaS
   ) {
     return [
       {
@@ -352,10 +659,81 @@ export function getAdaptivePhase2Questions(context) {
         title: "کشف مزیت طلایی تمایز و پیشتازی در بازار SaaS",
         text: "کدام ویژگی منحصربه‌فرد، نرخ ریزش (Churn) نرم‌افزار شما را به صفر نزدیک می‌کند؟",
         options: [
-          { text: "ارسال مستقیم و ۱ کلیکه فاکتور به سامانه مودیان با تعهد جبران خسارت هرگونه جریمه احتمالی", value: "zero_fine_moadian_guarantee", icon: "ShieldCheck", badge: "تضمین ۱۰۰٪ سامانه مودیان" },
-          { text: "رسیدن به ارزش در کمتر از ۵ دقیقه (Time-to-Value) بدون نیاز به حتی یک دقیقه آموزش اولیه", value: "sub_5min_time_to_value", icon: "Zap", badge: "شروع کار در زیر ۵ دقیقه" },
+          { text: "ارسال مستقیم و ۱ کلیکه فاکتور به سامانه مودیان با تعهد جبران خسارت هرگونه جریمه احتمالی [فرضیه استراتژیک / تعهد تجاری]", value: "zero_fine_moadian_guarantee", icon: "ShieldCheck", badge: "تضمین ۱۰۰٪ سامانه مودیان" },
+          { text: "رسیدن به ارزش در کمتر از ۵ دقیقه (Time-to-Value) بدون نیاز به حتی یک دقیقه آموزش اولیه [هدف عملیاتی]", value: "sub_5min_time_to_value", icon: "Zap", badge: "شروع کار در زیر ۵ دقیقه" },
           { text: "موتور هوش مصنوعی کاشف مغایرت‌ها و هشدارهای پیشگیرانه قبل از ارسال اظهارنامه به دارایی", value: "ai_tax_discrepancy_auditor", icon: "Sparkles", badge: "حسابرس خودکار هوش مصنوعی" },
           { text: "داشبورد نقدینگی و سود/زیان زنده روی تلفن همراه مدیرعامل با زبان کاملاً ساده و غیرحسابداری", value: "executive_mobile_cashflow_app", icon: "BarChart3", badge: "داشبورد ساده موبایل مدیران" }
+        ]
+      }
+    ];
+  }
+
+  if (
+    arch === "SAAS_SOFTWARE" ||
+    context.archetypeTitle?.includes("نرم‌افزار") ||
+    context.archetypeTitle?.includes("ابری") ||
+    overlays.includes("RECURRING_SUBSCRIPTION_METRICS")
+  ) {
+    const tradeName = context.taxonomyTitleFa || "نرم‌افزار ابری و فناوری B2B SaaS";
+    return [
+      {
+        id: "p2_step0_competitors",
+        step: 0,
+        title: `تحلیل رقبا در بازار ${tradeName}`,
+        text: `به **فاز ۲: هوش بازار و رفتار خرید کاربران B2B SaaS (${tradeName})** خوش آمدید! 🔍\n\nکسب‌وکارها و کاربران هدف در حال حاضر این نیاز را چگونه برطرف می‌کنند؟`,
+        options: [
+          { text: "نرم‌افزارهای سنتی دسکتاپ قدیمی تحت ویندوز با قفل‌های سخت‌افزاری و رابط کاربری خسته‌کننده", value: "legacy_desktop_dongle_software", icon: "Building", badge: "نرم‌افزارهای سنتی دسکتاپ" },
+          { text: "فایل‌های شکننده اکسل و فرآیندهای دستی پراشتباه که زمان ارزشمند تیم را هدر می‌دهند", value: "excel_manual_worksheets", icon: "FileText", badge: "اکسل و روش‌های دستی" },
+          { text: "سیستم‌های خارجی گران‌قیمت که به دلیل تحریم، عدم پشتیبانی از زبان فارسی و درگاه ریالی نامناسبند", value: "massive_expensive_erps", icon: "Globe", badge: "ابزارهای خارجی تحریمی" },
+          { text: "ابزارهای ابری نوپا و شکننده که قطعی‌های مداوم سرور و باگ‌های کلافه‌کننده دارند", value: "fragile_nascent_cloud_tools", icon: "Compass", badge: "ابری‌های ناقص نوظهور" }
+        ]
+      },
+      {
+        id: "p2_step1_customer_pain",
+        step: 1,
+        title: "شناسایی اصلی‌ترین اصطکاک‌ها و دردهای کاربران نرم‌افزار",
+        text: "بزرگ‌ترین مانع و دغدغه‌ای که کاربران در کار با ابزارهای موجود با آن مواجه هستند چیست؟",
+        options: [
+          { text: "پیچیدگی سرگیجه‌آور منوها و نیاز به ساعت‌ها آموزش طاقت‌فرسا برای یادگیری سیستم", value: "steep_learning_curve_ui_complexity", icon: "FileQuestion", badge: "پیچیدگی خسته‌کننده کاربری" },
+          { text: "کندی سرعت در ساعات اوج مصرف، قطعی ناگهانی سرور و نگرانی دائمی از امنیت و نشت داده‌ها", value: "cloud_downtime_data_security_fear", icon: "AlertTriangle", badge: "قطعی سرور و امنیت داده‌ها" },
+          { text: "سختی مهاجرت داده‌ها از سامانه‌های قدیمی به ابزار جدید و ترس از دست رفتن سوابق", value: "data_migration_friction_loss", icon: "RefreshCw", badge: "مهاجرت داده‌های قدیمی" },
+          { text: "پشتیبانی تیکتی بسیار کند، عدم پاسخگویی در شرایط بحرانی و هزینه‌های پنهان ارتقا", value: "costly_slow_phone_support", icon: "UserX", badge: "پشتیبانی کند و هزینه‌های پنهان" }
+        ]
+      },
+      {
+        id: "p2_step2_pricing_models",
+        step: 2,
+        title: "تحلیل الگوهای درآمد پایدار و اشتراک نرم‌افزار",
+        text: "کدام ساختار اشتراک بیشترین نرخ تبدیل کاربر به مشترک پرداختی (Paying Customer) را ایجاد می‌کند؟",
+        options: [
+          { text: "اشتراک ابری دوره‌ای (ماهانه/سالانه) سطح‌بندی‌شده بر مبنای تعداد کاربر و امکانات فعال", value: "tiered_saas_mrr_arr", icon: "Repeat", badge: "اشتراک پلکانی SaaS" },
+          { text: "دوره تست رایگان ۱۴ روزه با تمام امکانات (Full Feature Free Trial) بدون نیاز به پرداخت اولیه", value: "frictionless_14day_free_trial", icon: "CheckCircle", badge: "تست رایگان ۱۴ روزه" },
+          { text: "پلن سازمانی سفارشی با سرور اختصاصی، SLA رسمی و پشتیبانی VIP ۲۴ ساعته", value: "enterprise_custom_license_sla", icon: "Crown", badge: "لایسنس سازمانی اختصاصی" },
+          { text: "مدل قیمت‌گذاری مبتنی بر مصرف واقعی (Pay-As-You-Go) متناسب با حجم عملیات", value: "usage_based_transaction_pricing", icon: "BarChart3", badge: "پرداخت مبتنی بر مصرف" }
+        ]
+      },
+      {
+        id: "p2_step3_primary_channel",
+        step: 3,
+        title: "شناسایی مسیرهای رشد و جذب مشتریان سازمانی",
+        text: "تصمیم مدیران برای انتخاب پلتفرم ابری شما از چه کانال‌هایی هدایت می‌شود؟",
+        options: [
+          { text: "رشد محصول‌محور (PLG) ناشی از تجربه کاربری شگفت‌انگیز و دعوت همکاران در تیم", value: "plg_viral_accountant_referrals", icon: "Share2", badge: "رشد ارگانیک محصول‌محور" },
+          { text: "سئوی قوی مقالات تخصصی و ارائه راهکارهای عملیاتی برای مسائل کاری روزمره مدیران", value: "organic_seo_tax_regulations", icon: "Search", badge: "سئوی تخصصی راهکارها" },
+          { text: "دموهای تعاملی آنلاین، وبینارهای عملیاتی و مشاوره فنی اختصاصی با کارشناسان استقرار", value: "tax_webinars_product_demo", icon: "TrendingUp", badge: "وبینارهای دمو و استقرار" },
+          { text: "روابط عمومی، انتشار دستاوردهای فنی و حضور در جمع اکوسیستم فناوری و استارتاپی", value: "tech_ecosystem_pr_networking", icon: "Users", badge: "شبکه‌سازی اکوسیستم فناوری" }
+        ]
+      },
+      {
+        id: "p2_step4_golden_opportunity",
+        step: 4,
+        title: "کشف مزیت طلایی تمایز و کاهش نرخ ریزش (Churn)",
+        text: "کدام قابلیت کلیدی، نرم‌افزار شما را به ابزاری جدایی‌ناپذیر در محیط کاری کاربر تبدیل می‌کند؟",
+        options: [
+          { text: "رسیدن به ارزش در کمتر از ۵ دقیقه (Time-to-Value) بدون نیاز به آموزش اولیه [هدف عملیاتی]", value: "sub_5min_time_to_value", icon: "Zap", badge: "شروع کار در زیر ۵ دقیقه" },
+          { text: "تضمین پایداری ۹۹.۹٪ سرور همراه با بک‌آپ‌گیری خودکار لحظه‌ای و امنیت ابری [فرضیه استراتژیک]", value: "uptime_999_backup_guarantee", icon: "ShieldCheck", badge: "پایداری ۹۹.۹٪ و امنیت" },
+          { text: "داشبورد تحلیلی هوشمند و نمودارهای زنده عملکردی روی موبایل و وب برای مدیران", value: "executive_mobile_cashflow_app", icon: "BarChart3", badge: "داشبورد تحلیلی مدیران" },
+          { text: "اتصال یکپارچه از طریق API به سیستم‌های بانکی، پیامکی و ابزارهای پرکاربرد داخلی", value: "seamless_api_ecosystem_integrations", icon: "Sparkles", badge: "یکپارچگی کامل با وب‌سرویس‌ها" }
         ]
       }
     ];

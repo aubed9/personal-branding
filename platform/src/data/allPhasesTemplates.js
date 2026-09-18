@@ -10,23 +10,23 @@ export function getAdaptedPhaseQuestions(phaseNum, context = null) {
   const p = parseInt(phaseNum, 10);
   if (p === 1) return P1_QUESTIONS;
 
-  const arch = context ? context.archetype : 'PROFESSIONAL_SERVICE';
+  const arch = context ? (context.archetype || context.primaryArchetype || 'PROFESSIONAL_SERVICE') : 'PROFESSIONAL_SERVICE';
 
   switch (p) {
     case 2:
-      return getPhase2Questions(arch);
+      return getPhase2Questions(arch, context);
     case 3:
-      return getPhase3Questions(arch);
+      return getPhase3Questions(arch, context);
     case 4:
-      return getPhase4Questions(arch);
+      return getPhase4Questions(arch, context);
     case 5:
-      return getPhase5Questions(arch);
+      return getPhase5Questions(arch, context);
     case 6:
-      return getPhase6Questions(arch);
+      return getPhase6Questions(arch, context);
     case 7:
-      return getPhase7Questions(arch);
+      return getPhase7Questions(arch, context);
     case 8:
-      return getPhase8Questions(arch);
+      return getPhase8Questions(arch, context);
     default:
       return P3_QUESTIONS;
   }
@@ -35,7 +35,7 @@ export function getAdaptedPhaseQuestions(phaseNum, context = null) {
 // ----------------------------------------------------------------------------
 // PHASE 2: RESEARCH & MARKET INTELLIGENCE
 // ----------------------------------------------------------------------------
-function getPhase2Questions(arch) {
+function getPhase2Questions(arch, context = null) {
   if (arch === 'LOCAL_SERVICE') {
     return [
       {
@@ -89,6 +89,71 @@ function getPhase2Questions(arch) {
   }
 
   if (arch === 'RESTAURANT_CAFE_HOSPITALITY') {
+    const isCafe = context && (
+      context.taxonomyId === "BT-0066" ||
+      context.taxonomyId === "BT-0067" ||
+      (context.taxonomyTitleFa && (context.taxonomyTitleFa.includes("قهوه") || context.taxonomyTitleFa.includes("رستری") || context.taxonomyTitleFa.includes("کافه"))) ||
+      (context.archetypeTitle && (context.archetypeTitle.includes("قهوه") || context.archetypeTitle.includes("رستری"))) ||
+      (context.keywords && (context.keywords.includes("قهوه") || context.keywords.includes("رستری")))
+    );
+    const isDining = !isCafe && context && (
+      context.industryId === "IND-03" ||
+      context.industryCode === "IND-03" ||
+      (context.taxonomyTitleFa && (context.taxonomyTitleFa.includes("رستوران") || context.taxonomyTitleFa.includes("کباب") || context.taxonomyTitleFa.includes("دیزی") || context.taxonomyTitleFa.includes("فست‌فود") || context.taxonomyTitleFa.includes("کترینگ") || context.taxonomyTitleFa.includes("تهیه غذا") || context.taxonomyTitleFa.includes("پیتزا") || context.taxonomyTitleFa.includes("قنادی") || context.taxonomyTitleFa.includes("شیرینی")))
+    );
+
+    if (isDining) {
+      return [
+        {
+          id: 'p2_step0_competitors',
+          step: 0,
+          title: 'شناسایی رستوران‌ها و غذاخوری‌های رقیب',
+          text: 'مشتریان هدف در حال حاضر برای صرف وعده‌های غذایی بیشتر به کدام رستوران‌ها مراجعه می‌کنند؟',
+          options: [
+            { text: 'رستوران‌های زنجیره‌ای یا سنتی قدیمی با برند جاافتاده و شلوغ', value: 'chain_cafes', icon: 'Building', badge: 'سنتی و زنجیره‌ای' },
+            { text: 'رستوران‌های لوکس با قیمت‌های بسیار بالا و تشریفات مجلل', value: 'luxury_spots', icon: 'Crown', badge: 'لوکس' },
+            { text: 'غذاخوری‌های محلی با کیفیت طعم متوسط و بهداشت نامطمئن', value: 'local_average', icon: 'Coffee', badge: 'محلی معمولی' },
+            { text: 'رستوران تخصصی با مواد اولیه تازه، طعم اصیل و قیمت منصفانه در منطقه کم است', value: 'blue_ocean_cafe', icon: 'Compass', badge: 'فرصت بکر' }
+          ]
+        },
+        {
+          id: 'p2_step1_customer_pain',
+          step: 1,
+          title: 'اصلی‌ترین اصطکاک مشتری رستوران و غذاخوری',
+          text: 'کلافه‌کننده‌ترین نارضایتی مشتریان از رستوران‌ها و اماکن پذیرایی غذا چیست؟',
+          options: [
+            { text: 'ثبات نداشتن طعم و افت کیفیت غذا و گوشت در دفعات بعدی', value: 'taste_inconsistency', icon: 'AlertTriangle', badge: 'طعم ناپایدار' },
+            { text: 'قیمت غیرمنصفانه در برابر کیفیت و حجم غذا', value: 'overpriced_portion', icon: 'DollarSign', badge: 'گرانی بی‌دلیل' },
+            { text: 'بهداشت نامطمئن ظروف و آشپزخانه و تهویه نامناسب سالن', value: 'bad_ambiance_ventilation', icon: 'XCircle', badge: 'اتمسفر نامناسب' },
+            { text: 'معطلی طولانی و برخورد سرد و کم‌حوصله پرسنل', value: 'slow_unfriendly_service', icon: 'UserX', badge: 'سرویس‌دهی ضعیف' }
+          ]
+        },
+        {
+          id: 'p2_step2_pricing_models',
+          step: 2,
+          title: 'مدل و بازه قیمتی پذیرایی غذایی',
+          text: 'ترکیب اصلی فروش غذایی شما بر چه پایه‌ای برنامه‌ریزی شده است؟',
+          options: [
+            { text: 'غذای بیرون‌بر (Takeaway/Delivery) با ارسال گرم، سریع و قیمت منصفانه', value: 'daily_takeaway', icon: 'Zap', badge: 'بیرون‌بر سریع' },
+            { text: 'پذیرایی در سالن برای قرارهای کاری و دورهمی‌های خانوادگی و دوستانه', value: 'dine_in_experience', icon: 'Users', badge: 'تجربه سالن' },
+            { text: 'منوی ویژه سرآشپز با کباب‌ها و غذاهای اصیل دست‌پخت پریمیوم', value: 'specialty_gourmet', icon: 'Sparkles', badge: 'منوی گورمت' }
+          ]
+        },
+        {
+          id: 'p2_step4_golden_opportunity',
+          step: 3,
+          title: 'فرصت طلایی تمایز رستوران',
+          text: 'چه ویژگی منحصربه‌فردی باعث وفاداری مشتریان به رستوران شما می‌شود؟',
+          options: [
+            { text: 'ثبات ۱۰۰٪ کیفیت و طعم غذا با گوشت تازه روز و رسپی اصیل', value: 'flawless_taste_recipe', icon: 'Award', badge: 'طعم اصیل و باثبات' },
+            { text: 'سالن آراسته و تمیز با فضای دلنشین خانوادگی و تهویه عالی', value: 'instagrammable_aesthetic', icon: 'Sparkles', badge: 'اتمسفر دیدنی' },
+            { text: 'کارت وفاداری هوشمند و آفر ویژه مشتریان ثابت', value: 'loyalty_card_program', icon: 'HeartHandshake', badge: 'وفاداری هوشمند' },
+            { text: 'بسته‌بندی عایق حرارتی بدون نشتی برای سفارش‌های بیرون‌بر و اسنپ‌فود', value: 'leakproof_packaging', icon: 'Box', badge: 'بسته‌بندی درجه یک' }
+          ]
+        }
+      ];
+    }
+
     return [
       {
         id: 'p2_step0_competitors',
@@ -148,45 +213,44 @@ function getPhase2Questions(arch) {
         title: 'شناسایی راهکارهای رقیب نرم‌افزاری',
         text: 'کاربران هدف شما در حال حاضر این فرآیند را چگونه مدیریت می‌کنند؟',
         options: [
-          { text: 'نرم‌افزارهای سنتی دسکتاپ قدیمی، سنگین و پر از باگ', value: 'legacy_desktop', icon: 'Code', badge: 'سیستم‌های قدیمی' },
-          { text: 'اکسل‌های دستی و فرم‌های کاغذی پراشتباه و پراکنده', value: 'excel_manual', icon: 'FileText', badge: 'روش دستی' },
-          { text: 'نرم‌افزارهای خارجی کرک‌شده بدون پشتیبانی و انطباق با قوانین ایران', value: 'cracked_foreign', icon: 'Globe', badge: 'کرک خارجی' },
-          { text: 'پلتفرم‌های ابری موجود با پشتیبانی ضعیف و رابط کاربری سخت', value: 'existing_cloud_poor_ux', icon: 'Layers', badge: 'رقبای ابری' }
+          { text: 'نرم‌افزارهای دسکتاپ قدیمی یا فایل‌های شکننده اکسل با خطای انسانی بالا', value: 'legacy_software_excel', icon: 'FileText', badge: 'اکسل و سنتی' },
+          { text: 'سیستم‌های گران‌قیمت خارجی که زبان فارسی و پرداخت ریالی را پشتیبانی نمی‌کنند', value: 'expensive_foreign_tools', icon: 'DollarSign', badge: 'خارجی تحریمی' },
+          { text: 'فرایند دستی بدون ساختار با صرف زمان طولانی و سردرگمی', value: 'manual_paperwork', icon: 'HelpCircle', badge: 'دستی و طاقت‌فرسا' },
+          { text: 'ابزار ابری بومی، تخصصی، پایدار و ارزان در این حوزه وجود ندارد (فرصت بکر)', value: 'blue_ocean_saas', icon: 'Compass', badge: 'خلاء ابری بومی' }
         ]
       },
       {
         id: 'p2_step1_customer_pain',
         step: 1,
-        title: 'بزرگ‌ترین درد و مانع کاربر نرم‌افزار',
-        text: 'بیشترین عامل مقاومت یا شکست مشتریان در استفاده از نرم‌افزارها چیست؟',
+        title: 'اصلی‌ترین اصطکاک و دغدغه کاربر نرم‌افزار',
+        text: 'کاربران در استفاده از ابزارهای موجود با چه مانعی روبرو هستند؟',
         options: [
-          { text: 'پیچیدگی بالای رابط کاربری و نیاز به روزها آموزش پرسنل', value: 'complex_ux_steep_learning', icon: 'AlertTriangle', badge: 'پیچیدگی بالا' },
-          { text: 'نگرانی شدید از امنیت داده‌ها، قطعی سرور و از دست رفتن اسناد', value: 'data_security_uptime', icon: 'ShieldAlert', badge: 'امنیت و پایداری' },
-          { text: 'سختی انتقال داده‌ها از سیستم‌های قبلی به سامانه جدید', value: 'migration_friction', icon: 'RefreshCw', badge: 'مهاجرت داده' },
-          { text: 'پشتیبانی کند و بی‌حوصله در لحظات حساس کاری و مالیاتی', value: 'slow_support_tickets', icon: 'UserX', badge: 'پشتیبانی ضعیف' }
+          { text: 'پیچیدگی منوها و نیاز به آموزش‌های طولانی و خسته‌کننده', value: 'steep_learning_curve', icon: 'AlertTriangle', badge: 'پیچیدگی کاربری' },
+          { text: 'نگرانی از امنیت، از بین رفتن اطلاعات، قطعی مکرر سرور یا پشتیبانی ضعیف', value: 'security_downtime_fears', icon: 'ShieldAlert', badge: 'قطعی و امنیت' },
+          { text: 'قیمت‌گذاری نامشخص و هزینه‌های پنهان ارتقا و راه‌اندازی', value: 'hidden_upgrade_costs', icon: 'DollarSign', badge: 'هزینه‌های پنهان' },
+          { text: 'پشتیبانی کند و بی‌حوصله در لحظات حساس کاری و مالیاتی', value: 'slow_support', icon: 'UserX', badge: 'پشتیبانی ضعیف' }
         ]
       },
       {
         id: 'p2_step2_pricing_models',
         step: 2,
-        title: 'مدل قیمت‌گذاری اشتراک نرم‌افزار',
-        text: 'بهترین مدل درآمدی برای جذب و حفظ کاربران کسب‌وکاری شما چیست؟',
+        title: 'مدل اشتراک و کشش قیمتی نرم‌افزار',
+        text: 'مدل درآمدی شما بر چه پایه‌ای بیشترین پذیرش را در میان مخاطبان دارد؟',
         options: [
-          { text: 'دوره تست رایگان (Free Trial) ۱۴ روزه و سپس اشتراک ماهانه/سالانه', value: 'free_trial_recurring', icon: 'Repeat', badge: 'تست رایگان + اشتراک' },
-          { text: 'مدل پایه رایگان (Freemium) با امکان ارتقا برای قابلیت‌های پیشرفته', value: 'freemium_tier', icon: 'TrendingUp', badge: 'فری‌میوم' },
-          { text: 'قیمت‌گذاری بر اساس مصرف یا تعداد کاربران همزمان (Seat/Usage)', value: 'per_seat_usage', icon: 'Users', badge: 'پرداخت به میزان مصرف' },
-          { text: 'نسخه سازمانی اختصاصی با پشتیبانی VIP و SLA رسمی', value: 'enterprise_custom', icon: 'Building', badge: 'سازمانی Enterprise' }
+          { text: 'پلن‌های ماهانه/سالانه پلکانی بر اساس تعداد کاربر یا حجم عملیات', value: 'tiered_subscription', icon: 'Layers', badge: 'اشتراک پلکانی' },
+          { text: 'تست رایگان (Freemium / Free Trial) و سپس تبدیل به اکانت پرداختی', value: 'freemium_trial', icon: 'Zap', badge: 'تست رایگان' },
+          { text: 'فروش لایسنس سازمانی اختصاصی با پشتیبانی VIP برای شرکت‌های بزرگ', value: 'enterprise_license', icon: 'Crown', badge: 'سازمانی سفارشی' }
         ]
       },
       {
         id: 'p2_step4_golden_opportunity',
         step: 3,
-        title: 'فرصت طلایی رشد نرم‌افزار ابری',
-        text: 'چه مزیتی نرم‌افزار شما را به انتخاب قطعی بازار تبدیل می‌کند؟',
+        title: 'فرصت طلایی تمایز محصول نرم‌افزاری',
+        text: 'کدام مزیت تکنولوژیک باعث حفظ مشتریان و کاهش نرخ ریزش (Churn) می‌شود؟',
         options: [
-          { text: 'شروع کار در ۳ دقیقه بدون نیاز به آموزش و پیچیدگی (Instant Value)', value: 'instant_time_to_value', icon: 'Zap', badge: 'شروع آنی' },
-          { text: 'پشتیبانی چت آنلاین زیر ۳ دقیقه و مشاوره گام‌به‌گام استقرار', value: 'lightning_support', icon: 'HeartHandshake', badge: 'پشتیبانی رعدآسا' },
-          { text: 'اتصال خودکار به درگاه‌ها، سامانه مودیان و سیستم‌های بانکی ایران', value: 'iran_integrations', icon: 'CheckCircle', badge: 'یکپارچگی بومی' },
+          { text: 'سادگی فوق‌العاده و راه‌اندازی زیر ۳ دقیقه بدون نیاز به حتی ۱ ساعت آموزش', value: 'plug_and_play_simplicity', icon: 'CheckCircle', badge: 'سادگی بدون آموزش' },
+          { text: 'داشبورد گزارش‌گیری تحلیلی شفاف و لحظه‌ای برای مدیران', value: 'live_analytics_dashboard', icon: 'BarChart2', badge: 'گزارش تحلیلی زنده' },
+          { text: 'اتصال خودکار به درگاه‌ها، سامانه مودیان و سیستم‌های بانکی ایران', value: 'iran_integrations', icon: 'Zap', badge: 'یکپارچگی بومی' },
           { text: 'تولید محتوا و آموزش‌های کاربردی در حل دغدغه‌های روزمره مدیران', value: 'content_product_led', icon: 'BookOpen', badge: 'رشد محتوا‌محور' }
         ]
       }
@@ -194,6 +258,19 @@ function getPhase2Questions(arch) {
   }
 
   if (arch === 'MANUFACTURER') {
+    const isMachining = context && (
+      context.industryId === "IND-08" ||
+      context.industryCode === "IND-08" ||
+      (context.taxonomyTitleFa && (context.taxonomyTitleFa.includes("قالب") || context.taxonomyTitleFa.includes("تراش") || context.taxonomyTitleFa.includes("ماشین‌کاری") || context.taxonomyTitleFa.includes("فلز") || context.taxonomyTitleFa.includes("متالورژی")))
+    );
+    const certOptionText = isMachining || !context
+      ? 'نبود گواهینامه‌های رسمی تست متالورژی و استانداردهای صنعتی'
+      : (context.industryId === 'IND-25'
+          ? 'نبود شناسنامه آنالیز الیاف، تست آبرفت و استانداردهای ثبات رنگ'
+          : (context.industryId === 'IND-10'
+              ? 'نبود نشان سیب سلامت و استانداردهای بهداشتی غذا و دارو'
+              : 'نبود تاییدیه و شناسنامه رسمی کنترل کیفی (QC) و استانداردهای صنعتی'));
+
     return [
       {
         id: 'p2_step0_competitors',
@@ -216,7 +293,7 @@ function getPhase2Questions(arch) {
           { text: 'تاخیر در تحویل محموله و توقف خط تولید خریدار', value: 'delivery_delay_bottleneck', icon: 'Clock', badge: 'تاخیر تحویل' },
           { text: 'عدم تطابق با نقشه مهندسی، تلرانس بالا و درصد ضایعات زیاد', value: 'quality_defect_tolerance', icon: 'AlertTriangle', badge: 'کیفیت ناپایدار' },
           { text: 'نوسانات ناگهانی قیمت و خلف وعده در میانه اجرای قرارداد', value: 'price_fluctuation_default', icon: 'DollarSign', badge: 'عدم ثبات قیمت' },
-          { text: 'نبود گواهینامه‌های رسمی تست متالورژی و استانداردهای صنعتی', value: 'missing_certifications', icon: 'FileX', badge: 'فقدان تاییدیه' }
+          { text: certOptionText, value: 'missing_certifications', icon: 'FileX', badge: 'فقدان تاییدیه' }
         ]
       },
       {
@@ -457,7 +534,7 @@ function getPhase6Questions(arch) {
       title: 'سبک شعار برند (Tagline)',
       text: 'شعار همراه برند شما بیشتر چه نقشی داشته باشد؟',
       options: [
-        { text: 'فراخوان شجاعانه به اقدام و تجربه تمیزی/خدمت (Action-Driven)', value: 'action_call', icon: 'Zap', badge: 'فراخوان عمل' },
+        { text: 'فراخوان شجاعانه به اقدام و تجربه تمایز و کیفیت خدمت (Action-Driven)', value: 'action_call', icon: 'Zap', badge: 'فراخوان عمل' },
         { text: 'بیان صریح منفعت بزرگ و آرامش مشتری (Benefit-Driven)', value: 'clear_benefit', icon: 'Check', badge: 'منفعت‌محور' },
         { text: 'یک بینش عمیق پیرامون احترام به مشتری و استانداردهای زندگی', value: 'vision_respect', icon: 'Compass', badge: 'چشم‌انداز و احترام' }
       ]
@@ -468,7 +545,41 @@ function getPhase6Questions(arch) {
 // ----------------------------------------------------------------------------
 // PHASE 7: VISUAL IDENTITY DESIGN SYSTEM
 // ----------------------------------------------------------------------------
-function getPhase7Questions(arch) {
+function getPhase7Questions(arch, context = null) {
+  const isAutomotive = context && (
+    context.industryCode === "IND-05" ||
+    context.industryId === "IND-05" ||
+    (context.archetypeTitle && (context.archetypeTitle.includes("خودرو") || context.archetypeTitle.includes("اتوسرویس"))) ||
+    (context.taxonomyTitleFa && (context.taxonomyTitleFa.includes("خودرو") || context.taxonomyTitleFa.includes("کارواش") || context.taxonomyTitleFa.includes("روغن") || context.taxonomyTitleFa.includes("مکانیک") || context.taxonomyTitleFa.includes("دیتیلینگ") || context.taxonomyTitleFa.includes("تعمیرگاه")))
+  );
+
+  const isBeauty = context && (
+    context.industryCode === "IND-04" ||
+    context.industryId === "IND-04" ||
+    arch === "HEALTH_BEAUTY_WELLNESS" ||
+    (context.taxonomyTitleFa && (context.taxonomyTitleFa.includes("زیبایی") || context.taxonomyTitleFa.includes("آرایش") || context.taxonomyTitleFa.includes("پوست") || context.taxonomyTitleFa.includes("کلینیک") || context.taxonomyTitleFa.includes("سالن")))
+  );
+
+  const isTextile = context && (
+    context.industryCode === "IND-25" ||
+    context.industryId === "IND-25" ||
+    (context.taxonomyTitleFa && (context.taxonomyTitleFa.includes("پوشاک") || context.taxonomyTitleFa.includes("نساجی") || context.taxonomyTitleFa.includes("تریکو") || context.taxonomyTitleFa.includes("پارچه") || context.taxonomyTitleFa.includes("دوخت")))
+  );
+
+  const isCafe = context && (
+    context.taxonomyId === "BT-0066" ||
+    context.taxonomyId === "BT-0067" ||
+    (context.taxonomyTitleFa && (context.taxonomyTitleFa.includes("قهوه") || context.taxonomyTitleFa.includes("رستری") || context.taxonomyTitleFa.includes("کافه"))) ||
+    (context.archetypeTitle && (context.archetypeTitle.includes("قهوه") || context.archetypeTitle.includes("رستری"))) ||
+    (context.keywords && (context.keywords.includes("قهوه") || context.keywords.includes("رستری")))
+  );
+
+  const isDining = context && (
+    context.industryId === "IND-03" ||
+    context.industryCode === "IND-03" ||
+    (context.taxonomyTitleFa && (context.taxonomyTitleFa.includes("رستوران") || context.taxonomyTitleFa.includes("کباب") || context.taxonomyTitleFa.includes("دیزی") || context.taxonomyTitleFa.includes("فست‌فود") || context.taxonomyTitleFa.includes("کترینگ") || context.taxonomyTitleFa.includes("تهیه غذا") || context.taxonomyTitleFa.includes("قنادی") || context.taxonomyTitleFa.includes("شیرینی")))
+  );
+
   let paletteOptions = [
     { text: 'سرمه‌ای درباری + طلایی یا سفید (نهایت پرستیژ، اعتماد عمیق و اصالت)', value: 'navy_gold', icon: 'Shield', badge: 'باوقار و مطمئن' },
     { text: 'آبی کبالت نئونی + مشکی مات (فناوری مدرن، سرعت، چابکی و هوشمندی)', value: 'cobalt_black', icon: 'Zap', badge: 'مدرن و پیشرفته' },
@@ -476,18 +587,46 @@ function getPhase7Questions(arch) {
     { text: 'زرشکی گرم / کهربایی + زغال سنگی (صمیمیت، انرژی گرم، اشتها و نشاط)', value: 'amber_charcoal', icon: 'Flame', badge: 'گرم و پویا' }
   ];
 
-  if (arch === 'LOCAL_SERVICE') {
+  if (isBeauty) {
     paletteOptions = [
-      { text: 'آبی اقیانوسی + زرد صنعتی (تداعی‌گر پاکیزگی آب، درخشش و دقت فنی خودرو)', value: 'ocean_yellow_service', icon: 'Shield', badge: 'پاکیزگی و دقت' },
-      { text: 'مشکی کربن مات + قرمز آتشین (جسارت، سرعت بالا و قدرت اتومبیل)', value: 'carbon_red_sport', icon: 'Flame', badge: 'انرژی و سرعت' },
-      { text: 'سرمه‌ای عمیق + سفید یخچالی (اعتماد، تمیزی مطلق و انضباط کاری)', value: 'navy_ice_clean', icon: 'Zap', badge: 'اعتماد و تمیزی' }
+      { text: 'رزگلد شیک + کرم شامپاینی (زیبایی لطیف، لوکس و آرامش‌بخش مراقبتی)', value: 'rosegold_champagne', icon: 'Sparkles', badge: 'لوکس و زیبایی' },
+      { text: 'سبز پاستلی نعنایی + یاسی ملایم (طراوت، سلامت پوست و آرامش طبیعی)', value: 'pastel_mint_lilac', icon: 'Leaf', badge: 'طراوت و سلامت' },
+      { text: 'زرشکی فاخر + خاکستری نقره‌ای (وقار، جذابیت مدرن و اعتماد بالا)', value: 'crimson_silver', icon: 'Heart', badge: 'جذاب و باوقار' }
     ];
+  } else if (isTextile) {
+    paletteOptions = [
+      { text: 'کرم نود + زیتونی ملایم (بافت طبیعی، استایل مینیمال و زیبایی پایدار پارچه)', value: 'nude_olive_textile', icon: 'Scissors', badge: 'مینیمال و پایدار' },
+      { text: 'مشکی کلاسیک + کرم فیلی (وقار مد، شیک‌پوشی و استایل پریمیوم پوشاک)', value: 'classic_black_camel', icon: 'Sparkles', badge: 'شیک‌پوشی و مد' },
+      { text: 'نیلی دنیم + خاکستری بتنی (مقاومت الیاف، راحتی کژوال و کاربردی مدرن)', value: 'indigo_gray_denim', icon: 'Shield', badge: 'مدرن و کاربردی' }
+    ];
+  } else if (arch === 'LOCAL_SERVICE') {
+    if (isAutomotive || (!context && arch === 'LOCAL_SERVICE')) {
+      paletteOptions = [
+        { text: 'آبی اقیانوسی + زرد صنعتی (تداعی‌گر پاکیزگی آب، درخشش و دقت فنی خودرو)', value: 'ocean_yellow_service', icon: 'Shield', badge: 'پاکیزگی و دقت' },
+        { text: 'مشکی کربن مات + قرمز آتشین (جسارت، سرعت بالا و قدرت اتومبیل)', value: 'carbon_red_sport', icon: 'Flame', badge: 'انرژی و سرعت' },
+        { text: 'سرمه‌ای عمیق + سفید یخچالی (اعتماد، تمیزی مطلق و انضباط کاری)', value: 'navy_ice_clean', icon: 'Zap', badge: 'اعتماد و تمیزی' }
+      ];
+    } else {
+      paletteOptions = [
+        { text: 'آبی درباری + نقره‌ای روشن (اعتماد بالا، نظم حرفه‌ای و کیفیت متعهدانه)', value: 'royal_blue_silver', icon: 'Shield', badge: 'اعتماد و تخصص' },
+        { text: 'سبز نعنایی + سفید پاک (آرامش، پاکیزگی و سلامت پایدار)', value: 'mint_clean_white', icon: 'Leaf', badge: 'پاکیزگی و آرامش' },
+        { text: 'نارنجی پرانرژی + زغالی مدرن (سرعت در خدمات، پویایی و دسترس‌پذیری)', value: 'energetic_orange_slate', icon: 'Zap', badge: 'پویا و سریع' }
+      ];
+    }
   } else if (arch === 'RESTAURANT_CAFE_HOSPITALITY') {
-    paletteOptions = [
-      { text: 'قهوه‌ای اسپرسو + بژ کرمی و خاکی (حس بویایی قهوه تازه، گرما و دنج بودن)', value: 'espresso_cream_cafe', icon: 'Coffee', badge: 'دنج و گرمابخش' },
-      { text: 'سبز زیتونی ملایم + چوب طبیعی (اصالت گیاهی، آرامش و کیفیت تازه)', value: 'olive_wood_nature', icon: 'Leaf', badge: 'ارگانیک و تازه' },
-      { text: 'مشکی مات + طلایی مینیمال (فضای مدرن، شیک، شبانه و اسپشالتی)', value: 'black_gold_night', icon: 'Sparkles', badge: 'لوکس و مدرن' }
-    ];
+    if (isDining && !isCafe) {
+      paletteOptions = [
+        { text: 'قرمز گرم اشتهابرانگیز + زعفرانی و طلایی (حس اصالت طعم، میزبانی گرم ایرانی و اشتها)', value: 'warm_red_saffron', icon: 'Flame', badge: 'اشتها و اصالت طعم' },
+        { text: 'سبز زیتونی + کرم بژ خاکی (سلامت غذا، ارگانیک بودن و آرامش سفره)', value: 'olive_cream_nature', icon: 'Leaf', badge: 'سالم و ارگانیک' },
+        { text: 'سرمه‌ای فاخر + زرشکی مجلسی (پذیرایی VIP، تشریفات مجلل و میزبانی خاطره‌انگیز)', value: 'navy_royal_banquet', icon: 'Crown', badge: 'مجلل و تشریفاتی' }
+      ];
+    } else {
+      paletteOptions = [
+        { text: 'قهوه‌ای اسپرسو + بژ کرمی و خاکی (حس بویایی قهوه تازه، گرما و دنج بودن)', value: 'espresso_cream_cafe', icon: 'Coffee', badge: 'دنج و گرمابخش' },
+        { text: 'سبز زیتونی ملایم + چوب طبیعی (اصالت گیاهی، آرامش و کیفیت تازه)', value: 'olive_wood_nature', icon: 'Leaf', badge: 'ارگانیک و تازه' },
+        { text: 'مشکی مات + طلایی مینیمال (فضای مدرن، شیک، شبانه و اسپشالتی)', value: 'black_gold_night', icon: 'Sparkles', badge: 'لوکس و مدرن' }
+      ];
+    }
   }
 
   return [
@@ -526,56 +665,279 @@ function getPhase7Questions(arch) {
 // ----------------------------------------------------------------------------
 // PHASE 8: EXECUTIVE ACTIVATION & REPUTATION
 // ----------------------------------------------------------------------------
-function getPhase8Questions(arch) {
-  if (arch === 'LOCAL_SERVICE' || arch === 'LOCAL_RETAIL' || arch === 'PHYSICAL_RETAIL' || arch === 'RETAIL') {
+function getPhase8Questions(arch, context = null) {
+  const isRetail = arch === 'PHYSICAL_RETAIL' || arch === 'LOCAL_RETAIL' || arch === 'RETAIL' || (context && (context.industryId === 'IND-01' || context.industryCode === 'IND-01' || context.primaryArchetype === 'PHYSICAL_RETAIL'));
+
+  const isAutomotive = context && (
+    context.industryCode === "IND-05" ||
+    context.industryId === "IND-05" ||
+    (context.archetypeTitle && (context.archetypeTitle.includes("خودرو") || context.archetypeTitle.includes("اتوسرویس"))) ||
+    (context.taxonomyTitleFa && (context.taxonomyTitleFa.includes("خودرو") || context.taxonomyTitleFa.includes("کارواش") || context.taxonomyTitleFa.includes("روغن") || context.taxonomyTitleFa.includes("مکانیک") || context.taxonomyTitleFa.includes("دیتیلینگ") || context.taxonomyTitleFa.includes("تعمیرگاه")))
+  );
+
+  const isCafe = context && (
+    context.taxonomyId === "BT-0066" ||
+    context.taxonomyId === "BT-0067" ||
+    (context.taxonomyTitleFa && (context.taxonomyTitleFa.includes("قهوه") || context.taxonomyTitleFa.includes("رستری") || context.taxonomyTitleFa.includes("کافه"))) ||
+    (context.archetypeTitle && (context.archetypeTitle.includes("قهوه") || context.archetypeTitle.includes("رستری"))) ||
+    (context.keywords && (context.keywords.includes("قهوه") || context.keywords.includes("رستری")))
+  );
+
+  const isDining = context && (
+    context.industryId === "IND-03" ||
+    context.industryCode === "IND-03" ||
+    (context.taxonomyTitleFa && (context.taxonomyTitleFa.includes("رستوران") || context.taxonomyTitleFa.includes("کباب") || context.taxonomyTitleFa.includes("دیزی") || context.taxonomyTitleFa.includes("فست‌فود") || context.taxonomyTitleFa.includes("کترینگ") || context.taxonomyTitleFa.includes("تهیه غذا") || context.taxonomyTitleFa.includes("قنادی") || context.taxonomyTitleFa.includes("شیرینی")))
+  );
+
+  const isBeauty = context && (
+    context.industryCode === "IND-04" ||
+    context.industryId === "IND-04" ||
+    arch === "HEALTH_BEAUTY_WELLNESS" ||
+    (context.taxonomyTitleFa && (context.taxonomyTitleFa.includes("زیبایی") || context.taxonomyTitleFa.includes("آرایش") || context.taxonomyTitleFa.includes("پوست") || context.taxonomyTitleFa.includes("کلینیک") || context.taxonomyTitleFa.includes("سالن")))
+  );
+
+  if (isRetail) {
     return [
       {
         id: 'p8_thought_leadership',
         step: 0,
-        title: 'اعتمادسازی محلی و شهرت فردی متخصص',
-        text: 'در محدوده و محله شما، مردم چگونه به تخصص و صداقت کار شما پی می‌برند؟',
+        title: 'تجربه حضور در فروشگاه و اعتمادسازی خریدار',
+        text: 'در بازار و میان خریداران، چه عاملی فروشگاه شما را به انتخاب اول خرید تبدیل می‌کند؟',
         options: [
-          { text: 'شفافیت کامل در فرآیند کار و آموزش نکات فنی نگهداری به مشتری پای کار', value: 'frontline_education', icon: 'CheckCircle', badge: 'آموزش پای کار' },
-          { text: 'نمایش نمونه‌کارهای قبل و بعد در فضای مجازی و شبکه‌های اجتماعی', value: 'before_after_proof', icon: 'Camera', badge: 'شواهد تصویری قبل/بعد' },
-          { text: 'تاییدیه و رضایت مشتریان وفادار قبلی و نظرات محلی روی نقشه', value: 'customer_testimonials', icon: 'Star', badge: 'نظرات محلی' }
+          { text: 'چیدمان جذاب ویترین، دکور دعوت‌کننده و تجربه لمس مستقیم کیفیت کالاها', value: 'storefront_visual_appeal', icon: 'ShoppingBag', badge: 'ویترین و تجربه لمسی' },
+          { text: 'معرفی صادقانه مشخصات کالاها و مشاوره راهنمایی خرید در شبکه‌های اجتماعی', value: 'transparent_product_demos', icon: 'Camera', badge: 'معرفی شفاف اجناس' },
+          { text: 'رضایت خریداران قبلی، نظرات مثبت روی نقشه و وفاداری مشتریان ثابت', value: 'customer_testimonials', icon: 'Star', badge: 'نظرات خریداران' }
+        ]
+      },
+      {
+        id: 'p8_pr_podcast_channels',
+        step: 1,
+        title: 'کانال‌های محلی جذب و وفادارسازی خریداران',
+        text: 'مهم‌ترین ابزار برای اطلاع‌رسانی کالکشن‌های جدید و بازگرداندن خریداران چیست؟',
+        options: [
+          { text: 'باشگاه مشتریان پیامکی برای اطلاع‌رسانی حراج‌های فصلی و اجناس جدید', value: 'sms_loyalty_club', icon: 'MessageSquare', badge: 'باشگاه پیامکی' },
+          { text: 'کارت وفاداری یا کش‌بک درصدی از مبلغ خرید برای سفارش‌های بعدی', value: 'loyalty_punch_card', icon: 'HeartHandshake', badge: 'کارت وفاداری' },
+          { text: 'اینستاگرام فعال با معرفی روزانه موجودی کالاها و استایل‌های ترند', value: 'retail_instagram_showcase', icon: 'Instagram', badge: 'اینستاگرام ویترینی' }
+        ]
+      },
+      {
+        id: 'p8_lead_funnel',
+        step: 2,
+        title: 'ارتقای میانگین سبد خرید (Basket Size)',
+        text: 'چگونه مبلغ فاکتور و تنوع سبد خرید هر مشتری به شکلی ارزش‌افزا افزایش می‌یابد؟',
+        options: [
+          { text: 'چیدمان هوشمند اقلام مکمل و اکسسوری‌های پرکاربرد نزدیک صندوق (Cross-Sell)', value: 'checkout_cross_sell', icon: 'TrendingUp', badge: 'اکسسوری پای صندوق' },
+          { text: 'پیشنهاد بسته‌های تخفیف تجمیعی (مثلاً خرید ۳ قلم با تخفیف ویژه قلم چهارم)', value: 'bundle_volume_discount', icon: 'Layers', badge: 'بسته‌های تخفیفی' },
+          { text: 'امکان ثبت سفارش آنلاین و ارسال فوری درب منزل برای مشتریان حضوری و تلفنی', value: 'omnichannel_fast_delivery', icon: 'Truck', badge: 'ارسال فوری تلفنی/آنلاین' }
+        ]
+      },
+      {
+        id: 'p8_crisis_reputation',
+        step: 3,
+        title: 'پلی‌بوک مرجوعی، تعویض و حفظ رضایت خریدار',
+        text: 'در صورت نارضایتی خریدار از کیفیت کالا یا اشتباه در سایز/رنگ، پروتکل فوری شما چیست؟',
+        options: [
+          { text: 'تعویض یا مرجوعی بی‌قیدوشرط کالا تا چند روز با خوش‌رویی کامل و عذرخواهی محترمانه', value: 'unconditional_exchange_return', icon: 'ShieldCheck', badge: 'تعویض بدون قیدوشرط' },
+          { text: 'بررسی فوری، جبران خسارت و ارائه کد تخفیف اختصاصی برای خریدهای آینده', value: 'transparent_investigation_gift', icon: 'HeartHandshake', badge: 'جبران سریع + هدیه' }
+        ]
+      }
+    ];
+  }
+
+  if (arch === 'LOCAL_SERVICE') {
+    if (isBeauty) {
+      return [
+        {
+          id: 'p8_thought_leadership',
+          step: 0,
+          title: 'اعتمادسازی، بهداشت و هنر تخصصی',
+          text: 'در فضای مراقبت و زیبایی، مراجعان چگونه به مهارت و بهداشت کار شما پی می‌برند؟',
+          options: [
+            { text: 'نمایش نمونه‌کارهای قبل و بعد طبیعی و ظریف بدون فیلتر در شبکه‌های اجتماعی', value: 'natural_before_after', icon: 'Camera', badge: 'نمونه‌کار قبل و بعد' },
+            { text: 'شفافیت در باز کردن پک‌های بهداشتی استریل و متریال اورجینال در حضور مراجع', value: 'sterile_hygiene_proof', icon: 'ShieldCheck', badge: 'استریل در حضور مراجع' },
+            { text: 'رضایت کتبی و ویدیویی مراجعان قبلی و توصیه‌های دهان‌به‌دهان در محله', value: 'customer_testimonials', icon: 'Star', badge: 'رضایت مراجعان' }
+          ]
+        },
+        {
+          id: 'p8_pr_podcast_channels',
+          step: 1,
+          title: 'کانال‌های یادآوری نوبت و مراقبت مستمر',
+          text: 'مهم‌ترین سازوکار برای بازگشت منظم مراجعان و ترمیم دوره‌ای چیست؟',
+          options: [
+            { text: 'سامانه پیامکی هوشمند یادآوری موعد ترمیم نوبت یا چکاپ دوره‌ای پوست و مو', value: 'appointment_recall_sms', icon: 'MessageSquare', badge: 'یادآوری نوبت ترمیم' },
+            { text: 'باشگاه مشتریان VIP با ارائه خدمات تکمیلی هدیه در نوبت‌های خاص سال', value: 'vip_beauty_club', icon: 'HeartHandshake', badge: 'باشگاه VIP' },
+            { text: 'ویدیوهای کوتاه آموزش روتین‌های مراقبتی صحیح در منزل (Home Care)', value: 'homecare_tips_video', icon: 'Video', badge: 'آموزش هوم‌کر' }
+          ]
+        },
+        {
+          id: 'p8_lead_funnel',
+          step: 2,
+          title: 'ساختار سبد خدمات و مراقبت تکمیلی',
+          text: 'چگونه سبد ارزش مراجعان به شکل حرفه‌ای ارتقا می‌یابد؟',
+          options: [
+            { text: 'پیشنهاد محصولات مراقبتی خانگی اورجینال (Home Care) متناسب با نوع پوست و مو', value: 'homecare_product_sales', icon: 'ShoppingBag', badge: 'محصولات هوم‌کر' },
+            { text: 'پکیج‌های دوره‌ای چندجلسه‌ای با تخفیف تجمیعی به جای تک‌جلسه‌ای', value: 'multi_session_packages', icon: 'Layers', badge: 'پکیج‌های دوره‌ای' },
+            { text: 'ارائه خدمات جانبی آرامش‌بخش در طول نوبت مراجعان', value: 'complimentary_comfort_care', icon: 'Sparkles', badge: 'پذیرایی و آرامش' }
+          ]
+        },
+        {
+          id: 'p8_crisis_reputation',
+          step: 3,
+          title: 'پلی‌بوک حل نارضایتی مراجعان',
+          text: 'در صورت عدم رضایت مراجع از خروجی کار، پروتکل تخلف‌ناپذیر شما چیست؟',
+          options: [
+            { text: 'اصلاح و ترمیم مجدد و فوری خدمت به صورت کاملاً رایگان با پذیرایی ویژه', value: 'instant_free_rework', icon: 'ShieldCheck', badge: 'ترمیم رایگان' },
+            { text: 'شنیدن صبورانه دغدغه مراجع و استرداد وجه در صورت عدم امکان اصلاح', value: 'transparent_investigation_gift', icon: 'HeartHandshake', badge: 'استرداد محترمانه' }
+          ]
+        }
+      ];
+    }
+
+    if (isAutomotive || (!context && arch === 'LOCAL_SERVICE')) {
+      return [
+        {
+          id: 'p8_thought_leadership',
+          step: 0,
+          title: 'اعتمادسازی محلی و شهرت فردی متخصص',
+          text: 'در محدوده و محله شما، مردم چگونه به تخصص و صداقت کار شما پی می‌برند؟',
+          options: [
+            { text: 'شفافیت کامل در فرآیند کار و آموزش نکات فنی نگهداری به مشتری پای کار', value: 'frontline_education', icon: 'CheckCircle', badge: 'آموزش پای کار' },
+            { text: 'نمایش نمونه‌کارهای قبل و بعد در فضای مجازی و شبکه‌های اجتماعی', value: 'before_after_proof', icon: 'Camera', badge: 'شواهد تصویری قبل/بعد' },
+            { text: 'تاییدیه و رضایت مشتریان وفادار قبلی و نظرات محلی روی نقشه', value: 'customer_testimonials', icon: 'Star', badge: 'نظرات محلی' }
+          ]
+        },
+        {
+          id: 'p8_pr_podcast_channels',
+          step: 1,
+          title: 'کانال‌های محلی جذب و بازگشت مشتری',
+          text: 'مهم‌ترین ابزار برای یادآوری نوبت و بازگرداندن مشتریان راضی چیست؟',
+          options: [
+            { text: 'سامانه پیامکی هوشمند یادآوری زمان سرویس دوره‌ای بعدی (بر اساس کیلومتر یا تاریخ)', value: 'smart_sms_recall', icon: 'MessageSquare', badge: 'یادآوری پیامکی' },
+            { text: 'کارت وفاداری فیزیکی یا دیجیتال (مثلاً هر ۴ سرویس، سرویس پنجم با ۵۰٪ تخفیف)', value: 'loyalty_punch_card', icon: 'HeartHandshake', badge: 'کارت وفاداری' },
+            { text: 'ویدیوهای کوتاه آموزش نکات نگهداری خودرو در شبکه‌های اجتماعی برای جلب اعتماد', value: 'educational_short_videos', icon: 'Video', badge: 'آموزش و اعتماد' }
+          ]
+        },
+        {
+          id: 'p8_lead_funnel',
+          step: 2,
+          title: 'ساختار قیف تجاری و خدمات تکمیلی',
+          text: 'چگونه فاکتور میانگین هر مشتری بدون ایجاد حس تحمیل افزایش می‌یابد؟',
+          options: [
+            { text: 'پیشنهاد خدمات تکمیلی مکمل (مثل شستشوی موتور نانو، واکس یا تعویض فیلتر کابین)', value: 'upsell_cross_sell', icon: 'TrendingUp', badge: 'خدمات مکمل' },
+            { text: 'اشتراک سالانه یا پکیج جامع نگهداری دوره‌ای با تخفیف ثابت', value: 'annual_maintenance_package', icon: 'Repeat', badge: 'اشتراک سالانه' },
+            { text: 'فروش مستقیم شوینده‌ها و اکسسوری‌های مرغوب خودرو در سالن انتظار', value: 'waiting_lounge_retail', icon: 'ShoppingBag', badge: 'فروشگاه مکمل' }
+          ]
+        },
+        {
+          id: 'p8_crisis_reputation',
+          step: 3,
+          title: 'پلی‌بوک حل نارضایتی و حفظ آبرو',
+          text: 'در صورت بروز کوچک‌ترین نارضایتی مشتری از کیفیت کار، پروتکل تخلف‌ناپذیر شما چیست؟',
+          options: [
+            { text: 'انجام مجدد و فوری خدمت به صورت کاملاً رایگان با عذرخواهی محترمانه', value: 'instant_free_rework', icon: 'ShieldCheck', badge: 'خدمت مجدد رایگان' },
+            { text: 'بررسی فوری دوربین‌ها، ارائه توضیحات شفاف و جبران خسارت با هدیه معنادار', value: 'transparent_investigation_gift', icon: 'HeartHandshake', badge: 'جبران سریع' }
+          ]
+        }
+      ];
+    }
+
+    // General Local Technical / Facility Services (IND-28, etc.)
+    return [
+      {
+        id: 'p8_thought_leadership',
+        step: 0,
+        title: 'اعتمادسازی محلی و شهرت فنی متخصص',
+        text: 'در منطقه و محدوده فعالیت، مشتریان چگونه به صداقت و تخصص کار شما اطمینان می‌یابند؟',
+        options: [
+          { text: 'شفافیت کامل در اعلام قیمت قطعات مصرفی و ارائه داغی قطعات تعویضی به مشتری', value: 'frontline_education', icon: 'CheckCircle', badge: 'شفافیت قطعات و اجرت' },
+          { text: 'ارائه گواهینامه‌ها و مدارک مهارت فنی معتبر سرویس‌کاران و نمایش سوابق کاری', value: 'before_after_proof', icon: 'Award', badge: 'مدارک مهارت فنی' },
+          { text: 'تاییدیه و رضایت مشتریان قبلی و نظرات روی نقشه‌های محلی', value: 'customer_testimonials', icon: 'Star', badge: 'نظرات محلی' }
         ]
       },
       {
         id: 'p8_pr_podcast_channels',
         step: 1,
         title: 'کانال‌های محلی جذب و بازگشت مشتری',
-        text: 'مهم‌ترین ابزار برای یادآوری نوبت و بازگرداندن مشتریان راضی چیست؟',
+        text: 'مهم‌ترین ابزار برای یادآوری زمان بازرسی دوره‌ای و بازگشت مشتریان چیست؟',
         options: [
-          { text: 'سامانه پیامکی هوشمند یادآوری زمان سرویس دوره‌ای بعدی (بر اساس کیلومتر یا تاریخ)', value: 'smart_sms_recall', icon: 'MessageSquare', badge: 'یادآوری پیامکی' },
-          { text: 'کارت وفاداری فیزیکی یا دیجیتال (مثلاً هر ۴ سرویس، سرویس پنجم با ۵۰٪ تخفیف)', value: 'loyalty_punch_card', icon: 'HeartHandshake', badge: 'کارت وفاداری' },
-          { text: 'ویدیوهای کوتاه آموزش نکات نگهداری خودرو در شبکه‌های اجتماعی برای جلب اعتماد', value: 'educational_short_videos', icon: 'Video', badge: 'آموزش و اعتماد' }
+          { text: 'سامانه پیامکی یادآوری موعد چکاپ دوره‌ای و سرویس‌های فصلی تاسیسات', value: 'smart_sms_recall', icon: 'MessageSquare', badge: 'یادآوری سرویس دوره‌ای' },
+          { text: 'کارت اشتراک مشتریان محلی با تخفیف‌های ثابت برای مراجعات بعدی', value: 'loyalty_punch_card', icon: 'HeartHandshake', badge: 'کارت اشتراک' },
+          { text: 'برچسب‌های منظم با شماره تماس مستقیم و کد رهگیری روی تجهیزات سرویس‌شده', value: 'equipment_service_tag', icon: 'FileText', badge: 'برچسب سرویس و تماس' }
         ]
       },
       {
         id: 'p8_lead_funnel',
         step: 2,
-        title: 'ساختار قیف تجاری و خدمات تکمیلی',
-        text: 'چگونه فاکتور میانگین هر مشتری بدون ایجاد حس تحمیل افزایش می‌یابد؟',
+        title: 'ساختار قراردادها و خدمات تکمیلی',
+        text: 'چگونه سبد خدمات ارائه شده به هر مشتری یا ساختمان گسترش می‌یابد؟',
         options: [
-          { text: 'پیشنهاد خدمات تکمیلی مکمل (مثل شستشوی موتور نانو، واکس یا تعویض فیلتر کابین)', value: 'upsell_cross_sell', icon: 'TrendingUp', badge: 'خدمات مکمل' },
-          { text: 'اشتراک سالانه یا پکیج جامع نگهداری دوره‌ای با تخفیف ثابت', value: 'annual_maintenance_package', icon: 'Repeat', badge: 'اشتراک سالانه' },
-          { text: 'فروش مستقیم شوینده‌ها و اکسسوری‌های مرغوب خودرو در سالن انتظار', value: 'waiting_lounge_retail', icon: 'ShoppingBag', badge: 'فروشگاه مکمل' }
+          { text: 'پیشنهاد بازرسی جامع فنی و سرویس پیشگیرانه همزمان با رفع مشکل فعلی', value: 'upsell_cross_sell', icon: 'TrendingUp', badge: 'سرویس پیشگیرانه مکمل' },
+          { text: 'قراردادهای نگهداری و پشتیبانی سالانه یا فصلی با مجتمع‌ها و سازمان‌ها', value: 'annual_maintenance_package', icon: 'Repeat', badge: 'قرارداد نگهداری سالانه' },
+          { text: 'تامین مستقیم قطعات یدکی استاندارد و باکیفیت بدون واسطه', value: 'waiting_lounge_retail', icon: 'Box', badge: 'تامین مستقیم قطعات' }
         ]
       },
       {
         id: 'p8_crisis_reputation',
         step: 3,
-        title: 'پلی‌بوک حل نارضایتی و حفظ آبرو',
-        text: 'در صورت بروز کوچک‌ترین نارضایتی مشتری از کیفیت کار، پروتکل تخلف‌ناپذیر شما چیست؟',
+        title: 'پلی‌بوک حل نارضایتی و ضمانت خدمت',
+        text: 'در صورت بروز مجدد عیب یا نارضایتی مشتری از کیفیت کار، پروتکل فوری شما چیست؟',
         options: [
-          { text: 'انجام مجدد و فوری خدمت به صورت کاملاً رایگان با عذرخواهی محترمانه', value: 'instant_free_rework', icon: 'ShieldCheck', badge: 'خدمت مجدد رایگان' },
-          { text: 'بررسی فوری دوربین‌ها، ارائه توضیحات شفاف و جبران خسارت با هدیه معنادار', value: 'transparent_investigation_gift', icon: 'HeartHandshake', badge: 'جبران سریع' }
+          { text: 'اعزام مجدد فوری و رفع عیب به صورت کاملاً رایگان همراه با پوزش محترمانه', value: 'instant_free_rework', icon: 'ShieldCheck', badge: 'رفع عیب مجدد رایگان' },
+          { text: 'پاسخگویی مستقیم مدیر فنی، بازرسی مجدد و جبران فوری خسارت احتمالی', value: 'transparent_investigation_gift', icon: 'HeartHandshake', badge: 'جبران سریع خسارت' }
         ]
       }
     ];
   }
 
   if (arch === 'RESTAURANT_CAFE_HOSPITALITY') {
+    if (isDining && !isCafe) {
+      return [
+        {
+          id: 'p8_thought_leadership',
+          step: 0,
+          title: 'هویت حسی، اصالت طعم و بازاریابی رستوران',
+          text: 'برای تبدیل رستوران به انتخاب اول وعده‌های غذایی و دورهمی‌ها، کانون اصلی دیده‌شدن برند کجاست؟',
+          options: [
+            { text: 'اشتراک‌گذاری ویدیوهای شفاف از بهداشت آشپزخانه، تازگی مواد اولیه و هنر طبخ سرآشپز', value: 'behind_bar_coffee_craft', icon: 'Video', badge: 'بهداشت و طبخ سرآشپز' },
+            { text: 'حضور فعال در پلتفرم‌های امتیازدهی و نقشه (گوگل مپ، نشان) با پاسخگویی به تک‌تک نظرات', value: 'active_review_management', icon: 'Star', badge: 'مدیریت نظرات' },
+            { text: 'میزبانی حرفه‌ای از جشن‌ها، مراسم‌های خانوادگی و دورهمی‌های اختصاصی با چیدمان تشریفاتی', value: 'cupping_events_hosting', icon: 'Users', badge: 'میزبانی رویداد و جشن' }
+          ]
+        },
+        {
+          id: 'p8_pr_podcast_channels',
+          step: 1,
+          title: 'شراکت‌ها و بازاریابی ناهار سازمانی',
+          text: 'کدام کانال برای معرفی و توسعه فروش غذایی شما بیشترین بازدهی را خواهد داشت؟',
+          options: [
+            { text: 'همکاری با ارزیابان و منتقدان خوش‌نام غذا که نقدهای معتبر و صادقانه منتشر می‌کنند', value: 'authentic_food_bloggers', icon: 'Camera', badge: 'منتقدان اصیل غذا' },
+            { text: 'پکیج‌های ناهار شرکتی و کترینگ اداری برای شرکت‌ها و سازمان‌های همسایه با تخفیف قراردادی', value: 'corporate_neighbors_package', icon: 'Briefcase', badge: 'ناهار شرکتی و اداری' },
+            { text: 'سیستم وفاداری دیجیتال بر پایه شماره موبایل برای اطلاع‌رسانی تخفیف‌ها و غذاهای روز', value: 'sms_loyalty_club', icon: 'Zap', badge: 'باشگاه مشتریان دیجیتال' }
+          ]
+        },
+        {
+          id: 'p8_lead_funnel',
+          step: 2,
+          title: 'توسعه سبد سفارش و میانگین فاکتور',
+          text: 'درآمدزایی و افزایش میانگین فاکتور هر سفارش چگونه تقویت می‌شود؟',
+          options: [
+            { text: 'پیشنهاد پیش‌غذا، نوشیدنی‌های سنتی خنک و دسرهای دست‌ساز خوش‌طعم در کنار غذای اصلی', value: 'packaged_beans_retail', icon: 'Sparkles', badge: 'پیش‌غذا و دسر مکمل' },
+            { text: 'سینی‌های چندنفره خانوادگی و اقتصادی با ترکیب محبوب‌ترین کباب‌ها و غذاها', value: 'pastry_pairing_high_margin', icon: 'Layers', badge: 'سینی‌های اقتصادی خانواده' },
+            { text: 'ارسال سریع بیرون‌بر با بسته‌بندی عایق حرارتی ویژه از طریق اسنپ‌فود و پیک اختصاصی', value: 'optimized_takeaway_delivery', icon: 'Truck', badge: 'بیرون‌بر بهینه' }
+          ]
+        },
+        {
+          id: 'p8_crisis_reputation',
+          step: 3,
+          title: 'پروتکل برخورد با نارضایتی غذایی',
+          text: 'اگر مشتری از کیفیت یا طعم غذا نارضایتی داشت، اقدام فوری تیم رستوران چیست؟',
+          options: [
+            { text: 'تعویض فوری سفارش بدون هیچ بحثی + دسر یا نوشیدنی هدیه مهمان رستوران', value: 'instant_remake_gift', icon: 'HeartHandshake', badge: 'تعویض آنی + هدیه' },
+            { text: 'پاسخگویی محترمانه مدیر سالن و ثبت سلیقه مشتری برای سفارش‌های آینده', value: 'manager_table_care', icon: 'CheckCircle', badge: 'رسیدگی مدیر سالن' }
+          ]
+        }
+      ];
+    }
+
     return [
       {
         id: 'p8_thought_leadership',

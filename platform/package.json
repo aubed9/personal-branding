@@ -15,6 +15,7 @@
     "test:e2e": "node test_e2e_guild_to_finish.js",
     "test:753": "node simulate_753_businesses.js",
     "test:taxonomy": "node -e \"import('./src/data/businessTaxonomy753.js').then(m => { const t = m.BUSINESS_TYPES; console.log('Taxonomy entries:', t.length); if(t.length===753) { console.log('✅ PASS'); process.exit(0); } else { console.log('❌ FAIL'); process.exit(1); } })\"",
+    "test:leakage": "node test_cross_domain_leakage.js",
     "validate": "npm run test && npm run test:adversarial && npm run test:integration && npm run test:e2e",
     "ci": "npm run build && npm run validate && npm run test:753"
   },

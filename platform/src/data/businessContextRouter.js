@@ -9,6 +9,12 @@ import {
   BUSINESS_TYPES_MAP,
   resolveBusinessType
 } from "./businessTaxonomy753.js";
+import {
+  getIndustryVocabulary,
+  getAllowedVocabulary,
+  getForbiddenTerms,
+  detectCrossDomainLeakage
+} from "./industryVocabularyMap.js";
 
 export {
   MACRO_INDUSTRIES,
@@ -471,120 +477,486 @@ export function classifyBusinessContext(phaseData = {}, rawAnswers = {}) {
   };
 }
 
+/**
+ * 8-Tier Business Specialization Hierarchy Resolution Engine (Requirement R5 & R6)
+ *
+ * Tier 1: Exact Business Type (BT-0001 to BT-0753)
+ * Tier 2: Macro Industry Module (IND-01 to IND-31)
+ * Tier 3: Primary Archetype (Structural Model)
+ * Tier 4: 15 Orthogonal Context Axes
+ * Tier 5: Business Stage (IDEA, PRE_LAUNCH, ACTIVE, REBRAND)
+ * Tier 6: Prior Answers Accumulator
+ * Tier 7: Known Facts & Evidence Ledger
+ * Tier 8: Question Generation & Jargon Filtering
+ *
+ * @param {string|object} businessTypeInput - BT code, Industry code, query string, or context object
+ * @param {object} [contextAxes={}] - 15 context axes overrides or partial axes
+ * @param {number} [phaseNumber=1] - Phase number (1 to 8)
+ * @param {object} [options={}] - Additional specialization options
+ * @returns {object} DomainSpecializationResult
+ */
+export function resolveDomainSpecialization(businessTypeInput, contextAxes = {}, phaseNumber = 1, options = {}) {
+  let matchedBt = null;
+  let matchedIndustry = null;
+  let inputAxes = {};
+  let inputOverlays = [];
+
+  if (businessTypeInput && typeof businessTypeInput === "object") {
+    const btId = businessTypeInput.taxonomyId || businessTypeInput.id;
+    if (btId && typeof btId === "string" && btId.toUpperCase().startsWith("BT-")) {
+      matchedBt = BUSINESS_TYPES_MAP[btId.toUpperCase()] || null;
+    }
+
+    const indId = businessTypeInput.industryId || businessTypeInput.industryCode;
+    if (indId) {
+      matchedIndustry = MACRO_INDUSTRIES.find(m => m.id === indId || m.code === indId) || null;
+    }
+
+    if (!matchedBt) {
+      const q = businessTypeInput.query || businessTypeInput.taxonomyTitleFa || businessTypeInput.archetypeTitle || "";
+      if (q) {
+        matchedBt = resolveBusinessType(q);
+      }
+    }
+
+    if (businessTypeInput.axes) {
+      inputAxes = businessTypeInput.axes;
+    }
+    if (Array.isArray(businessTypeInput.activeOverlays)) {
+      inputOverlays = businessTypeInput.activeOverlays;
+    }
+  } else if (typeof businessTypeInput === "string") {
+    const rawKey = businessTypeInput.trim();
+    const upperKey = rawKey.toUpperCase();
+    if (upperKey.startsWith("BT-") && BUSINESS_TYPES_MAP[upperKey]) {
+      matchedBt = BUSINESS_TYPES_MAP[upperKey];
+    } else if (upperKey.startsWith("IND-") || MACRO_INDUSTRIES.some(m => m.code === upperKey)) {
+      matchedIndustry = MACRO_INDUSTRIES.find(m => m.id === upperKey || m.code === upperKey) || null;
+    } else {
+      matchedBt = resolveBusinessType(rawKey);
+    }
+  }
+
+  let specializationLevel = "ARCHETYPE_FALLBACK";
+  if (matchedBt) {
+    specializationLevel = "EXACT_BT";
+    if (!matchedIndustry) {
+      matchedIndustry = MACRO_INDUSTRIES.find(m => m.id === matchedBt.industryId) || null;
+    }
+  } else if (matchedIndustry) {
+    specializationLevel = "INDUSTRY_OVERLAY";
+  }
+
+  const taxonomyId = matchedBt?.id || (typeof businessTypeInput === "object" && businessTypeInput?.taxonomyId) || "BT-0753";
+  const tradeTitleFa = matchedBt?.titleFa || (typeof businessTypeInput === "object" && businessTypeInput?.taxonomyTitleFa) || matchedIndustry?.titleFa || (typeof businessTypeInput === "object" && businessTypeInput?.archetypeTitle) || "کسب‌وکار";
+  const tradeTitleEn = matchedBt?.titleEn || (typeof businessTypeInput === "object" && businessTypeInput?.taxonomyTitleEn) || matchedIndustry?.titleEn || "Business";
+  const iranianGuildCode = matchedBt?.iranianGuildCode || (typeof businessTypeInput === "object" && businessTypeInput?.iranianGuildCode) || "999999";
+  const industryId = matchedBt?.industryId || matchedIndustry?.id || (typeof businessTypeInput === "object" && businessTypeInput?.industryId) || "IND-31";
+  const industryCode = matchedBt?.industryCode || matchedIndustry?.code || (typeof businessTypeInput === "object" && businessTypeInput?.industryCode) || "EMERGING_HYBRID_FRONTIER_MODELS";
+  const industryTitleFa = matchedIndustry?.titleFa || "مدل‌های نوظهور و هیبریدی پیشگام";
+
+  let primaryArchetype = matchedBt?.primaryArchetype || matchedIndustry?.primaryArchetype;
+  if (!primaryArchetype && typeof businessTypeInput === "object") {
+    primaryArchetype = businessTypeInput.primaryArchetype || businessTypeInput.archetype;
+  }
+  if (!primaryArchetype) {
+    primaryArchetype = contextAxes.archetype || "PROFESSIONAL_SERVICE";
+  }
+  const archetypeDef = BUSINESS_ARCHETYPES[primaryArchetype] || BUSINESS_ARCHETYPES.PROFESSIONAL_SERVICE;
+  const archetypeTitle = archetypeDef.titleFa;
+
+  const defaultAxes = (matchedBt?.axes) || (matchedIndustry?.defaultAxes) || {};
+  const mergedAxes = {
+    customerModel: contextAxes.customerModel || inputAxes.customerModel || defaultAxes.customerModel || (primaryArchetype === "MANUFACTURER" || primaryArchetype === "B2B_SERVICE" || primaryArchetype === "SAAS_SOFTWARE" ? "B2B" : "B2C"),
+    offerType: contextAxes.offerType || inputAxes.offerType || defaultAxes.offerType || (primaryArchetype === "MANUFACTURER" ? "PRODUCT" : primaryArchetype === "SAAS_SOFTWARE" ? "SOFTWARE" : "SERVICE"),
+    channelModel: contextAxes.channelModel || inputAxes.channelModel || defaultAxes.channelModel || (primaryArchetype === "LOCAL_SERVICE" || primaryArchetype === "RESTAURANT_CAFE_HOSPITALITY" ? "PHYSICAL_FIRST" : primaryArchetype === "MANUFACTURER" ? "DIRECT_SALES_B2B" : "ONLINE_FIRST"),
+    revenueModel: contextAxes.revenueModel || inputAxes.revenueModel || defaultAxes.revenueModel || (primaryArchetype === "SAAS_SOFTWARE" ? "RECURRING" : "TRANSACTION"),
+    maturity: options.businessStage || contextAxes.maturity || inputAxes.maturity || defaultAxes.maturity || "ACTIVE",
+    scale: contextAxes.scale || inputAxes.scale || defaultAxes.scale || (primaryArchetype === "MANUFACTURER" ? "MEDIUM" : "SMALL"),
+    salesMotion: contextAxes.salesMotion || inputAxes.salesMotion || defaultAxes.salesMotion || "RETAIL",
+    geography: contextAxes.geography || contextAxes.geographicScope || inputAxes.geography || inputAxes.geographicScope || defaultAxes.geography || "CITY",
+    branchStructure: contextAxes.branchStructure || inputAxes.branchStructure || defaultAxes.branchStructure || "SINGLE_LOCATION",
+    founderRole: contextAxes.founderRole || inputAxes.founderRole || defaultAxes.founderRole || "SUPPORTING",
+    purchaseCycle: contextAxes.purchaseCycle || inputAxes.purchaseCycle || defaultAxes.purchaseCycle || "SHORT_DAYS",
+    relationshipModel: contextAxes.relationshipModel || inputAxes.relationshipModel || defaultAxes.relationshipModel || "REPEAT_HABITUAL",
+    regulatoryProfile: contextAxes.regulatoryProfile || inputAxes.regulatoryProfile || defaultAxes.regulatoryProfile || "NORMAL",
+    operationalComplexity: contextAxes.operationalComplexity || inputAxes.operationalComplexity || defaultAxes.operationalComplexity || "MODERATE",
+    brandArchitecture: contextAxes.brandArchitecture || inputAxes.brandArchitecture || defaultAxes.brandArchitecture || "STANDALONE"
+  };
+
+  const terminologyAllowlist = getAllowedVocabulary(industryId);
+  const forbiddenTerms = getForbiddenTerms(industryId, options);
+
+  const isAutomotive = 
+    industryId === "IND-05" ||
+    tradeTitleFa.includes("خودرو") ||
+    tradeTitleFa.includes("کارواش") ||
+    tradeTitleFa.includes("روغن") ||
+    tradeTitleFa.includes("مکانیک") ||
+    tradeTitleFa.includes("تعمیرگاه") ||
+    tradeTitleFa.includes("اتوسرویس");
+
+  const isCafe = 
+    options.subDomain === "CAFE" ||
+    taxonomyId === "BT-0066" ||
+    taxonomyId === "BT-0067" ||
+    tradeTitleFa.includes("کافه") ||
+    tradeTitleFa.includes("قهوه") ||
+    tradeTitleFa.includes("رستری");
+
+  const isDining = 
+    options.subDomain === "RESTAURANT" ||
+    (!isCafe && (
+      industryId === "IND-03" ||
+      taxonomyId === "BT-0071" ||
+      tradeTitleFa.includes("رستوران") ||
+      tradeTitleFa.includes("چلوکباب") ||
+      tradeTitleFa.includes("کباب") ||
+      tradeTitleFa.includes("دیزی") ||
+      tradeTitleFa.includes("طباخی") ||
+      tradeTitleFa.includes("فست فود") ||
+      tradeTitleFa.includes("غذا")
+    ));
+
+  const isMachiningTooling = 
+    industryId === "IND-08" ||
+    taxonomyId === "BT-0221" ||
+    tradeTitleFa.includes("قالب‌سازی") ||
+    tradeTitleFa.includes("تراشکاری") ||
+    tradeTitleFa.includes("ماشین‌کاری") ||
+    tradeTitleFa.includes("قطعات صنعتی");
+
+  const isTextile = 
+    industryId === "IND-25" ||
+    tradeTitleFa.includes("نساجی") ||
+    tradeTitleFa.includes("پوشاک") ||
+    tradeTitleFa.includes("دوخت") ||
+    tradeTitleFa.includes("تریکو") ||
+    tradeTitleFa.includes("پارچه") ||
+    tradeTitleFa.includes("چرم");
+
+  const isTaxSaaS = 
+    options.subDomain === "TAX_SAAS" ||
+    (industryId === "IND-06" && (
+      taxonomyId === "BT-0166" ||
+      taxonomyId === "BT-0171" ||
+      tradeTitleFa.includes("حسابداری") ||
+      tradeTitleFa.includes("مالیاتی") ||
+      tradeTitleFa.includes("مودیان") ||
+      inputOverlays.includes("TAX_SYSTEM_INTEGRATION")
+    ));
+
+  const isNonTaxSaaS = 
+    options.subDomain === "NON_TAX_SAAS" ||
+    options.isNonTaxSaaS === true ||
+    (industryId === "IND-06" && !isTaxSaaS) ||
+    tradeTitleFa.includes("باشگاه") ||
+    tradeTitleFa.includes("crm") ||
+    tradeTitleFa.includes("فیتنس");
+
+  const isMedical = 
+    (industryId === "IND-04" && (
+      tradeTitleFa.includes("پزشکی") ||
+      tradeTitleFa.includes("کلینیک") ||
+      tradeTitleFa.includes("درمان") ||
+      tradeTitleFa.includes("دندانپزشکی") ||
+      tradeTitleFa.includes("بیمارستان")
+    ));
+
+  const isSalon = 
+    (industryId === "IND-04" && !isMedical) ||
+    tradeTitleFa.includes("سالن") ||
+    tradeTitleFa.includes("زیبایی") ||
+    tradeTitleFa.includes("آرایش");
+
+  const p = parseInt(phaseNumber || 1, 10);
+  let phaseTitle = `تخصصی‌سازی فاز ${p}`;
+  let phaseInstruction = "";
+
+  switch (p) {
+    case 1: {
+      phaseTitle = "تخصصی‌سازی فاز ۱ (کشف و بنیاد کسب‌وکار)";
+      let capacityLabel = "ظرفیت واقعی عملیاتی و مدیریت منابع مالی";
+      if (isAutomotive) capacityLabel = "ظرفیت پذیرش روزانه خودرو و باکس‌های فعال سرویس";
+      else if (isCafe) capacityLabel = "گردش میزها، بهای تمام‌شده نوشیدنی و خوراک (Food Cost %) و حفظ مواد اولیه تازه";
+      else if (isDining) capacityLabel = "گردش میز سالن، بهای تمام‌شده غذا (Food Cost %)، کنترل ضایعات آشپزخانه و سفارشات بیرون‌بر";
+      else if (isMachiningTooling) capacityLabel = "ظرفیت اسمی و واقعی دستگاه‌های تراشکاری، حداقل تیراژ سفارش (MOQ) و بهای متریال مهندسی";
+      else if (isTextile) capacityLabel = "ظرفیت دوخت و طاقه‌بری، حداقل تیراژ تولید (MOQ)، تامین الیاف و کنترل خواب پارچه در انبار";
+      else if (isTaxSaaS) capacityLabel = "سنجه‌های درآمد ماهانه پایدار (MRR)، دوره بازگشت هزینه جذب (CAC Payback) و تطبیق با سامانه‌های مالیاتی";
+      else if (isNonTaxSaaS) capacityLabel = "نرخ فعال‌سازی کاربر (Time-to-Value)، درآمد ماهانه پایدار (MRR) و نرخ حفظ مشتریان نرم‌افزار";
+      else if (isSalon) capacityLabel = "ظرفیت صندلی‌های سالن، نوبت‌دهی روزانه، گردش مواد مصرفی مرغوب و سودآوری لاین‌های تخصصی";
+      else if (primaryArchetype === "PHYSICAL_RETAIL" || primaryArchetype === "LOCAL_RETAIL") capacityLabel = "پاخور فروشگاه، میانگین مبلغ فاکتور، حاشیه سود خرده‌فروشی و گردش موجودی کالا در انبار";
+      else if (primaryArchetype === "MANUFACTURER") capacityLabel = "ظرفیت اسمی و واقعی شیفت‌های تولید، حداقل تیراژ سفارش (MOQ) و بهای متریال کارخانه‌ای";
+
+      phaseInstruction = `تمرکز بر اقتصاد واحد در صنف «${tradeTitleFa}»، ${capacityLabel}، گردش نقدینگی و اولویت‌های متناسب با مرحله ${mergedAxes.maturity}.`;
+      break;
+    }
+    case 2: {
+      phaseTitle = "تخصصی‌سازی فاز ۲ (هوش بازار و پژوهش مشتری)";
+      if (isAutomotive) {
+        phaseInstruction = "پژوهش بر رقبا و کارگاه‌های محلی در شعاع شهری، ترس مشتری از قطعات تقلبی و خط و خش و نظرات در نقشه‌ها متمرکز است.";
+      } else if (isCafe) {
+        phaseInstruction = "تحلیل رقبا در کافه‌های منطقه، ذائقه قهوه و بیزاری مشتری از طعم تلخ سوخته، محیط پرسروصدا و پرسنل متکبر.";
+      } else if (isDining) {
+        phaseInstruction = "تحلیل رستوران‌ها و غذاخوری‌های منطقه، دغدغه مشتریان از کیفیت و بهداشت مواد اولیه و طعم اصیل غذا.";
+      } else if (isMachiningTooling) {
+        phaseInstruction = "تحلیل قطعه‌سازان سنتی و واردات چینی، درد کارفرما از تلرانس نادرست و توقف خط مونتاژ و الزامات وندورلیست‌ها.";
+      } else if (isTextile) {
+        phaseInstruction = "تحلیل بازار پوشاک و کارخانجات نساجی، نگرانی خریداران از آبرفت، ثبات رنگ، کیفیت دوخت و تاخیر در تحویل قواره‌ها.";
+      } else if (isTaxSaaS) {
+        phaseInstruction = "تحلیل نرم‌افزارهای سنتی دسکتاپی، ترس شدید مدیران از جرایم سامانه مودیان و کشش بازار برای اشتراک ماهانه ابری.";
+      } else if (isNonTaxSaaS) {
+        phaseInstruction = "تحلیل نرم‌افزارهای رقیب، اصطکاک کاربران در استقرار ابزار، ریزش بعد از دوره آزمایشی و سهولت پشتیبانی آنلاین.";
+      } else if (isSalon) {
+        phaseInstruction = "تحلیل سالن‌های منطقه، ترس مراجعان از آسیب به مو و پوست با مواد نامرغوب، معطلی نوبت‌دهی و عدم شفافیت قیمت.";
+      } else if (mergedAxes.geography === "CITY") {
+        phaseInstruction = "پژوهش بر رقبا و جستجوی محلی شهر و شعاع دسترسی تمرکز دارد، نه محاسبات کلی ملی.";
+      } else {
+        phaseInstruction = "تحلیل رقبا و کشش تقاضا در سطح بازار ملی یا آنلاین رصد می‌شود.";
+      }
+      break;
+    }
+    case 3: {
+      phaseTitle = "تخصصی‌سازی فاز ۳ (استراتژی و جهت‌گیری برند)";
+      if (isAutomotive) {
+        phaseInstruction = "بیانیه انحصار (Only-ness) بر شستشوی بدون آسیب یا تعویض روغن با فاکتور شفاف و شکستن پلمپ در حضور مشتری متمرکز است.";
+      } else if (isCafe) {
+        phaseInstruction = "بیانیه انحصار بر برشته‌کاری تازه با شناسنامه خاستگاه دانه، اتمسفر بدون دود و خلق تجربه طعمی منحصر‌به‌فرد استوار است.";
+      } else if (isDining) {
+        phaseInstruction = "بیانیه انحصار بر کیفیت بی‌قیدوشرط مواد اولیه تازه، طعم اصیل ماندگار و میزبانی محترمانه در سالن و سفارشات بیرون‌بر استوار است.";
+      } else if (isMachiningTooling) {
+        phaseInstruction = "جایگاه‌یابی بر تعهد تلرانس زیر ۳ میکرون، بیمه توقف خط تولید و شراکت راهبردی بدون خطای زنجیره تامین تمرکز دارد.";
+      } else if (isTextile) {
+        phaseInstruction = "جایگاه‌یابی بر تضمین دوام بافت و دوخت، تحویل بهنگام تیراژ فصلی بدون تاخیر و تطابق دقیق نمونه اولیه با طاقه تولیدی استوار است.";
+      } else if (isTaxSaaS) {
+        phaseInstruction = "جایگاه‌یابی بر شروع کار زیر ۵ دقیقه، گارانتی صفر درصد جریمه مالیاتی و رهایی از پیچیدگی سیستم‌های سنتی استوار است.";
+      } else if (isNonTaxSaaS) {
+        phaseInstruction = "جایگاه‌یابی بر تجربه کاربری روان، استقرار بدون وقفه در جریان کاری و پشتیبانی پاسخگو بدون نیاز به آموزش‌های پیچیده استوار است.";
+      } else if (isSalon) {
+        phaseInstruction = "جایگاه‌یابی بر زیبایی طبیعی و حفظ سلامت پوست و مو، متریال درجه یک تاییدشده و احترام به زمان و آرامش مراجع متمرکز است.";
+      } else if (mergedAxes.customerModel === "B2B") {
+        phaseInstruction = "جایگاه‌یابی باید منطق توجیه سود، کاهش ریسک و رضایت تصمیم‌گیرندگان فنی و مالی را پوشش دهد.";
+      } else {
+        phaseInstruction = "جایگاه‌یابی مستقیماً درد و دستاورد ملموس مصرف‌کننده نهایی را نشانه می‌گیرد.";
+      }
+      break;
+    }
+    case 4: {
+      phaseTitle = "تخصصی‌سازی فاز ۴ (هویت و شخصیت برند - کهن‌الگو)";
+      if (isAutomotive) {
+        phaseInstruction = "کهن‌الگو: حامی/مراقب (Caregiver ۶۰٪) برای امانت‌داری و آرامش خاطر + قهرمان/تکنسین (Hero ۴۰٪) برای مهارت فنی. مرز حسی: تخصص ملموس و ادب بدون شوآف.";
+      } else if (isCafe) {
+        phaseInstruction = "کهن‌الگو: خالق/هنرمند (Creator ۶۰٪) برای هنر برشته‌کاری و طعم + حکیم/کاشف (Sage ۴۰٪) برای خاستگاه قهوه. مرز حسی: صمیمیت، اصالت و مهمان‌نوازی.";
+      } else if (isDining) {
+        phaseInstruction = "کهن‌الگو: میزبان اصیل و رفیق (Everyman ۵۵٪) برای مهمان‌نوازی گرم + آفرینش‌گر (Creator ۴۵٪) برای ذوق در طعم و پخت. مرز حسی: گرم، خودمانی و بدون تکلف.";
+      } else if (isMachiningTooling) {
+        phaseInstruction = "کهن‌الگو: حاکم مقتدر (Ruler ۵۰٪) برای انضباط مهندسی + قهرمان پایداری (Hero ۵۰٪) برای دقت میکرونی و دوام خط. مرز حسی: وقار صنعتی بدون ادعای شعاری.";
+      } else if (isTextile) {
+        phaseInstruction = "کهن‌الگو: آفرینش‌گر (Creator ۵۰٪) برای هنر الگو و زیبایی پارچه + قهرمان/تولیدکننده (Hero ۵۰٪) برای دوام کار در تیراژ انبوه. مرز حسی: انگیزه، کیفیت و ظرافت دوخت.";
+      } else if (isTaxSaaS) {
+        phaseInstruction = "کهن‌الگو: حکیم هوشمند (Sage ۵۵٪) برای تسلط مالیاتی + جادوگر سادگی (Magician ۴۵٪) برای سرعت و سهولت دیجیتال. مرز حسی: چابکی و آرامش‌بخشی مدرن.";
+      } else if (isNonTaxSaaS) {
+        phaseInstruction = "کهن‌الگو: جادوگر سادگی (Magician ۵۵٪) برای حذف کارهای تکراری + همیار امین (Caregiver/Sage ۴۵٪) برای همراهی در رشد کسب‌وکار کاربر.";
+      } else if (isMedical) {
+        phaseInstruction = "کهن‌الگو: حکیم (Sage ۵۵٪) برای تخصص و دانش پزشکی + مراقب دلسوز (Caregiver ۴۵٪) برای آرامش و امیدبخشیدن به بیمار. مرز حسی: علمی، مطمئن و فاقد ادعاهای اغراق‌آمیز.";
+      } else if (isSalon) {
+        phaseInstruction = "کهن‌الگو: آفرینش‌گر زیبایی (Creator ۵۵٪) برای ذوق و هنر استایل + حامی صمیمی (Caregiver ۴۵٪) برای مراقبت از سلامت و آرامش مراجع.";
+      } else if (primaryArchetype === "MANUFACTURER") {
+        phaseInstruction = "کهن‌الگو: حاکم مقتدر (Ruler ۵۰٪) برای انضباط مهندسی + قهرمان پایداری (Hero ۵۰٪) برای دقت و دوام خط. مرز حسی: وقار صنعتی بدون ادعای شعاری.";
+      } else if (primaryArchetype === "SAAS_SOFTWARE") {
+        phaseInstruction = "کهن‌الگو: حکیم هوشمند (Sage ۵۵٪) + جادوگر سادگی (Magician ۴۵٪) برای سرعت و سهولت دیجیتال. مرز حسی: چابکی و آرامش‌بخشی مدرن.";
+      } else if (primaryArchetype === "CREATOR_MEDIA_EDUCATION" || mergedAxes.founderRole === "FOUNDER_LED" || inputOverlays.includes("FOUNDER_LED")) {
+        phaseInstruction = "کهن‌الگو: حکیم (Sage ۶۰٪) برای مرجعیت علمی + مربی/حامی (Caregiver ۴۰٪) برای همراهی دلسوزانه. مرز حسی: پرهیز مطلق از زردی و تمرکز بر خروجی مستند.";
+      } else {
+        phaseInstruction = "کهن‌الگو: حکیم (Sage ۶۰٪) برای مرجعیت علمی + مربی/حامی (Caregiver ۴۰٪) برای همراهی دلسوزانه. مرز حسی: پرهیز مطلق از زردی و تمرکز بر خروجی مستند.";
+      }
+      break;
+    }
+    case 5: {
+      phaseTitle = "تخصصی‌سازی فاز ۵ (سیستم هویت کلامی و پیام‌رسانی)";
+      if (isAutomotive) {
+        phaseInstruction = "لحن: شفاف، فنی و خودمانی با حذف اصطلاحات گنگ؛ قلاب ۳۰ ثانیه‌ای متمرکز بر سرعت و تضمین اصالت روغن/شستشو؛ خط قرمز: پرهیز از ادعاهای اغراق‌آمیز بازاری.";
+      } else if (isCafe) {
+        phaseInstruction = "لحن: حسی، صمیمی، آرامش‌بخش و توصیفی؛ قلاب ۳۰ ثانیه‌ای بر روایت فنجان و رفع خستگی روزمره؛ خط قرمز: واژگان کلیشه‌ای بازاریابی و تحقیر سلیقه مشتری.";
+      } else if (isDining) {
+        phaseInstruction = "لحن: اشتهاآور، صمیمی و محترمانه؛ قلاب ۳۰ ثانیه‌ای بر طعم لذیذ مواد اولیه تازه و دورهمی خاطره‌انگیز؛ خط قرمز: الفاظ مصنوعی و غلوآمیز تبلیغاتی.";
+      } else if (isMachiningTooling) {
+        phaseInstruction = "لحن: رسمی، مستند به داده، تلرانس‌های فنی و استانداردهای اندازه‌گیری؛ قلاب ۳۰ ثانیه‌ای بر پیشگیری از توقف خطوط تولید؛ خط قرمز: کلی‌گویی و ابهام در مشخصات فنی.";
+      } else if (isTextile) {
+        phaseInstruction = "لحن: پرانرژی، معتبر و متمرکز بر کیفیت جنس و دوام؛ قلاب ۳۰ ثانیه‌ای بر تحویل بهنگام تیراژ با تضمین یکنواختی کیفیت؛ خط قرمز: شعارهای مبهم و غیرفنی.";
+      } else if (isTaxSaaS) {
+        phaseInstruction = "لحن: مدرن، چابک، روشن و رهایی‌بخش از اضطراب ممیزی دارایی؛ قلاب ۳۰ ثانیه‌ای بر ارسال بدون دردسر فاکتور به مودیان؛ خط قرمز: پیچیده‌گویی بوروکراتیک و واژگان نامفهوم.";
+      } else if (isNonTaxSaaS) {
+        phaseInstruction = "لحن: سرراست، کاربرپسند و نوآور؛ قلاب ۳۰ ثانیه‌ای بر حل مستقیم گلوگاه کاری روزمره بدون آموزش اضافه؛ خط قرمز: اصطلاحات نامانوس فنی و وعده‌های غیرعملی.";
+      } else if (isSalon) {
+        phaseInstruction = "لحن: صمیمانه، ظریف و اطمینان‌بخش؛ قلاب ۳۰ ثانیه‌ای بر تجربه حس شادابی، مراقبت اصیل و ماندگاری نتیجه؛ خط قرمز: وعده‌های فریبنده و ادعاهای تخیلی.";
+      } else if (mergedAxes.channelModel === "ONLINE_FIRST") {
+        phaseInstruction = "فراخوان‌های عمل (CTA) به سمت خرید مستقیم، مشاوره سریع یا ثبت‌نام آنلاین هدایت می‌شوند.";
+      } else {
+        phaseInstruction = "فراخوان‌های عمل به سمت رزرو تلفنی، جلسه حضوری یا مراجعه به محل طراحی می‌شوند.";
+      }
+      break;
+    }
+    case 6: {
+      phaseTitle = "تخصصی‌سازی فاز ۶ (نام‌گذاری، شعار و جهت‌گیری خلاقانه)";
+      if (isAutomotive) {
+        phaseInstruction = "قلمرو نام: واژگان خوش‌آهنگ، باوقار و کوتاه با تلفظ روان در تابلوی شهری و قابلیت استعلام علامت تجاری؛ شعار متمرکز بر اصالت قطعات و درخشش بدون آسیب.";
+      } else if (isCafe) {
+        phaseInstruction = "قلمرو نام: اسامی داستانی، حسی و اصیل با پیوند عمیق به مزرعه، رایحه و آرامش؛ شعار متمرکز بر روایت طعم و لحظه آرامش فنجان.";
+      } else if (isDining) {
+        phaseInstruction = "قلمرو نام: اسامی خوش‌نام، یادآور اصالت، طعم لذیذ و سفره ایرانی با تلفظ ماندگار؛ شعار متمرکز بر طعم ماندگار و کیفیت اصیل مواد غذایی.";
+      } else if (isMachiningTooling) {
+        phaseInstruction = "قلمرو نام: اسامی صنعتی استوار و پرطنین با ریشه پارسی یا مهندسی بین‌المللی و ثبت دامنه سازمانی؛ شعار متمرکز بر ستون استوار خطوط تولید و دقت میکرونی.";
+      } else if (isTextile) {
+        phaseInstruction = "قلمرو نام: اسامی پرطنين، پیوندخورده با تار و پود، ظرافت بافت و شیک‌پوشی؛ شعار متمرکز بر دوام بافت و زیبایی طراحی.";
+      } else if (isTaxSaaS) {
+        phaseInstruction = "قلمرو نام: نام ترکیبی یا ابداعی چابک با قابلیت برندینگ دیجیتال و ثبت دامنه .com و .ir؛ شعار متمرکز بر حسابداری هوشمند و مالیات بی‌دغدغه.";
+      } else if (isNonTaxSaaS) {
+        phaseInstruction = "قلمرو نام: نام مدرن، کوتاه و به یادماندنی در حوزه فناوری و وب؛ شعار متمرکز بر سادگی، سرعت و تحول در مدیریت روزمره.";
+      } else if (isSalon) {
+        phaseInstruction = "قلمرو نام: اسامی لطیف، درخشان و باوقار مرتبط با طراوت و هنر زیبایی؛ شعار متمرکز بر درخشش طبیعی و مراقبت اصیل.";
+      } else {
+        phaseInstruction = "قلمرو نام: نام متمایز با بار تخصصی و قابلیت ثبت قانونی؛ شعار حامل وعده اصلی تمایز ملموس.";
+      }
+      break;
+    }
+    case 7: {
+      phaseTitle = "تخصصی‌سازی فاز ۷ (سیستم طراحی هویت بصری)";
+      if (isAutomotive) {
+        phaseInstruction = "پالت رنگی: کنتراست بالا برای تابلو و لباس کار (مشکی کربنی #09090b، آبی کبالت #2563eb، کهربایی اخطار #eab308)؛ فونت بولد هندسی؛ لیبل پلمپ و کارت گارانتی فیزیکی.";
+      } else if (isCafe) {
+        phaseInstruction = "پالت رنگی: تنالیته‌های گرم ارگانیک (قهوه‌ای رست عمیق #1c1917، کرم طبیعی #f5f5f4، تراکوتا #c2410c)؛ فونت انسانی باوقار؛ پاکت کرافت دانه با تاریخ رست و فنجان دوستدار محیط زیست.";
+      } else if (isDining) {
+        phaseInstruction = "پالت رنگی: تنالیته‌های گرم اشتهاآور و اصیل (زرشکی درباری، آجری، کرم خاکی، سبز زیتونی)؛ تایپوگرافی خوانا و صمیمی؛ طراحی حرفه‌ای منو و بسته‌بندی بهداشتی بیرون‌بر.";
+      } else if (isMachiningTooling) {
+        phaseInstruction = "پالت رنگی: فام‌های صنعتی سنگین (خاکستری فولادی #334155، نارنجی ایمنی #ea580c، سورمه‌ای متالیک #0f172a)؛ تایپوگرافی مونو صلب؛ پلاک متالیزه لیزری و کاتالوگ مهندسی قطعات.";
+      } else if (isTextile) {
+        phaseInstruction = "پالت رنگی: فام‌های متناسب با مد و پارچه (سرمه‌ای تیره، کرم نخودی، زرشکی عمیق، خاکی بافت‌دار)؛ برچسب و اتیکت باکیفیت پارچه‌ای و بسته‌بندی طاقه‌ها.";
+      } else if (isTaxSaaS) {
+        phaseInstruction = "پالت رنگی: تم مدرن تکنولوژی و اعتماد (آبی کبالت #2563eb، اسلیت تیره #0f172a، سبز ملایم تایید مالی #10b981)؛ تایپ‌فیس وزیرمتن/یکان‌بخ با وضوح بالا در داشبورد نرم‌افزار.";
+      } else if (isNonTaxSaaS) {
+        phaseInstruction = "پالت رنگی: تم مدرن تکنولوژی، پویایی و نوآوری دیجیتال (آبی لاجوردی، ارغوانی ملایم یا فیروزه‌ای تیره)؛ فونت استاندارد وب در صفحات داشبورد و اپلیکیشن.";
+      } else if (isMedical) {
+        phaseInstruction = "پالت رنگی: سفید خالص، آبی آرامش‌بخش، فیروزه‌ای پاکیزه و خاکستری روشن؛ نشانگر استریل و بهداشت محیط بالینی.";
+      } else if (isSalon) {
+        phaseInstruction = "پالت رنگی: رنگ‌های آرامش‌بخش، شیک و لوکس (رزگلد، بژ مخملی، طلایی مات، سبز درباری ملایم)؛ تابلو و کارت‌های ویزیت با لمس مخملی.";
+      } else {
+        phaseInstruction = "پالت رنگی: ترکیب رنگ اعتمادساز با کنتراست استاندارد متناسب با روان‌شناسی رنگ؛ تایپوگرافی تمیز و مدرن برای ارائه‌ها و اسناد راهبردی.";
+      }
+      break;
+    }
+    case 8: {
+      phaseTitle = "تخصصی‌سازی فاز ۸ (فعال‌سازی اجرایی، PR و مدیریت اعتبار)";
+      if (isAutomotive) {
+        phaseInstruction = "موتور فعال‌سازی: سئوی محلی (گوگل مپ، نشان، بلد)، سامانه پیامکی یادآوری سرویس بر اساس کیلومتر، کمپین‌های فصلی و پاسخگویی مستند به نظرات در نقشه.";
+      } else if (isCafe) {
+        phaseInstruction = "موتور فعال‌سازی: رویدادهای هفتگی کاپینگ، کلوب اشتراک ماهانه دانه قهوه، روابط عمومی با فعالان صنعت غذا و پایش دقیق رضایت مراجعان در سالن.";
+      } else if (isDining) {
+        phaseInstruction = "موتور فعال‌سازی: ثبت دقیق در نقشه‌های نشان و بلد، باشگاه مشتریان پیامکی برای مناسبت‌ها و تولدها، همکاری با نقدکنندگان غذای اصیل و پایش رضایت سالن.";
+      } else if (isMachiningTooling) {
+        phaseInstruction = "موتور فعال‌سازی: ورود به وندورلیست صنایع مادر، تور بازدید مدیران فنی از کارخانه، مقالات سفید مهندسی در لینکدین و پروتکل ۲۴ ساعته حل بحران کیفی خط کارفرما.";
+      } else if (isTextile) {
+        phaseInstruction = "موتور فعال‌سازی: حضور فعال در نمایشگاه‌های بین‌المللی نساجی و مد، جلسات حضوری با بنکداران و برندهای پوشاک، وندورلیست و کاتالوگ‌های نمونه پارچه.";
+      } else if (isTaxSaaS) {
+        phaseInstruction = "موتور فعال‌سازی: سئوی ارگانیک بخشنامه‌های مالیاتی، وبینارهای دموی سامانه مودیان، سیستم رشد محصول‌محور (PLG) و داشبورد شفافیت آپ‌تایم سرور.";
+      } else if (isNonTaxSaaS) {
+        phaseInstruction = "موتور فعال‌سازی: سئوی مقالات حل مسئله کاری، نسخه آزمایشی رایگان (Freemium/Trial)، بازاریابی ارجاعی و ویدیوهای کوتاه معرفی قابلیت‌های کلیدی.";
+      } else if (isSalon) {
+        phaseInstruction = "موتور فعال‌سازی: مدیریت نظرات در نشان و بلد، باشگاه وفاداری مراجعان برای رزرو مجدد، نمونه‌کارهای قبل و بعد در شبکه‌های اجتماعی و رویدادهای فصلی مراقبت پوست.";
+      } else if (mergedAxes.founderRole === "FOUNDER_LED" || inputOverlays.includes("FOUNDER_LED")) {
+        phaseInstruction = "رهبری فکری و حضور شخصی بنیان‌گذار در پادکست‌ها، یادداشت‌های تخصصی لینکدین و شبکه نخبگان موتور اصلی توسعه برند است.";
+      } else {
+        phaseInstruction = "سئوی محلی، رضایت مراجعان و کانال‌های فروش صنعتی یا منطقه‌ای در اولویت قرار دارند.";
+      }
+      break;
+    }
+  }
+
+  const activeOverlays = Array.from(new Set([
+    primaryArchetype,
+    mergedAxes.customerModel,
+    mergedAxes.channelModel,
+    mergedAxes.maturity,
+    mergedAxes.geography,
+    ...(matchedBt?.activeOverlays || []),
+    ...(matchedIndustry?.activeOverlays || []),
+    ...inputOverlays
+  ]));
+
+  const kpis = Array.from(new Set([
+    ...(archetypeDef.metrics || []),
+    ...(matchedIndustry?.defaultAxes?.kpis || [])
+  ]));
+
+  const risks = Array.from(new Set([
+    ...(archetypeDef.risks || []),
+    ...(matchedIndustry?.defaultAxes?.risks || [])
+  ]));
+
+  const jargonReplacements = {
+    "CAC": "هزینه جذب هر مشتری جدید",
+    "LTV": "ارزش کل خرید مشتری در طول زمان",
+    "Churn": "نرخ ریزش یا عدم بازگشت مشتری",
+    "MRR": "درآمد پایدار ماهانه",
+    "ROI": "بازگشت سرمایه",
+    "SLA": "تعهد سطح کیفیت خدمات",
+    "Funnel": "مسیر تبدیل مخاطب به خریدار"
+  };
+
+  const tailoredQuestions = [];
+
+  const hierarchyResolutionTrace = {
+    tier1_exactBtMatched: specializationLevel === "EXACT_BT",
+    tier2_industryCode: industryCode,
+    tier3_archetypeId: primaryArchetype,
+    tier4_customerModel: mergedAxes.customerModel,
+    tier4_channelModel: mergedAxes.channelModel,
+    tier5_businessStage: mergedAxes.maturity,
+    tier6_priorAnswersConsidered: Object.keys(options.priorAnswers || {}).length,
+    tier7_factsAnchored: (options.knownFacts || []).length,
+    tier8_questionsGenerated: tailoredQuestions.length
+  };
+
+  return {
+    taxonomyId,
+    tradeTitleFa,
+    tradeTitleEn,
+    iranianGuildCode,
+    industryId,
+    industryCode,
+    industryTitleFa,
+    primaryArchetype,
+    archetype: primaryArchetype,
+    archetypeTitle,
+    specializationLevel,
+    axes: mergedAxes,
+    terminologyAllowlist,
+    forbiddenTerms,
+    jargonReplacements,
+    phaseNumber: p,
+    phaseTitle,
+    phaseInstruction,
+    tailoredQuestions,
+    kpis,
+    risks,
+    activeOverlays,
+    hierarchyResolutionTrace
+  };
+}
+
 export function getPhaseAdaptationRules(phaseNum, context) {
   if (!context) return null;
   const p = parseInt(phaseNum, 10);
-  const arch = context.archetype || "PROFESSIONAL_SERVICE";
-
-  const rules = {
-    1: {
-      title: "تخصصی‌سازی فاز ۱ (کشف و بنیاد کسب‌وکار)",
-      instruction: arch === "LOCAL_SERVICE"
-        ? `تمرکز بر اقتصاد واحد هر خودرو/مراجعه، ظرفیت فیزیکی روزانه، گردش نقدینگی و پرهیز از هزینه‌های غیرضروری دفتری.`
-        : arch === "RESTAURANT_CAFE_HOSPITALITY"
-        ? `تمرکز بر محاسبه دقیق قیمت تمام‌شده غذا/نوشیدنی (Food Cost %)، گردش میز، میانگین فاکتور و حفظ جریان مواد اولیه تازه.`
-        : arch === "MANUFACTURER"
-        ? `تمرکز بر ظرفیت تولید اسمی در برابر واقعی، حداقل تیراژ سفارش (MOQ)، فرمول بهای متریال و الزامات سرمایه‌ای خطوط صنعتی.`
-        : arch === "SAAS_SOFTWARE"
-        ? `تمرکز بر سنجه‌های درآمد ماهانه پایدار (MRR)، دوره بازگشت هزینه جذب (CAC Payback) و زمان رسیدن به ارزش (Time-to-Value).`
-        : `پرسش‌ها بر اساس ماهیت «${context.archetypeTitle}» و تمرکز روی ${context.focusAreas?.slice(0, 2).join(" و ") || "اهداف و تمایز"} بازآرایی می‌شوند.`
-    },
-    2: {
-      title: "تخصصی‌سازی فاز ۲ (هوش بازار و پژوهش مشتری)",
-      instruction: arch === "LOCAL_SERVICE"
-        ? "پژوهش بر رقبا و کارگاه‌های محلی در شعاع شهری، ترس مشتری از قطعات تقلبی و خط و خش و نظرات در نقشه‌ها متمرکز است."
-        : arch === "RESTAURANT_CAFE_HOSPITALITY"
-        ? "تحلیل رقبا در کافه‌های منطقه، ذائقه قهوه و بیزاری مشتری از طعم تلخ سوخته، محیط پرسروصدا و پرسنل متکبر."
-        : arch === "MANUFACTURER"
-        ? "تحلیل قطعه‌سازان سنتی و واردات چینی، درد کارفرما از تلرانس نادرست و توقف خط مونتاژ و الزامات وندورلیست‌ها."
-        : arch === "SAAS_SOFTWARE"
-        ? "تحلیل نرم‌افزارهای سنتی دسکتاپی، ترس شدید مدیران از جرایم سامانه مودیان و کشش بازار برای اشتراک ماهانه ابری."
-        : context.geographicScope === "CITY"
-        ? "پژوهش بر رقبا و جستجوی محلی شهر و شعاع دسترسی تمرکز دارد، نه محاسبات کلی ملی."
-        : "تحلیل رقبا و کشش تقاضا در سطح بازار ملی یا آنلاین رصد می‌شود."
-    },
-    3: {
-      title: "تخصصی‌سازی فاز ۳ (استراتژی و جهت‌گیری برند)",
-      instruction: arch === "LOCAL_SERVICE"
-        ? "بیانیه انحصار (Only-ness) بر شستشوی بدون آسیب یا تعویض روغن با فاکتور شفاف و شکستن پلمپ در حضور مشتری متمرکز است."
-        : arch === "RESTAURANT_CAFE_HOSPITALITY"
-        ? "بیانیه انحصار بر برشته‌کاری تازه با شناسنامه خاستگاه دانه، اتمسفر بدون دود و خلق تجربه طعمی منحصر‌به‌فرد استوار است."
-        : arch === "MANUFACTURER"
-        ? "جایگاه‌یابی بر تعهد تلرانس زیر ۳ میکرون، بیمه توقف خط تولید و شراکت راهبردی بدون خطای زنجیره تامین تمرکز دارد."
-        : arch === "SAAS_SOFTWARE"
-        ? "جایگاه‌یابی بر شروع کار زیر ۵ دقیقه، گارانتی صفر درصد جریمه مالیاتی و رهایی از پیچیدگی سیستم‌های سنتی استوار است."
-        : context.customerModel === "B2B"
-        ? "جایگاه‌یابی باید منطق توجیه سود، کاهش ریسک و رضایت تصمیم‌گیرندگان فنی و مالی را پوشش دهد."
-        : "جایگاه‌یابی مستقیماً درد و دستاورد ملموس مصرف‌کننده نهایی را نشانه می‌گیرد."
-    },
-    4: {
-      title: "تخصصی‌سازی فاز ۴ (هویت و شخصیت برند - کهن‌الگو)",
-      instruction: arch === "LOCAL_SERVICE"
-        ? "کهن‌الگو: حامی/مراقب (Caregiver ۶۰٪) برای امانت‌داری و آرامش خاطر + قهرمان/تکنسین (Hero ۴۰٪) برای مهارت فنی. مرز حسی: تخصص ملموس و ادب بدون شوآف."
-        : arch === "RESTAURANT_CAFE_HOSPITALITY"
-        ? "کهن‌الگو: خالق/هنرمند (Creator ۶۰٪) برای هنر برشته‌کاری و طعم + حکیم/کاشف (Sage ۴۰٪) برای خاستگاه قهوه. مرز حسی: صمیمیت، اصالت و مهمان‌نوازی."
-        : arch === "MANUFACTURER"
-        ? "کهن‌الگو: حاکم مقتدر (Ruler ۵۰٪) برای انضباط مهندسی + قهرمان پایداری (Hero ۵۰٪) برای دقت میکرونی و دوام خط. مرز حسی: وقار صنعتی بدون ادعای شعاری."
-        : arch === "SAAS_SOFTWARE"
-        ? "کهن‌الگو: حکیم هوشمند (Sage ۵۵٪) برای تسلط مالیاتی + جادوگر سادگی (Magician ۴۵٪) برای سرعت و سهولت دیجیتال. مرز حسی: چابکی و آرامش‌بخشی مدرن."
-        : "کهن‌الگو: حکیم (Sage ۶۰٪) برای مرجعیت علمی + مربی/حامی (Caregiver ۴۰٪) برای همراهی دلسوزانه. مرز حسی: پرهیز مطلق از زردی و تمرکز بر خروجی مستند."
-    },
-    5: {
-      title: "تخصصی‌سازی فاز ۵ (سیستم هویت کلامی و پیام‌رسانی)",
-      instruction: arch === "LOCAL_SERVICE"
-        ? "لحن: شفاف، فنی و خودمانی با حذف اصطلاحات گنگ؛ قلاب ۳۰ ثانیه‌ای متمرکز بر سرعت و تضمین اصالت روغن/شستشو؛ خط قرمز: پرهیز از ادعاهای اغراق‌آمیز بازاری."
-        : arch === "RESTAURANT_CAFE_HOSPITALITY"
-        ? "لحن: حسی، صمیمی، آرامش‌بخش و توصیفی؛ قلاب ۳۰ ثانیه‌ای بر روایت فنجان و رفع خستگی روزمره؛ خط قرمز: واژگان کلیشه‌ای بازاریابی و تحقیر سلیقه مشتری."
-        : arch === "MANUFACTURER"
-        ? "لحن: رسمی، مستند به داده، تلرانس‌های فنی و استانداردهای اندازه‌گیری؛ قلاب ۳۰ ثانیه‌ای بر پیشگیری از توقف خطوط تولید؛ خط قرمز: کلی‌گویی و ابهام در مشخصات فنی."
-        : arch === "SAAS_SOFTWARE"
-        ? "لحن: مدرن، چابک، روشن و رهایی‌بخش از اضطراب ممیزی دارایی؛ قلاب ۳۰ ثانیه‌ای بر ارسال بدون دردسر فاکتور به مودیان؛ خط قرمز: پیچیده‌گویی بوروکراتیک و واژگان نامفهوم."
-        : context.channelModel === "ONLINE_FIRST"
-        ? "فراخوان‌های عمل (CTA) به سمت خرید مستقیم، مشاوره سریع یا ثبت‌نام آنلاین هدایت می‌شوند."
-        : "فراخوان‌های عمل به سمت رزرو تلفنی، جلسه حضوری یا مراجعه به محل طراحی می‌شوند."
-    },
-    6: {
-      title: "تخصصی‌سازی فاز ۶ (نام‌گذاری، شعار و جهت‌گیری خلاقانه)",
-      instruction: arch === "LOCAL_SERVICE"
-        ? "قلمرو نام: واژگان خوش‌آهنگ، باوقار و کوتاه با تلفظ روان در تابلوی شهری و قابلیت استعلام علامت تجاری؛ شعار متمرکز بر اصالت قطعات و درخشش بدون آسیب."
-        : arch === "RESTAURANT_CAFE_HOSPITALITY"
-        ? "قلمرو نام: اسامی داستانی، حسی و اصیل با پیوند عمیق به مزرعه، رایحه و آرامش؛ شعار متمرکز بر روایت طعم و لحظه آرامش فنجان."
-        : arch === "MANUFACTURER"
-        ? "قلمرو نام: اسامی صنعتی استوار و پرطنین با ریشه پارسی یا مهندسی بین‌المللی و ثبت دامنه سازمانی؛ شعار متمرکز بر ستون استوار خطوط تولید و دقت میکرونی."
-        : arch === "SAAS_SOFTWARE"
-        ? "قلمرو نام: نام ترکیبی یا ابداعی چابک با قابلیت برندینگ دیجیتال و ثبت دامنه .com و .ir؛ شعار متمرکز بر حسابداری هوشمند و مالیات بی‌دغدغه."
-        : "قلمرو نام: نام متمایز با بار تخصصی و قابلیت ثبت قانونی؛ شعار حامل وعده اصلی تمایز ملموس."
-    },
-    7: {
-      title: "تخصصی‌سازی فاز ۷ (سیستم طراحی هویت بصری)",
-      instruction: arch === "LOCAL_SERVICE"
-        ? "پالت رنگی: کنتراست بالا برای تابلو و لباس کار (مشکی کربنی #09090b، آبی کبالت #2563eb، کهربایی اخطار #eab308)؛ فونت بولد هندسی؛ لیبل پلمپ و کارت گارانتی فیزیکی."
-        : arch === "RESTAURANT_CAFE_HOSPITALITY"
-        ? "پالت رنگی: تنالیته‌های گرم ارگانیک (قهوه‌ای رست عمیق #1c1917، کرم طبیعی #f5f5f4، تراکوتا #c2410c)؛ فونت انسانی باوقار؛ پاکت کرافت دانه با تاریخ رست و فنجان دوستدار محیط زیست."
-        : arch === "MANUFACTURER"
-        ? "پالت رنگی: فام‌های صنعتی سنگین (خاکستری فولادی #334155، نارنجی ایمنی #ea580c، سورمه‌ای متالیک #0f172a)؛ تایپوگرافی مونو صلب؛ پلاک متالیزه لیزری و کاتالوگ مهندسی قطعات."
-        : arch === "SAAS_SOFTWARE"
-        ? "پالت رنگی: تم مدرن تکنولوژی و اعتماد (آبی کبالت #2563eb، اسلیت تیره #0f172a، سبز ملایم تایید مالی #10b981)؛ تایپ‌فیس وزیرمتن/یکان‌بخ با وضوح بالا در داشبورد نرم‌افزار."
-        : "پالت رنگی: ترکیب رنگ اعتمادساز با کنتراست استاندارد متناسب با روان‌شناسی رنگ؛ تایپوگرافی تمیز و مدرن برای ارائه‌ها و اسناد راهبردی."
-    },
-    8: {
-      title: "تخصصی‌سازی فاز ۸ (فعال‌سازی اجرایی، PR و مدیریت اعتبار)",
-      instruction: arch === "LOCAL_SERVICE"
-        ? "موتور فعال‌سازی: سئوی محلی (گوگل مپ، نشان، بلد)، سامانه پیامکی یادآوری سرویس بر اساس کیلومتر، کمپین‌های فصلی و پاسخگویی مستند به نظرات در نقشه."
-        : arch === "RESTAURANT_CAFE_HOSPITALITY"
-        ? "موتور فعال‌سازی: رویدادهای هفتگی کاپینگ، کلوب اشتراک ماهانه دانه قهوه، روابط عمومی با فعالان صنعت غذا و پایش دقیق رضایت مراجعان در سالن."
-        : arch === "MANUFACTURER"
-        ? "موتور فعال‌سازی: ورود به وندورلیست صنایع مادر، تور بازدید مدیران فنی از کارخانه، مقالات سفید مهندسی در لینکدین و پروتکل ۲۴ ساعته حل بحران کیفی خط کارفرما."
-        : arch === "SAAS_SOFTWARE"
-        ? "موتور فعال‌سازی: سئوی ارگانیک بخشنامه‌های مالیاتی، وبینارهای دموی سامانه مودیان، سیستم رشد محصول‌محور (PLG) و داشبورد شفافیت آپ‌تایم سرور."
-        : context.activeOverlays.includes("FOUNDER_LED")
-        ? "رهبری فکری و حضور شخصی بنیان‌گذار در پادکست‌ها، یادداشت‌های تخصصی لینکدین و شبکه نخبگان موتور اصلی توسعه برند است."
-        : "سئوی محلی، رضایت مراجعان و کانال‌های فروش صنعتی یا منطقه‌ای در اولویت قرار دارند."
-    }
+  const spec = resolveDomainSpecialization(context, context.axes, p);
+  return {
+    title: spec.phaseTitle,
+    instruction: spec.phaseInstruction,
+    specializationLevel: spec.specializationLevel,
+    kpis: spec.kpis,
+    risks: spec.risks
   };
-
-  return rules[p] || null;
 }
+
 
 export function generateContextProfileMarkdown(context) {
   if (!context) return "";
