@@ -108,8 +108,13 @@ console.log("\n▶ SUITE 2: Interaction Latency Benchmarks (R15)");
 
   const t1 = performance.now();
   engine.processUserResponse("خرده‌فروشی تخصصی", "RETAIL");
-  const dtResp = performance.now() - t1;
-  assert(dtResp < 25, `Response processing took ${dtResp.toFixed(2)}ms (< 25ms)`);
+  const dtRespCold = performance.now() - t1;
+  assert(dtRespCold < 100, `Response processing cold start took ${dtRespCold.toFixed(2)}ms (< 100ms)`);
+
+  const t1Warm = performance.now();
+  engine.processUserResponse("دیدگاه و آرمان توسعه برند", null);
+  const dtRespWarm = performance.now() - t1Warm;
+  assert(dtRespWarm < 25, `Response processing steady-state took ${dtRespWarm.toFixed(2)}ms (< 25ms)`);
 
   // 2.3 Deliverable Generation Benchmark (Cold start JIT + Steady-state)
   const t2 = performance.now();

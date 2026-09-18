@@ -180,6 +180,31 @@ const UNKNOWN_PATTERNS = {
 };
 
 /**
+ * Matches a Persian phrase within text using Unicode word boundaries
+ */
+export function matchesPersianPhrase(normText, token) {
+  if (!normText || !token) return false;
+  const normT = normalizePersianText(token);
+  if (!normT) return false;
+
+  // Prevent false positive where "فرضیه است" substring-matches "فرضیه استراتژیک"
+  if (normT === "فرضیه است" || normT === "فرضی است") {
+    if (normText.includes("استراتژیک") || normText.includes("استراتژی")) {
+      return false;
+    }
+  }
+
+  const words = normT.split(/\s+/);
+  const escaped = words.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("\\s+");
+  try {
+    const regex = new RegExp(`(?<![\\u0600-\\u06FF\\w])${escaped}(?![\\u0600-\\u06FF\\w])`, "u");
+    return regex.test(normText);
+  } catch {
+    return normText.includes(normT);
+  }
+}
+
+/**
  * Detects if user response expresses an unknown intent across 4 distinct categories.
  * 
  * @param {string} text - User's input text
@@ -206,9 +231,9 @@ export function detectUnknownIntent(text) {
   ]) {
     const config = UNKNOWN_PATTERNS[catKey];
 
-    // Check token list
+    // Check token list with word boundary matching
     for (const token of config.tokens) {
-      if (norm.includes(token)) {
+      if (matchesPersianPhrase(norm, token)) {
         return {
           isUnknown: true,
           category: catKey,
@@ -219,9 +244,13 @@ export function detectUnknownIntent(text) {
       }
     }
 
-    // Check condensed list
+    // Check condensed list (for queries typed without spaces)
     for (const cToken of config.condensed) {
       if (condensed.includes(cToken)) {
+        // Prevent false positive on condensed strategy phrases
+        if ((cToken === "فرضیهاست" || cToken === "فرضیاست") && condensed.includes("استراتژ")) {
+          continue;
+        }
         return {
           isUnknown: true,
           category: catKey,
