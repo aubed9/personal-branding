@@ -10,18 +10,18 @@
 
 import { WIKI_PLAYBOOKS } from "../data/wikiKnowledge.js";
 import { sanitizeJargonForLocalTrades } from "./dynamicQuestionEngine.js";
-import { buildSecureEndpoint, secureFetchJson, validateEndpointUrl } from "./endpointSecurity.js";
+import { buildSecureEndpoint, secureFetchJson, validateEndpointUrl, SessionKeyManager } from "./endpointSecurity.js";
 
-// Canonical Phase Grounding Map
+// Canonical Phase Grounding Map (Strictly mapped to 49 Canonical Wiki Playbooks)
 const PHASE_PLAYBOOK_MAP = {
-  1: ["context-router-playbook", "decision-chain", "canonical-foundations"],
-  2: ["decision-chain", "canonical-foundations"],
-  3: ["decision-chain", "canonical-foundations"],
-  4: ["decision-chain", "canonical-foundations"],
-  5: ["decision-chain", "canonical-foundations"],
-  6: ["decision-chain", "canonical-foundations"],
-  7: ["decision-chain", "canonical-foundations"],
-  8: ["decision-chain", "canonical-foundations"]
+  1: ["context-router-playbook", "decision-chain", "canonical-foundations", "iran-market-dynamics"],
+  2: ["pricing", "channels", "iran-market-dynamics", "decision-chain"],
+  3: ["positioning", "conflict-resolution", "canonical-foundations"],
+  4: ["archetypes", "canonical-foundations"],
+  5: ["messaging", "canonical-foundations"],
+  6: ["naming", "canonical-foundations"],
+  7: ["visual", "canonical-foundations"],
+  8: ["decision-chain", "conflict-resolution", "iran-market-dynamics"]
 };
 
 /**
@@ -41,9 +41,29 @@ export function buildKnowledgeGroundingPrompt({
   const customerModel = context?.customerModel || "B2C";
   const channelModel = context?.channelModel || "PHYSICAL_FIRST";
 
-  // Pull relevant wiki playbooks text
-  const relevantPlaybooks = WIKI_PLAYBOOKS.slice(0, 3).map(p => `### [پلی‌بوک مرجع: ${p.title}]
-${p.content || ""}`).join("\n\n");
+  // Pull relevant wiki playbooks text based on current phase
+  const targetPlaybookIds = PHASE_PLAYBOOK_MAP[phaseNum] || ["context-router-playbook", "decision-chain"];
+  const relevantPlaybooks = WIKI_PLAYBOOKS
+    .filter(p => targetPlaybookIds.includes(p.id))
+    .map(p => {
+      const rules = p.keyRules && p.keyRules.length > 0
+        ? `\nقواعد کلیدی:\n` + p.keyRules.map(r => `  - ${r}`).join("\n")
+        : "";
+      return `### [پلی‌بوک مرجع: ${p.title}]
+${p.subtitle ? `زیرعنوان: ${p.subtitle}\n` : ""}${p.content || ""}${rules}`;
+    })
+    .join("\n\n");
+
+  // Format all prior answers across phases into readable context
+  const priorAnswersFormatted = Object.entries(priorAnswers || {})
+    .filter(([p, data]) => data && typeof data === "object" && Object.keys(data).length > 0)
+    .map(([p, data]) => {
+      const items = Object.entries(data)
+        .map(([k, v]) => `    - ${k}: ${typeof v === "object" ? JSON.stringify(v) : v}`)
+        .join("\n");
+      return `  * فاز ${p}:\n${items}`;
+    })
+    .join("\n");
 
   const isLocalTrade = 
     context?.archetype === "LOCAL_SERVICE" ||
@@ -63,30 +83,37 @@ ${p.content || ""}`).join("\n\n");
 - مدل تعامل با مشتری: ${customerModel}
 - کانال اصلی فعالیت: ${channelModel === "PHYSICAL_FIRST" ? "مراجعه فیزیکی و حضوری محلی" : "آنلاین و پلتفرمی"}
 - دیدگاه اولیه و هویت ثبت‌شده بنیان‌گذار: «${founderVision || "در حال تدوین"}»
-- فکت‌های تاییدشده قبلی: ${JSON.stringify(facts.slice(-4))}
-- تصمیمات قفل‌شده پیشین: ${JSON.stringify(decisions.slice(-4))}
+- فکت‌های تاییدشده قبلی: ${JSON.stringify(facts.slice(-6))}
+- تصمیمات قفل‌شده پیشین: ${JSON.stringify(decisions.slice(-6))}
 ======================================================================
 
-اصول بنیادین و قوانین سلبی غیرقابل‌تخطی (Negative Constraints):
-1. **توقف کامل بافتن مطالب کلیشه‌ای و توخالی:** به هیچ وجه شعارهای انگیزشی، جملات کلیشه‌ای ("شما عالی هستید"، "موفقیت نزدیک است") نگویید.
-2. **قانون ایزولاسیون کامل واژگان شرکتی (Zero Corporate Jargon):**
-${isLocalTrade ? `این صنف یک پیشه محلی/سنتی/فیزیکی است. به کار بردن واژگان فرنگی شرکتی (نظیر CAC, LTV, Churn, DMU, SLA, Pipeline, Funnel) مطلقاً و با نمره صفر ممنوع است. تماماً از معادل‌های واقعی و ملموس بازار ایران استفاده کنید (مانند: هزینه جذب هر مشتری محلی، ارزش مراجعات مکرر، ریزش مشتری، تصمیم‌گیرنده خرید، تضمین کتبی کار، فهرست سفارش‌ها).` : `اصطلاحات را با تعاریف دقیق مالی و رفتاری بازار ایران تطبیق دهید.`}
-3. **پایبندی به پایگاه دانش ۴۹ مقاله ویکی و چارچوب‌های علمی مرجع:**
-استدلال شما باید منحصراً بر پایه چارچوب‌های علمی مادر (مدل حساسیت قیمت وستندورپ، تمایز زاگ نئومایر، استوری‌برند دونالد میلر، کهن‌الگوهای مارک و پیرسون، مهار بحران SCCT) باشد.
+اطلاعات و پاسخ‌های ثبت‌شده کاربر در مراحل قبل (حیاتی برای تکامل هوشمندانه پرسش‌های بعدی):
+${priorAnswersFormatted || "  هنوز پاسخی ثبت نشده است (شروع فاز ۱)"}
 
-پلی‌بوک‌های دانشی تزریق‌شده از ویکی:
+اصول بنیادین و قوانین سلبی غیرقابل‌تخطی (Negative Constraints):
+1. **توقف کامل بافتن مطالب کلیشه‌ای و توخالی:** به هیچ وجه شعارهای انگیزشی یا جملات کلیشه‌ای ("شما عالی هستید"، "موفقیت نزدیک است") نگویید.
+2. **قانون ایزولاسیون کامل واژگان شرکتی (Zero Corporate Jargon):**
+${isLocalTrade ? `این صنف یک پیشه محلی/سنتی/فیزیکی است. به کار بردن واژگان فرنگی شرکتی (نظیر CAC, LTV, Churn, DMU, SLA, Pipeline, Funnel) مطلقاً ممنوع است. تماماً از معادل‌های ملموس و واقعی بازار ایران استفاده کنید (مانند: هزینه جذب هر مشتری محلی، ارزش مراجعات مکرر، ریزش مشتری، تصمیم‌گیرنده خرید، تضمین کتبی کار، فهرست سفارش‌ها).` : `اصطلاحات را با تعاریف دقیق مالی و رفتاری بازار ایران تطبیق دهید.`}
+3. **پایبندی به پایگاه دانش و چارچوب‌های علمی مادر:**
+استدلال شما باید منحصراً بر پایه چارچوب‌های علمی مادر و داده‌های بازار ایران در پلی‌بوک‌های زیر باشد:
+
+پلی‌بوک‌های دانشی تزریق‌شده از ویکی برای فاز ${phaseNum}:
 ${relevantPlaybooks}
 
+قوانین تکامل و فرمولاسیون پرسش بعدی (Dynamic Question Evolution):
+1. **استخراج هوشمندانه سوال بعدی:** پرسش جدید (nextQuestion) باید مستقیماً از دل پاسخ قبلی کاربر و انباشت اطلاعات مراحل قبل استخراج شود تا به هدف مخاطب نزدیک‌تر شود.
+2. **تنوع و عمق گزینه‌ها:** دقیقاً ۴ گزینه شفاف، عملیاتی و بدون ابهام ارائه دهید.
+3. **توضیح استراتژیک برای هر گزینه:** فیلد "detail" برای هر گزینه الزامی است و باید منطق یا شیوه اجرای آن گزینه را بیان کند.
+
 قالب خروجی الزامی (Strict JSON Schema):
-پاسخ شما باید منحصراً و بدون هیچ متن اضافی قبل یا بعد از آن، یک شیء استاندارد JSON به صورت زیر باشد:
-\`\`\`json
+پاسخ شما باید منحصراً یک شیء معتبر JSON با ساختار زیر باشد (بدون هیچ متن اضافی، بدون پیشوند و پسوند):
 {
   "analysisSummary": "تحلیل کاربردی، استراتژیک و عمیق از پاسخ کاربر متناسب با بافتار صنف ${tradeTitle}",
-  "extractedDecision": "یک جمله کوتاه و صریح به عنوان تصمیم استراتژیک مصوب برای ثبت در شناسنامه برند (یا null در صورت عدم وجود تصمیم جدید)",
+  "extractedDecision": "یک جمله کوتاه و صریح به عنوان تصمیم استراتژیک مصوب برای ثبت در شناسنامه برند (یا null)",
   "nextQuestion": {
     "id": "q_dynamic_${phaseNum}_step",
     "title": "عنوان کوتاه و تخصصی پرسش",
-    "text": "متن شفاف و دقیق سوال بعدی که منحصراً برای صنف ${tradeTitle} طراحی شده",
+    "text": "متن شفاف و دقیق سوال بعدی که بر اساس پاسخ‌های قبلی دقیق‌تر شده است",
     "whyItMatters": "دلیل اهمیت استراتژیک این پرسش در فاز ${phaseNum}",
     "options": [
       { "id": "opt_1", "label": "عنوان ملموس گزینه ۱", "detail": "توضیح تکمیلی یا رویکرد اجرایی" },
@@ -96,8 +123,7 @@ ${relevantPlaybooks}
     ],
     "allowCustomAnswer": true
   }
-}
-\`\`\``;
+}`;
 }
 
 /**
@@ -105,13 +131,14 @@ ${relevantPlaybooks}
  */
 export async function callGeminiApi({
   apiKey,
-  model = "gemini-1.5-flash",
+  model = "gemini-3.6-flash",
   customEndpoint = "",
   systemPrompt,
   messages,
-  temperature = 0.4
+  temperature = 0.35
 }) {
-  if (!apiKey && !customEndpoint) {
+  const activeKey = apiKey || SessionKeyManager.getApiKey();
+  if (!activeKey && !customEndpoint) {
     throw new Error("کلید API یا آدرس سرور هوش مصنوعی وارد نشده است.");
   }
 
@@ -119,7 +146,7 @@ export async function callGeminiApi({
   const endpoint = buildSecureEndpoint({
     customEndpoint,
     model,
-    apiKey
+    apiKey: activeKey
   });
 
   // Format messages into Gemini format
@@ -135,14 +162,15 @@ export async function callGeminiApi({
     } : undefined,
     generationConfig: {
       temperature,
-      maxOutputTokens: 2000,
+      maxOutputTokens: 4096,
+      responseMimeType: "application/json"
     }
   };
 
   const data = await secureFetchJson({
     url: endpoint,
     payload,
-    apiKey,
+    apiKey: activeKey,
     timeoutMs: 30000,
     maxRetries: 3
   });
@@ -161,7 +189,7 @@ export async function callGeminiApi({
  */
 export async function runKnowledgeBrain({
   apiKey,
-  model = "gemini-1.5-flash",
+  model = "gemini-3.6-flash",
   customEndpoint = "",
   phaseNum = 1,
   context = null,
@@ -172,6 +200,7 @@ export async function runKnowledgeBrain({
   facts = [],
   decisions = []
 }) {
+  const activeKey = apiKey || SessionKeyManager.getApiKey();
   const founderVision = priorAnswers[1]?.diagnosticVision || "";
   const systemPrompt = buildKnowledgeGroundingPrompt({
     phaseNum,
@@ -188,7 +217,7 @@ export async function runKnowledgeBrain({
   ];
 
   const rawReply = await callGeminiApi({
-    apiKey,
+    apiKey: activeKey,
     model,
     customEndpoint,
     systemPrompt,
@@ -296,6 +325,7 @@ export function parseStructuredAIResponse(rawReply, context = null) {
                 label: cleanOpt,
                 text: cleanOpt,
                 detail: "",
+                description: "",
                 value: `dynamic_opt_${idx + 1}`,
                 badge: `موضع پیشنهادی ${idx + 1}`
               };
@@ -309,6 +339,7 @@ export function parseStructuredAIResponse(rawReply, context = null) {
                 label,
                 text: label,
                 detail,
+                description: detail,
                 value: opt.value || id,
                 badge: opt.badge || `موضع پیشنهادی ${idx + 1}`
               };
@@ -360,6 +391,7 @@ export function parseStructuredAIResponse(rawReply, context = null) {
               label: clean,
               text: clean,
               detail: "",
+              description: "",
               value: `dynamic_opt_${idx + 1}`,
               badge: `موضع پیشنهادی ${idx + 1}`
             };

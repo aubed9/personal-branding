@@ -55,8 +55,14 @@ export default function App() {
     SessionKeyManager.setApiKey(newKey);
     setApiKeyState(newKey);
   };
-  const [model, setModel] = useState(() => localStorage.getItem("gemini_model") || "gemini-1.5-flash");
-  const [engineMode, setEngineMode] = useState(() => localStorage.getItem("engine_mode") || "simulator");
+  const [model, setModel] = useState(() => {
+    const saved = localStorage.getItem("gemini_model");
+    if (!saved || saved.includes("1.5") || saved.includes("2.0") || saved === "gemini-2.5-flash") {
+      return "gemini-3.6-flash";
+    }
+    return saved;
+  });
+  const [engineMode, setEngineMode] = useState(() => localStorage.getItem("engine_mode") || "gemini");
   const [customEndpoint, setCustomEndpoint] = useState(() => localStorage.getItem("custom_api_endpoint") || "");
 
   // Sync state from engine and perform autosave
@@ -107,11 +113,12 @@ export default function App() {
     try {
       const userText = option.text || option.label;
       const optionValue = option.value;
+      const activeApiKey = apiKey || SessionKeyManager.getApiKey();
 
-      if (engineMode === "gemini" && apiKey && apiKey.trim()) {
+      if (engineMode === "gemini" && activeApiKey && activeApiKey.trim()) {
         try {
           const brainResult = await runKnowledgeBrain({
-            apiKey,
+            apiKey: activeApiKey,
             model,
             customEndpoint,
             phaseNum: currentPhase,
@@ -164,10 +171,11 @@ export default function App() {
     setIsProcessing(true);
 
     try {
-      if (engineMode === "gemini" && apiKey && apiKey.trim()) {
+      const activeApiKey = apiKey || SessionKeyManager.getApiKey();
+      if (engineMode === "gemini" && activeApiKey && activeApiKey.trim()) {
         try {
           const brainResult = await runKnowledgeBrain({
-            apiKey,
+            apiKey: activeApiKey,
             model,
             customEndpoint,
             phaseNum: currentPhase,

@@ -30,7 +30,7 @@ export default function SettingsModal({
   onResetProject
 }) {
   const [localKey, setLocalKey] = useState(apiKey || "");
-  const [localModel, setLocalModel] = useState(model || "gemini-1.5-flash");
+  const [localModel, setLocalModel] = useState(model || "gemini-3.6-flash");
   const [localMode, setLocalMode] = useState(engineMode || "gemini");
   const [localEndpoint, setLocalEndpoint] = useState(customEndpoint || "");
   const [endpointError, setEndpointError] = useState("");
@@ -203,9 +203,9 @@ export default function SettingsModal({
                 onChange={(e) => setLocalModel(e.target.value)}
                 className="w-full px-3 py-2 rounded-xl bg-black border border-white/15 text-xs text-white focus:outline-none focus:border-white font-mono"
               >
-                <option value="gemini-2.0-flash">Gemini 2.0 Flash (سریع‌ترین و جدیدترین)</option>
-                <option value="gemini-1.5-flash">Gemini 1.5 Flash (پایدار و استاندارد)</option>
-                <option value="gemini-1.5-pro">Gemini 1.5 Pro (عمیق‌ترین استدلال استراتژیک)</option>
+                <option value="gemini-3.6-flash">Gemini 3.6 Flash (پیش‌فرض پیشنهادی - سریع و دقیق)</option>
+                <option value="gemini-flash-latest">Gemini Flash Latest (جدیدترین نسخه آزمایشی)</option>
+                <option value="gemini-2.5-pro">Gemini 2.5 Pro (استدلال استراتژیک عمیق)</option>
               </select>
             </div>
 
