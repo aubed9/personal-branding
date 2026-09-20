@@ -75,18 +75,9 @@ export function validateEndpointUrl(endpoint) {
  * Resolves default API key securely from environment or dynamic runtime assembly
  */
 function resolveDefaultApiKey() {
-  if (typeof process !== "undefined" && process.env?.VITE_GEMINI_API_KEY) {
-    return process.env.VITE_GEMINI_API_KEY;
-  }
-  if (typeof import.meta !== "undefined" && import.meta.env?.VITE_GEMINI_API_KEY) {
-    return import.meta.env.VITE_GEMINI_API_KEY;
-  }
-  // Dynamic runtime key assembly for client bundle compatibility
-  const seg1 = "AQ.Ab8RN6J7NVN";
-  const seg2 = "QOA92T6HNMEed7";
-  const seg3 = "e8KqOfuVsJQdbV";
-  const seg4 = "i0YSig_ubrw";
-  return [seg1, seg2, seg3, seg4].join("");
+  // A browser bundle cannot keep a shared secret, including VITE_* environment values.
+  // Users supply their own session key or an explicitly configured proxy.
+  return '';
 }
 
 export const DEFAULT_GEMINI_API_KEY = resolveDefaultApiKey();
@@ -225,12 +216,16 @@ export async function secureFetchJson({
   payload,
   apiKey = "",
   timeoutMs = 30000,
-  maxRetries = 3
+  maxRetries = 3,
+  signal
 }) {
   let lastError = null;
 
   for (let attempt = 0; attempt < maxRetries; attempt++) {
+    if (signal?.aborted) throw new DOMException('درخواست لغو شد.', 'AbortError');
     const controller = new AbortController();
+    const abort = () => controller.abort();
+    signal?.addEventListener('abort', abort, { once: true });
     const timer = setTimeout(() => controller.abort(), timeoutMs);
 
     try {
@@ -241,12 +236,12 @@ export async function secureFetchJson({
         signal: controller.signal
       });
 
-      clearTimeout(timer);
+      // Keep the timeout active while reading the response body.
 
       // Handle HTTP 429 Rate Limit
       if (response.status === 429) {
         const waitMs = Math.pow(2, attempt) * 1000;
-        await new Promise(r => setTimeout(r, waitMs));
+        if (attempt < maxRetries - 1) await new Promise(r => setTimeout(r, waitMs));
         lastError = new Error(`محدودیت نرخ درخواست (۴۲۹). تلاش مجدد ${attempt + 1}/${maxRetries}`);
         continue;
       }
@@ -259,7 +254,7 @@ export async function secureFetchJson({
       // Handle server errors (5xx)
       if (response.status >= 500) {
         const waitMs = Math.pow(2, attempt) * 1000;
-        await new Promise(r => setTimeout(r, waitMs));
+        if (attempt < maxRetries - 1) await new Promise(r => setTimeout(r, waitMs));
         lastError = new Error(`سرور هوش مصنوعی با خطای موقت مواجه شد (کد ${response.status}). تلاش مجدد ${attempt + 1}/${maxRetries}`);
         continue;
       }
@@ -277,6 +272,7 @@ export async function secureFetchJson({
     } catch (err) {
       clearTimeout(timer);
 
+      if (signal?.aborted) throw new DOMException("درخواست لغو شد.", "AbortError");
       if (err.name === "AbortError") {
         throw new Error("زمان پاسخ‌گویی سرور هوش مصنوعی به اتمام رسید (Timeout ۳۰ ثانیه).");
       }
@@ -289,10 +285,13 @@ export async function secureFetchJson({
 
       if (attempt < maxRetries - 1 && !err.message.includes("۴۰۱") && !err.message.includes("۴۰۳")) {
         const waitMs = Math.pow(2, attempt) * 1000;
-        await new Promise(r => setTimeout(r, waitMs));
+        if (attempt < maxRetries - 1) await new Promise(r => setTimeout(r, waitMs));
       } else {
         break;
       }
+    } finally {
+      clearTimeout(timer);
+      signal?.removeEventListener('abort', abort);
     }
   }
 

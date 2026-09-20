@@ -10,15 +10,19 @@ const SettingsModal = lazy(() => import("./components/SettingsModal"));
 const WikiModal = lazy(() => import("./components/WikiModal"));
 const GuildSelectorModal = lazy(() => import("./components/GuildSelectorModal"));
 import { OrchestratorEngine } from "./services/orchestratorEngine";
-import { runKnowledgeBrain } from "./services/geminiService";
+import { InterviewController } from "./services/interviewController";
+import { formatSelectedAnswer } from "./services/interviewSchema";
 import { SessionKeyManager } from "./services/endpointSecurity";
 import { PersistenceManager } from "./services/persistenceManager";
 import { validatePhaseGate } from "./services/phaseGateValidator";
-import { classifyBusinessContext } from "./data/businessContextRouter";
 
 export default function App() {
   const [engine, setEngine] = useState(() => new OrchestratorEngine());
   const persistenceManagerRef = useRef(new PersistenceManager());
+  const controllerRef = useRef(null);
+  if (!controllerRef.current || controllerRef.current.engine !== engine) controllerRef.current = new InterviewController(engine);
+  const [workflowMessage, setWorkflowMessage] = useState('');
+  const [phaseGateStatus, setPhaseGateStatus] = useState(null);
 
   // Multi-Phase Tracking (1 to 8)
   const [currentPhase, setCurrentPhase] = useState(1);
@@ -56,13 +60,7 @@ export default function App() {
     SessionKeyManager.setApiKey(newKey);
     setApiKeyState(newKey);
   };
-  const [model, setModel] = useState(() => {
-    const saved = localStorage.getItem("gemini_model");
-    if (!saved || saved.includes("1.5") || saved.includes("2.0") || saved === "gemini-2.5-flash" || saved === "gemini-3.6-flash") {
-      return "gemini-3.5-flash-lite";
-    }
-    return saved;
-  });
+  const [model, setModel] = useState(() => localStorage.getItem('gemini_model') || 'gemini-3.5-flash-lite');
   const [engineMode, setEngineMode] = useState(() => localStorage.getItem("engine_mode") || "gemini");
   const [customEndpoint, setCustomEndpoint] = useState(() => localStorage.getItem("custom_api_endpoint") || "");
 
@@ -75,7 +73,10 @@ export default function App() {
     setTotalQuestions(questions?.length || 5);
     setQuestionIndex(eng.currentStepIndex || 0);
 
-    const isDone = !q && questions?.length > 0 && questions.every(item => item?.isAnswered);
+    const gate = validatePhaseGate(eng.currentPhase, eng);
+    setPhaseGateStatus(gate);
+    setCurrentPhase(eng.currentPhase);
+    const isDone = !q && gate.passed && Boolean(eng.completedPhases[eng.currentPhase]);
     setIsPhaseCompleted(isDone);
 
     setStats({
@@ -92,8 +93,9 @@ export default function App() {
     setMarkdownContent(eng.generateMarkdownText(eng.currentPhase));
 
     // Autosave state securely via PersistenceManager (Requirement R8.1 / R11)
-    persistenceManagerRef.current.saveProjectState(eng);
-    setLastSavedTime(new Date().toLocaleTimeString("fa-IR", { hour: "2-digit", minute: "2-digit", second: "2-digit" }));
+    const saved = persistenceManagerRef.current.saveProjectState(eng);
+    if (!saved) setWorkflowMessage('ذخیره خودکار انجام نشد. از تنظیمات، فایل پروژه را دانلود کنید.');
+    setLastSavedTime(saved ? new Date().toLocaleTimeString("fa-IR", { hour: "2-digit", minute: "2-digit", second: "2-digit" }) : "");
   }, []);
 
   // Initialize Engine, safely restore saved state (or recover if corrupt), & purge legacy keys
@@ -106,118 +108,42 @@ export default function App() {
     syncFromEngine(engine);
   }, [engine, syncFromEngine]);
 
-  // Handle Option Selection (Instantaneous Progression with Background AI Brain)
-  const handleSelectOption = (option) => {
-    if (!option) return;
+  const cancelPendingTurn = () => {
+    controllerRef.current?.cancel();
+    setIsProcessing(false);
+    setIsAiAnalyzing(false);
+  };
 
+  useEffect(() => () => controllerRef.current?.cancel(), [engine]);
+
+  const submitAnswer = async (userText, optionValue = null) => {
+    const controller = controllerRef.current;
+    if (controller.busy || !userText?.trim() || !currentQuestion) return;
+    setIsProcessing(true);
+    setIsAiAnalyzing(engineMode === 'gemini' && Boolean(apiKey || customEndpoint));
+    setWorkflowMessage('');
     try {
-      const userText = option.text || option.label;
-      const optionValue = option.value;
-      const activeApiKey = apiKey || SessionKeyManager.getApiKey();
-
-      // 1. Instant optimistic progression (0ms wait for user)
-      engine.processUserResponse(userText, optionValue);
-
-      // Check if phase gate is ready to validate
-      const phaseQuestions = engine.getCurrentPhaseQuestions();
-      const allAnswered = phaseQuestions?.every(item => item?.isAnswered);
-      if (allAnswered) {
-        const gate = validatePhaseGate(currentPhase, engine);
-        if (gate.passed) {
-          engine.completedPhases[currentPhase] = true;
-        }
-      }
-
-      // Immediately render next step
+      const result = await controller.submit({ userText, optionValue, questionId: currentQuestion.id }, {
+        engineMode, apiKey: apiKey || SessionKeyManager.getApiKey(), model, customEndpoint,
+      }, eng => {
+        if (!persistenceManagerRef.current.saveProjectState(eng)) setWorkflowMessage('ذخیره خودکار انجام نشد؛ فایل پروژه را دانلود کنید.');
+      });
+      if (result.cancelled || result.ignored || controller !== controllerRef.current) return;
+      setWorkflowMessage(result.message || '');
       syncFromEngine(engine);
-
-      // 2. Concurrently run Deep Knowledge Brain in background without blocking UI
-      if (engineMode === "gemini" && activeApiKey && activeApiKey.trim()) {
-        setIsAiAnalyzing(true);
-        runKnowledgeBrain({
-          apiKey: activeApiKey,
-          model,
-          customEndpoint,
-          phaseNum: currentPhase,
-          context: engine.businessContext,
-          userText,
-          optionValue,
-          priorAnswers: engine.phaseData,
-          facts: engine.facts,
-          decisions: engine.decisions
-        }).then((brainResult) => {
-          if (brainResult?.extractedDecision) {
-            engine.addStrategicDecision(brainResult.extractedDecision);
-          }
-          if (brainResult?.nextQuestion) {
-            engine.setDynamicNextQuestion(brainResult.nextQuestion);
-          }
-          syncFromEngine(engine);
-        }).catch((brainErr) => {
-          console.warn("[Knowledge Brain Background]:", brainErr.message);
-        }).finally(() => {
-          setIsAiAnalyzing(false);
-        });
+    } catch (error) {
+      setWorkflowMessage(error.message);
+      syncFromEngine(engine);
+    } finally {
+      if (controller === controllerRef.current && !controller.busy) {
+        setIsProcessing(false);
+        setIsAiAnalyzing(false);
       }
-    } catch (err) {
-      console.error("[Question Workflow] Error processing selection:", err);
     }
   };
 
-  // Handle Custom Free-Text Input (Instantaneous Progression with Background AI Brain)
-  const handleSubmitCustomAnswer = (customText) => {
-    if (!customText || !customText.trim()) return;
-
-    try {
-      const activeApiKey = apiKey || SessionKeyManager.getApiKey();
-      const trimmedText = customText.trim();
-
-      // 1. Instant optimistic progression
-      engine.processUserResponse(trimmedText, null);
-
-      const phaseQuestions = engine.getCurrentPhaseQuestions();
-      const allAnswered = phaseQuestions?.every(item => item?.isAnswered);
-      if (allAnswered) {
-        const gate = validatePhaseGate(currentPhase, engine);
-        if (gate.passed) {
-          engine.completedPhases[currentPhase] = true;
-        }
-      }
-
-      syncFromEngine(engine);
-
-      // 2. Concurrently run Knowledge Brain in background
-      if (engineMode === "gemini" && activeApiKey && activeApiKey.trim()) {
-        setIsAiAnalyzing(true);
-        runKnowledgeBrain({
-          apiKey: activeApiKey,
-          model,
-          customEndpoint,
-          phaseNum: currentPhase,
-          context: engine.businessContext,
-          userText: trimmedText,
-          optionValue: null,
-          priorAnswers: engine.phaseData,
-          facts: engine.facts,
-          decisions: engine.decisions
-        }).then((brainResult) => {
-          if (brainResult?.extractedDecision) {
-            engine.addStrategicDecision(brainResult.extractedDecision);
-          }
-          if (brainResult?.nextQuestion) {
-            engine.setDynamicNextQuestion(brainResult.nextQuestion);
-          }
-          syncFromEngine(engine);
-        }).catch((brainErr) => {
-          console.warn("[Knowledge Brain Background]:", brainErr.message);
-        }).finally(() => {
-          setIsAiAnalyzing(false);
-        });
-      }
-    } catch (err) {
-      console.error("[Question Workflow] Error processing custom answer:", err);
-    }
-  };
+  const handleSelectOption = option => option && submitAnswer(formatSelectedAnswer(option), option.value);
+  const handleSubmitCustomAnswer = text => submitAnswer(text?.trim());
 
   // Handle Unknown / Uncertainty ("نمی‌دانم")
   const handleUnknownSelect = () => {
@@ -229,6 +155,7 @@ export default function App() {
 
   // Handle Navigate Back to Previous Question
   const handleNavigateBack = () => {
+    cancelPendingTurn();
     if (engine.navigateBack) {
       engine.navigateBack();
       syncFromEngine(engine);
@@ -238,17 +165,14 @@ export default function App() {
   // Handle Guild Selection from 753 catalog
   const handleSelectGuild = (guild) => {
     if (!guild) return;
-    const classified = classifyBusinessContext({
-      guild: guild.id,
-      stage: "ACTIVE"
-    });
-    engine.setBusinessContext(classified);
-    engine.processUserResponse(`صنف انتخابی: ${guild.titleFa} (${guild.id})`, guild.id);
+    cancelPendingTurn();
+    engine.selectGuild(guild);
     syncFromEngine(engine);
   };
 
   // Transition to Next Phase (e.g. 1 -> 2, 2 -> 3, ..., 7 -> 8)
   const handleStartNextPhase = () => {
+    if (controllerRef.current.busy) return;
     if (currentPhase >= 8) return;
     const nextPhaseNum = currentPhase + 1;
     const check = engine.canStartPhase(nextPhaseNum);
@@ -265,8 +189,7 @@ export default function App() {
   // Jump to specific phase (for reviewing deliverables)
   const handleSelectPhase = (phaseId) => {
     if (completedPhases[phaseId] || phaseId === currentPhase) {
-      setActiveDeliverablePhase(phaseId);
-      setIsDeliverableOpen(true);
+      handleOpenDeliverable(phaseId);
     }
   };
 
@@ -281,6 +204,7 @@ export default function App() {
   // Complete Reset
   const handleReset = () => {
     if (window.confirm("آیا مایلید تمام فرآیند برندینگ را از فاز ۱ دوباره شروع کنید؟ تمام داده‌ها بازنشانی خواهند شد.")) {
+      cancelPendingTurn();
       persistenceManagerRef.current.resetProjectState();
       const newEng = new OrchestratorEngine();
       setEngine(newEng);
@@ -308,7 +232,8 @@ export default function App() {
   const handleImportProject = (jsonString) => {
     const res = persistenceManagerRef.current.importProjectJSON(jsonString);
     if (!res.success) return res;
-    persistenceManagerRef.current.restoreToEngine(engine, res.state);
+    cancelPendingTurn();
+    if (!persistenceManagerRef.current.restoreToEngine(engine, res.state)) return { success: false, error: "فایل پروژه نامعتبر است." };
     setCurrentPhase(engine.currentPhase || 1);
     syncFromEngine(engine);
     return { success: true };
@@ -378,12 +303,20 @@ export default function App() {
 
         {/* Left Column: Strategic Question Workstation */}
         <main className="flex-1 flex flex-col min-w-0 bg-[#000000] h-full overflow-hidden relative">
+          {workflowMessage && <div role="status" className="px-5 py-3 text-sm text-zinc-200 border-b border-white/10" dir="rtl">{workflowMessage}</div>}
           <QuestionCard
             currentQuestion={currentQuestion}
             currentPhase={currentPhase}
             totalQuestions={totalQuestions}
             questionIndex={questionIndex}
             isPhaseCompleted={isPhaseCompleted}
+            phaseGateStatus={phaseGateStatus}
+            onReviewPhase={(phase) => {
+              cancelPendingTurn();
+              engine.startPhase(phase);
+              engine.goToQuestion(0);
+              syncFromEngine(engine);
+            }}
             onSelectOption={handleSelectOption}
             onSubmitCustomAnswer={handleSubmitCustomAnswer}
             onUnknownSelect={handleUnknownSelect}
@@ -402,7 +335,7 @@ export default function App() {
         <div className="flex items-center gap-2">
           <span className={`w-1.5 h-1.5 rounded-full ${isAiAnalyzing ? "bg-white animate-ping" : "bg-white"}`} />
           <span className={isAiAnalyzing ? "text-white font-medium" : ""}>
-            {isAiAnalyzing ? "استدلال هوش مصنوعی در پس‌زمینه..." : "ذخیره خودکار در نشست جاری"}
+            {isAiAnalyzing ? "تنظیم سؤال بعدی بر اساس پاسخ شما..." : "ذخیره خودکار در نشست جاری"}
           </span>
           {lastSavedTime && !isAiAnalyzing && <span className="text-zinc-500 hidden sm:inline">({lastSavedTime})</span>}
         </div>
@@ -433,6 +366,13 @@ export default function App() {
             deliverableData={deliverableData}
             markdownContent={markdownContent}
             activeDeliverablePhase={activeDeliverablePhase}
+            onReviewPhase={(phase) => {
+              cancelPendingTurn();
+              engine.startPhase(phase);
+              engine.goToQuestion(0);
+              setIsDeliverableOpen(false);
+              syncFromEngine(engine);
+            }}
             onSelectPhaseTab={(pNum) => handleOpenDeliverable(pNum)}
             completedPhases={completedPhases}
             onStartNextPhase={handleStartNextPhase}

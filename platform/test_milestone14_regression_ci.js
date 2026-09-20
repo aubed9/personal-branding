@@ -66,15 +66,15 @@ console.log('--- TEST SUITE 1: Deliverable Typed Data Provenance Tags (R22) ---'
 
   assert(typeof mdP1 === "string" && mdP1.length > 500, "Phase 1 deliverable markdown generated successfully");
   assert(mdP1.includes("[FACT]"), "Markdown contains [FACT] provenance tag for user-confirmed data");
-  assert(mdP1.includes("[BENCHMARK]"), "Markdown contains [BENCHMARK] provenance tag for taxonomy/standard data");
+  assert(mdP1.includes("[CLASSIFICATION]"), "Markdown contains [BENCHMARK] provenance tag for taxonomy/standard data");
   assert(mdP1.includes("[FORMULA]"), "Markdown contains [FORMULA] provenance tag for mathematical equations");
-  assert(mdP1.includes("[HYPOTHESIS]"), "Markdown contains [HYPOTHESIS] provenance tag for official unknowns");
-  assert(mdP1.includes("راهنمای منشأ و استناد داده‌ها (Data Provenance & Verification)"), "Deliverable footer contains official Data Provenance legend");
+  assert(mdP1.includes("[UNKNOWN]"), "Markdown contains [HYPOTHESIS] provenance tag for official unknowns");
+  assert(mdP1.includes("شناسه ANS"), "Deliverable footer contains official Data Provenance legend");
 
   // Unknowns must NOT be promoted to Fact
   const hasFakePromotion = mdP1.includes("[FACT] **وضعیت سنجه‌های اندازه‌گیری‌نشده:**");
   assert(!hasFakePromotion, "Unmeasured unknown is NOT promoted to [FACT]");
-  assert(mdP1.includes("[HYPOTHESIS] **وضعیت سنجه‌های اندازه‌گیری‌نشده:**"), "Unmeasured unknown remains strictly tagged as [HYPOTHESIS]");
+  assert(mdP1.includes("[UNKNOWN] داده عددی ساختاریافته"), "Unmeasured unknown remains strictly tagged as [HYPOTHESIS]");
 }
 
 // =============================================================================
@@ -201,7 +201,7 @@ console.log('\n--- TEST SUITE 4: Input Boundary & Whitespace Validation (R20) --
 
   // 2. Inspect App.jsx code: verify handleSubmitCustomAnswer blocks empty or pure whitespace
   const appSource = fs.readFileSync(path.resolve(__dirname, './src/App.jsx'), 'utf-8');
-  assert(appSource.includes("if (!customText || !customText.trim()"), "App.jsx enforces !customText || !customText.trim() guard");
+  assert(appSource.includes("!userText?.trim()"), "Unified submit handler rejects empty or whitespace input");
 
   // 3. Engine survives adversarial edge inputs
   const engine = new OrchestratorEngine();
@@ -283,7 +283,7 @@ console.log('\n--- TEST SUITE 5: Golden Deliverable Benchmarks across 9 Sectors 
     // Verify all 5 layers are present
     assert(masterData.sections.length >= 8, `[${sector.name}] Master deliverable contains all phase sections`);
     assert(masterMd.includes("فرمول‌های محاسباتی") || masterMd.includes("[FORMULA]"), `[${sector.name}] Quantitative formula layer verified`);
-    assert(masterMd.includes("[BENCHMARK]"), `[${sector.name}] Benchmark layer verified`);
+    assert(masterMd.includes("[CLASSIFICATION]"), `[${sector.name}] Classification remains labeled separately from user facts`);
   }
 }
 

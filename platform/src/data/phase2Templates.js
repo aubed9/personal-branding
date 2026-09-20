@@ -1,6 +1,7 @@
 // DIGITAL MARKET — Phase 2: Market & Customer Intelligence Templates
 // Provides dynamic sector-specific question branching and sector-adapted options
 // for Automotive Technical Services, Hospitality/Cafes, Heavy Manufacturing, B2B SaaS, and Personal Brands.
+import { isAutomotiveService } from './businessDomain.js';
 
 export const PHASE2_QUESTIONS = [
   {
@@ -74,11 +75,7 @@ export function getAdaptivePhase2Questions(context) {
   const arch = context.archetype;
   const overlays = context.activeOverlays || [];
 
-  const isAutomotive = 
-    context.industryCode === "IND-05" ||
-    context.industryId === "IND-05" ||
-    (context.archetypeTitle && (context.archetypeTitle.includes("خودرو") || context.archetypeTitle.includes("اتوسرویس"))) ||
-    (context.taxonomyTitleFa && (context.taxonomyTitleFa.includes("خودرو") || context.taxonomyTitleFa.includes("کارواش") || context.taxonomyTitleFa.includes("روغن") || context.taxonomyTitleFa.includes("مکانیک") || context.taxonomyTitleFa.includes("دیتیلینگ") || context.taxonomyTitleFa.includes("تعمیرگاه")));
+  const isAutomotive = isAutomotiveService(context);
 
   // 1. Local Automotive & Technical Services (Car Wash, Detailing, Oil Change, Auto Repair)
   if (arch === "LOCAL_SERVICE" && isAutomotive) {

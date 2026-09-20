@@ -1,12 +1,6 @@
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
 import { BUSINESS_TYPES, MACRO_INDUSTRIES } from './src/data/businessTaxonomy753.js';
 import { OrchestratorEngine } from './src/services/orchestratorEngine.js';
-import { generateDeliverable } from './src/services/deliverableGenerator.js';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import { activeAnswers } from './src/services/interviewSchema.js';
 
 console.log('======================================================================');
 console.log('🔬 ADVERSARIAL CHALLENGER R3.2: 753 SIMULATION & JARGON ISOLATION AUDIT');
@@ -67,51 +61,25 @@ for (const ind of MACRO_INDUSTRIES) {
 }
 assert(all31Covered, 'All 31 macro industries have at least one business registered');
 
-// ----------------------------------------------------------------------------
-// TEST 2: DELIVERABLE FILE VALIDATION (753_BUSINESS_SIMULATIONS.md)
-// ----------------------------------------------------------------------------
-console.log('\n--- TEST SUITE 2: Deliverables Ledger File Validation ---');
-const deliverablePath = path.resolve(__dirname, '../deliverables/753_BUSINESS_SIMULATIONS.md');
-assert(fs.existsSync(deliverablePath), `File exists at: ${deliverablePath}`);
-
-const mdContent = fs.readFileSync(deliverablePath, 'utf-8');
-const lines = mdContent.split('\n');
-console.log(`  File size: ${(Buffer.byteLength(mdContent, 'utf-8') / 1024).toFixed(1)} KB, total lines: ${lines.length}`);
-
-// Row count test (BT-0001 to BT-0753 table rows)
-const rowRegex = /^\|\s*\d+\s*\|\s*`?(BT-\d{4})`?\s*\|/;
-const matchedRows = lines.filter(line => rowRegex.test(line));
-assert(matchedRows.length === 753, `Complete 753 business entries present in ledger table (actual: ${matchedRows.length})`);
-
-// 31 Industries Summary Table test
-let indTableCount = 0;
-for (const ind of MACRO_INDUSTRIES) {
-  const indPattern = new RegExp(`\\|\\s*\\*\\*${ind.titleFa}\\*\\*\\s*\\|`);
-  if (indPattern.test(mdContent) || mdContent.includes(ind.titleFa)) {
-    indTableCount++;
-  }
+// Test behavior against the engine; generated Markdown is not an oracle for quality.
+console.log('\n--- TEST SUITE 2: Incomplete projects remain drafts across all 753 guilds ---');
+const draftFailures = [], evidenceFailures = [], identityFailures = [];
+for (const bt of BUSINESS_TYPES) {
+  const engine = new OrchestratorEngine();
+  engine.selectGuild(bt);
+  const description = engine.phaseData[1].description;
+  engine.processUserResponse(`دیدگاه اختصاصی من درباره ${bt.titleFa}: شفافیت در تحویل`);
+  const doc = engine.generateDeliverableData('master');
+  const records = activeAnswers(engine.answerRecords);
+  if (doc.status !== 'DRAFT' || Object.values(engine.completedPhases).some(Boolean)) draftFailures.push(bt.id);
+  if (engine.businessContext.taxonomyId !== bt.id || engine.phaseData[1].description !== description) identityFailures.push(bt.id);
+  if (!doc.evidence.length || !doc.evidence.every(claim =>
+    claim.evidenceIds.length && claim.evidenceIds.every(id => records.some(r => r.id === id && claim.statement.includes(r.text)))
+  )) evidenceFailures.push(bt.id);
 }
-assert(indTableCount === 31, `All 31 macro industries present in Section 2 summary table (actual: ${indTableCount}/31)`);
-
-// Audit Oath & Executive Summary test
-assert(
-  mdContent.includes("سوگند ممیزی") || mdContent.includes("خلاصه اجرایی و شاخص‌های کلان عملکردی") || mdContent.includes("قانون ارزیابی"),
-  'Executive summary and evaluation rules section is present in deliverables document'
-);
-
-// Macro KPI summary presence
-assert(
-  mdContent.includes('جدول شاخص‌های کلان عملکردی') || mdContent.includes('خلاصه اجرایی و شاخص‌های کلان عملکردی'),
-  'Macro Audit KPIs table present'
-);
-assert(
-  mdContent.includes('ممیزی ایزولاسیون اصطلاحات شرکتی') || mdContent.includes('Isolation & Anti-Leakage Audit'),
-  'Jargon Isolation Audit section present'
-);
-assert(
-  mdContent.includes('نتیجه‌گیری ممیزی پروداکشن') || mdContent.includes('Final Certification') || mdContent.includes('Production Readiness Sign-off'),
-  'Final Certification section present'
-);
+assert(draftFailures.length === 0, `Incomplete projects are never confirmed: ${draftFailures.join(', ')}`);
+assert(identityFailures.length === 0, `An answer after guild selection preserves that guild: ${identityFailures.join(', ')}`);
+assert(evidenceFailures.length === 0, `Every factual claim points to the actual active answer: ${evidenceFailures.join(', ')}`);
 
 // ----------------------------------------------------------------------------
 // TEST 3: JARGON ISOLATION AUDIT IN LOCAL & TRADITIONAL TRADES
@@ -188,7 +156,9 @@ for (const bt of localTrades.slice(0, 25)) {
   engine.processUserResponse('تضمین اصالت و شفافیت قیمت', 'quality');
 
   // Collect Phase 1 dynamic questions
+  let foundationSteps = 0;
   while (engine.getCurrentQuestion() && engine.currentPhase === 1) {
+    if (++foundationSteps > 60) throw new Error(`Question loop in ${bt.id}, phase 1`);
     const q = engine.getCurrentQuestion();
     inspectQuestionForJargon(q, bt, 1);
     const opt = q.options?.[0];
@@ -198,7 +168,9 @@ for (const bt of localTrades.slice(0, 25)) {
   // Walk Phases 2 to 8
   for (let p = 2; p <= 8; p++) {
     engine.startPhase(p);
+    let phaseSteps = 0;
     while (engine.getCurrentQuestion()) {
+      if (++phaseSteps > 60) throw new Error(`Question loop in ${bt.id}, phase ${p}`);
       const q = engine.getCurrentQuestion();
       inspectQuestionForJargon(q, bt, p);
       const opt = q.options?.[0];
@@ -222,61 +194,6 @@ assert(
   jargonViolationsFound.length === 0,
   'ZERO corporate jargon violations (CAC, LTV, Churn, DMU, SLA, Pipeline, Funnel) in traditional local trades'
 );
-
-// ----------------------------------------------------------------------------
-// TEST 4: CHECK 4 QUALITY METRICS IN DELIVERABLE LEDGER
-// ----------------------------------------------------------------------------
-console.log('\n--- TEST SUITE 4: 4 Quality Metrics Verification ---');
-// Parse metrics from the deliverable file table
-const scoreRegex = /^\|\s*(\d+)\s*\|\s*`?(BT-\d{4})`?\s*\|\s*\*\*([^*]+)\*\*\s*\|\s*`?(IND-\d{2})`?\s*\|\s*`([^`]+)`\s*\|\s*([\d.]+)\s*\|\s*([\d.]+)\s*\|\s*([\d.]+)\s*\|\s*([\d.]+)\s*\|\s*\*\*([\d.]+)[%٪]?\*\*\s*\|/;
-
-let totalM1 = 0, totalM2 = 0, totalM3 = 0, totalM4 = 0, totalComp = 0;
-let parsedCount = 0;
-let anyBelowThreshold = false;
-
-for (const line of lines) {
-  const match = line.match(scoreRegex);
-  if (match) {
-    parsedCount++;
-    const m1 = parseFloat(match[6]);
-    const m2 = parseFloat(match[7]);
-    const m3 = parseFloat(match[8]);
-    const m4 = parseFloat(match[9]);
-    const comp = parseFloat(match[10]);
-
-    totalM1 += m1;
-    totalM2 += m2;
-    totalM3 += m3;
-    totalM4 += m4;
-    totalComp += comp;
-
-    if (comp < 96.0) {
-      anyBelowThreshold = true;
-      console.error(`Business ${match[2]} has composite score below 96.0%: ${comp}%`);
-    }
-  }
-}
-
-assert(parsedCount === 753, `Parsed exactly 753 valid score rows from table (actual: ${parsedCount})`);
-assert(!anyBelowThreshold, 'Zero businesses scored below the 96.0% quality threshold');
-
-const avgM1 = totalM1 / parsedCount;
-const avgM2 = totalM2 / parsedCount;
-const avgM3 = totalM3 / parsedCount;
-const avgM4 = totalM4 / parsedCount;
-const avgComp = totalComp / parsedCount;
-
-console.log(`  Calculated Average M1 (Practical Problem-Solving)    : ${avgM1.toFixed(2)}% (Target >= 96.0%)`);
-console.log(`  Calculated Average M2 (Context Relevance & Zero Jargon): ${avgM2.toFixed(2)}% (Target >= 96.0%)`);
-console.log(`  Calculated Average M3 (Zero Hallucination / Zero Drift): ${avgM3.toFixed(2)}% (Target >= 96.0%)`);
-console.log(`  Calculated Average M4 (Exit Gates & Document Integrity): ${avgM4.toFixed(2)}% (Target >= 96.0%)`);
-console.log(`  Calculated Average Composite Score                    : ${avgComp.toFixed(2)}% (Target >= 96.0%)`);
-
-assert(avgM1 >= 96.0, `Average M1 >= 96.0% (${avgM1.toFixed(2)}%)`);
-assert(avgM2 >= 96.0, `Average M2 >= 96.0% (${avgM2.toFixed(2)}%)`);
-assert(avgM3 >= 96.0, `Average M3 >= 96.0% (${avgM3.toFixed(2)}%)`);
-assert(avgM4 >= 96.0, `Average M4 >= 96.0% (${avgM4.toFixed(2)}%)`);
-assert(avgComp >= 96.0, `Average Composite Score >= 96.0% (${avgComp.toFixed(2)}%)`);
 
 console.log('\n======================================================================');
 console.log(`🏁 AUDIT FINISHED: ${passCount} PASSED, ${failCount} FAILED`);

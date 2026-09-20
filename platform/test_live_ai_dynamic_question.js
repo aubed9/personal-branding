@@ -1,5 +1,9 @@
 import { runKnowledgeBrain } from "./src/services/geminiService.js";
-import { DEFAULT_GEMINI_API_KEY } from "./src/services/endpointSecurity.js";
+const liveKey = process.env.GEMINI_API_KEY;
+if (!liveKey) {
+  console.log('SKIP: set GEMINI_API_KEY explicitly to run this opt-in live API test.');
+  process.exit(0);
+}
 
 async function main() {
   console.log("======================================================================");
@@ -36,10 +40,15 @@ async function main() {
 
   const userText = "مشتریان ما بیشتر دانشجویان و فریلنسرهایی هستند که دنبال کیفیت بالا و فضای آرام هستند ولی کشش قیمتی محدودی دارند.";
 
-  console.log(">> Sending request to Google Gemini API with default key and model...");
+  console.log(">> Sending request to Google Gemini API with the explicitly configured test key...");
   const t0 = Date.now();
   const res = await runKnowledgeBrain({
-    apiKey: DEFAULT_GEMINI_API_KEY,
+    apiKey: liveKey,
+    targetQuestion: {
+      id: 'p2_step2_pricing_models', title: 'روش آزمون قیمت',
+      text: 'با توجه به توان خرید محدود مشتری و هزینه رست تخصصی، چه روشی برای آزمون قیمت دارید؟',
+      options: [], allowCustomAnswer: true,
+    },
     model: "gemini-3.5-flash-lite",
     phaseNum: 2,
     context: testContext,

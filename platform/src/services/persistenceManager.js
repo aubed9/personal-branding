@@ -1,3 +1,4 @@
+import { migrateAnswerRecords } from "./interviewSchema.js";
 /**
  * DIGITAL MARKET — Versioned State Persistence Manager (Requirement R8.1)
  * 
@@ -6,7 +7,7 @@
  */
 
 const STORAGE_KEY = 'dm_project_state';
-const SCHEMA_VERSION = 1;
+const SCHEMA_VERSION = 2;
 
 // Fields that must NEVER be persisted or exported (all lowercase for case-insensitive matching)
 const SENSITIVE_FIELDS = ['apikey', 'api_key', 'token', 'secret', 'password', 'credential', 'auth', 'bearer'];
@@ -21,6 +22,7 @@ function sanitizeForPersistence(obj) {
 
   const clean = {};
   for (const [key, value] of Object.entries(obj)) {
+    if (['__proto__', 'constructor', 'prototype'].includes(key)) continue;
     const lower = key.toLowerCase();
     if (SENSITIVE_FIELDS.some(s => lower.includes(s.toLowerCase()))) {
       continue; // Skip sensitive fields
@@ -49,19 +51,27 @@ function validateStateStructure(state) {
 
   if (state.currentPhase !== undefined) {
     const p = Number(state.currentPhase);
-    if (isNaN(p) || p < 1 || p > 8) {
+    if (!Number.isInteger(p) || p < 1 || p > 8) {
       errors.push(`مقدار currentPhase نامعتبر: ${state.currentPhase}`);
     }
   }
 
-  if (state.completedPhases && typeof state.completedPhases !== 'object') {
+  if (!state.completedPhases || typeof state.completedPhases !== 'object' || Array.isArray(state.completedPhases)) {
     errors.push('completedPhases باید یک object باشد');
   }
 
-  if (state.phaseData && typeof state.phaseData !== 'object') {
+  if (!state.phaseData || typeof state.phaseData !== 'object' || Array.isArray(state.phaseData)) {
     errors.push('phaseData باید یک object باشد');
   }
 
+  for (const field of ['facts', 'decisions', 'assumptions', 'unknowns', 'contradictions', 'answerRecords', 'aiInsights', 'dynamicQuestionsHistory']) {
+    if (state[field] !== undefined && !Array.isArray(state[field])) errors.push(`${field} باید آرایه باشد`);
+  }
+  if (state.phaseData && typeof state.phaseData === 'object') {
+    for (const data of Object.values(state.phaseData)) {
+      if (!data || typeof data !== 'object' || Array.isArray(data)) errors.push('داده فاز نامعتبر است');
+    }
+  }
   return { valid: errors.length === 0, errors };
 }
 
@@ -77,6 +87,15 @@ export class PersistenceManager {
   extractState(engine) {
     if (!engine) return null;
     return {
+      revision: engine.revision || 0,
+      answerRecords: engine.answerRecords || [],
+      aiInsights: engine.aiInsights || [],
+      reviewRequired: engine.reviewRequired || {},
+      dynamicQuestion: engine.dynamicQuestion || null,
+      dynamicQuestionState: engine.dynamicQuestionState || null,
+      dynamicQuestionsHistory: engine.dynamicQuestionsHistory || [],
+      isNavigatingBack: engine.isNavigatingBack || false,
+      reviewCursor: engine.reviewCursor ?? null,
       currentPhase: engine.currentPhase,
       currentStepIndex: engine.currentStepIndex,
       completedPhases: { ...engine.completedPhases },
@@ -224,10 +243,22 @@ export class PersistenceManager {
     if (!engine || !savedState) return false;
 
     try {
-      engine.currentPhase = savedState.currentPhase || 1;
+      if (!validateStateStructure(savedState).valid) return false;
+      savedState = JSON.parse(JSON.stringify(sanitizeForPersistence(savedState)));
+      engine.revision = Math.max(Number(savedState.revision) || 0, ...((savedState.answerRecords || []).map(a => Number(a.revision) || 0))) + 1;
+      engine.answerRecords = savedState.answerRecords || migrateAnswerRecords(savedState.phaseData);
+      engine.aiInsights = savedState.aiInsights || [];
+      engine.reviewRequired = savedState.reviewRequired || {};
+      engine.dynamicQuestion = savedState.dynamicQuestion || null;
+      engine.dynamicQuestionState = savedState.dynamicQuestionState || null;
+      engine.dynamicQuestionsHistory = savedState.dynamicQuestionsHistory || [];
+      engine.dynamicQuestionOverride = null;
+      engine.isNavigatingBack = Boolean(savedState.isNavigatingBack);
+      engine.reviewCursor = Number.isInteger(savedState.reviewCursor) ? savedState.reviewCursor : null;
+      engine.currentPhase = Number(savedState.currentPhase) || 1;
       engine.currentStepIndex = savedState.currentStepIndex || 0;
       engine.completedPhases = savedState.completedPhases || {};
-      engine.phaseData = savedState.phaseData || { 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {}, 8: {} };
+      engine.phaseData = { 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {}, 8: {}, ...savedState.phaseData };
       engine.phaseStatus = savedState.phaseStatus || {};
       engine.facts = savedState.facts || [];
       engine.decisions = savedState.decisions || [];
@@ -328,7 +359,19 @@ export class PersistenceManager {
       }
     }
 
-    // Future migrations: if (fromVersion < 2) { ... }
+    if (fromVersion < 2) {
+      migrated.answerRecords = migrateAnswerRecords(migrated.phaseData);
+      migrated.revision = 0;
+      migrated.aiInsights = [];
+      migrated.reviewRequired = {};
+      migrated.dynamicQuestionsHistory = [];
+      migrated.dynamicQuestion = null;
+      // Earlier versions could finalize with router defaults and fabricated output.
+      // Preserve all responses but ask for review before issuing a new confirmed document.
+      migrated.completedPhases = Object.fromEntries(Array.from({ length: 8 }, (_, i) => [i + 1, false]));
+      migrated.phaseStatus = Object.fromEntries(Array.from({ length: 8 }, (_, i) => [i + 1, 'INVALIDATED']));
+      if (Number.isInteger(Number(migrated.currentPhase)) && Number(migrated.currentPhase) >= 1 && Number(migrated.currentPhase) <= 8) migrated.currentPhase = 1;
+    }
 
     return migrated;
   }

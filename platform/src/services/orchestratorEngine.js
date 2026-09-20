@@ -1,13 +1,12 @@
-import { classifyBusinessContext, getPhaseAdaptationRules, generateContextProfileMarkdown } from "../data/businessContextRouter.js";
-import { ALL_PHASES_QUESTIONS, getAdaptedPhaseQuestions } from "../data/allPhasesTemplates.js";
-import { getAdaptivePhase2Questions } from "../data/phase2Templates.js";
-import { WIKI_PLAYBOOKS } from "../data/wikiKnowledge.js";
-import { generateDeliverable } from './deliverableGenerator.js';
-import { composeChainedQuestions, DYNAMIC_QUESTION_FORMULA } from './dynamicQuestionEngine.js';
-import { detectUnknownIntent, parseSemanticInput, parseFreeformSemanticSlots, UNKNOWN_CATEGORIES } from './semanticParser.js';
+import { classifyBusinessContext, getPhaseAdaptationRules } from "../data/businessContextRouter.js";
+import { INTERVIEW_FIELDS, FIELD_BY_QUESTION, UNKNOWN_ANSWER, activeAnswers, migrateAnswerRecords } from "./interviewSchema.js";
+import { validateQuestionAdaptation } from "./adaptiveInterview.js";
+import { generateDeliverable, deliverableToMarkdown } from './deliverableGenerator.js';
+import { composeChainedQuestions } from './dynamicQuestionEngine.js';
+import { detectUnknownIntent, parseSemanticInput } from './semanticParser.js';
 import { validatePhaseGate } from "./phaseGateValidator.js";
-import { UnknownsManager, UNKNOWN_SEVERITY, UNKNOWN_STATUS } from "./unknownsManager.js";
-import { ContradictionEngine, CONTRADICTION_SEVERITY, CONTRADICTION_STATUS } from "./contradictionEngine.js";
+import { UnknownsManager, UNKNOWN_STATUS } from "./unknownsManager.js";
+import { ContradictionEngine, CONTRADICTION_STATUS } from "./contradictionEngine.js";
 
 /**
  * 4-State Lifecycle for AI-generated dynamic questions (Requirement R13, Feature 10)
@@ -24,6 +23,7 @@ export class OrchestratorEngine {
     this.currentPhase = 1;
     this.currentStepIndex = 0;
     this.isNavigatingBack = false;
+    this.reviewCursor = null;
 
     this.completedPhases = {
       1: false, 2: false, 3: false, 4: false, 5: false, 6: false, 7: false, 8: false
@@ -42,6 +42,11 @@ export class OrchestratorEngine {
     this.unknowns = [];
     this.contradictions = [];
     this.businessContext = null;
+    this.revision = 0;
+    this.answerRecords = [];
+    this.aiInsights = [];
+    this.reviewRequired = {};
+    this.lastGateResult = null;
 
     // 4-state dynamic question lifecycle state machine
     this.dynamicQuestion = null; // { id, title, text, whyItMatters, options, state, createdAt, source }
@@ -52,22 +57,55 @@ export class OrchestratorEngine {
 
   setBusinessContext(context) {
     this.businessContext = context;
+    this.revision++;
   }
 
   setContext(context) {
-    this.businessContext = context;
+    this.setBusinessContext(context);
   }
 
   addStrategicDecision(statement) {
-    if (!statement || typeof statement !== "string") return;
-    const clean = statement.trim();
-    if (!clean) return;
-    this.decisions.push({
-      id: `DECISION-AI-${this.decisions.length + 1}`,
-      statement: clean,
-      source: "KNOWLEDGE_BRAIN_AI",
-      timestamp: new Date().toISOString()
+    // Model suggestions are proposals, never user-approved decisions.
+    if (typeof statement !== 'string' || !statement.trim()) return;
+    this.aiInsights.push({ proposedDecision: statement.trim(), status: 'PROPOSED', revision: this.revision });
+  }
+
+  createAITurn() {
+    const next = this.getCurrentQuestion();
+    return {
+      revision: this.revision, phase: this.currentPhase,
+      questionId: next?.id || null,
+      snapshot: JSON.parse(JSON.stringify({
+        phaseNum: this.currentPhase, context: this.businessContext,
+        priorAnswers: this.phaseData, facts: this.facts, decisions: this.decisions,
+        answerRecords: activeAnswers(this.answerRecords), unknowns: this.unknowns,
+        contradictions: this.contradictions, targetQuestion: next,
+      })),
+    };
+  }
+
+  applyAIResult(turn, result) {
+    if (!turn || turn.revision !== this.revision || turn.phase !== this.currentPhase) return false;
+    const target = this.getCurrentQuestion();
+    if (!target || target.id !== turn.questionId) return false;
+    const question = validateQuestionAdaptation(result?.nextQuestion, target);
+    if (!question) return false;
+    this.aiInsights.push({
+      analysisSummary: result.analysisSummary || '', proposedDecision: result.extractedDecision || null,
+      status: 'PROPOSED', revision: this.revision,
+      answerId: this.answerRecords.at(-1)?.id, phase: this.currentPhase,
     });
+    return Boolean(this.setDynamicNextQuestion({ ...question, id: `ai-${target.id}-r${this.revision}` }));
+  }
+
+  selectGuild(guild) {
+    if (!guild?.id || !guild?.titleFa) return;
+    this.clearDynamicQuestion();
+    this.currentPhase = 1;
+    this.reviewCursor = null;
+    this.currentStepIndex = 0;
+    this.isNavigatingBack = false;
+    return this.processUserResponse(`صنف انتخابی: ${guild.titleFa}`, guild.id, { questionId: 'step0_description' });
   }
 
   /**
@@ -131,13 +169,15 @@ export class OrchestratorEngine {
   }
 
   getCurrentPhaseQuestions() {
-    return composeChainedQuestions(
+    const questions = composeChainedQuestions(
       this.currentPhase,
       this.businessContext,
       this.phaseData,
       this.unknowns,
       this.phaseData[1]?.diagnosticVision || ""
     );
+    const review = this.reviewRequired[this.currentPhase] || [];
+    return questions.map(q => review.includes(q.id) ? { ...q, isAnswered: false, needsReview: true } : q);
   }
 
   getCurrentQuestion() {
@@ -153,9 +193,19 @@ export class OrchestratorEngine {
     }
     const questions = this.getCurrentPhaseQuestions();
     if (!questions || questions.length === 0) return null;
+    if (!this.isNavigatingBack && this.reviewCursor === null) {
+      const conflict = ContradictionEngine.getBlockingContradictions(this.contradictions, this.currentPhase)
+        .find(c => c.resolutionTargets?.[this.currentPhase]);
+      const targetId = conflict?.resolutionTargets?.[this.currentPhase];
+      const target = questions.find(q => q.id === targetId);
+      if (target) return {
+        ...target, isAnswered: false, isDynamic: true, resolutionFor: conflict.id,
+        text: `${conflict.resolutionQuestion}\n\nپاسخ قبلی شما: «${this.phaseData[this.currentPhase]?.[targetId] || this.phaseData[this.currentPhase]?.[FIELD_BY_QUESTION[targetId]?.field] || ''}»\n${target.text}`,
+      };
+    }
 
     // If user explicitly navigated back, return the question at currentStepIndex
-    if (this.isNavigatingBack && this.currentStepIndex >= 0 && this.currentStepIndex < questions.length) {
+    if ((this.isNavigatingBack || this.reviewCursor !== null) && this.currentStepIndex >= 0 && this.currentStepIndex < questions.length) {
       return questions[this.currentStepIndex];
     }
 
@@ -181,6 +231,8 @@ export class OrchestratorEngine {
    * Navigates back to the previous question in the current phase
    */
   navigateBack() {
+    this.clearDynamicQuestion();
+    this.revision++;
     const questions = this.getCurrentPhaseQuestions();
     if (!questions || this.currentStepIndex <= 0) return null;
     this.currentStepIndex = Math.max(0, this.currentStepIndex - 1);
@@ -276,11 +328,15 @@ export class OrchestratorEngine {
 
     if (p >= 1 && p < 8) {
       for (let ph = p + 1; ph <= 8; ph++) {
+        const hadData = this.completedPhases[ph] || Object.keys(this.phaseData[ph] || {}).length > 0;
         if (this.completedPhases[ph]) {
           this.completedPhases[ph] = false;
           invalidated.push(ph);
         }
+        if (!hadData) continue;
         this.phaseStatus[ph] = "INVALIDATED";
+        this.reviewRequired[ph] = INTERVIEW_FIELDS.filter(spec => spec.phase === ph &&
+          (this.phaseData[ph]?.[spec.field] || this.phaseData[ph]?.[spec.questionId])).map(spec => spec.questionId);
       }
     }
 
@@ -302,6 +358,8 @@ export class OrchestratorEngine {
   }
 
   previousQuestion() {
+    this.clearDynamicQuestion();
+    this.revision++;
     const questions = this.getCurrentPhaseQuestions();
     if (this.currentStepIndex > 0) {
       this.currentStepIndex--;
@@ -311,6 +369,8 @@ export class OrchestratorEngine {
   }
 
   goToQuestion(index) {
+    this.clearDynamicQuestion();
+    this.revision++;
     const questions = this.getCurrentPhaseQuestions();
     const idx = Math.max(0, Math.min(index, questions.length - 1));
     this.currentStepIndex = idx;
@@ -328,12 +388,14 @@ export class OrchestratorEngine {
       throw err;
     }
 
+    this.clearDynamicQuestion();
+    this.revision++;
+    phaseNum = Number(phaseNum);
     this.currentPhase = phaseNum;
+    this.reviewCursor = null;
     this.currentStepIndex = 0;
     this.isNavigatingBack = false;
-    if (this.phaseStatus[phaseNum] === "INVALIDATED") {
-      delete this.phaseStatus[phaseNum];
-    }
+
 
     const offer = this.phaseData[1]?.coreOffer || this.phaseData[1]?.description || "خدمات و تخصص محوری";
     const seg = this.phaseData[3]?.targetSegment || "مشتریان ارزش‌محور";
@@ -400,310 +462,141 @@ export class OrchestratorEngine {
     };
   }
 
-  processUserResponse(userText, optionValue = null) {
-    let currentQ = null;
-    let isDynamicResponse = false;
-
-    // 1. Dynamic question lifecycle check (ACTIVE -> CONSUMED -> ARCHIVED)
-    if (this.dynamicQuestion && (this.dynamicQuestion.state === DYNAMIC_QUESTION_STATE.ACTIVE || this.dynamicQuestion.state === DYNAMIC_QUESTION_STATE.PENDING)) {
-      currentQ = this.dynamicQuestion;
-      this.dynamicQuestion.state = DYNAMIC_QUESTION_STATE.CONSUMED;
-      this.dynamicQuestionState = DYNAMIC_QUESTION_STATE.CONSUMED;
-
-      this.dynamicQuestionsHistory.push({
-        ...this.dynamicQuestion,
-        state: DYNAMIC_QUESTION_STATE.ARCHIVED,
-        answeredAt: new Date().toISOString(),
-        userAnswer: userText,
-        optionValue
-      });
-
+  processUserResponse(userText, optionValue = null, options = {}) {
+    if (typeof userText !== 'string' || !userText.trim()) return { reply: 'پاسخ خالی قابل ثبت نیست.', nextQuestion: this.getCurrentQuestion(), isCompleted: false, accepted: false };
+    userText = userText.trim();
+    const displayed = this.getCurrentQuestion();
+    if (options.expectedQuestionId && displayed?.id !== options.expectedQuestionId) {
+      throw new Error('سؤال تغییر کرده است؛ پاسخ را برای سؤال فعلی ثبت کنید.');
+    }
+    let currentQ = displayed;
+    let qId = options.questionId || currentQ?.baseQuestionId || currentQ?.id;
+    // Legacy callers can select a guild or stage without stepping through the UI.
+    if (!options.expectedQuestionId && !currentQ?.baseQuestionId && this.currentPhase === 1 && typeof optionValue === 'string' && (/^BT-\d+$/i.test(optionValue) ||
+        ['local_automotive_service', 'hospitality_cafe_roastery', 'industrial_manufacturing',
+         'b2b_saas_software', 'creator_coaching_personal', 'health_beauty_wellness', 'ecommerce_products'].includes(optionValue))) qId = 'step0_description';
+    else if (!options.expectedQuestionId && !currentQ?.baseQuestionId && this.currentPhase === 1 && ['active', 'idea', 'pre_launch', 'rebrand'].includes(optionValue)) qId = 'step0_stage';
+    else if (!options.expectedQuestionId && !currentQ?.baseQuestionId && this.currentPhase === 1 && ['local_city', 'nationwide_iran', 'international', 'city_regional'].includes(optionValue)) qId = 'step0_geography';
+    if (!qId) return { reply: 'سؤالی برای این پاسخ انتخاب نشده است.', nextQuestion: null, isCompleted: Boolean(this.completedPhases[this.currentPhase]), accepted: false };
+    const spec = FIELD_BY_QUESTION[qId];
+    const phase = spec?.phase || this.currentPhase;
+    if (phase !== this.currentPhase && !options.questionId) {
+      throw new Error('این پاسخ متعلق به فاز جاری نیست.');
+    }
+    if (this.dynamicQuestion) {
+      this.dynamicQuestionsHistory.push({ ...this.dynamicQuestion,
+        state: DYNAMIC_QUESTION_STATE.ARCHIVED, userAnswer: userText, optionValue,
+        answeredAt: new Date().toISOString() });
       this.dynamicQuestion = null;
       this.dynamicQuestionState = DYNAMIC_QUESTION_STATE.ARCHIVED;
-      if (this.dynamicQuestionOverride) {
-        this.dynamicQuestionOverride.consumed = true;
-      }
-      isDynamicResponse = true;
-    } else if (this.dynamicQuestionOverride && !this.dynamicQuestionOverride.consumed) {
-      currentQ = this.dynamicQuestionOverride.question;
-      this.dynamicQuestionOverride.consumed = true;
-      isDynamicResponse = true;
-    } else if (this.isNavigatingBack) {
-      const questions = this.getCurrentPhaseQuestions();
-      currentQ = questions[this.currentStepIndex] || this.getCurrentQuestion();
-      this.isNavigatingBack = false;
-    } else {
-      currentQ = this.getCurrentQuestion();
+      this.dynamicQuestionOverride = null;
     }
-    const qId = currentQ ? currentQ.id : "free_text";
-    const phase = this.currentPhase;
+    const reviewing = this.isNavigatingBack || this.reviewCursor !== null;
+    this.isNavigatingBack = false;
+    if (!this.answerRecords.length) this.answerRecords = migrateAnswerRecords(this.phaseData);
+    const previous = activeAnswers(this.answerRecords).find(a => a.phase === phase && a.questionId === qId);
+    const field = spec?.field || qId;
+    const oldValue = this.phaseData[phase]?.[field];
+    this.revision++;
+    const unknownIntent = detectUnknownIntent(userText);
+    const unknown = optionValue === 'unknown' || unknownIntent.isUnknown;
+    const estimate = /حدود|تقریب|برآورد|حدس|احتمال|فکر می.کنم/.test(userText);
+    const record = {
+      id: `ANS-${this.revision}`, revision: this.revision, phase, questionId: qId, field,
+      label: spec?.label || currentQ?.title || qId,
+      presentedQuestionId: currentQ?.id || qId,
+      questionText: (qId === currentQ?.id || qId === currentQ?.baseQuestionId ? currentQ?.text : spec?.label) || qId,
+      text: userText, optionValue,
+      kind: unknown ? 'UNKNOWN' : estimate ? 'ASSUMPTION' : (spec?.kind || 'FACT'),
+      status: 'ACTIVE', source: optionValue ? 'USER_OPTION' : 'USER_TEXT',
+      createdAt: new Date().toISOString(),
+    };
+    if (previous) { previous.status = 'SUPERSEDED'; previous.supersededBy = record.id; }
+    this.answerRecords.push(record);
+    const data = this.phaseData[phase] ||= {};
+    const storedText = unknown ? UNKNOWN_ANSWER : userText;
+    data[qId] = storedText;
+    data[field] = storedText;
+    // Clearing stale enum values is essential when replacing an option with free text.
+    delete data[`${qId}Value`];
+    delete data[`${field}Value`];
+    if (optionValue && !unknown) {
+      data[`${qId}Value`] = optionValue;
+      data[`${field}Value`] = optionValue;
+    }
+    this.reviewRequired[phase] = (this.reviewRequired[phase] || []).filter(id => id !== qId);
+    this.completedPhases[phase] = false;
+    if (oldValue !== storedText || previous?.optionValue !== optionValue) this.invalidateDependentPhases(phase);
 
-    // Multi-pattern unknown detection
-    const unknownDetection = detectUnknownIntent(userText);
-    const isUnknownIntent =
-      unknownDetection.isUnknown ||
-      optionValue === "unknown" ||
-      userText.includes("نمی‌دانم") ||
-      userText.includes("مطمئن نیستم");
-
-    if (isUnknownIntent) {
-      const cat = unknownDetection.category || (optionValue === "unknown" ? "EXPLICIT_IGNORANCE" : "UNCERTAINTY");
-      const reason = unknownDetection.reason || "ثبت به عنوان مجهول رسمی نیازمند تست یا تحقیق تکمیلی";
-      const actionItem = unknownDetection.actionItem || "طراحی و استقرار شیت ثبت روزانه داده‌ها در بازه ۳۰ روزه اولیه برای استخراج عدد واقعی";
-      const hypothesis = `[فرضیه نیازمند تست - مجهول رسمی]: داده‌های مربوط به ${currentQ?.title || qId} هنوز به طور قطعی اندازه‌گیری نشده و در فاز ۳۰ روزه اولیه سنجیده خواهد شد.`;
-
-      const unknownEntry = UnknownsManager.createUnknown({
-        phase: phase,
-        questionId: qId,
-        category: cat,
-        reason: reason,
-        actionItem: actionItem,
-        hypothesis: hypothesis,
-        owner: "FOUNDER",
-        status: UNKNOWN_STATUS.OPEN,
-        source: optionValue === "unknown" ? "USER_OPTION" : "USER_TEXT",
-        existingCount: this.unknowns.length
+    for (const entry of this.unknowns.filter(u => u.phase === phase && u.questionId === qId && u.status !== UNKNOWN_STATUS.RESOLVED)) {
+      UnknownsManager.resolveUnknown(this.unknowns, entry.id, `پاسخ جایگزین ثبت شد: ${record.id}`);
+    }
+    if (unknown) {
+      const entry = UnknownsManager.createUnknown({
+        phase, questionId: qId, category: unknownIntent.category || 'EXPLICIT_IGNORANCE',
+        reason: `${record.label}: ${userText}`,
+        actionItem: unknownIntent.actionItem || `داده واقعی «${record.label}» را جمع‌آوری و این پاسخ را ویرایش کنید.`,
+        source: record.source, existingCount: this.unknowns.length,
       });
-      this.unknowns.push(unknownEntry);
-
-      this.assumptions.push({
-        id: `A-P${phase}-${this.assumptions.length + 1}`,
-        statement: `فرضیه ثبت‌شده برای ${currentQ?.title || qId}: [فرضیه نیازمند تست - مجهول رسمی] (${cat})`,
-        actionItem: actionItem
-      });
-
-      // Avoid forcing fake numbers into phaseData
-      if (this.phaseData[phase]) {
-        this.phaseData[phase][qId] = "[فرضیه نیازمند تست - مجهول رسمی]";
-        if (qId.includes("unit_economics")) this.phaseData[phase].unitEconomics = "[فرضیه نیازمند تست - مجهول رسمی]";
-        if (qId.includes("geography")) this.phaseData[phase].geography = "[فرضیه نیازمند تست - مجهول رسمی]";
-        if (qId.includes("primary_goal")) this.phaseData[phase].primaryGoal = "[فرضیه نیازمند تست - مجهول رسمی]";
-        if (qId.includes("core_offer")) this.phaseData[phase].coreOffer = "[فرضیه نیازمند تست - مجهول رسمی]";
-      }
-
-      this.currentStepIndex++;
-      const nextQ = this.getCurrentQuestion();
-      if (!nextQ) {
-        return this.finalizeCurrentPhase();
-      }
-      return {
-        reply: `این مورد در دسته **«${cat}»** به عنوان یک **مجهول رسمی و فرضیه نیازمند تست** در دوسیه استراتژیک ثبت شد. ندانستن یا نداشتن آمار، بسیار بهتر از تصمیم‌گیری بر مبنای حدس و عدد ساختگی است! ✔️\n\n📌 **اقدام حقیقت‌یابی:** ${actionItem}\n\nبرویم به گام بعدی:`,
-        nextQuestion: nextQ,
-        isCompleted: false
-      };
+      entry.answerId = record.id;
+      this.unknowns.push(entry);
     }
-
-    // Freeform slot parsing and facts/context enrichment
-    const semanticResult = parseSemanticInput(userText, this.businessContext);
-    const slots = semanticResult.extractedSlots;
-
-    if (slots) {
-      if (slots.customerModel && !this.phaseData[1].customerModel) {
-        this.phaseData[1].customerModel = slots.customerModel;
-        this.facts.push({
-          id: `FACT-FREEFORM-MODEL-${this.facts.length + 1}`,
-          statement: `مدل مشتری استخراج‌شده از تحلیل متن آزاد: ${slots.customerModel}`
-        });
-      }
-      if (slots.channels && !this.phaseData[1].channelModel) {
-        this.phaseData[1].channelModel = slots.channels;
-        this.facts.push({
-          id: `FACT-FREEFORM-CHANNEL-${this.facts.length + 1}`,
-          statement: `کانال توزیع استخراج‌شده از تحلیل متن آزاد: ${slots.channels}`
-        });
-      }
-      if (slots.scale && !this.phaseData[1].scale) {
-        this.phaseData[1].scale = slots.scale;
-        this.facts.push({
-          id: `FACT-FREEFORM-SCALE-${this.facts.length + 1}`,
-          statement: `مقیاس استخراج‌شده از تحلیل متن آزاد: ${slots.scale}`
-        });
-      }
-      if (slots.geography && !this.phaseData[1].geographyFromFreeform) {
-        this.phaseData[1].geographyFromFreeform = slots.geography;
-        this.facts.push({
-          id: `FACT-FREEFORM-GEO-${this.facts.length + 1}`,
-          statement: `محدوده جغرافیایی استخراج‌شده از تحلیل متن آزاد: ${slots.geography}`
-        });
-      }
-      if (slots.primaryBottleneck && !this.phaseData[1].primaryBottleneck) {
-        this.phaseData[1].primaryBottleneck = slots.primaryBottleneck;
-        this.facts.push({
-          id: `FACT-FREEFORM-PAIN-${this.facts.length + 1}`,
-          statement: `گلوگاه عملیاتی شناسایی‌شده از متن آزاد: ${slots.primaryBottleneck}`
-        });
-      }
-    }
-
-    // Record data into phaseData
-    if (this.phaseData[phase]) {
-      this.phaseData[phase][qId] = userText;
-      if (optionValue) this.phaseData[phase][`${qId}Value`] = optionValue;
-    }
-
     if (phase === 1) {
-      const isStageValue = ["active", "idea", "pre_launch", "rebrand"].includes(optionValue);
-      const isGeoValue = ["local_city", "nationwide_iran", "international", "city_regional"].includes(optionValue);
-      const legacyDescValues = [
-        "local_automotive_service",
-        "hospitality_cafe_roastery",
-        "industrial_manufacturing",
-        "b2b_saas_software",
-        "creator_coaching_personal",
-        "ecommerce_products"
-      ];
-      const isDescValue =
-        legacyDescValues.includes(optionValue) ||
-        (typeof optionValue === "string" && (optionValue.startsWith("BT-") || optionValue.startsWith("bt-") || optionValue === "custom")) ||
-        (userText && (userText.includes("صنف انتخابی:") || (qId === "step0_description" && !isStageValue && !isGeoValue)));
-
-      if (isStageValue || (qId === "step0_stage" && !isDescValue && !isGeoValue)) {
-        this.phaseData[1].stage = userText;
-        if (optionValue) this.phaseData[1].stageValue = optionValue;
-        this.facts.push({ id: `F-P1-${this.facts.length + 1}`, statement: `مرحله فعلی: ${userText}` });
-        this.businessContext = classifyBusinessContext(this.phaseData);
-      } else if (isDescValue || (qId === "step0_description" && !isStageValue && !isGeoValue)) {
-        this.phaseData[1].description = userText;
-        if (optionValue) this.phaseData[1].descriptionValue = optionValue;
-        if (typeof optionValue === "string" && optionValue.toUpperCase().startsWith("BT-")) {
-          this.phaseData[1].taxonomyId = optionValue.toUpperCase();
-        }
-        if (slots?.businessTypeMatch && !this.phaseData[1].descriptionValue) {
-          this.phaseData[1].descriptionValue = slots.businessTypeMatch.id;
-          this.phaseData[1].taxonomyId = slots.businessTypeMatch.id;
-        }
-        this.facts.push({ id: `F-P1-${this.facts.length + 1}`, statement: `صنف و مدل فعالیت: ${userText}` });
-        this.businessContext = classifyBusinessContext(this.phaseData);
-      } else if (qId === "step0_diagnostic_probing") {
-        const isLegacyDesc =
-          legacyDescValues.includes(optionValue) ||
-          (typeof optionValue === "string" && (optionValue.startsWith("BT-") || optionValue.startsWith("bt-") || optionValue === "custom" || optionValue.trim() === ""));
-
-        if (isLegacyDesc) {
-          // Caller passed description answer directly (legacy test flow bypassing diagnostic probe)
-          this.phaseData[1].description = userText;
-          if (optionValue) this.phaseData[1].descriptionValue = optionValue;
-          this.facts.push({ id: `F-P1-${this.facts.length + 1}`, statement: `صنف و مدل فعالیت: ${userText}` });
-          this.businessContext = classifyBusinessContext(this.phaseData);
-          // Advance past step0_description so next question is step0_geography
-          this.currentStepIndex++;
-        } else {
-          this.phaseData[1].diagnosticVision = userText;
-          if (optionValue) this.phaseData[1].diagnosticVisionValue = optionValue;
-          this.facts.push({
-            id: "FACT-FOUNDER-VISION",
-            statement: `دیدگاه و هویت بنیان‌گذار: ${userText}`
-          });
-          if (slots?.businessTypeMatch && !this.phaseData[1].descriptionValue) {
-            this.phaseData[1].resolvedBT = slots.businessTypeMatch;
+      if (qId === 'step0_description') {
+        for (const key of Object.keys(data.inferredFields || {})) delete data[key];
+        data.inferredFields = {};
+        if (oldValue && oldValue !== storedText) this.reviewRequired[1] = INTERVIEW_FIELDS.filter(item => item.phase === 1 && item.questionId !== qId && data[item.field]).map(item => item.questionId);
+        delete data.taxonomyId;
+        delete data.resolvedBT;
+        if (typeof optionValue === 'string' && /^BT-\d+$/i.test(optionValue)) data.taxonomyId = optionValue.toUpperCase();
+      }
+      if (!unknown && ['step0_description', 'step0_diagnostic_probing'].includes(qId)) {
+        const slots = parseSemanticInput(userText, this.businessContext).extractedSlots;
+        const inferred = { customerModel: slots?.customerModel, channelModel: slots?.channels,
+          scale: slots?.scale, geographyFromFreeform: slots?.geography, primaryBottleneck: slots?.primaryBottleneck };
+        for (const [key, value] of Object.entries(inferred)) {
+          if (value && (!data[key] || data.inferredFields?.[key] === qId)) {
+            data[key] = value;
+            (data.inferredFields ||= {})[key] = qId;
           }
-          this.businessContext = classifyBusinessContext(this.phaseData);
         }
-      } else if (isGeoValue || qId === "step0_geography") {
-        this.phaseData[1].geography = userText;
-        if (optionValue) this.phaseData[1].geographyValue = optionValue;
-        this.facts.push({ id: `F-P1-${this.facts.length + 1}`, statement: `محدوده جغرافیایی: ${userText}` });
-        this.businessContext = classifyBusinessContext(this.phaseData);
-      } else if (qId === "step1_primary_goal") {
-        this.phaseData[1].primaryGoal = userText;
-        if (optionValue) this.phaseData[1].primaryGoalValue = optionValue;
-        this.facts.push({ id: `F-P1-${this.facts.length + 1}`, statement: `${currentQ?.title || "هدف ملموس"}: ${userText}` });
-        this.businessContext = classifyBusinessContext(this.phaseData);
-      } else if (qId === "step2_core_offer") {
-        this.phaseData[1].coreOffer = userText;
-        if (optionValue) this.phaseData[1].coreOfferValue = optionValue;
-        this.facts.push({ id: `F-P1-${this.facts.length + 1}`, statement: `${currentQ?.title || "پیشنهاد اصلی"}: ${userText}` });
-        this.businessContext = classifyBusinessContext(this.phaseData);
-      } else if (qId === "step2_value_hypothesis") {
-        this.phaseData[1].valueHypothesis = userText;
-        if (optionValue) this.phaseData[1].valueHypothesisValue = optionValue;
-        this.facts.push({ id: `F-P1-${this.facts.length + 1}`, statement: `${currentQ?.title || "فرضیه تمایز"}: ${userText}` });
-        this.businessContext = classifyBusinessContext(this.phaseData);
-      } else {
-        this.phaseData[1][qId] = userText;
-        if (optionValue) this.phaseData[1][`${qId}Value`] = optionValue;
-        this.facts.push({ id: `F-P1-${this.facts.length + 1}`, statement: `${currentQ?.title || qId}: ${userText}` });
-        this.businessContext = classifyBusinessContext(this.phaseData);
+        if (!optionValue && slots?.businessTypeMatch && qId === 'step0_description') {
+          data.descriptionValue = slots.businessTypeMatch.id;
+          data.taxonomyId = slots.businessTypeMatch.id;
+        }
       }
-    } else if (phase === 2) {
-      if (qId === "p2_step0_competitors") this.phaseData[2].competitors = userText;
-      else if (qId === "p2_step1_customer_pain") this.phaseData[2].customerPain = userText;
-      else if (qId === "p2_step2_pricing_models") this.phaseData[2].pricingModel = userText;
-      else if (qId === "p2_step3_primary_channel") this.phaseData[2].primaryChannel = userText;
-      else if (qId === "p2_step4_golden_opportunity") this.phaseData[2].goldenOpportunity = userText;
-      this.decisions.push({ id: `D-P2-${this.decisions.length + 1}`, statement: `${currentQ?.title || "تحلیل"}: ${userText}` });
-    } else if (phase === 3) {
-      if (qId === "p3_target_segment") this.phaseData[3].targetSegment = userText;
-      else if (qId === "p3_positioning_frame") this.phaseData[3].positioning = userText;
-      else if (qId === "p3_strategic_boundary") this.phaseData[3].boundary = userText;
-      else if (qId === "p3_brand_promise") this.phaseData[3].promise = userText;
-      this.decisions.push({ id: `D-P3-${this.decisions.length + 1}`, statement: `استراتژی ${currentQ?.title}: ${userText}` });
-    } else if (phase === 4) {
-      if (qId === "p4_archetype") this.phaseData[4].archetype = userText;
-      else if (qId === "p4_human_traits") this.phaseData[4].traits = userText;
-      else if (qId === "p4_tone_guardrail") this.phaseData[4].toneGuardrail = userText;
-      this.facts.push({ id: `F-P4-${this.facts.length + 1}`, statement: `هویت ${currentQ?.title}: ${userText}` });
-    } else if (phase === 5) {
-      if (qId === "p5_voice_style") this.phaseData[5].voiceStyle = userText;
-      else if (qId === "p5_elevator_hook") this.phaseData[5].elevatorHook = userText;
-      else if (qId === "p5_forbidden_words") this.phaseData[5].forbiddenWords = userText;
-      this.decisions.push({ id: `D-P5-${this.decisions.length + 1}`, statement: `کلام ${currentQ?.title}: ${userText}` });
-    } else if (phase === 6) {
-      if (qId === "p6_naming_territory") this.phaseData[6].naming = userText;
-      else if (qId === "p6_tagline_archetype") this.phaseData[6].tagline = userText;
-      this.decisions.push({ id: `D-P6-${this.decisions.length + 1}`, statement: `نام و شعار: ${userText}` });
-    } else if (phase === 7) {
-      if (qId === "p7_color_palette") this.phaseData[7].colorPalette = userText;
-      else if (qId === "p7_typography_mood") this.phaseData[7].typography = userText;
-      else if (qId === "p7_logo_direction") this.phaseData[7].logoConcept = userText;
-      this.decisions.push({ id: `D-P7-${this.decisions.length + 1}`, statement: `هویت بصری: ${userText}` });
-    } else if (phase === 8) {
-      if (qId === "p8_thought_leadership") this.phaseData[8].thoughtLeadership = userText;
-      else if (qId === "p8_pr_podcast_channels") this.phaseData[8].prChannels = userText;
-      else if (qId === "p8_lead_funnel") this.phaseData[8].leadFunnel = userText;
-      else if (qId === "p8_crisis_reputation") this.phaseData[8].reputationCrisis = userText;
-      this.decisions.push({ id: `D-P8-${this.decisions.length + 1}`, statement: `فعال‌سازی ${currentQ?.title}: ${userText}` });
+      this.businessContext = classifyBusinessContext(this.phaseData);
     }
-
-    // Invalidate current phase completion upon re-editing answers
-    if (this.completedPhases[phase]) {
-      this.completedPhases[phase] = false;
-    }
-
-    // Downstream Invalidation Trigger: If any upstream phase is modified while downstream phases are completed
-    let hasDownstreamCompleted = false;
-    for (let k = phase + 1; k <= 8; k++) {
-      if (this.completedPhases[k]) {
-        hasDownstreamCompleted = true;
-        break;
-      }
-    }
-    if (hasDownstreamCompleted) {
-      this.invalidateDependentPhases(phase);
-    }
-
-    // Detect semantic & factual contradictions across project state
-    const detectedContradictions = ContradictionEngine.detectContradictions(this);
-    detectedContradictions.forEach(c => {
-      const exists = this.contradictions.some(
-        existing => existing.statementA === c.statementA && existing.statementB === c.statementB
-      );
-      if (!exists) {
-        this.contradictions.push(c);
-      }
-    });
-
+    const ledger = activeAnswers(this.answerRecords).map(a => ({
+      id: `${a.kind}-${a.id}`, answerId: a.id, phase: a.phase, questionId: a.questionId,
+      statement: `${a.label || FIELD_BY_QUESTION[a.questionId]?.label || a.questionId}: ${a.text}`,
+      source: a.source, kind: a.kind,
+    }));
+    this.facts = ledger.filter(a => a.kind === 'FACT');
+    this.decisions = ledger.filter(a => a.kind === 'DECISION');
+    this.assumptions = ledger.filter(a => ['ASSUMPTION', 'UNKNOWN'].includes(a.kind));
+    this.refreshContradictions();
     this.currentStepIndex++;
-    const nextQ = this.getCurrentQuestion();
+    this.reviewCursor = reviewing && this.currentStepIndex < this.getCurrentPhaseQuestions().length ? this.currentStepIndex : null;
+    const nextQuestion = this.getCurrentQuestion();
+    if (!nextQuestion) return this.finalizeCurrentPhase();
+    return { reply: unknown ? 'پاسخ به عنوان مجهول رسمی ثبت شد.' : 'پاسخ ثبت شد.', nextQuestion, isCompleted: false, answerId: record.id };
+  }
 
-    if (nextQ) {
-      return {
-        reply: `ثبت شد! داده با موفقیت در پرونده فاز ${phase} ذخیره گردید. ✔️\n\n${nextQ.text}`,
-        nextQuestion: nextQ,
-        isCompleted: false
-      };
-    } else {
-      return this.finalizeCurrentPhase();
+  refreshContradictions() {
+    const detected = ContradictionEngine.detectContradictions(this);
+    const key = c => c.ruleId || `${c.statementA}::${c.statementB}`;
+    const detectedKeys = new Set(detected.map(key));
+    for (const old of this.contradictions) {
+      if (old.source === 'RULE' && !detectedKeys.has(key(old)) && old.resolutionStatus === CONTRADICTION_STATUS.UNRESOLVED) {
+        old.resolutionStatus = CONTRADICTION_STATUS.RESOLVED;
+        old.resolution = 'داده مبنا اصلاح شد؛ شرط تعارض دیگر برقرار نیست.';
+        old.resolvedAt = new Date().toISOString();
+      }
+    }
+    for (const item of detected) {
+      const existing = this.contradictions.find(c => key(c) === key(item) && c.resolutionStatus === CONTRADICTION_STATUS.UNRESOLVED);
+      if (!existing) this.contradictions.push({ ...item, source: 'RULE' });
     }
   }
 
@@ -730,6 +623,7 @@ export class OrchestratorEngine {
 
     // Real Phase Gate Validation (Requirement R2)
     const gateResult = validatePhaseGate(p, this);
+    this.lastGateResult = gateResult;
 
     if (!gateResult.passed) {
       this.completedPhases[p] = false;
@@ -792,85 +686,13 @@ export class OrchestratorEngine {
   }
 
   generateDeliverableData(phaseNum = this.currentPhase) {
-    return generateDeliverable(phaseNum, this.phaseData, this.businessContext, this.decisions, this.facts, this.unknowns);
+    return generateDeliverable(phaseNum, this.phaseData, this.businessContext, this.decisions, this.facts, this.unknowns, {
+      answerRecords: this.answerRecords, completedPhases: this.completedPhases,
+      contradictions: this.contradictions, phaseStatus: this.phaseStatus, revision: this.revision,
+    });
   }
 
   generateMarkdownText(phaseNum = this.currentPhase) {
-    const data = this.generateDeliverableData(phaseNum);
-    let md = `# ${data.title}\n\n`;
-    md += `**فاز:** ${data.phase}  \n`;
-    md += `**نسخه:** ${data.version}  \n`;
-    md += `**تاریخ ثبت:** ${data.date}  \n\n`;
-    md += `---\n\n`;
-
-    data.sections.forEach(sec => {
-      md += `## ${sec.title}\n\n`;
-      if (sec.content && typeof sec.content === "object") {
-        Object.entries(sec.content).forEach(([k, v]) => {
-          let tag = "[FACT]";
-          const vStr = String(v);
-          if (vStr.includes("[فرضیه") || vStr.includes("مجهول رسمی") || vStr.includes("UNCERTAINTY")) {
-            tag = "[HYPOTHESIS]";
-          } else if (k.includes("کد") || k.includes("شناسه") || k.includes("آرکی‌تایپ") || k.includes("۱۵ محور")) {
-            tag = "[BENCHMARK]";
-          } else if (k.includes("تصمیم") || k.includes("استراتژی")) {
-            tag = "[DECISION]";
-          }
-          md += `- ${tag} **${k}:** ${v}\n`;
-        });
-        md += `\n`;
-      }
-      if (sec.flowchart) {
-        md += `\`\`\`text\n${sec.flowchart.trim()}\n\`\`\`\n\n`;
-      }
-      if (Array.isArray(sec.checklist)) {
-        sec.checklist.forEach(chk => {
-          const tag = String(chk).includes("مجهول") || String(chk).includes("فرضیه") ? "[HYPOTHESIS]" : "[FACT]";
-          md += `- [ ] ${tag} ${chk}\n`;
-        });
-        md += `\n`;
-      }
-      if (Array.isArray(sec.formulas)) {
-        md += `### فرمول‌های محاسباتی:\n`;
-        sec.formulas.forEach(f => {
-          md += `- [FORMULA] **${f.name}:** \`${f.formula}\` — *${f.description}*\n`;
-        });
-        md += `\n`;
-      }
-      if (Array.isArray(sec.kpis)) {
-        md += `### جدول سنجه‌ها و آستانه‌های ارزیابی (KPIs):\n\n`;
-        md += `| شاخص | فرمول / مبنا | هدف مطلوب (سبز) | هشدار (زرد) | بحران (قرمز) |\n`;
-        md += `|---|---|---|---|---|\n`;
-        sec.kpis.forEach(k => {
-          md += `| [BENCHMARK] ${k.metric} | ${k.formula} | ${k.green} | ${k.yellow} | ${k.red} |\n`;
-        });
-        md += `\n`;
-      }
-      if (Array.isArray(sec.items)) {
-        sec.items.forEach(it => {
-          let tag = "[BENCHMARK]";
-          const itStr = String(it);
-          if (itStr.includes("[فرضیه") || itStr.includes("مجهول")) {
-            tag = "[HYPOTHESIS]";
-          } else if (itStr.includes("دیدگاه") || itStr.includes("بنیان‌گذار") || itStr.includes("پاسخ")) {
-            tag = "[FACT]";
-          } else if (itStr.includes("تصمیم") || itStr.includes("انتخاب")) {
-            tag = "[DECISION]";
-          }
-          md += `- ${tag} ${it}\n`;
-        });
-      }
-      md += `\n`;
-    });
-
-    md += `---\n\n`;
-    md += `### راهنمای منشأ و استناد داده‌ها (Data Provenance & Verification):\n`;
-    md += `- \`[FACT]\` حقایق و داده‌های قطعی ثبت‌شده بر مبنای پاسخ‌های رسمی بنیان‌گذار در فازها\n`;
-    md += `- \`[DECISION]\` تصمیم‌ها و مصوبات راهبردی انتخاب‌شده در ایستگاه‌های تصمیم‌گیری\n`;
-    md += `- \`[FORMULA]\` روابط ریاضی، شاخص‌ها و محاسبات اقتصاد واحد و نقطه سربه‌سر\n`;
-    md += `- \`[BENCHMARK]\` چارچوب‌ها و الگوهای تخصصی طبقه‌بندی جامع ۷۵۳ کسب‌وکار و ۳۱ صنعت کلان\n`;
-    md += `- \`[HYPOTHESIS]\` فرضیات و مجهولات رسمی نیازمند سنجش میدانی در چک‌لیست حقیقت‌یابی\n\n`;
-
-    return md;
+    return deliverableToMarkdown(this.generateDeliverableData(phaseNum));
   }
 }

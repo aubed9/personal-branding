@@ -1,8 +1,8 @@
 /**
- * DIGITAL MARKET — 753-Business Autonomous Simulation & Empirical Quality Audit Pipeline (Requirement R3)
+ * DIGITAL MARKET — 753-Business Autonomous Simulation & Compatibility Regression Pipeline (Requirement R3)
  * Simulates all 753 business types (BT-0001 to BT-0753) across 31 macro industries (IND-01 to IND-31).
  * Executes the full lifecycle through Phase 1 to 8 + Master Brand Book.
- * Evaluates 4 core quality metrics (M1: Practical Problem-Solving, M2: Context Relevance & Zero Jargon,
+ * Evaluates 4 groups of software assertions (M1: Document Structure and Evidence, M2: Context Relevance & Zero Jargon,
  * M3: Identity Preservation & Zero Drift, M4: Exit Gates & Structural Integrity).
  * Generates:
  * 1. deliverables/753_BUSINESS_SIMULATIONS.md
@@ -14,7 +14,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { BUSINESS_TYPES, MACRO_INDUSTRIES } from './src/data/businessTaxonomy753.js';
 import { OrchestratorEngine } from './src/services/orchestratorEngine.js';
-import { generateDeliverable } from './src/services/deliverableGenerator.js';
+import { activeAnswers } from './src/services/interviewSchema.js';
 import { UnknownsManager } from './src/services/unknownsManager.js';
 import { detectCrossDomainLeakage } from './src/data/industryVocabularyMap.js';
 
@@ -22,7 +22,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 console.log('======================================================================');
-console.log('🚀 DIGITAL MARKET — 753-BUSINESS EMPIRICAL SIMULATION & QUALITY AUDIT');
+console.log('🚀 DIGITAL MARKET — 753-BUSINESS COMPATIBILITY SIMULATION');
 console.log('======================================================================');
 console.log(`Total Business Types to Simulate: ${BUSINESS_TYPES.length}`);
 console.log(`Macro Industries Represented    : ${MACRO_INDUSTRIES.length}`);
@@ -113,9 +113,11 @@ for (let i = 0; i < BUSINESS_TYPES.length; i++) {
   }
 
   // Drain remaining Phase 1 questions
+  let foundationSteps = 0;
   while (engine.getCurrentQuestion() && engine.currentPhase === 1) {
+    if (++foundationSteps > 60) throw new Error(`Question loop in ${bt.id}, phase 1`);
     const q = engine.getCurrentQuestion();
-    if (!q || !q.id || !q.title || !q.options || q.options.length === 0) {
+    if (!q || !q.id || !q.title || (!q.allowCustomAnswer && (!q.options || q.options.length === 0))) {
       hasEmptyQuestionOrOptions = true;
     }
     if (allEncounteredQuestions.length > 0 && allEncounteredQuestions[allEncounteredQuestions.length - 1]?.id === q?.id) {
@@ -132,9 +134,11 @@ for (let i = 0; i < BUSINESS_TYPES.length; i++) {
   // 3. Walk Phases 2 to 8
   for (let p = 2; p <= 8; p++) {
     engine.startPhase(p);
+    let phaseSteps = 0;
     while (engine.getCurrentQuestion() && engine.currentPhase === p) {
+      if (++phaseSteps > 60) throw new Error(`Question loop in ${bt.id}, phase ${p}`);
       const q = engine.getCurrentQuestion();
-      if (!q || !q.id || !q.title || !q.options || q.options.length === 0) {
+      if (!q || !q.id || !q.title || (!q.allowCustomAnswer && (!q.options || q.options.length === 0))) {
         hasEmptyQuestionOrOptions = true;
       }
       if (allEncounteredQuestions.length > 0 && allEncounteredQuestions[allEncounteredQuestions.length - 1]?.id === q?.id) {
@@ -149,9 +153,9 @@ for (let i = 0; i < BUSINESS_TYPES.length; i++) {
   }
 
   // 4. Generate Core Deliverables
-  const p1Deliv = generateDeliverable(1, engine.phaseData, engine.businessContext, engine.decisions, engine.facts, engine.unknowns);
-  const p8Deliv = generateDeliverable(8, engine.phaseData, engine.businessContext, engine.decisions, engine.facts, engine.unknowns);
-  const masterDeliv = generateDeliverable('master', engine.phaseData, engine.businessContext, engine.decisions, engine.facts, engine.unknowns);
+  const p1Deliv = engine.generateDeliverableData(1);
+  const p8Deliv = engine.generateDeliverableData(8);
+  const masterDeliv = engine.generateDeliverableData('master');
 
   // Deliverable output text inspection (R3: no [object Object], undefined, null, NaN)
   const masterJson = JSON.stringify(masterDeliv || {});
@@ -161,25 +165,25 @@ for (let i = 0; i < BUSINESS_TYPES.length; i++) {
     masterJson.includes('NaN');
 
   // Cross-Domain Leakage Check on master deliverable (R3, R6)
-  const masterTextSummary = masterDeliv?.sections?.map(s => `${s.title} ${s.content || ''}`).join(' ') || '';
-  const leakageResult = detectCrossDomainLeakage(masterTextSummary, bt.industryId, { allowExemptions: true });
+  const masterTextSummary = masterDeliv?.sections?.map(s => JSON.stringify(s)).join(' ') || '';
+  const leakageResult = detectCrossDomainLeakage(masterTextSummary, bt.id, { allowExemptions: true });
   if (leakageResult.hasLeakage) {
     crossDomainLeakagesTotal++;
     leakageViolationLog.push({ businessId: bt.id, industryId: bt.industryId, violations: leakageResult.violations });
   }
 
   // ============================================================================
-  // 4-METRIC EMPIRICAL QUALITY EVALUATION (0-Based Empirical Assertions)
+  // SOFTWARE ASSERTIONS (these do not evaluate strategy quality)
   // ============================================================================
 
-  // Metric 1: Practical Problem-Solving (M1) — 8 assertions
+  // Metric 1: Document structure and evidence (M1) — 8 assertions
   let m1Passed = 0;
   const m1Total = 8;
   if (engine.completedPhases[1]) m1Passed++;
   if (p1Deliv && typeof p1Deliv.title === 'string' && p1Deliv.title.length > 0) m1Passed++;
   if (p1Deliv?.sections?.[0]?.items && p1Deliv.sections[0].items.length > 0) m1Passed++;
   if (Array.isArray(p1Deliv?.sections) && p1Deliv.sections.length === 5) m1Passed++;
-  if (p1Deliv?.sections?.[1]?.flowchart) m1Passed++;
+  if (p1Deliv?.evidence?.length > 0 && p1Deliv.evidence.every(claim => claim.evidenceIds?.length > 0 && claim.evidenceIds.every(id => activeAnswers(engine.answerRecords).some(answer => answer.id === id && claim.statement.includes(answer.text))))) m1Passed++;
   if ((p1Deliv?.sections?.[2]?.checklist?.length || 0) >= 5) m1Passed++;
   if ((p1Deliv?.sections?.[3]?.formulas?.length || 0) > 0 && (p1Deliv?.sections?.[3]?.kpis?.length || 0) > 0) m1Passed++;
   if (engine.facts.length > 0) m1Passed++;
@@ -247,7 +251,7 @@ for (let i = 0; i < BUSINESS_TYPES.length; i++) {
   const m4Total = 8;
   const completedPhasesCount = Object.values(engine.completedPhases).filter(Boolean).length;
   if (completedPhasesCount === 8) m4Passed++;
-  if (masterDeliv && Array.isArray(masterDeliv.sections) && masterDeliv.sections.length === 9) m4Passed++;
+  if (masterDeliv?.status === 'CONFIRMED' && Array.isArray(masterDeliv.sections) && masterDeliv.sections.length === 9) m4Passed++;
   if (p1Deliv && Array.isArray(p1Deliv.sections) && p1Deliv.sections.length === 5) m4Passed++;
   if (p8Deliv && Array.isArray(p8Deliv.sections) && p8Deliv.sections.length > 0) m4Passed++;
   if (p1Deliv?.sections?.some(s => Array.isArray(s.checklist) && s.checklist.length > 0)) m4Passed++;
@@ -284,7 +288,7 @@ for (let i = 0; i < BUSINESS_TYPES.length; i++) {
     m3Score,
     m4Score,
     compositeScore,
-    status: compositeScore >= 95.0 && completedPhasesCount === 8 ? 'PASS' : 'FAIL',
+    status: compositeScore === 100 && completedPhasesCount === 8 && !leakageResult.hasLeakage && bizJargonViolations === 0 ? 'PASS' : 'FAIL',
     hasUnknownHypothesis: isUnmeasuredSample,
     masterSectionsCount: masterDeliv.sections?.length || 0,
     hasMalformedOutput,
@@ -328,11 +332,11 @@ const overallAvgComposite = Number((auditLog.reduce((s, x) => s + x.compositeSco
 const passRate = ((totalPassed / totalSimulated) * 100).toFixed(1);
 
 console.log('\n======================================================================');
-console.log('📊 753-BUSINESS EMPIRICAL AUDIT RESULTS SUMMARY');
+console.log('📊 753-BUSINESS COMPATIBILITY RESULTS');
 console.log('======================================================================');
 console.log(`Total Businesses Simulated       : ${totalSimulated} / 753`);
 console.log(`Execution Duration               : ${totalDurationSec} seconds`);
-console.log(`Average M1 (Problem-Solving)     : ${overallAvgM1}%`);
+console.log(`Average M1 (Structure & Evidence)     : ${overallAvgM1}%`);
 console.log(`Average M2 (Context & Zero Jargon: ${overallAvgM2}%`);
 console.log(`Average M3 (Identity & Output)   : ${overallAvgM3}%`);
 console.log(`Average M4 (Exit Gates & Docs)   : ${overallAvgM4}%`);
@@ -341,90 +345,23 @@ console.log(`Pass Rate                        : ${passRate}% (${totalPassed}/${t
 console.log(`Local Trades Audited for Jargon  : ${localTradesAudited}`);
 console.log(`Corporate Jargon Violations      : ${jargonViolationsTotal} (Zero Tolerance)`);
 console.log(`Cross-Domain Leakages Detected   : ${crossDomainLeakagesTotal}`);
+if (leakageViolationLog.length) console.error(JSON.stringify(leakageViolationLog, null, 2));
 console.log('======================================================================\n');
 
 // Build Markdown Report
-function buildMarkdownReport(isRootFile = false) {
-  let md = `# گزارش رسمی آزمون تجربی و شبیه‌سازی جامع ۷۵۳ صنف کسب‌وکار (DIGITAL MARKET)
-> **تاریخ آزمون:** ${new Date().toISOString().slice(0, 10)}  
-> **دامنه ارزیابی:** تمامی ۷۵۳ صنف کسب‌وکار (\`BT-0001\` تا \`BT-0753\`) در ۳۱ صنعت کلان (\`IND-01\` تا \`IND-31\`)  
-> **موتور آزمون:** نمونه‌سازی مستقیم \`OrchestratorEngine\`، اجرای واقعی فاز ۱ تا ۸، اعتبارسنجی گیت‌های خروج و تولید خروجی‌های ۵ لایه‌ای و مستر  
-> **قانون ارزیابی:** نمرات کاملاً تجربی بر مبنای شمارش عبور شواهد (Zero Score Floors / Zero Inflation)
+function buildMarkdownReport() {
+  const status = totalPassed === totalSimulated && jargonViolationsTotal === 0 && crossDomainLeakagesTotal === 0 ? 'PASS' : 'FAIL';
+  let md = `# گزارش آزمون سازگاری ۷۵۳ صنف
 
----
-
-## ۱. خلاصه اجرایی و شاخص‌های کلان عملکردی (Executive Summary & KPIs)
-
-تمامی ۷۵۳ صنف کسب‌وکار بدون پیش‌فرض از نقطه ورود اولیه، با پرسش تشخیصی باز، ثبت صنف و استخراج ۱۵ محور مستقل بافتاری هدایت شده، از فازهای ۱ تا ۸ با سوالات تطبیق‌یافته عبور کرده و سند جامع مستر دریافت کردند.
-
-| شاخص ارزیابی | مقدار محقق‌شده | حد آستانه قبولی | وضعیت آزمون |
-| :--- | :---: | :---: | :---: |
-| **تعداد کسب‌وکارهای شبیه‌سازی‌شده** | **${totalSimulated} صنف** | ۷۵۳ صنف کامل | ✅ ۱۰۰٪ کامل |
-| **تعداد صنایع کلان پوشش داده‌شده** | **۳۱ صنعت کلان** | ۳۱ صنعت | ✅ پوشش فراگیر |
-| **مجموع فازهای عملیاتی طی‌شده** | **۶,۰۲۴ فاز** | ۶,۰۲۴ فاز | ✅ بدون شکست |
-| **تعداد کل اسناد تحویل‌شدنی صادرشده** | **۶,۷۷۷ سند** | ۶,۷۷۷ سند | ✅ ۵ لایه‌ای و مستر |
-| **میانگین حل مسئله عملیاتی (M1)** | **${overallAvgM1}٪** | بالای ۹۰.۰٪ | 🏆 پاس قطعی |
-| **میانگین انطباق بافتار و ضدجافگان (M2)** | **${overallAvgM2}٪** | بالای ۹۰.۰٪ | 🏆 پاس قطعی |
-| **میانگین حفظ هویت و ساختار (M3)** | **${overallAvgM3}٪** | بالای ۹۰.۰٪ | 🏆 پاس قطعی |
-| **میانگین عبور از گیت‌ها و اسناد (M4)** | **${overallAvgM4}٪** | بالای ۹۰.۰٪ | 🏆 پاس قطعی |
-| **میانگین نمره ترکیبی کل (Composite Score)** | **${overallAvgComposite}٪** | بالای ۹۵.۰٪ | 🌟 تایید پروداکشن |
-| **نرخ قبولی نهایی در آزمون‌های ۷۵۳ گانه** | **${passRate}٪** | ۱۰۰.۰٪ | ✅ ۱۰۰٪ قبولی |
-
----
-
-## ۲. جدول کارنامه تفکیکی ۳۱ صنعت کلان اقتصادی (Macro Industries Summary)
-
-| کد صنعت | عنوان فارسی صنعت کلان | عنوان انگلیسی | تعداد صنف | میانگین M1 | میانگین M2 | میانگین M3 | میانگین M4 | میانگین کل | وضعیت |
-| :---: | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 `;
-
-  for (const ind of MACRO_INDUSTRIES) {
-    const is = industryStats[ind.id];
-    const count = is.businessCount || 1;
-    const m1 = (is.m1Sum / count).toFixed(1);
-    const m2 = (is.m2Sum / count).toFixed(1);
-    const m3 = (is.m3Sum / count).toFixed(1);
-    const m4 = (is.m4Sum / count).toFixed(1);
-    const comp = (is.compositeSum / count).toFixed(1);
-    const status = is.passedCount === count ? '✅ قبولی کامل' : '⚠️ نیازمند بررسی';
-    md += `| **${ind.id}** | ${ind.titleFa} | ${ind.titleEn} | ${count} | ${m1}٪ | ${m2}٪ | ${m3}٪ | ${m4}٪ | **${comp}٪** | ${status} |\n`;
-  }
-
-  md += `
----
-
-## ۳. کارنامه تفصیلی تمامی ۷۵۳ صنف کسب‌وکار (Detailed 753-Business Ledger)
-
-- **M1 (Practical Problem-Solving):** ساختار ۵ لایه‌ای، حل اصطکاک، چک‌لیست عملیاتی و فرمول‌های محاسباتی
-- **M2 (Context Relevance & Zero Jargon):** صفر بودن اصطلاحات نامربوط شرکتی در اصناف محلی و استفاده از ادبیات واقعی صنف
-- **M3 (Identity & Output Integrity):** حفظ هویت در تمام فازها، مدیریت مجهول، نبود خروجی‌های تهی یا رشته‌های ناقص
-- **M4 (Exit Gates & Structure):** عبور موفق از هر ۸ گیت فاز و ساختار کامل ۹ بخشی سند جامع مستر
-
-| # | کد صنف | عنوان صنف کسب‌وکار | صنعت | ۱۵ محور بافتاری | M1 | M2 | M3 | M4 | نمره کل | وضعیت |
-| :-: | :---: | :--- | :---: | :--- | :-: | :-: | :-: | :-: | :-: | :---: |
-`;
-
-  for (const b of auditLog) {
-    md += `| ${b.round} | \`${b.id}\` | **${b.titleFa}** | \`${b.industryId}\` | \`${b.axesSummary}\` | ${b.m1Score} | ${b.m2Score} | ${b.m3Score} | ${b.m4Score} | **${b.compositeScore}٪** | ${b.status === 'PASS' ? '✅ تایید' : '❌ مردود'} |\n`;
-  }
-
-  md += `
----
-
-## ۴. ممیزی ایزولاسیون اصطلاحات شرکتی و ضد نشت بین‌صنعتی (Isolation & Anti-Leakage Audit)
-
-- **تعداد اصناف سنتی و محلی ممیزی‌شده:** ${localTradesAudited} صنف
-- **تعداد کل سوالات و گزینه‌های تحلیل‌شده:** ${localQuestionsAudited} پرسش
-- **تخلفات اصطلاحات نامربوط شرکتی (CAC, LTV, Churn, DMU, SLA, Pipeline):** **${jargonViolationsTotal} مورد (صفر مطلق)**
-- **موارد نشت واژگان بین‌صنعتی (Cross-Domain Leakage):** **${crossDomainLeakagesTotal} مورد**
-
----
-
-## ۵. نتیجه‌گیری ممیزی پروداکشن (Production Readiness Sign-off)
-
-سیستم شبیه‌سازی تجربی تایید می‌کند که موتور جریان ۸ مرحله‌ای، تفکیک ۱۵ بعدی بافتار، سیستم مدیریت مجهولات و صدور مستندات در تمامی ۷۵۳ صنف بدون کوچکترین استثنا یا ارور اجرایی کار می‌کند و آماده سرویس‌دهی نهایی در محیط پروداکشن است.
-`;
-
+  md += `تاریخ اجرا: ${new Date().toISOString().slice(0, 10)}\n\n`;
+  md += `وضعیت: **${status}**. سناریوهای قبول‌شده: ${totalPassed} از ${totalSimulated}.\n\n`;
+  md += 'این آزمون ورودی‌های مصنوعی را از مسیر هشت فاز عبور می‌دهد. نتیجه، گواه کیفیت مشاوره، درستی اطلاعات بازار ایران یا آمادگی کامل محصول برای انتشار نیست. API زنده و مرورگر واقعی در این آزمون اجرا نمی‌شوند.\n\n';
+  md += '| بررسی | نتیجه |\n|---|---|\n';
+  md += `| ساختار سند و اتصال به شواهد | ${overallAvgM1}% |\n| تطبیق با طبقه‌بندی و واژگان | ${overallAvgM2}% |\n| حفظ هویت و پاسخ‌ها | ${overallAvgM3}% |\n| تکمیل فاز و ساختار خروجی | ${overallAvgM4}% |\n| موارد واژگان نامرتبط | ${jargonViolationsTotal} |\n| موارد نشت بین اصناف | ${crossDomainLeakagesTotal} |\n\n`;
+  md += 'درصدها سهم بررسی‌های نرم‌افزاری موفق‌اند، نه اطمینان علمی به استراتژی برند. حالت‌های ویرایش، خطا و رقابت درخواست‌ها جداگانه در test_adaptive_interview.js و test_app_dom.cjs بررسی می‌شوند.\n\n';
+  md += '| شناسه | صنف | ساختار و شواهد | بافتار | هویت | گیت | وضعیت |\n|---|---|---|---|---|---|---|\n';
+  for (const entry of auditLog) md += `| ${entry.id} | ${entry.titleFa} | ${entry.m1Score} | ${entry.m2Score} | ${entry.m3Score} | ${entry.m4Score} | ${entry.status} |\n`;
   return md;
 }
 
@@ -438,8 +375,8 @@ const rootResultPath = path.resolve(__dirname, '../753-REAL-TEST-RESULTS.md');
 fs.writeFileSync(rootResultPath, buildMarkdownReport(true), 'utf-8');
 console.log(`📄 Successfully generated: ${rootResultPath}`);
 
-console.log(`🎉 ALL 753 BUSINESS TYPES EMPIRICALLY AUDITED & CERTIFIED! (Pass Rate: ${passRate}%)`);
-if (totalPassed < totalSimulated) {
+console.log(`Taxonomy compatibility simulation: ${totalPassed}/${totalSimulated} passed (${passRate}%).`);
+if (totalPassed < totalSimulated || jargonViolationsTotal > 0 || crossDomainLeakagesTotal > 0) {
   process.exit(1);
 } else {
   process.exit(0);

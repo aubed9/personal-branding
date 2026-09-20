@@ -1152,6 +1152,12 @@ export function detectCrossDomainLeakage(text, target, options = {}) {
   }
 
   function isExempted(normTerm) {
+    // A narrow business can legitimately cross a macro-industry vocabulary boundary,
+    // e.g. an online brake-parts shop or a gearbox training school. Only registered
+    // vocabulary for that exact business is allowed, never the entire other domain.
+    const business = specificBtId && BUSINESS_TYPES_MAP[specificBtId];
+    if (business && [business.titleFa, ...(business.keywords || [])]
+      .some(value => normalizePersianText(value || '').includes(normTerm))) return true;
     if (!allowExemptions) return false;
     for (const ex of exemptedPhrases) {
       if (ex === normTerm || ex.startsWith(normTerm + " ") || ex.endsWith(" " + normTerm)) {

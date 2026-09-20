@@ -1,3 +1,4 @@
+import { isAutomotiveService } from './businessDomain.js';
 import { INITIAL_QUESTIONS as P1_QUESTIONS } from './phase1Templates.js';
 import { getAdaptivePhase2Questions, PHASE2_QUESTIONS } from './phase2Templates.js';
 
@@ -546,12 +547,7 @@ function getPhase6Questions(arch) {
 // PHASE 7: VISUAL IDENTITY DESIGN SYSTEM
 // ----------------------------------------------------------------------------
 function getPhase7Questions(arch, context = null) {
-  const isAutomotive = context && (
-    context.industryCode === "IND-05" ||
-    context.industryId === "IND-05" ||
-    (context.archetypeTitle && (context.archetypeTitle.includes("خودرو") || context.archetypeTitle.includes("اتوسرویس"))) ||
-    (context.taxonomyTitleFa && (context.taxonomyTitleFa.includes("خودرو") || context.taxonomyTitleFa.includes("کارواش") || context.taxonomyTitleFa.includes("روغن") || context.taxonomyTitleFa.includes("مکانیک") || context.taxonomyTitleFa.includes("دیتیلینگ") || context.taxonomyTitleFa.includes("تعمیرگاه")))
-  );
+  const isAutomotive = context && isAutomotiveService(context);
 
   const isBeauty = context && (
     context.industryCode === "IND-04" ||
@@ -668,12 +664,7 @@ function getPhase7Questions(arch, context = null) {
 function getPhase8Questions(arch, context = null) {
   const isRetail = arch === 'PHYSICAL_RETAIL' || arch === 'LOCAL_RETAIL' || arch === 'RETAIL' || (context && (context.industryId === 'IND-01' || context.industryCode === 'IND-01' || context.primaryArchetype === 'PHYSICAL_RETAIL'));
 
-  const isAutomotive = context && (
-    context.industryCode === "IND-05" ||
-    context.industryId === "IND-05" ||
-    (context.archetypeTitle && (context.archetypeTitle.includes("خودرو") || context.archetypeTitle.includes("اتوسرویس"))) ||
-    (context.taxonomyTitleFa && (context.taxonomyTitleFa.includes("خودرو") || context.taxonomyTitleFa.includes("کارواش") || context.taxonomyTitleFa.includes("روغن") || context.taxonomyTitleFa.includes("مکانیک") || context.taxonomyTitleFa.includes("دیتیلینگ") || context.taxonomyTitleFa.includes("تعمیرگاه")))
-  );
+  const isAutomotive = context && isAutomotiveService(context);
 
   const isCafe = context && (
     context.taxonomyId === "BT-0066" ||

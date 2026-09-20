@@ -7,6 +7,9 @@ import { INITIAL_QUESTIONS } from "../data/phase1Templates.js";
 import { getAdaptivePhase2Questions, PHASE2_QUESTIONS } from "../data/phase2Templates.js";
 import { getAdaptedPhaseQuestions } from "../data/allPhasesTemplates.js";
 import { BUSINESS_TYPES_MAP, resolveBusinessType } from "../data/businessTaxonomy753.js";
+import { FOUNDATION_DETAIL_QUESTIONS } from './interviewSchema.js';
+import { adaptQuestionToAnswers } from './adaptiveInterview.js';
+import { isAutomotiveService } from '../data/businessDomain.js';
 
 export const DYNAMIC_QUESTION_FORMULA = 
   "ActiveQuestions = Base + Industry Module + Customer Model Overlay + Channel Overlay + Revenue Overlay + Maturity Overlay + Founder Role Overlay - Irrelevant - Answered";
@@ -295,15 +298,27 @@ export function detectTradeSector(context, priorAnswers = {}) {
   const tradeTitle = context?.taxonomyTitleFa || p1.description || "";
   const industryId = context?.industryId || context?.industryCode || "";
   const arch = context?.archetype || "";
-  const combined = `${tradeTitle} ${p1.description || ""} ${p1.descriptionValue || ""} ${context?.archetypeTitle || ""}`.toLowerCase();
+  const combined = `${tradeTitle} ${p1.description || ""} ${p1.descriptionValue || ""}`.toLowerCase();
+
+  // Known industries must not switch domains because of a shared word (e.g. car software).
+  const selectedSectors = {
+    'IND-01': 'RETAIL', 'IND-02': 'RETAIL', 'IND-03': 'FOOD_HOSPITALITY',
+    'IND-04': /زیبایی|آرایش|اسپا|ناخن|مژه|فیشیال|ماساژ/.test(combined) ? 'BEAUTY' : 'HEALTHCARE',
+    'IND-05': 'AUTOMOTIVE', 'IND-06': 'SAAS_TECH', 'IND-07': 'SAAS_TECH',
+    'IND-08': 'MANUFACTURING', 'IND-09': 'MANUFACTURING', 'IND-10': 'MANUFACTURING',
+    'IND-11': 'REAL_ESTATE', 'IND-12': 'PROFESSIONAL', 'IND-13': 'LOGISTICS',
+    'IND-14': 'PROFESSIONAL', 'IND-15': 'PROFESSIONAL', 'IND-16': 'PROFESSIONAL',
+    'IND-17': 'PROFESSIONAL', 'IND-18': 'EDUCATION_CREATOR', 'IND-19': 'EDUCATION_CREATOR',
+    'IND-20': 'PROFESSIONAL', 'IND-21': 'REAL_ESTATE', 'IND-22': 'PROFESSIONAL',
+    'IND-23': 'PROFESSIONAL', 'IND-24': 'MANUFACTURING', 'IND-25': 'MANUFACTURING',
+    'IND-26': 'MANUFACTURING', 'IND-27': 'PROFESSIONAL', 'IND-28': 'HOME_SERVICES',
+    'IND-29': 'HOME_SERVICES', 'IND-30': 'PROFESSIONAL',
+  };
+  if (selectedSectors[industryId]) return selectedSectors[industryId];
 
   // Automotive
   if (
-    industryId === "IND-05" ||
-    combined.includes("خودرو") || combined.includes("کارواش") || combined.includes("اتوسرویس") ||
-    combined.includes("دیتیلینگ") || combined.includes("تعویض روغنی") || combined.includes("مکانیک") ||
-    combined.includes("آپاراتی") || combined.includes("پنچرگیری") || combined.includes("تیونینگ") ||
-    combined.includes("لوازم یدکی")
+    isAutomotiveService(context || {}, p1.description)
   ) {
     return "AUTOMOTIVE";
   }
@@ -820,7 +835,7 @@ export function composeChainedQuestions(
   // 1. BASE QUESTIONS (Q_base)
   let baseQuestions = [];
   if (p === 1) {
-    baseQuestions = [...INITIAL_QUESTIONS];
+    baseQuestions = [...INITIAL_QUESTIONS, ...FOUNDATION_DETAIL_QUESTIONS];
   } else if (p === 2) {
     baseQuestions = getAdaptivePhase2Questions(context);
   } else {
@@ -857,6 +872,7 @@ export function composeChainedQuestions(
 
     // Apply context-aware options and jargon sanitization
     question = synthesizeContextOptions(question, context, vision, priorAnswers);
+    question = adaptQuestionToAnswers(question, context, priorAnswers);
 
     return question;
   });

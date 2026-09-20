@@ -1,3 +1,4 @@
+import { INTERVIEW_FIELDS, isUnknownAnswer } from "./interviewSchema.js";
 /**
  * DIGITAL MARKET — Phase Gate Validator (Requirement R2)
  * Real, Non-Bypassable Exit Gate Validation for Phases 1 to 8
@@ -16,6 +17,7 @@ export function validatePhaseGate(phaseNum, projectState) {
   const context = projectState?.businessContext || null;
 
   const blockingReasons = [];
+  if ((projectState?.reviewRequired?.[p] || []).length) blockingReasons.push('پاسخ‌های این فاز پس از تغییر فاز قبلی باید بازبینی شوند.');
   const warnings = [];
   const missingFacts = [];
   const requiredDecisions = [];
@@ -76,7 +78,7 @@ export function validatePhaseGate(phaseNum, projectState) {
 
       // Item 1: Business model / description / trade
       const hasBizModel = Boolean(
-        data.description || data.descriptionValue || data.taxonomyId || data.coreOffer
+        data.description || data.descriptionValue || data.taxonomyId
       );
       if (hasBizModel) {
         fulfilledItemsCount++;
@@ -96,7 +98,7 @@ export function validatePhaseGate(phaseNum, projectState) {
 
       // Item 3: Geography
       const hasGeo = Boolean(
-        data.geography || data.geographyValue || data.geographyFromFreeform || (hasBizModel && context?.geographicScope)
+        data.geography || data.geographyValue || data.geographyFromFreeform
       );
       if (hasGeo) {
         fulfilledItemsCount++;
@@ -107,7 +109,7 @@ export function validatePhaseGate(phaseNum, projectState) {
 
       // Item 4: Primary Goal
       const hasGoal = Boolean(
-        data.primaryGoal || data.primaryGoalValue || data.diagnosticVision || (hasBizModel && context?.focus) || (hasBizModel && context?.archetypeTitle)
+        data.primaryGoal || data.primaryGoalValue
       );
       if (hasGoal) {
         fulfilledItemsCount++;
@@ -118,7 +120,7 @@ export function validatePhaseGate(phaseNum, projectState) {
 
       // Item 5: Core Offer & Unit Economics / Budget
       const hasOffer = Boolean(
-        data.coreOffer || data.valueHypothesis || data.unitEconomics || data.pricingModel || (hasBizModel && context?.revenueModel)
+        data.coreOffer
       );
       if (hasOffer) {
         fulfilledItemsCount++;
@@ -282,7 +284,14 @@ export function validatePhaseGate(phaseNum, projectState) {
       blockingReasons.push(`شماره فاز ${phaseNum} خارج از محدوده مجاز (۱ تا ۸) است.`);
   }
 
-  // Calculate honest empirical evidenceScore (0 - 100)
+  for (const spec of INTERVIEW_FIELDS.filter(item => item.phase === p)) {
+    if (isUnknownAnswer(data[spec.field]) && !unknowns.some(u => u.phase === p && u.questionId === spec.questionId)) {
+      blockingReasons.push(`«${spec.label}» مجهول است و برنامه تحقیق آن ثبت نشده است.`);
+    }
+  }
+
+  // This is completion coverage, not empirical confidence or market validation.
+  // Calculate evidenceScore (0 - 100)
   let evidenceScore = 0;
   if (requiredItemsCount > 0) {
     const baseRatio = fulfilledItemsCount / requiredItemsCount;

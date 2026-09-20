@@ -20,7 +20,8 @@ export default function DeliverableModal({
   activeDeliverablePhase = 1,
   onSelectPhaseTab,
   completedPhases = {},
-  onStartNextPhase
+  onStartNextPhase,
+  onReviewPhase
 }) {
   const [copied, setCopied] = useState(false);
 
@@ -47,6 +48,7 @@ export default function DeliverableModal({
     document.body.appendChild(element);
     element.click();
     document.body.removeChild(element);
+    URL.revokeObjectURL(element.href);
   };
 
   const handlePrint = () => {
@@ -132,7 +134,7 @@ export default function DeliverableModal({
             <div className="flex items-center justify-between gap-2 mb-3">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-300 text-[11px] font-mono">
                 <Shield className="w-3.5 h-3.5" />
-                <span>سند راهبردی مصوب • اعتبار سازمانی</span>
+                <span>{deliverableData.status === 'CONFIRMED' ? 'پاسخ‌های فاز تکمیل شده' : deliverableData.status === 'NEEDS_REVIEW' ? 'نیازمند بازبینی' : 'پیش‌نویس؛ فاز هنوز تأیید نشده'}</span>
               </div>
               <span className="text-[11px] text-zinc-500 font-mono hidden sm:inline">
                 REF: DM-STRAT-{activeDeliverablePhase}-2026
@@ -146,10 +148,11 @@ export default function DeliverableModal({
               <span>•</span>
               <span>نسخه: {deliverableData.version}</span>
               <span>•</span>
-              <span>تاریخ تصویب: {deliverableData.date}</span>
+              <span>تاریخ تولید: {deliverableData.date}</span>
             </div>
           </div>
 
+          {activeDeliverablePhase !== 'master' && <button onClick={() => onReviewPhase?.(Number(activeDeliverablePhase))} className="px-4 py-2 border border-white/30 rounded-lg text-sm">ویرایش پاسخ‌های این فاز</button>}
           {/* Sections List */}
           <div className="space-y-6">
             {deliverableData.sections?.map((section) => (
