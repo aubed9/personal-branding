@@ -185,6 +185,10 @@ async function runMultiSectorTest() {
     }
     res = engine.processUserResponse(qHypo.options[0].text, qHypo.options[0].value);
 
+    // Financial and capacity inputs are real questions, not router defaults.
+    res = engine.processUserResponse('قیمت هر واحد ۲۰۰ هزار تومان؛ هزینه متغیر ۱۰۰ هزار تومان؛ هزینه ثابت ماهانه ۳۰ میلیون تومان');
+    res = engine.processUserResponse('بودجه اجرای آزمون ۱۰ میلیون تومان و دو نفر تیم');
+
     // Phase 1 complete check
     totalTests++;
     if (res.isCompleted && engine.completedPhases[1]) {

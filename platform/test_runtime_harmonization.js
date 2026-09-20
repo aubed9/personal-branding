@@ -20,6 +20,16 @@ function assert(condition, message) {
   }
 }
 
+function completeFoundation(engine) {
+  let result;
+  for (let count = 0; count < 20 && engine.getCurrentQuestion(); count++) {
+    const question = engine.getCurrentQuestion();
+    const option = question.options?.[0];
+    result = engine.processUserResponse(option?.text || 'مقدار آزمایشی ثبت‌شده', option?.value || null);
+  }
+  return result || engine.finalizeCurrentPhase();
+}
+
 // -----------------------------------------------------------------------------
 // TEST 1: Full 8-Phase State Machine & Phase 8 Transition Test (Archetype: Automotive)
 // -----------------------------------------------------------------------------
@@ -35,8 +45,9 @@ console.log("▶ TEST 1: Automotive Service Full Phase 1 to 8 Transition & Grand
   engine.processUserResponse("محدود به یک شهر خاص (به عنوان مثال تهران یا مشهد)", "local_city");
   engine.processUserResponse("جذب ۱۰۰ مشتری اولیه و اعتبارسنجی تقاضا", "first_100_customers");
   engine.processUserResponse("یک خدمت حضوری یا فنی استاندارد با تحویل سریع و تضمینی", "core_service_delivery");
-  const p1Finish = engine.processUserResponse("کیفیت بالا و همراهی مداوم، بدون پیچیدگی و سردرگمی", "quality_simplicity");
+  engine.processUserResponse("کیفیت بالا و همراهی مداوم، بدون پیچیدگی و سردرگمی", "quality_simplicity");
 
+  const p1Finish = completeFoundation(engine);
   assert(p1Finish.isCompleted === true, "Phase 1 is completed");
   assert(p1Finish.completedPhase === 1, "Completed phase is 1");
   assert(p1Finish.nextPhase === 2, "Next phase is 2");
@@ -142,7 +153,7 @@ console.log("\n▶ TEST 2: Specialty Coffee Roastery & Cafe Hospitality");
   const engine = new OrchestratorEngine();
   engine.processUserResponse("کسب‌وکار / برند شخصی فعال دارم", "active");
   engine.processUserResponse("کافه، رستری و صنعت مهمان‌نوازی (کافی‌شاپ، رستری دانه قهوه، کافه‌رستوران و قنادی)", "hospitality_cafe_roastery");
-  engine.finalizeCurrentPhase();
+  completeFoundation(engine);
 
   assert(engine.businessContext.archetype === "RESTAURANT_CAFE_HOSPITALITY", "Classified as RESTAURANT_CAFE_HOSPITALITY");
   assert(engine.businessContext.activeOverlays.includes("FOOD_SAFETY_REGULATION"), "Contains FOOD_SAFETY_REGULATION");
@@ -168,7 +179,7 @@ console.log("\n▶ TEST 3: Heavy Industrial Parts & Tooling Factory B2B");
   const engine = new OrchestratorEngine();
   engine.processUserResponse("کسب‌وکار / برند شخصی فعال دارم", "active");
   engine.processUserResponse("کارخانه صنعتی و قالب‌سازی (تولید قطعات صنعتی، قالب‌سازی دقیق و ماشین‌کاری B2B)", "industrial_manufacturing");
-  engine.finalizeCurrentPhase();
+  completeFoundation(engine);
 
   assert(engine.businessContext.archetype === "MANUFACTURER", "Classified as MANUFACTURER");
   assert(engine.businessContext.customerModel === "B2B", "Customer model is B2B");
@@ -196,7 +207,7 @@ console.log("\n▶ TEST 4: B2B Cloud Accounting SaaS Platform");
   const engine = new OrchestratorEngine();
   engine.processUserResponse("کسب‌وکار / برند شخصی فعال دارم", "active");
   engine.processUserResponse("نرم‌افزار ابری و فناوری B2B (حسابداری ابری SaaS، سامانه مودیان، ERP و پلتفرم شرکتی)", "b2b_saas_software");
-  engine.finalizeCurrentPhase();
+  completeFoundation(engine);
 
   assert(engine.businessContext.archetype === "SAAS_SOFTWARE", "Classified as SAAS_SOFTWARE");
   assert(engine.businessContext.customerModel === "B2B", "Customer model is B2B");
@@ -223,7 +234,7 @@ console.log("\n▶ TEST 5: Personal Brand, Creator & Coaching");
   const engine = new OrchestratorEngine();
   engine.processUserResponse("کسب‌وکار / برند شخصی فعال دارم", "active");
   engine.processUserResponse("برند شخصی، کریتور و مربی‌گری (کوچینگ تخصصی، آموزش، مشاوره فردی و تولید محتوا)", "creator_coaching_personal");
-  engine.finalizeCurrentPhase();
+  completeFoundation(engine);
 
   assert(engine.businessContext.archetype === "CREATOR_MEDIA_EDUCATION", "Classified as CREATOR_MEDIA_EDUCATION");
   assert(engine.businessContext.activeOverlays.includes("FOUNDER_LED"), "Contains FOUNDER_LED");

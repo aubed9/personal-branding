@@ -27,6 +27,7 @@ export default function QuestionCard({
   canNavigateBack = false,
   onStartNextPhase,
   onOpenDeliverable,
+  onReviewPhase,
   isProcessing = false
 }) {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -84,6 +85,19 @@ export default function QuestionCard({
   };
 
   // Phase Completion Screen (R7: No chatbot feel, R8: Minimal, checkmark + concise summary, zero confetti)
+  if (!currentQuestion && !isPhaseCompleted) {
+    return <div className="p-6 overflow-y-auto space-y-4" dir="rtl" role="status">
+      <h2 className="text-xl font-bold">این فاز هنوز نیاز به تکمیل دارد</h2>
+      <p>برای ادامه، پاسخ نامعلوم یا ناسازگار را بازبینی کنید.</p>
+      <ul className="list-disc pr-5 space-y-2 text-sm text-zinc-300">
+        {(phaseGateStatus?.blockingReasons || []).map(reason => <li key={reason}>{reason}</li>)}
+      </ul>
+      <div className="flex gap-2 flex-wrap">
+        {Array.from({ length: currentPhase }, (_, i) => <button key={i} onClick={() => onReviewPhase?.(i + 1)} className="border border-white/30 rounded-lg px-4 py-2 text-sm">بازبینی فاز {i + 1}</button>)}
+      </div>
+    </div>;
+  }
+
   if (isPhaseCompleted) {
     return (
       <div className="h-full flex flex-col justify-center items-center p-6 sm:p-10 max-w-2xl mx-auto text-center select-text">
@@ -96,11 +110,11 @@ export default function QuestionCard({
         </span>
 
         <h2 className="text-2xl sm:text-3xl font-black text-white mb-3 tracking-tight">
-          تمام پرسش‌های این فاز با موفقیت تدوین گردید
+          پاسخ‌های این فاز تکمیل شد
         </h2>
 
         <p className="text-sm text-zinc-400 max-w-lg mb-8 leading-relaxed">
-          داده‌های گردآوری‌شده با اصول راهبردی فاز {currentPhase} اعتبارسنجی شده و سند مدون این مرحله آماده استخراج است.
+          پاسخ‌ها از نظر کامل بودن و تعارض‌های شناخته‌شده بررسی شدند. فرضیه‌ها و پیشنهادهای سند همچنان باید با مشتری آزموده شوند.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center gap-3 w-full max-w-md">
@@ -130,6 +144,7 @@ export default function QuestionCard({
             </button>
           )}
         </div>
+        <button onClick={() => onReviewPhase?.(currentPhase)} className="mt-5 underline text-sm text-zinc-300">بازبینی پاسخ‌های این فاز</button>
       </div>
     );
   }
@@ -173,6 +188,7 @@ export default function QuestionCard({
           )}
         </div>
 
+        {currentQuestion?.needsReview && <p className="text-sm text-zinc-300 border border-white/20 rounded-lg p-3">داده‌های فاز قبل تغییر کرده‌اند. این پاسخ را بازبینی کنید. پاسخ قبلی: {currentQuestion.answeredValue}</p>}
         {/* Question Title & Text */}
         <div className="space-y-2">
           {currentQuestion?.title && (

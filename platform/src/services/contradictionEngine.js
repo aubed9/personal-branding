@@ -20,6 +20,8 @@ export class ContradictionEngine {
    */
   static createContradiction({
     id = null,
+    ruleId = null,
+    resolutionTargets = {},
     statementA,
     statementB,
     severity = CONTRADICTION_SEVERITY.MAJOR,
@@ -36,6 +38,7 @@ export class ContradictionEngine {
     const generatedId = id || `CTR-${String(countIndex).padStart(3, "0")}`;
     return {
       id: generatedId,
+      ruleId, resolutionTargets,
       statementA: String(statementA || ""),
       statementB: String(statementB || ""),
       severity: severity || CONTRADICTION_SEVERITY.MAJOR,
@@ -79,7 +82,8 @@ export class ContradictionEngine {
     const allP8Text = Object.values(p8).join(" ");
     const allP5Text = Object.values(p5).join(" ");
     const allP3Text = Object.values(p3).join(" ");
-    const combinedDownstreamText = `${allDecisionTexts} ${allFactTexts} ${allP1NonModel} ${allP2Text} ${allP3Text} ${allP5Text} ${allP8Text}`;
+    const stripNegations = text => text.replace(/(?:عدم ورود به|ممنوعیت|بدون|پرهیز از|اجتناب از|نه به)\s+[^،؛.\n]+/g, '');
+    const combinedDownstreamText = stripNegations(`${allDecisionTexts} ${allFactTexts} ${allP1NonModel} ${allP2Text} ${allP3Text} ${allP5Text} ${allP8Text}`);
 
     // RULE 1: Customer Model Conflict (B2C vs B2B Enterprise RFP)
     // If P1 customer model is purely B2C / local walk-in retail, but later states enterprise tenders / RFPs / corporate procurement
@@ -93,6 +97,7 @@ export class ContradictionEngine {
     
     if (isB2C && hasEnterpriseB2BTerms.test(combinedDownstreamText)) {
       contradictions.push(this.createContradiction({
+        ruleId: 'customer_model', resolutionTargets: { 1: 'step0_description', 2: 'p2_step3_primary_channel', 3: 'p3_target_segment', 5: 'p5_elevator_hook', 8: 'p8_lead_funnel' },
         statementA: "مدل مشتری در فاز ۱ به صورت مصرف‌کننده نهایی (B2C) و مراجعان حضوری ثبت شده است.",
         statementB: "در برنامه‌های استراتژیک یا فعال‌سازی، به مناقصات کلان سازمانی و تدارکات B2B اشاره شده است.",
         severity: CONTRADICTION_SEVERITY.CRITICAL,
@@ -109,6 +114,7 @@ export class ContradictionEngine {
     const hasImpulseB2CTerms = /(خرید تک‌فروشی گذری|پاخور مراجعان پیاده|فروش خرد به عموم مردم|فروشگاه خرده‌فروشی خیابانی|B2C Retail)/i;
     if (isPureB2B && hasImpulseB2CTerms.test(combinedDownstreamText)) {
       contradictions.push(this.createContradiction({
+        ruleId: 'customer_model_retail', resolutionTargets: { 1: 'step0_description', 3: 'p3_target_segment', 8: 'p8_lead_funnel' },
         statementA: "مدل مشتری در فاز ۱ به صورت سازمانی و بنگاه‌به‌بنگاه (B2B) ثبت شده است.",
         statementB: "در استراتژی یا کانال‌ها، به جذب پاخور خرد عمومی و خرده‌فروشی تک‌محصولی B2C اشاره شده است.",
         severity: CONTRADICTION_SEVERITY.CRITICAL,
@@ -134,11 +140,12 @@ export class ContradictionEngine {
     const hasMassMediaTerms = /(کمپین تلویزیونی|بیلبورد بزرگراهی|تبلیغات صدا و سیما|تبلیغ تلویزیون|سلبریتی مارکتینگ میلیاردی|بیلبوردهای سراسری|تلویزیون ملی)/i;
     if (isCashConstrained && hasMassMediaTerms.test(combinedDownstreamText)) {
       contradictions.push(this.createContradiction({
+        ruleId: 'budget_media', resolutionTargets: { 1: 'cash_constraint', 5: 'p5_elevator_hook', 8: 'p8_pr_podcast_channels' },
         statementA: "بودجه اولیه و نقدینگی کسب‌وکار محدود یا در مرحله ایده/بوت‌استرپ اعلام شده است.",
         statementB: "کانال‌های اجرایی شامل رسانه‌های جمعی پرهزینه (تلویزیون، بیلبورد سراسری) برنامه‌ریزی شده است.",
         severity: CONTRADICTION_SEVERITY.CRITICAL,
         affectedPhases: [1, 5, 8],
-        resolutionQuestion: "تبلیغات جمعی و بیلبوردی نیازمند بودجه چند صدمیلیونی است. چگونه این کانال با قید نقدینگی محدود تامین مالی خواهد شد؟",
+        resolutionQuestion: "هزینه رسانه انتخاب‌شده هنوز با بودجه شما تطبیق داده نشده است. چگونه این کانال با قید نقدینگی محدود تامین مالی خواهد شد؟",
         existingCount: contradictions.length
       }));
     }
@@ -151,6 +158,7 @@ export class ContradictionEngine {
     const hasExportTerms = /(صادرات به کشورهای منطقه|صادرات بین‌المللی|حمل‌ونقل دریایی کانتینری|ارسال به حوزه خلیج فارس|صادرات خارجی|بازار جهانی)/i;
     if (isLocalScope && hasExportTerms.test(combinedDownstreamText)) {
       contradictions.push(this.createContradiction({
+        ruleId: 'geography', resolutionTargets: { 1: 'step0_geography', 3: 'p3_target_segment' },
         statementA: "محدوده جغرافیایی کسب‌وکار در فاز ۱ به عنوان خدمت محلی و شهری تعیین شده است.",
         statementB: "در استراتژی یا برنامه‌های توسعه، صادرات خارجی و بازارهای بین‌المللی قید گردیده است.",
         severity: CONTRADICTION_SEVERITY.MAJOR,
@@ -161,12 +169,13 @@ export class ContradictionEngine {
     }
 
     // RULE 4: Pricing vs Value Proposition Conflict (Cheapest Discount vs Luxury Exclusive)
-    const p2Pricing = `${p2.pricingModel || ""} ${p2.pricingModelValue || ""}`.toLowerCase();
+    const p2Pricing = stripNegations(`${p2.pricingModel || ""} ${p2.pricingModelValue || ""}`).toLowerCase();
     const p3Pos = `${p3.positioning || ""} ${p3.positioningValue || ""}`.toLowerCase();
     const isUltraCheap = p2Pricing.includes("تخفیف") || p2Pricing.includes("ارزان") || p2Pricing.includes("حراج") || p2Pricing.includes("lowest_price") || p2Pricing.includes("ارزان‌ترین");
     const isLuxury = p3Pos.includes("لوکس") || p3Pos.includes("اشرافی") || p3Pos.includes("پریمیوم") || p3Pos.includes("گران‌قیمت") || p3Pos.includes("exclusive") || p3Pos.includes("اعیانی");
     if (isUltraCheap && isLuxury) {
       contradictions.push(this.createContradiction({
+        ruleId: 'price_position', resolutionTargets: { 2: 'p2_step2_pricing_models', 3: 'p3_positioning_frame' },
         statementA: "استراتژی قیمت‌گذاری بر مبنای تخفیف تهاجمی و ارزان‌ترین نرخ بازار تعریف شده است.",
         statementB: "جایگاه‌یابی برند به عنوان برند لوکس، پرستیژی و پریمیوم ادعا شده است.",
         severity: CONTRADICTION_SEVERITY.MAJOR,
@@ -176,6 +185,21 @@ export class ContradictionEngine {
       }));
     }
 
+    const target = `${p3.targetSegment || ''}`;
+    const premium = /لوکس|پریمیوم|گران.قیمت|premium/.test(p2Pricing);
+    const limitedIncome = /کم.درآمد|بودجه محدود|کشش قیمتی محدود|توان خرید محدود/.test(target);
+    const tiered = /دو سطح|لایه|بسته پایه|سطح اقتصادی|tiered|affordable_entry/.test(p2Pricing);
+    if (premium && limitedIncome && !tiered) {
+      contradictions.push(this.createContradiction({
+        ruleId: 'price_audience',
+        statementA: `روش قیمت‌گذاری: ${p2.pricingModel}`,
+        statementB: `مشتری هدف: ${target}`,
+        affectedPhases: [2, 3],
+        resolutionTargets: { 2: 'p2_step2_pricing_models', 3: 'p3_target_segment' },
+        resolutionQuestion: 'قیمت بالا و توان خرید محدود نیازمند بررسی است. آیا شاهدی از خرید واقعی این گروه دارید، یا باید گروه هدف یا دامنه بسته پایه را اصلاح کنید؟',
+        existingCount: contradictions.length,
+      }));
+    }
     return contradictions;
   }
 

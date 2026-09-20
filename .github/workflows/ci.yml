@@ -43,29 +43,9 @@ jobs:
         working-directory: platform
         run: npm run build
 
-      - name: Run runtime harmonization tests
+      - name: Run interview, persistence, security, UI and regression tests
         working-directory: platform
-        run: node test_runtime_harmonization.js
-
-      - name: Run milestone 2 tests (gates, unknowns, contradictions)
-        working-directory: platform
-        run: node test_milestone2_gates_unknowns_contradictions.js
-
-      - name: Run adversarial challenger tests
-        working-directory: platform
-        run: node test_adversarial_challenger.js
-
-      - name: Run multi-sector customization tests
-        working-directory: platform
-        run: node test_multi_sector_customization.js
-
-      - name: Run e2e guild-to-finish test
-        working-directory: platform
-        run: node test_e2e_guild_to_finish.js
-
-      - name: Run adversarial 753 jargon audit
-        working-directory: platform
-        run: node test_adversarial_753_jargon.js
+        run: npm run validate && npm run test:leakage
 
       - name: Run Python system validation
         run: python scripts/validate_system.py
@@ -74,18 +54,3 @@ jobs:
         working-directory: platform
         run: npm run test:753
         timeout-minutes: 10
-
-      - name: Verify all phases complete
-        run: |
-          echo "✅ Full CI pipeline completed successfully"
-          echo "Commands executed:"
-          echo "  - npm ci"
-          echo "  - npm run build"
-          echo "  - test_runtime_harmonization.js (117 assertions)"
-          echo "  - test_milestone2_gates_unknowns_contradictions.js (69 assertions)"
-          echo "  - test_adversarial_challenger.js (187 assertions)"
-          echo "  - test_multi_sector_customization.js (48 assertions)"
-          echo "  - test_e2e_guild_to_finish.js (8-phase e2e)"
-          echo "  - test_adversarial_753_jargon.js (19 assertions)"
-          echo "  - validate_system.py (42 validations)"
-          echo "  - simulate_753_businesses.js"

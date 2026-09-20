@@ -34,7 +34,7 @@ console.log("▶ SUITE 1: Edge & Malformed Input Robustness");
   // Edge 1: Empty string response
   const resEmpty = engine.processUserResponse("");
   assert(resEmpty !== null && typeof resEmpty === "object", "Engine handles empty string without throwing");
-  assert(engine.phaseData[1].step0_description === "" || engine.phaseData[1].stage === "" || Object.values(engine.phaseData[1]).includes(""), "Empty string recorded gracefully in phaseData");
+  assert(Object.keys(engine.phaseData[1]).length === 0 && resEmpty.accepted === false, "Empty response does not advance or fabricate an answer");
 
   // Edge 2: Whitespace only
   const resSpaces = engine.processUserResponse("   ", "   ");
@@ -172,17 +172,17 @@ console.log("\n▶ SUITE 3: Phase 8 Response Storage & Deliverable Mapping");
   assert(p8Deliverable.phaseNumber === 8, "P8 deliverable has phaseNumber 8");
   assert(p8Deliverable.title.includes("فعال‌سازی اجرایی"), "P8 deliverable title contains Executive Activation");
   assert(p8Deliverable.phase.includes("فاز 8"), "P8 deliverable phase string contains Phase 8");
-  assert(p8Deliverable.sections[0].content.thoughtLeadership === ans0, "Deliverable snapshot contains thoughtLeadership");
-  assert(p8Deliverable.sections[0].content.reputationCrisis === ans3, "Deliverable snapshot contains reputationCrisis");
+  assert(p8Deliverable.evidence.some(item => item.field === 'thoughtLeadership' && item.statement.includes(ans0)), "Deliverable snapshot contains thoughtLeadership");
+  assert(p8Deliverable.evidence.some(item => item.field === 'reputationCrisis' && item.statement.includes(ans3)), "Deliverable snapshot contains reputationCrisis");
 
   // Verify Master Deliverable section M8
   const masterDeliverable = engine.generateDeliverableData("master");
   const secM8 = masterDeliverable.sections.find(s => s.id === "M8");
   assert(secM8 !== undefined, "Section M8 exists in Master Deliverable");
   assert(secM8.content.thoughtLeadership === ans0, "M8 thoughtLeadership matches verbatim");
-  assert(secM8.content.prRoadmap === ans1, "M8 prRoadmap matches verbatim");
-  assert(secM8.content.commercialFunnel === ans2, "M8 commercialFunnel matches verbatim");
-  assert(secM8.content.reputationPlaybook === ans3, "M8 reputationPlaybook matches verbatim");
+  assert(secM8.content.prChannels === ans1, "M8 prRoadmap matches verbatim");
+  assert(secM8.content.leadFunnel === ans2, "M8 commercialFunnel matches verbatim");
+  assert(secM8.content.reputationCrisis === ans3, "M8 reputationPlaybook matches verbatim");
 
   // Verify Master Markdown output contains Phase 8 data
   const masterMd = engine.generateMarkdownText("master");
@@ -295,7 +295,7 @@ console.log("\n▶ SUITE 4: Context Classification for 5 Business Scenarios");
 console.log("\n▶ SUITE 5: Phase 2 Branching Isolation & Terminology Leakage Audit");
 {
   const contexts = {
-    auto: { archetype: "LOCAL_SERVICE", activeOverlays: ["LOCAL_GUILD_REGULATION"], archetypeTitle: "خدمات خودرویی" },
+    auto: { archetype: "LOCAL_SERVICE", industryId: 'IND-05', activeOverlays: ["LOCAL_GUILD_REGULATION"], archetypeTitle: "خدمات خودرویی" },
     cafe: { archetype: "RESTAURANT_CAFE_HOSPITALITY", activeOverlays: ["FOOD_SAFETY_REGULATION"], archetypeTitle: "کافه و رستری" },
     mfg: { archetype: "MANUFACTURER", activeOverlays: ["HEAVY_CAPEX_SUPPLY_CHAIN", "ISO_STANDARDS_COMPLIANCE"], archetypeTitle: "تولید صنعتی" },
     saas: { archetype: "SAAS_SOFTWARE", activeOverlays: ["TAX_SYSTEM_INTEGRATION"], archetypeTitle: "نرم‌افزار ابری" },
@@ -387,7 +387,7 @@ console.log("\n▶ SUITE 6: Deliverable Generator Stress & Markdown Consistency"
 
   const masterMd = engine.generateMarkdownText("master");
   assert(typeof masterMd === "string" && masterMd.length > 100, "Master markdown generated on empty state");
-  assert(masterMd.includes("Master Brand Book"), "Master markdown includes standard title");
+  assert(masterMd.includes("کتابچه جامع استراتژی برند"), "Master markdown includes standard title");
 }
 
 console.log("\n======================================================================");

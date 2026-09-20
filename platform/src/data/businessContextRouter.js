@@ -15,6 +15,7 @@ import {
   getForbiddenTerms,
   detectCrossDomainLeakage
 } from "./industryVocabularyMap.js";
+import { isAutomotiveService } from './businessDomain.js';
 
 export {
   MACRO_INDUSTRIES,
@@ -224,6 +225,9 @@ export function classifyBusinessContext(phaseData = {}, rawAnswers = {}) {
     archetype = BUSINESS_ARCHETYPES.PROFESSIONAL_SERVICE;
   } else if (descVal === "b2b_service") {
     archetype = BUSINESS_ARCHETYPES.B2B_SERVICE;
+  } else if (resolvedBusiness && (taxonomyQuery || descVal.startsWith('bt-') || desc.startsWith('bt-'))) {
+    const key = resolvedBusiness.primaryArchetype === 'CREATOR_MEDIA' ? 'CREATOR_MEDIA_EDUCATION' : resolvedBusiness.primaryArchetype;
+    archetype = BUSINESS_ARCHETYPES[key] || BUSINESS_ARCHETYPES.PROFESSIONAL_SERVICE;
   } else if (
     // Step 2B: Fallback to heuristic keyword matching when descVal is not an explicit canonical choice
     combined.includes("manufacturer") ||
@@ -587,14 +591,7 @@ export function resolveDomainSpecialization(businessTypeInput, contextAxes = {},
   const terminologyAllowlist = getAllowedVocabulary(industryId);
   const forbiddenTerms = getForbiddenTerms(industryId, options);
 
-  const isAutomotive = 
-    industryId === "IND-05" ||
-    tradeTitleFa.includes("خودرو") ||
-    tradeTitleFa.includes("کارواش") ||
-    tradeTitleFa.includes("روغن") ||
-    tradeTitleFa.includes("مکانیک") ||
-    tradeTitleFa.includes("تعمیرگاه") ||
-    tradeTitleFa.includes("اتوسرویس");
+  const isAutomotive = isAutomotiveService({ industryId, taxonomyTitleFa: tradeTitleFa });
 
   const isCafe = 
     options.subDomain === "CAFE" ||
