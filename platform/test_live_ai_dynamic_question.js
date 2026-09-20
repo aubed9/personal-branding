@@ -40,7 +40,7 @@ async function main() {
   const t0 = Date.now();
   const res = await runKnowledgeBrain({
     apiKey: DEFAULT_GEMINI_API_KEY,
-    model: "gemini-3.6-flash",
+    model: "gemini-3.5-flash-lite",
     phaseNum: 2,
     context: testContext,
     userText,

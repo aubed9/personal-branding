@@ -41,16 +41,15 @@ export function buildKnowledgeGroundingPrompt({
   const customerModel = context?.customerModel || "B2C";
   const channelModel = context?.channelModel || "PHYSICAL_FIRST";
 
-  // Pull relevant wiki playbooks text based on current phase
+  // Pull relevant wiki playbooks text based on current phase (concise rules for ultra-fast generation)
   const targetPlaybookIds = PHASE_PLAYBOOK_MAP[phaseNum] || ["context-router-playbook", "decision-chain"];
   const relevantPlaybooks = WIKI_PLAYBOOKS
     .filter(p => targetPlaybookIds.includes(p.id))
     .map(p => {
       const rules = p.keyRules && p.keyRules.length > 0
-        ? `\nقواعد کلیدی:\n` + p.keyRules.map(r => `  - ${r}`).join("\n")
-        : "";
-      return `### [پلی‌بوک مرجع: ${p.title}]
-${p.subtitle ? `زیرعنوان: ${p.subtitle}\n` : ""}${p.content || ""}${rules}`;
+        ? p.keyRules.map(r => `  - ${r}`).join("\n")
+        : (p.subtitle || "");
+      return `[مرجع: ${p.title}]\n${p.subtitle ? `هدف: ${p.subtitle}\n` : ""}${rules}`;
     })
     .join("\n\n");
 
@@ -131,11 +130,11 @@ ${relevantPlaybooks}
  */
 export async function callGeminiApi({
   apiKey,
-  model = "gemini-3.6-flash",
+  model = "gemini-3.5-flash-lite",
   customEndpoint = "",
   systemPrompt,
   messages,
-  temperature = 0.35
+  temperature = 0.3
 }) {
   const activeKey = apiKey || SessionKeyManager.getApiKey();
   if (!activeKey && !customEndpoint) {
@@ -162,7 +161,7 @@ export async function callGeminiApi({
     } : undefined,
     generationConfig: {
       temperature,
-      maxOutputTokens: 4096,
+      maxOutputTokens: 750,
       responseMimeType: "application/json"
     }
   };
@@ -171,8 +170,8 @@ export async function callGeminiApi({
     url: endpoint,
     payload,
     apiKey: activeKey,
-    timeoutMs: 30000,
-    maxRetries: 3
+    timeoutMs: 7000,
+    maxRetries: 1
   });
 
   const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text;
@@ -189,7 +188,7 @@ export async function callGeminiApi({
  */
 export async function runKnowledgeBrain({
   apiKey,
-  model = "gemini-3.6-flash",
+  model = "gemini-3.5-flash-lite",
   customEndpoint = "",
   phaseNum = 1,
   context = null,

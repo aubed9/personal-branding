@@ -203,8 +203,9 @@ export default function SettingsModal({
                 onChange={(e) => setLocalModel(e.target.value)}
                 className="w-full px-3 py-2 rounded-xl bg-black border border-white/15 text-xs text-white focus:outline-none focus:border-white font-mono"
               >
-                <option value="gemini-3.6-flash">Gemini 3.6 Flash (پیش‌فرض پیشنهادی - سریع و دقیق)</option>
-                <option value="gemini-flash-latest">Gemini Flash Latest (جدیدترین نسخه آزمایشی)</option>
+                <option value="gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite (پیش‌فرض پیشنهادی - فوق‌سریع و پایدار)</option>
+                <option value="gemini-flash-latest">Gemini Flash Latest (جدیدترین نسخه استاندارد)</option>
+                <option value="gemini-3.6-flash">Gemini 3.6 Flash (دقیق و پرجزئیات)</option>
                 <option value="gemini-2.5-pro">Gemini 2.5 Pro (استدلال استراتژیک عمیق)</option>
               </select>
             </div>

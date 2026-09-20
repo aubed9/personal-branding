@@ -33,6 +33,7 @@ export default function App() {
   const [totalQuestions, setTotalQuestions] = useState(5);
   const [isPhaseCompleted, setIsPhaseCompleted] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isAiAnalyzing, setIsAiAnalyzing] = useState(false);
   const [lastSavedTime, setLastSavedTime] = useState("");
 
   // UI Modals & Drawers
@@ -57,8 +58,8 @@ export default function App() {
   };
   const [model, setModel] = useState(() => {
     const saved = localStorage.getItem("gemini_model");
-    if (!saved || saved.includes("1.5") || saved.includes("2.0") || saved === "gemini-2.5-flash") {
-      return "gemini-3.6-flash";
+    if (!saved || saved.includes("1.5") || saved.includes("2.0") || saved === "gemini-2.5-flash" || saved === "gemini-3.6-flash") {
+      return "gemini-3.5-flash-lite";
     }
     return saved;
   });
@@ -105,47 +106,17 @@ export default function App() {
     syncFromEngine(engine);
   }, [engine, syncFromEngine]);
 
-  // Handle Option Selection
-  const handleSelectOption = async (option) => {
-    if (!option || isProcessing) return;
-    setIsProcessing(true);
+  // Handle Option Selection (Instantaneous Progression with Background AI Brain)
+  const handleSelectOption = (option) => {
+    if (!option) return;
 
     try {
       const userText = option.text || option.label;
       const optionValue = option.value;
       const activeApiKey = apiKey || SessionKeyManager.getApiKey();
 
-      if (engineMode === "gemini" && activeApiKey && activeApiKey.trim()) {
-        try {
-          const brainResult = await runKnowledgeBrain({
-            apiKey: activeApiKey,
-            model,
-            customEndpoint,
-            phaseNum: currentPhase,
-            context: engine.businessContext,
-            userText,
-            optionValue,
-            priorAnswers: engine.phaseData,
-            facts: engine.facts,
-            decisions: engine.decisions
-          });
-
-          engine.processUserResponse(userText, optionValue);
-
-          if (brainResult?.extractedDecision) {
-            engine.addStrategicDecision(brainResult.extractedDecision);
-          }
-
-          if (brainResult?.nextQuestion) {
-            engine.setDynamicNextQuestion(brainResult.nextQuestion);
-          }
-        } catch (brainErr) {
-          console.warn("[Knowledge Brain] Fallback to simulator:", brainErr.message);
-          engine.processUserResponse(userText, optionValue);
-        }
-      } else {
-        engine.processUserResponse(userText, optionValue);
-      }
+      // 1. Instant optimistic progression (0ms wait for user)
+      engine.processUserResponse(userText, optionValue);
 
       // Check if phase gate is ready to validate
       const phaseQuestions = engine.getCurrentPhaseQuestions();
@@ -157,52 +128,52 @@ export default function App() {
         }
       }
 
+      // Immediately render next step
       syncFromEngine(engine);
-    } catch (err) {
-      console.error("[Question Workflow] Error processing selection:", err);
-    } finally {
-      setIsProcessing(false);
-    }
-  };
 
-  // Handle Custom Free-Text Input
-  const handleSubmitCustomAnswer = async (customText) => {
-    if (!customText || !customText.trim() || isProcessing) return;
-    setIsProcessing(true);
-
-    try {
-      const activeApiKey = apiKey || SessionKeyManager.getApiKey();
+      // 2. Concurrently run Deep Knowledge Brain in background without blocking UI
       if (engineMode === "gemini" && activeApiKey && activeApiKey.trim()) {
-        try {
-          const brainResult = await runKnowledgeBrain({
-            apiKey: activeApiKey,
-            model,
-            customEndpoint,
-            phaseNum: currentPhase,
-            context: engine.businessContext,
-            userText: customText.trim(),
-            optionValue: null,
-            priorAnswers: engine.phaseData,
-            facts: engine.facts,
-            decisions: engine.decisions
-          });
-
-          engine.processUserResponse(customText.trim(), null);
-
+        setIsAiAnalyzing(true);
+        runKnowledgeBrain({
+          apiKey: activeApiKey,
+          model,
+          customEndpoint,
+          phaseNum: currentPhase,
+          context: engine.businessContext,
+          userText,
+          optionValue,
+          priorAnswers: engine.phaseData,
+          facts: engine.facts,
+          decisions: engine.decisions
+        }).then((brainResult) => {
           if (brainResult?.extractedDecision) {
             engine.addStrategicDecision(brainResult.extractedDecision);
           }
-
           if (brainResult?.nextQuestion) {
             engine.setDynamicNextQuestion(brainResult.nextQuestion);
           }
-        } catch (brainErr) {
-          console.warn("[Knowledge Brain] Fallback to simulator:", brainErr.message);
-          engine.processUserResponse(customText.trim(), null);
-        }
-      } else {
-        engine.processUserResponse(customText.trim(), null);
+          syncFromEngine(engine);
+        }).catch((brainErr) => {
+          console.warn("[Knowledge Brain Background]:", brainErr.message);
+        }).finally(() => {
+          setIsAiAnalyzing(false);
+        });
       }
+    } catch (err) {
+      console.error("[Question Workflow] Error processing selection:", err);
+    }
+  };
+
+  // Handle Custom Free-Text Input (Instantaneous Progression with Background AI Brain)
+  const handleSubmitCustomAnswer = (customText) => {
+    if (!customText || !customText.trim()) return;
+
+    try {
+      const activeApiKey = apiKey || SessionKeyManager.getApiKey();
+      const trimmedText = customText.trim();
+
+      // 1. Instant optimistic progression
+      engine.processUserResponse(trimmedText, null);
 
       const phaseQuestions = engine.getCurrentPhaseQuestions();
       const allAnswered = phaseQuestions?.every(item => item?.isAnswered);
@@ -214,10 +185,37 @@ export default function App() {
       }
 
       syncFromEngine(engine);
+
+      // 2. Concurrently run Knowledge Brain in background
+      if (engineMode === "gemini" && activeApiKey && activeApiKey.trim()) {
+        setIsAiAnalyzing(true);
+        runKnowledgeBrain({
+          apiKey: activeApiKey,
+          model,
+          customEndpoint,
+          phaseNum: currentPhase,
+          context: engine.businessContext,
+          userText: trimmedText,
+          optionValue: null,
+          priorAnswers: engine.phaseData,
+          facts: engine.facts,
+          decisions: engine.decisions
+        }).then((brainResult) => {
+          if (brainResult?.extractedDecision) {
+            engine.addStrategicDecision(brainResult.extractedDecision);
+          }
+          if (brainResult?.nextQuestion) {
+            engine.setDynamicNextQuestion(brainResult.nextQuestion);
+          }
+          syncFromEngine(engine);
+        }).catch((brainErr) => {
+          console.warn("[Knowledge Brain Background]:", brainErr.message);
+        }).finally(() => {
+          setIsAiAnalyzing(false);
+        });
+      }
     } catch (err) {
       console.error("[Question Workflow] Error processing custom answer:", err);
-    } finally {
-      setIsProcessing(false);
     }
   };
 
@@ -402,9 +400,11 @@ export default function App() {
       {/* 4. Bottom Status & Telemetry Bar (Autosave, Phase progress, Keyboard hint) */}
       <footer className="h-7 sm:h-8 border-t border-white/10 bg-[#060606] px-3 sm:px-6 flex items-center justify-between text-[10px] sm:text-[11px] text-zinc-400 font-mono shrink-0 select-none">
         <div className="flex items-center gap-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-white" />
-          <span>ذخیره خودکار در نشست جاری</span>
-          {lastSavedTime && <span className="text-zinc-500 hidden sm:inline">({lastSavedTime})</span>}
+          <span className={`w-1.5 h-1.5 rounded-full ${isAiAnalyzing ? "bg-white animate-ping" : "bg-white"}`} />
+          <span className={isAiAnalyzing ? "text-white font-medium" : ""}>
+            {isAiAnalyzing ? "استدلال هوش مصنوعی در پس‌زمینه..." : "ذخیره خودکار در نشست جاری"}
+          </span>
+          {lastSavedTime && !isAiAnalyzing && <span className="text-zinc-500 hidden sm:inline">({lastSavedTime})</span>}
         </div>
 
         <div className="flex items-center gap-3">
