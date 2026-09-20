@@ -220,7 +220,7 @@ export default function QuestionCard({
               </div>
             )}
 
-            {/* Options Grid (2x2 on desktop for <= 4 options, compact grid for > 4) */}
+            {/* Options Grid (2x2 on desktop, flexible height with complete text visibility) */}
             <div 
               role="radiogroup"
               aria-labelledby="strategic-question-heading"
@@ -228,39 +228,42 @@ export default function QuestionCard({
             >
               {filteredOptions.map((option, idx) => {
                 const isSelected = selectedOption?.value === option.value;
+                const optText = option.text || option.label || "";
+                const optDesc = option.description || option.detail || "";
+
                 return (
                   <button
                     key={option.value || idx}
                     role="radio"
                     aria-checked={isSelected}
-                    aria-label={`${option.text || option.label}${option.description ? `: ${option.description}` : ""}`}
+                    aria-label={`${optText}${optDesc ? `: ${optDesc}` : ""}`}
                     onClick={() => setSelectedOption(option)}
                     onDoubleClick={() => onSelectOption(option)}
-                    className={`p-3.5 sm:p-4 rounded-xl text-right transition-all flex items-start justify-between gap-3 border ${
+                    className={`p-3.5 sm:p-4 rounded-xl text-right transition-all flex items-start justify-between gap-3 border h-auto min-h-[64px] ${
                       isSelected
                         ? "bg-white text-black border-white shadow-lg font-bold"
                         : "bg-[#0D0D0D] hover:bg-[#141414] text-white border-white/10 hover:border-white/30"
                     }`}
                   >
-                    <div className="space-y-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded border ${
+                    <div className="space-y-1.5 min-w-0 flex-1">
+                      <div className="flex items-start gap-2.5">
+                        <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded border shrink-0 mt-0.5 ${
                           isSelected ? "bg-black text-white border-black" : "bg-white/10 text-zinc-400 border-white/10"
                         }`}>
                           {idx + 1}
                         </span>
-                        <span className="text-xs sm:text-sm font-semibold truncate">
-                          {option.text || option.label}
+                        <span className="text-xs sm:text-sm font-semibold leading-relaxed break-words block">
+                          {optText}
                         </span>
                       </div>
-                      {option.description && (
-                        <p className={`text-[11px] leading-normal ${isSelected ? "text-zinc-800" : "text-zinc-400"}`}>
-                          {option.description}
+                      {optDesc && (
+                        <p className={`text-[11px] sm:text-xs leading-relaxed break-words pr-6 ${isSelected ? "text-zinc-800" : "text-zinc-400"}`}>
+                          {optDesc}
                         </p>
                       )}
                     </div>
 
-                    <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 mt-0.5 ${
+                    <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 mt-1 ${
                       isSelected ? "border-black bg-black text-white" : "border-white/30 bg-transparent"
                     }`}>
                       {isSelected && <div className="w-2 h-2 rounded-full bg-white" />}
