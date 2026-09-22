@@ -153,6 +153,44 @@ test('critical contradiction blocks only direct/reachable graph targets', () => 
   assert.equal(blockedTargets.includes(built.indexes.answerNodeByQuestionId.p2_step3_primary_channel), false);
 });
 
+test('accepted-risk unknown evidence remains provisional without blocking phase completion', () => {
+  const unknownAnswer = answer('ANS-U1', 1, 1, 'step2_value_hypothesis', 'valueHypothesis', '[مجهول رسمی: هنوز مشخص نشده]', 'UNKNOWN');
+  const accepted = buildRuntimeReasoningGraph({
+    projectId: 'TEST-UNKNOWN-ACCEPTED',
+    revision: 2,
+    businessContext: context(),
+    answerRecords: [unknownAnswer],
+    unknowns: [{
+      id: 'UNK-1',
+      answerId: 'ANS-U1',
+      phase: 1,
+      questionId: 'step2_value_hypothesis',
+      status: 'ACCEPTED_RISK',
+    }],
+    phaseGateResults: { 1: { passed: true, blockingReasons: [] } },
+  });
+  const node = accepted.graph.nodes[accepted.indexes.answerNodeByAnswerId['ANS-U1']];
+  assert.equal(node.status, ENTITY_STATUS.PROVISIONAL);
+  assert.equal(derivePhaseCompletion(accepted.graph, 1).passed, true);
+
+  const unresolved = buildRuntimeReasoningGraph({
+    projectId: 'TEST-UNKNOWN-OPEN',
+    revision: 2,
+    businessContext: context(),
+    answerRecords: [unknownAnswer],
+    unknowns: [{
+      id: 'UNK-2',
+      answerId: 'ANS-U1',
+      phase: 1,
+      questionId: 'step2_value_hypothesis',
+      status: 'OPEN',
+    }],
+    phaseGateResults: { 1: { passed: true, blockingReasons: [] } },
+  });
+  assert.equal(unresolved.graph.nodes[unresolved.indexes.answerNodeByAnswerId['ANS-U1']].status, ENTITY_STATUS.NEEDS_REVIEW);
+  assert.equal(derivePhaseCompletion(unresolved.graph, 1).passed, false);
+});
+
 test('phase completion is projected from graph gate state, not an independent boolean', () => {
   const passedGraph = buildRuntimeReasoningGraph({
     projectId: 'TEST-GATE',
