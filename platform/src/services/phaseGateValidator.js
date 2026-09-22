@@ -22,7 +22,11 @@ export function validatePhaseGate(phaseNum, projectState) {
   const missingFacts = [];
   const requiredDecisions = [];
   const unresolvedUnknowns = UnknownsManager.getBlockingUnknowns(unknowns, p);
-  const unresolvedContradictions = ContradictionEngine.getBlockingContradictions(contradictions, p);
+  // In reasoning v3, contradiction blocking is projected through exact graph BLOCKS edges.
+  // The legacy affectedPhases filter remains only when no v3 graph is available.
+  const unresolvedContradictions = projectState?.reasoningGraphV3
+    ? []
+    : ContradictionEngine.getBlockingContradictions(contradictions, p);
 
   // 1. Check prerequisite phase progression
   if (p > 1) {
