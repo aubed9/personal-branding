@@ -22,6 +22,9 @@ export function composeDecisionModules(context) {
   const outputSections = new Set();
   const gates = new Set();
   const knowledgeDependencies = new Set();
+  const sourceDependencies = new Set();
+  const prerequisites = new Set();
+  const invalidationEdges = [];
 
   for (const module of modules) {
     for (const node of module.decisionNodes) {
@@ -40,6 +43,9 @@ export function composeDecisionModules(context) {
     module.outputSections.forEach(value => outputSections.add(value));
     module.gates.forEach(value => gates.add(value));
     module.knowledgeDependencies.forEach(value => knowledgeDependencies.add(value));
+    module.sourceDependencies.forEach(value => sourceDependencies.add(value));
+    module.prerequisites.forEach(value => prerequisites.add(value));
+    invalidationEdges.push(...module.invalidationEdges.map(edge => ({ ...edge, moduleId: module.id })));
   }
 
   return {
@@ -54,6 +60,9 @@ export function composeDecisionModules(context) {
     outputSections: [...outputSections].sort(),
     gates: [...gates].sort(),
     knowledgeDependencies: [...knowledgeDependencies].sort(),
+    sourceDependencies: [...sourceDependencies].sort(),
+    prerequisites: [...prerequisites].sort(),
+    invalidationEdges,
   };
 }
 
@@ -104,6 +113,9 @@ export function contributeDecisionModulesToGraph(graph, context) {
           evidenceRequirements: module.evidenceRequirements,
           metrics: module.metrics,
           knowledgeDependencies: module.knowledgeDependencies,
+          sourceDependencies: module.sourceDependencies,
+          prerequisites: module.prerequisites,
+          invalidationEdges: module.invalidationEdges,
           contributingModules: composition.decisionNodes.find(item => item.id === decision.id)?.moduleIds || [module.id],
         },
       });
@@ -216,5 +228,8 @@ export function getPhaseModuleProjection(context, phase) {
     outputSections: uniqSorted(modules.flatMap(module => module.outputSections)),
     gates: uniqSorted(modules.flatMap(module => module.gates)),
     knowledgeDependencies: uniqSorted(modules.flatMap(module => module.knowledgeDependencies)),
+    sourceDependencies: uniqSorted(modules.flatMap(module => module.sourceDependencies)),
+    prerequisites: uniqSorted(modules.flatMap(module => module.prerequisites)),
+    invalidationEdges: modules.flatMap(module => module.invalidationEdges.map(edge => ({ ...edge, moduleId: module.id }))),
   };
 }
