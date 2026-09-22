@@ -176,16 +176,21 @@ for (let i = 0; i < BUSINESS_TYPES.length; i++) {
   // SOFTWARE ASSERTIONS (these do not evaluate strategy quality)
   // ============================================================================
 
-  // Metric 1: Document structure and evidence (M1) — 8 assertions
+  // Metric 1: Document structure and evidence (M1) — 8 compatibility assertions.
+  // These validate the v5 canonical projection contract; they do not score strategic quality.
   let m1Passed = 0;
   const m1Total = 8;
   if (engine.completedPhases[1]) m1Passed++;
   if (p1Deliv && typeof p1Deliv.title === 'string' && p1Deliv.title.length > 0) m1Passed++;
-  if (p1Deliv?.sections?.[0]?.items && p1Deliv.sections[0].items.length > 0) m1Passed++;
+  if (p1Deliv?.sections?.[0]?.sectionType === 'STATUS_VALIDITY' && p1Deliv.sections[0].content?.['Revision مبنا'] !== undefined) m1Passed++;
   if (Array.isArray(p1Deliv?.sections) && p1Deliv.sections.length === 5) m1Passed++;
   if (p1Deliv?.evidence?.length > 0 && p1Deliv.evidence.every(claim => claim.evidenceIds?.length > 0 && claim.evidenceIds.every(id => activeAnswers(engine.answerRecords).some(answer => answer.id === id && claim.statement.includes(answer.text))))) m1Passed++;
-  if ((p1Deliv?.sections?.[2]?.checklist?.length || 0) >= 5) m1Passed++;
-  if ((p1Deliv?.sections?.[3]?.formulas?.length || 0) > 0 && (p1Deliv?.sections?.[3]?.kpis?.length || 0) > 0) m1Passed++;
+  if (p1Deliv?.claimLedger && p1Deliv?.claimIds?.length > 0 && p1Deliv.claimIds.every(id => p1Deliv.claimLedger[id])) m1Passed++;
+  if (p1Deliv?.sections?.every(section =>
+    typeof section.sectionType === 'string' &&
+    typeof section.status === 'string' &&
+    (section.status !== 'NOT_APPLICABLE' || Boolean(section.omissionReason))
+  )) m1Passed++;
   if (engine.facts.length > 0) m1Passed++;
   const m1Score = Number(((m1Passed / m1Total) * 100).toFixed(1));
 
