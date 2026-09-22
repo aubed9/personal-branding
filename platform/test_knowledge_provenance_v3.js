@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { evaluateKnowledgeClaim, evaluateSourceFreshness, retrieveCanonicalKnowledge } from './src/knowledge/index.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
@@ -183,4 +184,80 @@ test('legacy article lifecycle is safely downgraded unless registry explicitly p
   assert.ok(legacyArticle.includes('status: "CANONICAL"'), 'fixture documents the legacy frontmatter mismatch');
   // The registry contract explicitly prevents this stale frontmatter from granting decision admissibility.
   assert.ok(registry.includes('default_status: NEEDS_RESEARCH'));
+});
+
+
+test('freshness contract blocks stale critical sources while academic age only triggers review', () => {
+  const legal = {
+    status: 'CANONICAL',
+    freshness_class: 'LEGAL',
+    max_age_days: 30,
+    verified_at: '2026-07-01',
+    effective_until: null,
+    authority_tier: 'A',
+  };
+  const academic = {
+    status: 'CANONICAL',
+    freshness_class: 'ACADEMIC',
+    max_age_days: 1095,
+    verified_at: '2020-01-01',
+    effective_until: null,
+    authority_tier: 'B',
+  };
+  const asOf = new Date('2026-09-22T00:00:00Z');
+
+  const legalFreshness = evaluateSourceFreshness(legal, { asOf });
+  assert.equal(legalFreshness.admissible, false);
+  assert.equal(legalFreshness.state, 'STALE');
+
+  const academicFreshness = evaluateSourceFreshness(academic, { asOf });
+  assert.equal(academicFreshness.admissible, true);
+  assert.equal(academicFreshness.state, 'REVIEW_DUE');
+});
+
+test('critical claims require fresh Tier A evidence and retrieval filters before ranking', () => {
+  const sources = {
+    'SRC-A': {
+      status: 'CANONICAL', freshness_class: 'LEGAL', max_age_days: 30,
+      verified_at: '2026-09-20', effective_until: null, authority_tier: 'A',
+    },
+    'SRC-C': {
+      status: 'CANONICAL', freshness_class: 'INDUSTRY_REPORT', max_age_days: 365,
+      verified_at: '2026-09-20', effective_until: null, authority_tier: 'C',
+    },
+  };
+  const legalClaim = {
+    id: 'KCL-LEGAL', status: 'CANONICAL', claim_kind: 'LEGAL_REQUIREMENT',
+    authority_requirement: 'A', source_ids: ['SRC-A'],
+  };
+  assert.equal(evaluateKnowledgeClaim(legalClaim, sources, {
+    asOf: new Date('2026-09-22'), criticalUse: true,
+  }).admissible, true);
+
+  const weakClaim = { ...legalClaim, id: 'KCL-WEAK', source_ids: ['SRC-C'] };
+  assert.equal(evaluateKnowledgeClaim(weakClaim, sources, {
+    asOf: new Date('2026-09-22'), criticalUse: true,
+  }).admissible, false);
+
+  const claims = {
+    'KCL-LEGAL': legalClaim,
+    'KCL-WEAK': weakClaim,
+  };
+  const entries = [
+    {
+      retrieval_id: 'RET-KCL-LEGAL', claim_id: 'KCL-LEGAL', knowledge_node_id: 'KB-COMPLIANCE',
+      content: 'مجوز و انطباق', module_ids: ['MOD-REG-HIGH'], decision_node_ids: ['DN-REG-CONSTRAINTS'],
+      phases: [1], jurisdiction_or_scope: 'IRAN',
+    },
+    {
+      retrieval_id: 'RET-KCL-WEAK', claim_id: 'KCL-WEAK', knowledge_node_id: 'KB-COMPLIANCE',
+      content: 'مجوز و انطباق ضعیف', module_ids: ['MOD-REG-HIGH'], decision_node_ids: ['DN-REG-CONSTRAINTS'],
+      phases: [1], jurisdiction_or_scope: 'IRAN',
+    },
+  ];
+  const results = retrieveCanonicalKnowledge('مجوز', entries, claims, sources, {
+    phase: 1, moduleIds: ['MOD-REG-HIGH'], jurisdiction: 'IRAN',
+    criticalUse: true, asOf: new Date('2026-09-22'), topK: 10,
+  });
+  assert.deepEqual(results.map(result => result.entry.claim_id), ['KCL-LEGAL']);
 });
