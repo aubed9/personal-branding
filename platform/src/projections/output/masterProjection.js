@@ -89,6 +89,22 @@ export function projectSemanticMaster(state, model, phaseDocuments) {
     },
   ];
 
+  const contextSection = sections.find(section => section.id === 'M1');
+  if (contextSection && state.businessContext) {
+    const ctx = state.businessContext;
+    contextSection.content = {
+      ...(contextSection.content || {}),
+      'Taxonomy ID': ctx.taxonomyId || ctx.businessTypeId || 'UNKNOWN',
+      'Industry ID': ctx.industryId || 'UNKNOWN',
+      'Iranian Guild Code': ctx.iranianGuildCode || 'UNKNOWN',
+      'Primary Archetype': ctx.primaryArchetype || ctx.archetype || 'UNKNOWN',
+    };
+    contextSection.items = [
+      `[SYSTEM_CONTEXT] taxonomy=${ctx.taxonomyId || ctx.businessTypeId || 'UNKNOWN'}; industry=${ctx.industryId || 'UNKNOWN'}; guild=${ctx.iranianGuildCode || 'UNKNOWN'}; archetype=${ctx.primaryArchetype || ctx.archetype || 'UNKNOWN'}`,
+      ...(contextSection.items || []),
+    ];
+  }
+
   const ids = sections.flatMap(section => section.claimIds || []);
   if (new Set(ids).size !== ids.length) throw new Error('Semantic Master contains duplicate canonical claims.');
 
