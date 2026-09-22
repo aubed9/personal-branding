@@ -193,11 +193,12 @@ test('unknown -> known resolves the blocking unknown', () => {
 });
 test('downstream answers require actual review after upstream edit', () => {
   const e = fillFoundation(); e.phaseData[2] = { competitors: 'رقیب', customerPain: 'انتظار', pricingModel: 'شفاف', primaryChannel: 'محلی', goldenOpportunity: 'سرعت' }; e.completedPhases[2] = true;
-  edit(e, 'step1_primary_goal', 'افزایش سفارش بسته به جای فنجان'); e.finalizeCurrentPhase();
-  e.startPhase(2);
-  assert.ok(e.getCurrentQuestion());
-  assert.equal(validatePhaseGate(2, e).passed, false);
-  assert.equal(e.phaseStatus[2], 'INVALIDATED');
+  edit(e, 'step1_primary_goal', 'افزایش سفارش بسته به جای فنجان');
+  assert.ok(e.reviewRequired[1]?.includes('step2_core_offer'), 'same-phase dependent answer must require review');
+  assert.equal(e.phaseStatus[2], 'INVALIDATED', 'only graph-reachable downstream phase data is invalidated');
+  const gate = e.finalizeCurrentPhase();
+  assert.equal(gate.gatePassed, false, 'phase 1 cannot be re-approved until dependent answers are reviewed');
+  assert.throws(() => e.startPhase(2), /فاز پیش‌نیاز 1/);
 });
 test('unknown output has no invented offer, identity, price or KPI threshold', () => {
   const e = new OrchestratorEngine(); const md = e.generateMarkdownText('master');
