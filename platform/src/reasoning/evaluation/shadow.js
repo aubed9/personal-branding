@@ -39,10 +39,9 @@ export function captureShadowPhase(context, phase) {
   };
 }
 
-export function compareShadowPhase({ id, context, phase } = {}) {
-  const snapshot = captureShadowPhase(context, phase);
-  const legacy = snapshot.legacy;
-  const v3 = snapshot.v3;
+export function classifyShadowSnapshot(snapshot, { id = null } = {}) {
+  const legacy = snapshot?.legacy;
+  const v3 = snapshot?.v3;
   const regressionReasons = [];
 
   if (!legacy || !v3) regressionReasons.push('MISSING_PROJECTION');
@@ -67,8 +66,8 @@ export function compareShadowPhase({ id, context, phase } = {}) {
       : 'COMPATIBLE';
 
   return {
-    id: id || `phase-${phase}`,
-    phase: Number(phase),
+    id: id || `phase-${snapshot?.phase}`,
+    phase: Number(snapshot?.phase),
     verdict,
     regressionReasons,
     legacy,
@@ -78,4 +77,8 @@ export function compareShadowPhase({ id, context, phase } = {}) {
       risks: summarizeSetDelta(legacy.risks, v3.risks),
     } : null,
   };
+}
+
+export function compareShadowPhase({ id, context, phase } = {}) {
+  return classifyShadowSnapshot(captureShadowPhase(context, phase), { id });
 }
