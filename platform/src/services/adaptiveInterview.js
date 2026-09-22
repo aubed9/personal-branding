@@ -2,7 +2,7 @@ import { FIELD_BY_QUESTION, isUnknownAnswer, activeAnswers } from './interviewSc
 import { calculateUnitEconomics } from './unitEconomics.js';
 
 // These are question dependencies, not an invitation for the model to skip a phase.
-const DEPENDENCIES = {
+export const DEPENDENCIES = {
   step0_stage: ['step0_diagnostic_probing'],
   step0_geography: ['step0_description'],
   step1_primary_goal: ['step0_stage', 'step0_diagnostic_probing'],
