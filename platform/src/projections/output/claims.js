@@ -237,16 +237,38 @@ function buildModuleClaims(phase, businessContext, metadata) {
   });
 
   const riskGroups = new Map();
+
+  // Module contract is authoritative for which risks exist and which phases they affect.
+  // Graph nodes, when available, refine status and exact dependency IDs; absence of a
+  // runtime graph must never make an active module risk disappear from projections.
+  for (const moduleId of projection.moduleIds) {
+    const def = DECISION_MODULES_BY_ID[moduleId];
+    if (!def) continue;
+    for (const riskId of def.risks || []) {
+      const key = `${moduleId}:${riskId}`;
+      riskGroups.set(key, {
+        moduleId,
+        riskId,
+        nodes: [],
+        affectedPhases: new Set(def.phases || [phase]),
+        statuses: [CLAIM_STATUS.PROVISIONAL],
+        axis: def.axis,
+      });
+    }
+  }
+
   for (const node of graphRiskNodes) {
     const moduleId = node.moduleId || null;
     const riskId = node.payload?.riskId || 'UNSPECIFIED_RISK';
     const key = `${moduleId || 'SYSTEM'}:${riskId}`;
+    const def = moduleId ? DECISION_MODULES_BY_ID[moduleId] : null;
     const group = riskGroups.get(key) || {
       moduleId,
       riskId,
       nodes: [],
-      affectedPhases: new Set(),
+      affectedPhases: new Set(def?.phases || []),
       statuses: [],
+      axis: def?.axis || null,
     };
     group.nodes.push(node);
     if (Number.isInteger(node.phase)) group.affectedPhases.add(node.phase);
@@ -256,26 +278,34 @@ function buildModuleClaims(phase, businessContext, metadata) {
 
   const riskClaims = [...riskGroups.values()]
     .filter(group => group.affectedPhases.has(phase))
-    .map(group => validateOrThrow(createCanonicalClaim({
-      stableKey: { kind: 'MODULE_RISK', moduleId: group.moduleId, riskId: group.riskId },
-      claimType: CLAIM_TYPES.RISK,
-      statement: `ریسک فعال در ماژول ${group.moduleId || 'سیستم'}: ${group.riskId}`,
-      status: worstStatus(group.statuses),
-      phase: null,
-      moduleId: group.moduleId,
-      dependencyIds: group.nodes.map(node => node.id),
-      evidenceIds: [],
-      ruleId: group.moduleId || 'GRAPH-RISK',
-      confidence: null,
-      verificationState: 'RULE_DERIVED_RISK',
-      createdRevision: Math.min(...group.nodes.map(node => Number(node.createdRevision) || 0)),
-      lastValidatedRevision: Math.max(...group.nodes.map(node => Number(node.lastValidatedRevision) || Number(metadata.revision) || 0)),
-      metadata: {
-        graphNodeIds: group.nodes.map(node => node.id).sort(),
-        riskId: group.riskId,
-        affectedPhases: [...group.affectedPhases].sort((a, b) => a - b),
-      },
-    })));
+    .map(group => {
+      const dependencyIds = uniq([
+        ...group.nodes.map(node => node.id),
+        group.axis ? `AXIS:${group.axis}` : null,
+        group.moduleId ? `MODULE:${group.moduleId}` : null,
+      ]);
+      return validateOrThrow(createCanonicalClaim({
+        stableKey: { kind: 'MODULE_RISK', moduleId: group.moduleId, riskId: group.riskId },
+        claimType: CLAIM_TYPES.RISK,
+        statement: `ریسک فعال در ماژول ${group.moduleId || 'سیستم'}: ${group.riskId}`,
+        status: worstStatus(group.statuses.length ? group.statuses : [CLAIM_STATUS.PROVISIONAL]),
+        phase: null,
+        moduleId: group.moduleId,
+        dependencyIds,
+        evidenceIds: [],
+        ruleId: group.moduleId || 'GRAPH-RISK',
+        confidence: null,
+        verificationState: group.nodes.length ? 'RULE_DERIVED_RISK_GRAPH_VALIDATED' : 'RULE_DERIVED_RISK',
+        createdRevision: group.nodes.length ? Math.min(...group.nodes.map(node => Number(node.createdRevision) || 0)) : Number(metadata.revision) || 0,
+        lastValidatedRevision: group.nodes.length ? Math.max(...group.nodes.map(node => Number(node.lastValidatedRevision) || Number(metadata.revision) || 0)) : Number(metadata.revision) || 0,
+        metadata: {
+          graphNodeIds: group.nodes.map(node => node.id).sort(),
+          riskId: group.riskId,
+          affectedPhases: [...group.affectedPhases].sort((a, b) => a - b),
+          upstreamStatus: worstStatus(group.statuses.length ? group.statuses : [CLAIM_STATUS.PROVISIONAL]),
+        },
+      }));
+    });
 
   return { inferenceClaims, riskClaims, moduleProjection: projection };
 }
