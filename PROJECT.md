@@ -7,7 +7,7 @@ Data flow:
 2. **Universal Business Router**: Maps input to stable code (`BT-0001`..`BT-0753`), assigns 15 axes, activates industry and operational overlays.
 3. **Dynamic Chained Question Engine**: Synthesizes questions via `Base + Industry Module + Overlays - Irrelevant - Answered`, with an immediate Open-Ended Diagnostic Probe (`step0_diagnostic_probing`) capturing founder vision.
 4. **Unknown-Aware Hypothesis Registry**: Unmeasured or unknown user answers are recorded as formal hypotheses with action items rather than forced fake numbers.
-5. **Phase Orchestration & Deliverable Generation**: 8-phase workflow generates 5-layer algorithmic deliverables referencing the 165-source knowledge base, grounding all strategic recommendations.
+5. **Phase Orchestration & Deliverable Generation**: 8-phase workflow projects canonical claims and uses the registry-backed knowledge layer; source counts and admissibility are derived from the canonical Source Registry.
 6. **753 Simulation & Quality Audit Harness**: Autonomous simulation across all 753 business types with 4-metric quality audit (target score >= 96%).
 
 ## Feature Inventory
@@ -23,7 +23,7 @@ Data flow:
 | 8 | Freeform Text Semantic Parser | Out-of-the-box unstructured text extraction for business codes, scale, channels, and pain points without state machine breakdown. | M3 | Survey R3 |
 | 9 | Multi-Pattern Unknown-Aware Engine | Detects ignorance, unmeasured timing, uncertainty, and external dependencies; registers hypotheses without forcing fake numbers. | M3 | Survey R3 |
 | 10 | 15-Axis & Unknown-Aware Deliverable Generator | Upgraded 5-layer deliverable generator displaying 15 axes, `BT-XXXX` code, founder vision, and hypothesis tracking in Layer 4/5. | M3 | Survey R3/R4 |
-| 11 | 165-Source Knowledge Base & Wiki Integration | Grounding deliverables and questions in 165 canonical sources and 49 wiki articles with citation tags. | M3 | Survey R4 |
+| 11 | Canonical Source Registry & Wiki Integration | Grounds decision-driving knowledge in Source Records + claim-level provenance. Counts are derived from the registry, not hard-coded. | M3 | Survey R4 |
 | 12 | 753-Business Autonomous Simulation Pipeline | Automated end-to-end simulation script (`simulate_753_businesses.js`) executing Phases 0–8 + Master Book across all 753 business types. | M4 | Survey R5 |
 | 13 | 4-Metric Quality Audit Engine | Rigorous audit scoring (Practical Problem-Solving, Context Relevance & Zero Jargon, Zero Hallucination/Drift, Exit Gates & Document Integrity) with composite score >= 96%. | M4 | Survey R5 |
 | 14 | Deliverable Ledger & Audit Book | Production of `deliverables/753_BUSINESS_SIMULATIONS.md` with complete simulation logs, industry summaries, and quality metrics. | M4 | Survey R5 |

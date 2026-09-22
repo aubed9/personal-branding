@@ -1,0 +1,1214 @@
+{
+  "version": "1.0.0",
+  "generated_at": "2026-09-22",
+  "policy": "Legacy chunks are migration inputs only. Unmapped content remains NEEDS_RESEARCH and is not admitted to canonical retrieval.",
+  "legacy_chunk_count": 74,
+  "entries": [
+    {
+      "legacy_id": "master_orchestrator_overview",
+      "legacy_phase": "master",
+      "title": "Master Orchestrator Overview & Sequence",
+      "tags": [
+        "orchestrator",
+        "sequence",
+        "mission",
+        "phases",
+        "core_rule"
+      ],
+      "content_length": 644,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "master_phase_registry",
+      "legacy_phase": "master",
+      "title": "Phase Registry & Deliverables",
+      "tags": [
+        "registry",
+        "skills",
+        "deliverables",
+        "handoffs"
+      ],
+      "content_length": 938,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "master_state_and_ledgers",
+      "legacy_phase": "master",
+      "title": "State, Gates, Re-entry & Ledgers",
+      "tags": [
+        "state",
+        "ledgers",
+        "decisions",
+        "assumptions",
+        "re-entry",
+        "gates"
+      ],
+      "content_length": 437,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase1_overview_mission",
+      "legacy_phase": "phase1",
+      "title": "Phase 1 Foundation Mission & Scope",
+      "tags": [
+        "phase1",
+        "mission",
+        "beginner",
+        "scope"
+      ],
+      "content_length": 571,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase1_core_principles",
+      "legacy_phase": "phase1",
+      "title": "Phase 1 Core Principles & 4 Info Types",
+      "tags": [
+        "phase1",
+        "principles",
+        "teaching",
+        "facts",
+        "assumptions",
+        "decisions",
+        "unknowns"
+      ],
+      "content_length": 552,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase1_business_stages",
+      "legacy_phase": "phase1",
+      "title": "Phase 1 Business Stages",
+      "tags": [
+        "phase1",
+        "stages",
+        "adaptive"
+      ],
+      "content_length": 441,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase1_step0_snapshot",
+      "legacy_phase": "phase1",
+      "title": "Step 0: Business Snapshot",
+      "tags": [
+        "phase1",
+        "step0",
+        "snapshot",
+        "assets",
+        "geography",
+        "constraints"
+      ],
+      "content_length": 501,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase1_step1_goals",
+      "legacy_phase": "phase1",
+      "title": "Step 1: Goals & Success Definition",
+      "tags": [
+        "phase1",
+        "step1",
+        "goals",
+        "priorities",
+        "metrics"
+      ],
+      "content_length": 471,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase1_step2_offer",
+      "legacy_phase": "phase1",
+      "title": "Step 2: Business & Offer Understanding",
+      "tags": [
+        "phase1",
+        "step2",
+        "offer",
+        "revenue_model",
+        "value_hypothesis"
+      ],
+      "content_length": 604,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase1_intelligence_and_research",
+      "legacy_phase": "phase1",
+      "title": "Foundation Intelligence & Research Backlog",
+      "tags": [
+        "phase1",
+        "intelligence",
+        "consistency",
+        "research_questions"
+      ],
+      "content_length": 425,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase1_deliverable_spec",
+      "legacy_phase": "phase1",
+      "title": "Phase 1 Deliverable: Business Foundation Profile (Farsi)",
+      "tags": [
+        "phase1",
+        "deliverable",
+        "profile",
+        "persian",
+        "structure"
+      ],
+      "content_length": 676,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase1_gate_and_handoff",
+      "legacy_phase": "phase1",
+      "title": "Phase 1 Gate Criteria & Research Brief Handoff",
+      "tags": [
+        "phase1",
+        "gate",
+        "handoff",
+        "research_brief"
+      ],
+      "content_length": 570,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase2_metadata_mission",
+      "legacy_phase": "phase2",
+      "title": "Phase 2 Mission, Scope & Boundaries",
+      "tags": [
+        "phase2",
+        "mission",
+        "scope",
+        "boundaries",
+        "research_not_strategy"
+      ],
+      "content_length": 640,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase2_evidence_framework",
+      "legacy_phase": "phase2",
+      "title": "Evidence Classes, Strength Scale & Traceability",
+      "tags": [
+        "phase2",
+        "evidence",
+        "classes",
+        "traceability",
+        "triangulation",
+        "freshness"
+      ],
+      "content_length": 824,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase2_step0_plan",
+      "legacy_phase": "phase2",
+      "title": "Step 0: Research Scope & Evidence Plan",
+      "tags": [
+        "phase2",
+        "step0",
+        "plan",
+        "questions",
+        "priority"
+      ],
+      "content_length": 497,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase2_step1_market",
+      "legacy_phase": "phase2",
+      "title": "Step 1: Market & Category Intelligence",
+      "tags": [
+        "phase2",
+        "step1",
+        "market",
+        "category",
+        "sizing",
+        "trends",
+        "regulations"
+      ],
+      "content_length": 608,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase2_step2_competitors",
+      "legacy_phase": "phase2",
+      "title": "Step 2: Competitors, Alternatives & Benchmarking",
+      "tags": [
+        "phase2",
+        "step2",
+        "competitors",
+        "alternatives",
+        "review_mining",
+        "white_space"
+      ],
+      "content_length": 645,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase2_step3_customer",
+      "legacy_phase": "phase2",
+      "title": "Step 3: Customer, Demand & Behavior Intelligence",
+      "tags": [
+        "phase2",
+        "step3",
+        "customer",
+        "jtbd",
+        "segments",
+        "triggers",
+        "barriers",
+        "voice_of_customer"
+      ],
+      "content_length": 705,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase2_step4_pricing_channels",
+      "legacy_phase": "phase2",
+      "title": "Step 4: Pricing, Offer & Channel Intelligence",
+      "tags": [
+        "phase2",
+        "step4",
+        "pricing",
+        "offers",
+        "channels",
+        "customer_journey"
+      ],
+      "content_length": 568,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase2_step5_synthesis",
+      "legacy_phase": "phase2",
+      "title": "Step 5: Synthesis, Opportunity Map & Phase 3 Backlog",
+      "tags": [
+        "phase2",
+        "step5",
+        "synthesis",
+        "opportunity_map",
+        "risk_map",
+        "assumptions"
+      ],
+      "content_length": 585,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase2_deliverable_spec",
+      "legacy_phase": "phase2",
+      "title": "Phase 2 Deliverable: Market & Customer Intelligence Report (Farsi)",
+      "tags": [
+        "phase2",
+        "deliverable",
+        "report",
+        "persian",
+        "16_sections"
+      ],
+      "content_length": 971,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase2_handoff_brief",
+      "legacy_phase": "phase2",
+      "title": "Phase 3 Handoff: Strategy Brief",
+      "tags": [
+        "phase2",
+        "handoff",
+        "strategy_brief"
+      ],
+      "content_length": 482,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase2_gates_and_rules",
+      "legacy_phase": "phase2",
+      "title": "Phase 2 Gates, Failure Modes & Ultimate Rule",
+      "tags": [
+        "phase2",
+        "gate",
+        "failure_modes",
+        "rules"
+      ],
+      "content_length": 776,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase3_metadata_mission",
+      "legacy_phase": "phase3",
+      "title": "Phase 3 Mission, Scope & Critical Principles",
+      "tags": [
+        "phase3",
+        "mission",
+        "strategy_is_choice",
+        "tradeoffs",
+        "boundaries"
+      ],
+      "content_length": 650,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase3_step0_readiness",
+      "legacy_phase": "phase3",
+      "title": "Step 0: Strategy Readiness & Decision Frame",
+      "tags": [
+        "phase3",
+        "step0",
+        "readiness",
+        "agenda",
+        "dependencies"
+      ],
+      "content_length": 456,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase3_step1_target",
+      "legacy_phase": "phase3",
+      "title": "Step 1: Segment Prioritization & Target Market Choice",
+      "tags": [
+        "phase3",
+        "step1",
+        "target",
+        "segmentation",
+        "prioritization",
+        "behavioral"
+      ],
+      "content_length": 522,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase3_step2_market_frame",
+      "legacy_phase": "phase3",
+      "title": "Step 2: Market Frame, Competitive Reference & Territory",
+      "tags": [
+        "phase3",
+        "step2",
+        "category_frame",
+        "competitive_reference",
+        "strategic_territory"
+      ],
+      "content_length": 550,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase3_step3_positioning",
+      "legacy_phase": "phase3",
+      "title": "Step 3: Positioning & Differentiation Strategy",
+      "tags": [
+        "phase3",
+        "step3",
+        "positioning",
+        "differentiation",
+        "parity_vs_difference"
+      ],
+      "content_length": 547,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase3_step4_value_promise",
+      "legacy_phase": "phase3",
+      "title": "Step 4: Value Proposition, Brand Promise & Proof Logic",
+      "tags": [
+        "phase3",
+        "step4",
+        "value_proposition",
+        "brand_promise",
+        "proof",
+        "reasons_to_believe"
+      ],
+      "content_length": 595,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase3_step5_pillars_boundaries",
+      "legacy_phase": "phase3",
+      "title": "Step 5: Strategic Pillars, Boundaries & Choice Architecture",
+      "tags": [
+        "phase3",
+        "step5",
+        "pillars",
+        "boundaries",
+        "must_be",
+        "must_not_be"
+      ],
+      "content_length": 510,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase3_step6_validation_lock",
+      "legacy_phase": "phase3",
+      "title": "Step 6: Strategy Validation, Decision Lock & Risks",
+      "tags": [
+        "phase3",
+        "step6",
+        "validation",
+        "lock",
+        "risks",
+        "experiments"
+      ],
+      "content_length": 456,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase3_deliverable_spec",
+      "legacy_phase": "phase3",
+      "title": "Phase 3 Deliverable: Brand Strategy Foundation (Farsi)",
+      "tags": [
+        "phase3",
+        "deliverable",
+        "brand_strategy_foundation",
+        "persian",
+        "17_sections"
+      ],
+      "content_length": 974,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase3_handoff_brief",
+      "legacy_phase": "phase3",
+      "title": "Phase 4 Handoff: Identity Strategy Brief",
+      "tags": [
+        "phase3",
+        "handoff",
+        "identity_strategy_brief"
+      ],
+      "content_length": 547,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase3_gates_and_rules",
+      "legacy_phase": "phase3",
+      "title": "Phase 3 Quality Gate & 20 Failure Modes",
+      "tags": [
+        "phase3",
+        "gate",
+        "failure_modes",
+        "rules"
+      ],
+      "content_length": 663,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase4_metadata_mission",
+      "legacy_phase": "phase4",
+      "title": "Phase 4 Mission, Scope & Core Principles",
+      "tags": [
+        "phase4",
+        "mission",
+        "character",
+        "personality",
+        "behavior",
+        "boundaries"
+      ],
+      "content_length": 686,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase4_step0_translation",
+      "legacy_phase": "phase4",
+      "title": "Step 0: Identity Readiness & Strategy Translation",
+      "tags": [
+        "phase4",
+        "step0",
+        "readiness",
+        "strategy_to_identity",
+        "conventions"
+      ],
+      "content_length": 467,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase4_step1_meaning_territory",
+      "legacy_phase": "phase4",
+      "title": "Step 1: Brand Core Meaning & Identity Territory",
+      "tags": [
+        "phase4",
+        "step1",
+        "core_meaning",
+        "identity_territory",
+        "emotional_outcome"
+      ],
+      "content_length": 450,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase4_step2_personality",
+      "legacy_phase": "phase4",
+      "title": "Step 2: Brand Personality & Character System",
+      "tags": [
+        "phase4",
+        "step2",
+        "personality",
+        "traits",
+        "trait_tension",
+        "sliders"
+      ],
+      "content_length": 650,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase4_step3_relationship_behavior",
+      "legacy_phase": "phase4",
+      "title": "Step 3: Brand Relationship, Role & Behavioral Principles",
+      "tags": [
+        "phase4",
+        "step3",
+        "relationship_role",
+        "behavioral_principles",
+        "situational_behavior"
+      ],
+      "content_length": 514,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase4_step4_communication_tone",
+      "legacy_phase": "phase4",
+      "title": "Step 4: Communication Posture & Tone Boundaries",
+      "tags": [
+        "phase4",
+        "step4",
+        "posture",
+        "tone",
+        "voice_vs_tone",
+        "persian_rules"
+      ],
+      "content_length": 413,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase4_step5_principles_guardrails",
+      "legacy_phase": "phase4",
+      "title": "Step 5: Identity Principles, Experience Signals & Guardrails",
+      "tags": [
+        "phase4",
+        "step5",
+        "identity_principles",
+        "guardrails",
+        "must_feel_like",
+        "experience_signals"
+      ],
+      "content_length": 537,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase4_step6_validation_lock",
+      "legacy_phase": "phase4",
+      "title": "Step 6: Identity Validation, Lock & Decision Rules",
+      "tags": [
+        "phase4",
+        "step6",
+        "validation",
+        "lock",
+        "risk_map"
+      ],
+      "content_length": 401,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase4_deliverable_spec",
+      "legacy_phase": "phase4",
+      "title": "Phase 4 Deliverable: Brand Identity & Character Foundation (Farsi)",
+      "tags": [
+        "phase4",
+        "deliverable",
+        "identity_character_foundation",
+        "persian",
+        "20_sections"
+      ],
+      "content_length": 1174,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase4_handoff_brief",
+      "legacy_phase": "phase4",
+      "title": "Phase 5 Handoff: Verbal Identity Brief",
+      "tags": [
+        "phase4",
+        "handoff",
+        "verbal_identity_brief"
+      ],
+      "content_length": 551,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase4_failure_modes_rules",
+      "legacy_phase": "phase4",
+      "title": "Phase 4 Quality Gate & Failure Modes",
+      "tags": [
+        "phase4",
+        "gate",
+        "failure_modes",
+        "rules"
+      ],
+      "content_length": 726,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase5_metadata_mission",
+      "legacy_phase": "phase5",
+      "title": "Phase 5 Mission, Scope & Core Concepts",
+      "tags": [
+        "phase5",
+        "mission",
+        "voice",
+        "messaging",
+        "narrative",
+        "boundaries"
+      ],
+      "content_length": 656,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase5_voice_vs_tone",
+      "legacy_phase": "phase5",
+      "title": "Voice vs Tone & Messaging vs Copy",
+      "tags": [
+        "phase5",
+        "voice_vs_tone",
+        "messaging_vs_copy",
+        "claims_rule"
+      ],
+      "content_length": 448,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase5_step0_translation",
+      "legacy_phase": "phase5",
+      "title": "Step 0: Verbal Readiness & Identity Translation",
+      "tags": [
+        "phase5",
+        "step0",
+        "translation",
+        "customer_language",
+        "cliche_detection"
+      ],
+      "content_length": 416,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase5_step1_voice_system",
+      "legacy_phase": "phase5",
+      "title": "Step 1: Brand Voice System & Principles",
+      "tags": [
+        "phase5",
+        "step1",
+        "voice_principles",
+        "traits",
+        "verbal_tensions"
+      ],
+      "content_length": 382,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase5_step2_tone_matrix",
+      "legacy_phase": "phase5",
+      "title": "Step 2: Tone of Voice Matrix & Situational Adaptation",
+      "tags": [
+        "phase5",
+        "step2",
+        "tone_matrix",
+        "situations",
+        "complaint_tone",
+        "crisis_tone"
+      ],
+      "content_length": 455,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase5_step3_messaging_architecture",
+      "legacy_phase": "phase5",
+      "title": "Step 3: Messaging Architecture & Message Hierarchy",
+      "tags": [
+        "phase5",
+        "step3",
+        "hierarchy",
+        "pillars",
+        "feature_to_benefit",
+        "journey_stages"
+      ],
+      "content_length": 464,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase5_step4_core_messages_proof",
+      "legacy_phase": "phase5",
+      "title": "Step 4: Core Messages, Proof Language & Objections",
+      "tags": [
+        "phase5",
+        "step4",
+        "core_messages",
+        "proof",
+        "objection_handling",
+        "superlatives"
+      ],
+      "content_length": 459,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase5_step5_narratives",
+      "legacy_phase": "phase5",
+      "title": "Step 5: Brand Story, One-Liner & Elevator Pitch",
+      "tags": [
+        "phase5",
+        "step5",
+        "one_liner",
+        "elevator_pitch",
+        "brand_story",
+        "about_narrative"
+      ],
+      "content_length": 469,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase5_step6_writing_rules_cta",
+      "legacy_phase": "phase5",
+      "title": "Step 6: Vocabulary, Persian Rules, CTA & Channel Adaptation",
+      "tags": [
+        "phase5",
+        "step6",
+        "vocabulary",
+        "persian_rules",
+        "cta_system",
+        "channel_adaptation"
+      ],
+      "content_length": 516,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase5_step7_governance_lock",
+      "legacy_phase": "phase5",
+      "title": "Step 7: Validation, QA Checklist & Governance",
+      "tags": [
+        "phase5",
+        "step7",
+        "validation",
+        "qa_checklist",
+        "governance",
+        "lock"
+      ],
+      "content_length": 370,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase5_deliverable_spec",
+      "legacy_phase": "phase5",
+      "title": "Phase 5 Deliverable: Verbal Identity & Messaging System (Farsi)",
+      "tags": [
+        "phase5",
+        "deliverable",
+        "verbal_identity_messaging",
+        "persian",
+        "28_sections"
+      ],
+      "content_length": 1441,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase5_handoff_brief",
+      "legacy_phase": "phase5",
+      "title": "Phase 6 Handoff: Creative & Naming Brief",
+      "tags": [
+        "phase5",
+        "handoff",
+        "creative_naming_brief"
+      ],
+      "content_length": 478,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase5_failure_modes_rules",
+      "legacy_phase": "phase5",
+      "title": "Phase 5 Quality Gate & 20 Failure Modes",
+      "tags": [
+        "phase5",
+        "gate",
+        "failure_modes",
+        "rules"
+      ],
+      "content_length": 741,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase6_metadata_mission",
+      "legacy_phase": "phase6",
+      "title": "Phase 6 Mission, Scope & Critical Boundaries",
+      "tags": [
+        "phase6",
+        "mission",
+        "naming",
+        "tagline",
+        "creative_direction",
+        "boundaries"
+      ],
+      "content_length": 622,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase6_step0_readiness",
+      "legacy_phase": "phase6",
+      "title": "Step 0: Naming & Creative Readiness",
+      "tags": [
+        "phase6",
+        "step0",
+        "readiness",
+        "naming_jobs",
+        "constraints",
+        "existing_equity"
+      ],
+      "content_length": 320,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase6_step1_strategy_criteria",
+      "legacy_phase": "phase6",
+      "title": "Step 1: Naming Strategy & Criteria Framework",
+      "tags": [
+        "phase6",
+        "step1",
+        "naming_types",
+        "criteria",
+        "knockout_rules",
+        "phonetics"
+      ],
+      "content_length": 462,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase6_step2_territories",
+      "legacy_phase": "phase6",
+      "title": "Step 2: Naming Territory Development",
+      "tags": [
+        "phase6",
+        "step2",
+        "naming_territories",
+        "conceptual_sources"
+      ],
+      "content_length": 271,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase6_step3_generation_screening",
+      "legacy_phase": "phase6",
+      "title": "Step 3: Name Generation, Screening & Shortlisting",
+      "tags": [
+        "phase6",
+        "step3",
+        "generation",
+        "screening",
+        "shortlist",
+        "domains",
+        "preliminary_legal"
+      ],
+      "content_length": 481,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase6_step4_tagline",
+      "legacy_phase": "phase6",
+      "title": "Step 4: Tagline Strategy & Tagline Development",
+      "tags": [
+        "phase6",
+        "step4",
+        "tagline",
+        "tagline_jobs",
+        "no_tagline"
+      ],
+      "content_length": 376,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase6_step5_creative_territories",
+      "legacy_phase": "phase6",
+      "title": "Step 5: Creative Territory Development & Direction",
+      "tags": [
+        "phase6",
+        "step5",
+        "creative_territories",
+        "central_idea",
+        "visual_impression",
+        "cliches"
+      ],
+      "content_length": 473,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase6_step6_validation_lock",
+      "legacy_phase": "phase6",
+      "title": "Step 6: Validation, Decision Lock & Pairing Tests",
+      "tags": [
+        "phase6",
+        "step6",
+        "validation",
+        "lock",
+        "pairing_test",
+        "negative_associations"
+      ],
+      "content_length": 299,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase6_step7_handoff_phase7",
+      "legacy_phase": "phase6",
+      "title": "Step 7: Phase 7 Visual Identity Handoff",
+      "tags": [
+        "phase6",
+        "step7",
+        "handoff",
+        "visual_identity_brief"
+      ],
+      "content_length": 354,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase6_deliverable_spec",
+      "legacy_phase": "phase6",
+      "title": "Phase 6 Deliverable: Naming, Tagline & Creative Direction Foundation (Farsi)",
+      "tags": [
+        "phase6",
+        "deliverable",
+        "naming_creative_foundation",
+        "persian",
+        "23_sections"
+      ],
+      "content_length": 1450,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "phase6_failure_modes_rules",
+      "legacy_phase": "phase6",
+      "title": "Phase 6 Quality Gate & 25 Failure Modes",
+      "tags": [
+        "phase6",
+        "gate",
+        "failure_modes",
+        "rules"
+      ],
+      "content_length": 774,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "wiki_business_decision_chain",
+      "legacy_phase": "master",
+      "title": "Business Decision Chain & 5 Knowledge Layers (L1-L5)",
+      "tags": [
+        "decision_chain",
+        "macro_to_micro",
+        "l1_l5",
+        "society_to_finance",
+        "veto_rules"
+      ],
+      "content_length": 448,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "wiki_the_30_canonical_foundations",
+      "legacy_phase": "master",
+      "title": "The 30 Canonical Foundations for Business Decision-Making",
+      "tags": [
+        "30_foundations",
+        "keller",
+        "sharp",
+        "porter",
+        "kahneman",
+        "mankiw",
+        "rackham",
+        "goldratt",
+        "aaker",
+        "christensen"
+      ],
+      "content_length": 537,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "wiki_graphrag_ontology",
+      "legacy_phase": "master",
+      "title": "GraphRAG Cross-Domain Ontology & Multi-Hop Traversal",
+      "tags": [
+        "graphrag",
+        "ontology",
+        "multi_hop",
+        "edges",
+        "entities",
+        "cross_domain"
+      ],
+      "content_length": 445,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "wiki_conflict_resolution_hierarchy",
+      "legacy_phase": "master",
+      "title": "Conflict Resolution, Evidence Ladder & Authority Scoring",
+      "tags": [
+        "conflict_resolution",
+        "evidence_ladder",
+        "authority_scoring",
+        "sharp_vs_kotler",
+        "retention_vs_acquisition"
+      ],
+      "content_length": 472,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    },
+    {
+      "legacy_id": "wiki_iran_market_and_economic_sources",
+      "legacy_phase": "master",
+      "title": "Iran Indigenous Market & Macroeconomic Data Sources",
+      "tags": [
+        "iran_market",
+        "amar_org_ir",
+        "cbi_ir",
+        "codal",
+        "digikala_report",
+        "bazaar",
+        "snapp_bnpl",
+        "inflation"
+      ],
+      "content_length": 543,
+      "status": "NEEDS_RESEARCH",
+      "canonical_claim_ids": [],
+      "migration_reason": "No claim-level Source Record + locator mapping has been verified yet."
+    }
+  ]
+}

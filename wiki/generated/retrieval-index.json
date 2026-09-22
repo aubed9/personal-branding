@@ -1,0 +1,923 @@
+{
+  "version": "1.0.0",
+  "generated_from": {
+    "source_registry": "wiki/source-registry.json",
+    "claim_registry": "wiki/claims.json",
+    "policy": "Only VERIFIED/CANONICAL claims whose referenced sources are VERIFIED/CANONICAL are indexed."
+  },
+  "count": 28,
+  "entries": [
+    {
+      "retrieval_id": "RET-KCL-B2B-DMU",
+      "knowledge_node_id": "KB-B2B-DMU",
+      "claim_id": "KCL-B2B-DMU",
+      "content": "Internal reasoning contract for MOD-CUSTOMER-B2B: activation follows canonical context; declared evidence is required before external conclusions; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        2,
+        3,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-B2B-BUSINESS-CASE",
+        "DN-B2B-DMU",
+        "DN-B2B-PIPELINE"
+      ],
+      "module_ids": [
+        "MOD-CUSTOMER-B2B"
+      ],
+      "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
+    },
+    {
+      "retrieval_id": "RET-KCL-B2B-PROCUREMENT",
+      "knowledge_node_id": "KB-B2B-PROCUREMENT",
+      "claim_id": "KCL-B2B-PROCUREMENT",
+      "content": "Internal reasoning contract for MOD-CUSTOMER-B2B: activation follows canonical context; declared evidence is required before external conclusions; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        2,
+        3,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-B2B-BUSINESS-CASE",
+        "DN-B2B-DMU",
+        "DN-B2B-PIPELINE"
+      ],
+      "module_ids": [
+        "MOD-CUSTOMER-B2B"
+      ],
+      "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
+    },
+    {
+      "retrieval_id": "RET-KCL-B2C-BEHAVIOR",
+      "knowledge_node_id": "KB-B2C-BEHAVIOR",
+      "claim_id": "KCL-B2C-BEHAVIOR",
+      "content": "Internal reasoning contract for MOD-CUSTOMER-B2C: activation follows canonical context; declared evidence is required before external conclusions; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        2,
+        3,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-B2C-CONVERSION",
+        "DN-B2C-PURCHASE-TRIGGER",
+        "DN-B2C-SEGMENT"
+      ],
+      "module_ids": [
+        "MOD-CUSTOMER-B2C"
+      ],
+      "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
+    },
+    {
+      "retrieval_id": "RET-KCL-BRAND-ARCHITECTURE",
+      "knowledge_node_id": "KB-BRAND-ARCHITECTURE",
+      "claim_id": "KCL-BRAND-ARCHITECTURE",
+      "content": "Internal reasoning contract for MOD-BRAND-PORTFOLIO: activation follows canonical context; declared evidence is required before external conclusions; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        3,
+        6,
+        7,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-BA-NAMING",
+        "DN-BA-ROLE",
+        "DN-BA-ROLLOUT",
+        "DN-BA-VISUAL"
+      ],
+      "module_ids": [
+        "MOD-BRAND-PORTFOLIO"
+      ],
+      "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
+    },
+    {
+      "retrieval_id": "RET-KCL-COMPLIANCE",
+      "knowledge_node_id": "KB-COMPLIANCE",
+      "claim_id": "KCL-COMPLIANCE",
+      "content": "Internal reasoning contract for MOD-REG-HIGH: activation follows canonical context; declared evidence is required before external conclusions; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        1,
+        2,
+        3,
+        5,
+        6,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-REG-ACTIVATION",
+        "DN-REG-CONSTRAINTS",
+        "DN-REG-EVIDENCE",
+        "DN-REG-MESSAGING",
+        "DN-REG-NAMING",
+        "DN-REG-POSITIONING"
+      ],
+      "module_ids": [
+        "MOD-REG-HIGH"
+      ],
+      "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
+    },
+    {
+      "retrieval_id": "RET-KCL-DIGITAL-FUNNEL",
+      "knowledge_node_id": "KB-DIGITAL-FUNNEL",
+      "claim_id": "KCL-DIGITAL-FUNNEL",
+      "content": "Internal reasoning contract for MOD-CHANNEL-ONLINE: activation follows canonical context; declared evidence is required before external conclusions; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        2,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-ONLINE-ACQUISITION",
+        "DN-ONLINE-FUNNEL"
+      ],
+      "module_ids": [
+        "MOD-CHANNEL-ONLINE"
+      ],
+      "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
+    },
+    {
+      "retrieval_id": "RET-KCL-DIGITAL-PRODUCT",
+      "knowledge_node_id": "KB-DIGITAL-PRODUCT",
+      "claim_id": "KCL-DIGITAL-PRODUCT",
+      "content": "Internal reasoning contract for MOD-OFFER-DIGITAL: activation follows canonical context; declared evidence is required before external conclusions; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        1,
+        2,
+        3,
+        5,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-OFFER-DIGITAL-ADOPTION",
+        "DN-OFFER-DIGITAL-EXPLAIN",
+        "DN-OFFER-DIGITAL-FRICTION",
+        "DN-OFFER-DIGITAL-PROMISE",
+        "DN-OFFER-DIGITAL-VALUE"
+      ],
+      "module_ids": [
+        "MOD-OFFER-DIGITAL"
+      ],
+      "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
+    },
+    {
+      "retrieval_id": "RET-KCL-ENTERPRISE-GOVERNANCE",
+      "knowledge_node_id": "KB-ENTERPRISE-GOVERNANCE",
+      "claim_id": "KCL-ENTERPRISE-GOVERNANCE",
+      "content": "Internal reasoning contract for MOD-SCALE-ENTERPRISE: activation follows canonical context; declared evidence is required before external conclusions; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        1,
+        3,
+        7,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-ENT-GOVERNANCE",
+        "DN-ENT-PORTFOLIO",
+        "DN-ENT-REPORTING",
+        "DN-ENT-ROLLOUT"
+      ],
+      "module_ids": [
+        "MOD-SCALE-ENTERPRISE"
+      ],
+      "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
+    },
+    {
+      "retrieval_id": "RET-KCL-FOUNDER-BRAND",
+      "knowledge_node_id": "KB-FOUNDER-BRAND",
+      "claim_id": "KCL-FOUNDER-BRAND",
+      "content": "Internal reasoning contract for MOD-FOUNDER-PUBLIC: activation follows canonical context; declared evidence is required before external conclusions; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        4,
+        5,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-FOUNDER-PERSONA",
+        "DN-FOUNDER-THOUGHT-LEADERSHIP",
+        "DN-FOUNDER-VOICE"
+      ],
+      "module_ids": [
+        "MOD-FOUNDER-PUBLIC"
+      ],
+      "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
+    },
+    {
+      "retrieval_id": "RET-KCL-LOCAL-CHANNEL",
+      "knowledge_node_id": "KB-LOCAL-CHANNEL",
+      "claim_id": "KCL-LOCAL-CHANNEL",
+      "content": "Internal reasoning contract for MOD-CHANNEL-PHYSICAL: activation follows canonical context; declared evidence is required before external conclusions; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        2,
+        7,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-PHYS-CATCHMENT",
+        "DN-PHYS-LOCAL-GROWTH",
+        "DN-PHYS-TOUCHPOINT"
+      ],
+      "module_ids": [
+        "MOD-CHANNEL-PHYSICAL"
+      ],
+      "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
+    },
+    {
+      "retrieval_id": "RET-KCL-LOCAL-MARKET",
+      "knowledge_node_id": "KB-LOCAL-MARKET",
+      "claim_id": "KCL-LOCAL-MARKET",
+      "content": "Internal reasoning contract for MOD-GEO-LOCAL: activation follows canonical context; declared evidence is required before external conclusions; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        1,
+        2,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-LOCAL-CATCHMENT",
+        "DN-LOCAL-COMPETITION",
+        "DN-LOCAL-DISCOVERY"
+      ],
+      "module_ids": [
+        "MOD-GEO-LOCAL"
+      ],
+      "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
+    },
+    {
+      "retrieval_id": "RET-KCL-LONG-SALES-CYCLE",
+      "knowledge_node_id": "KB-LONG-SALES-CYCLE",
+      "claim_id": "KCL-LONG-SALES-CYCLE",
+      "content": "Internal reasoning contract for MOD-CYCLE-LONG: activation follows canonical context; declared evidence is required before external conclusions; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        2,
+        3,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-LONG-NURTURE",
+        "DN-LONG-PIPELINE",
+        "DN-LONG-PROOF"
+      ],
+      "module_ids": [
+        "MOD-CYCLE-LONG"
+      ],
+      "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
+    },
+    {
+      "retrieval_id": "RET-KCL-LTV-CAC",
+      "knowledge_node_id": "KB-LTV-CAC",
+      "claim_id": "KCL-LTV-CAC",
+      "content": "Internal reasoning contract for MOD-REV-RECURRING: activation follows canonical context; declared evidence is required before external conclusions; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        1,
+        2,
+        3,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-REC-ACTIVATION",
+        "DN-REC-EXPANSION",
+        "DN-REC-PROMISE",
+        "DN-REC-RETENTION"
+      ],
+      "module_ids": [
+        "MOD-REV-RECURRING"
+      ],
+      "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
+    },
+    {
+      "retrieval_id": "RET-KCL-MARKET-ENTRY",
+      "knowledge_node_id": "KB-MARKET-ENTRY",
+      "claim_id": "KCL-MARKET-ENTRY",
+      "content": "Internal reasoning contract for MOD-GEO-CROSSBORDER: activation follows canonical context; declared evidence is required before external conclusions; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        1,
+        2,
+        3,
+        5,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-XB-LANGUAGE",
+        "DN-XB-LOCALIZATION",
+        "DN-XB-MARKET-ENTRY",
+        "DN-XB-OPERATIONS",
+        "DN-XB-POSITIONING"
+      ],
+      "module_ids": [
+        "MOD-GEO-CROSSBORDER"
+      ],
+      "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
+    },
+    {
+      "retrieval_id": "RET-KCL-MARKETPLACE-LIQUIDITY",
+      "knowledge_node_id": "KB-MARKETPLACE-LIQUIDITY",
+      "claim_id": "KCL-MARKETPLACE-LIQUIDITY",
+      "content": "Internal reasoning contract for MOD-CUSTOMER-TWO-SIDED: activation follows canonical context; declared evidence is required before external conclusions; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        1,
+        2,
+        3,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-MKT-LEAKAGE",
+        "DN-MKT-LIQUIDITY",
+        "DN-MKT-SIDES",
+        "DN-MKT-VALUE-EACH-SIDE"
+      ],
+      "module_ids": [
+        "MOD-CUSTOMER-TWO-SIDED"
+      ],
+      "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
+    },
+    {
+      "retrieval_id": "RET-KCL-MICRO-OPERATIONS",
+      "knowledge_node_id": "KB-MICRO-OPERATIONS",
+      "claim_id": "KCL-MICRO-OPERATIONS",
+      "content": "Internal reasoning contract for MOD-SCALE-MICRO: activation follows canonical context; declared evidence is required before external conclusions; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        1,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-MICRO-CAPACITY",
+        "DN-MICRO-PRIORITY"
+      ],
+      "module_ids": [
+        "MOD-SCALE-MICRO"
+      ],
+      "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
+    },
+    {
+      "retrieval_id": "RET-KCL-MULTI-BRANCH",
+      "knowledge_node_id": "KB-MULTI-BRANCH",
+      "claim_id": "KCL-MULTI-BRANCH",
+      "content": "Internal reasoning contract for MOD-BRANCH-MULTI: activation follows canonical context; declared evidence is required before external conclusions; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        1,
+        7,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-BRANCH-RIGHTS",
+        "DN-BRANCH-ROLLOUT",
+        "DN-BRANCH-STANDARDS"
+      ],
+      "module_ids": [
+        "MOD-BRANCH-MULTI"
+      ],
+      "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
+    },
+    {
+      "retrieval_id": "RET-KCL-OPERATIONS",
+      "knowledge_node_id": "KB-OPERATIONS",
+      "claim_id": "KCL-OPERATIONS",
+      "content": "Internal reasoning contract for MOD-OPS-HIGH: activation follows canonical context; declared evidence is required before external conclusions; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        1,
+        2,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-OPS-BOTTLENECK",
+        "DN-OPS-PROOF",
+        "DN-OPS-SCALE"
+      ],
+      "module_ids": [
+        "MOD-OPS-HIGH"
+      ],
+      "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
+    },
+    {
+      "retrieval_id": "RET-KCL-ORGANIZATIONAL-BRAND",
+      "knowledge_node_id": "KB-ORGANIZATIONAL-BRAND",
+      "claim_id": "KCL-ORGANIZATIONAL-BRAND",
+      "content": "Internal reasoning contract for MOD-FOUNDER-INSTITUTIONAL: activation follows canonical context; declared evidence is required before external conclusions; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        4,
+        5,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-INST-AUTHORITY",
+        "DN-INST-PERSONA",
+        "DN-INST-VOICE"
+      ],
+      "module_ids": [
+        "MOD-FOUNDER-INSTITUTIONAL"
+      ],
+      "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
+    },
+    {
+      "retrieval_id": "RET-KCL-PHYSICAL-OFFER",
+      "knowledge_node_id": "KB-PHYSICAL-OFFER",
+      "claim_id": "KCL-PHYSICAL-OFFER",
+      "content": "Internal reasoning contract for MOD-OFFER-PHYSICAL: activation follows canonical context; declared evidence is required before external conclusions; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        1,
+        2,
+        3,
+        7,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-OFFER-PHYSICAL-DELIVERY",
+        "DN-OFFER-PHYSICAL-PACKAGING",
+        "DN-OFFER-PHYSICAL-PROMISE",
+        "DN-OFFER-PHYSICAL-PROOF",
+        "DN-OFFER-PHYSICAL-UNIT"
+      ],
+      "module_ids": [
+        "MOD-OFFER-PHYSICAL"
+      ],
+      "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
+    },
+    {
+      "retrieval_id": "RET-KCL-PLATFORM-MECHANICS",
+      "knowledge_node_id": "KB-PLATFORM-MECHANICS",
+      "claim_id": "KCL-PLATFORM-MECHANICS",
+      "content": "Internal reasoning contract for MOD-OFFER-PLATFORM: activation follows canonical context; declared evidence is required before external conclusions; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        1,
+        2,
+        3,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-OFFER-PLATFORM-FRICTION",
+        "DN-OFFER-PLATFORM-JOB",
+        "DN-OFFER-PLATFORM-LOOP",
+        "DN-OFFER-PLATFORM-PROMISE"
+      ],
+      "module_ids": [
+        "MOD-OFFER-PLATFORM"
+      ],
+      "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
+    },
+    {
+      "retrieval_id": "RET-KCL-PROJECT-ECONOMICS",
+      "knowledge_node_id": "KB-PROJECT-ECONOMICS",
+      "claim_id": "KCL-PROJECT-ECONOMICS",
+      "content": "Internal reasoning contract for MOD-REV-PROJECT: activation follows canonical context; declared evidence is required before external conclusions; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        1,
+        2,
+        3,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-PRJ-MARGIN",
+        "DN-PRJ-PIPELINE",
+        "DN-PRJ-PROOF",
+        "DN-PRJ-SCOPE"
+      ],
+      "module_ids": [
+        "MOD-REV-PROJECT"
+      ],
+      "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
+    },
+    {
+      "retrieval_id": "RET-KCL-REBRAND",
+      "knowledge_node_id": "KB-REBRAND",
+      "claim_id": "KCL-REBRAND",
+      "content": "Internal reasoning contract for MOD-MATURITY-REBRAND: activation follows canonical context; declared evidence is required before external conclusions; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        1,
+        2,
+        3,
+        6,
+        7,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-REB-EQUITY",
+        "DN-REB-MIGRATION",
+        "DN-REB-NAMING",
+        "DN-REB-PERCEPTION",
+        "DN-REB-ROLLOUT",
+        "DN-REB-VISUAL"
+      ],
+      "module_ids": [
+        "MOD-MATURITY-REBRAND"
+      ],
+      "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
+    },
+    {
+      "retrieval_id": "RET-KCL-RETENTION",
+      "knowledge_node_id": "KB-RETENTION",
+      "claim_id": "KCL-RETENTION",
+      "content": "Internal reasoning contract for MOD-REL-RECURRING, MOD-REV-RECURRING: activation follows canonical context; declared evidence is required before external conclusions; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        1,
+        2,
+        3,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-REC-ACTIVATION",
+        "DN-REC-EXPANSION",
+        "DN-REC-PROMISE",
+        "DN-REC-RETENTION",
+        "DN-REL-PROMISE",
+        "DN-REL-REPEAT",
+        "DN-REL-RETENTION"
+      ],
+      "module_ids": [
+        "MOD-REL-RECURRING",
+        "MOD-REV-RECURRING"
+      ],
+      "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
+    },
+    {
+      "retrieval_id": "RET-KCL-SERVICE-DELIVERY",
+      "knowledge_node_id": "KB-SERVICE-DELIVERY",
+      "claim_id": "KCL-SERVICE-DELIVERY",
+      "content": "Internal reasoning contract for MOD-OFFER-SERVICE: activation follows canonical context; declared evidence is required before external conclusions; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        1,
+        2,
+        3,
+        5,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-OFFER-SERVICE-CAPACITY",
+        "DN-OFFER-SERVICE-DELIVERY",
+        "DN-OFFER-SERVICE-EXPECTATION",
+        "DN-OFFER-SERVICE-PROMISE",
+        "DN-OFFER-SERVICE-QUALITY"
+      ],
+      "module_ids": [
+        "MOD-OFFER-SERVICE"
+      ],
+      "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
+    },
+    {
+      "retrieval_id": "RET-KCL-TENDER",
+      "knowledge_node_id": "KB-TENDER",
+      "claim_id": "KCL-TENDER",
+      "content": "Internal reasoning contract for MOD-SALES-TENDER: activation follows canonical context; declared evidence is required before external conclusions; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        2,
+        3,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-TENDER-ELIGIBILITY",
+        "DN-TENDER-PIPELINE",
+        "DN-TENDER-PROOF"
+      ],
+      "module_ids": [
+        "MOD-SALES-TENDER"
+      ],
+      "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
+    },
+    {
+      "retrieval_id": "RET-KCL-UNIT-ECONOMICS",
+      "knowledge_node_id": "KB-UNIT-ECONOMICS",
+      "claim_id": "KCL-UNIT-ECONOMICS",
+      "content": "Internal reasoning contract for MOD-REV-TRANSACTION: activation follows canonical context; declared evidence is required before external conclusions; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        1,
+        2,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-TXN-GROWTH",
+        "DN-TXN-REPURCHASE",
+        "DN-TXN-UNIT-ECONOMICS"
+      ],
+      "module_ids": [
+        "MOD-REV-TRANSACTION"
+      ],
+      "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
+    },
+    {
+      "retrieval_id": "RET-KCL-VALIDATION",
+      "knowledge_node_id": "KB-VALIDATION",
+      "claim_id": "KCL-VALIDATION",
+      "content": "Internal reasoning contract for MOD-MATURITY-VALIDATION: activation follows canonical context; declared evidence is required before external conclusions; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        1,
+        2,
+        3,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-VAL-EVIDENCE",
+        "DN-VAL-HYPOTHESIS",
+        "DN-VAL-LAUNCH",
+        "DN-VAL-POSITIONING"
+      ],
+      "module_ids": [
+        "MOD-MATURITY-VALIDATION"
+      ],
+      "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
+    }
+  ]
+}

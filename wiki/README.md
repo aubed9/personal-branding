@@ -1,14 +1,29 @@
-# پایگاه دانش رسمی سیستم برندینگ و تصمیم‌گیری تجاری DIGITAL MARKET
+# Canonical Wiki and provenance
 
-به مخزن دانش مرجع **DIGITAL MARKET Knowledge Base** خوش آمدید.
+The root `wiki/` tree is the only authored decision-knowledge plane.
 
-این پایگاه دانش یک مستندات منفعل نیست؛ بلکه **موتور زنده دانش استنادی (Knowledge Engine)** است که در طول زنجیره ۸ فاز برندینگ، توسط ارکستراتور، روتر بافتار کسب‌وکار و اسکیل‌های تخصصی مصرف می‌شود.
+## Authorities
 
-## 🌟 ویژگی‌های کلیدی ساختار:
-1. **شناسه‌های پایدار و یکتا (`KB-...`):** تمامی گره‌های دانشی دارای کد مرجع یکتا هستند و مسیر فایل تنها آدرس فیزیکی ذخیره‌سازی است.
-2. **ساختار استاندارد ۱۴ بخشی:** هر مقاله شامل تعاریف، چرایی، زمان استفاده، نمونه‌های ساده و تخصصی، اشتباهات رایج، سنجه‌ها و گره‌های مرتبط است.
-3. **دو لایه زبانی هماهنگ:** توضیحات مفهومی به زبان فارسی روان، سلیس و قابل فهم برای کارآفرینان تدوین شده، در حالی که متادیتاهای فرانت‌متر به فرمت ماشین‌خوان انگلیسی هستند.
-4. **رجیستری متمرکز (`wiki/registry.yaml`):** نگاشت ماشین‌خوان کامل فازها، اصناف، سنجه‌ها و نیازمندی‌ها برای بارگذاری بلادرنگ در زمان اجرای ارکستراتور.
-5. **آمادگی برای GraphRAG:** طراحی ماژولار و تفکیک‌شده به همراه روابط صریح، این پایگاه دانش را آماده تغذیه سیستم‌های بازیابی معنایی و گراف دانش می‌کند.
+- `registry.yaml` owns Knowledge Node identity, lifecycle and graph relationships.
+- `source-registry.json` owns Source Record identity, authority, freshness and lifecycle.
+- `claims.json` owns decision-driving Knowledge Claims and claim-level provenance.
+- `generated/retrieval-index.json` is derived retrieval data. It is not hand-authored knowledge.
 
-برای مطالعه و دسترسی سریع به مقالات، به [نمایه جامع (INDEX.md)](INDEX.md) مراجعه فرمایید.
+Legacy `knowledge_base/wiki/` and `knowledge_base/rag_chunks.json` are migration inputs only. Compatibility adapters under `knowledge_base/` read the canonical root Wiki/index.
+
+For migrated articles that still contain old frontmatter such as `status: CANONICAL`, the frontmatter status is **not authoritative**. If a node has no explicit lifecycle in `registry.yaml`, `default_status: NEEDS_RESEARCH` applies. This prevents generic legacy provenance from being treated as trusted decision support.
+
+## Admission
+
+A decision-driving claim enters generated retrieval only when:
+1. the Knowledge Claim is VERIFIED or CANONICAL;
+2. every referenced Source Record exists;
+3. every referenced Source Record is VERIFIED or CANONICAL;
+4. required locators are present;
+5. freshness/authority constraints are satisfied.
+
+AI synthesis is never a source.
+
+## Counts
+
+Source counts are always computed from `source-registry.json`. Knowledge Node count is a separate metric and must never be reported as source count.
