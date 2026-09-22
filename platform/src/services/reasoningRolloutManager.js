@@ -3,6 +3,7 @@ import {
   V3_STORAGE_KEY,
 } from './persistenceManager.js';
 import {
+  LEGACY_STATE_SCHEMA_VERSION,
   PRE_V3_BACKUP_KEY,
   V3_REASONING_ENGINE_VERSION,
   V3_STATE_SCHEMA_VERSION,
@@ -63,10 +64,14 @@ export class ReasoningRolloutManager {
 
   _writeRecord(patch = {}) {
     const current = this.getRecord() || {};
+    const mode = patch.mode || current.mode || ROLLOUT_MODE.LEGACY;
     const next = {
       version: 1,
-      mode: patch.mode || current.mode || ROLLOUT_MODE.LEGACY,
-      stateSchemaVersion: V3_STATE_SCHEMA_VERSION,
+      mode,
+      stateSchemaVersion: mode === ROLLOUT_MODE.V3 ? V3_STATE_SCHEMA_VERSION : LEGACY_STATE_SCHEMA_VERSION,
+      shadowStateSchemaVersion: mode === ROLLOUT_MODE.SHADOW ? V3_STATE_SCHEMA_VERSION : null,
+      targetStateSchemaVersion: V3_STATE_SCHEMA_VERSION,
+      persistenceAuthority: mode === ROLLOUT_MODE.V3 ? 'CANONICAL_V3' : 'LEGACY_V2',
       reasoningEngineVersion: V3_REASONING_ENGINE_VERSION,
       createdAt: current.createdAt || nowIso(this.clock),
       updatedAt: nowIso(this.clock),
@@ -387,6 +392,9 @@ export class ReasoningRolloutManager {
     return {
       mode: record?.mode || null,
       stateSchemaVersion: record?.stateSchemaVersion || null,
+      shadowStateSchemaVersion: record?.shadowStateSchemaVersion || null,
+      targetStateSchemaVersion: record?.targetStateSchemaVersion || null,
+      persistenceAuthority: record?.persistenceAuthority || null,
       reasoningEngineVersion: record?.reasoningEngineVersion || null,
       shadowPassed: Boolean(record?.shadow?.passed),
       hasLegacyProject: this.hasLegacyProject(),
