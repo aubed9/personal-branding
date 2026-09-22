@@ -8,7 +8,7 @@ import {
 } from '../graph/index.js';
 import { makeNodeId } from '../graph/ids.js';
 import { contributeDecisionModulesToGraph, toCanonicalModuleContext } from '../modules/index.js';
-import { activeAnswers } from '../../services/interviewSchema.js';
+import { activeAnswers, migrateAnswerRecords } from '../../services/interviewSchema.js';
 import { DEPENDENCIES } from '../../services/adaptiveInterview.js';
 import { materializePhaseExitGate } from './gateProjection.js';
 import { projectContradictionsToGraph } from './contradictionProjection.js';
@@ -60,6 +60,7 @@ export function buildRuntimeReasoningGraph({
   revision = 0,
   businessContext = null,
   answerRecords = [],
+  phaseData = {},
   reviewRequired = {},
   contradictions = [],
   phaseGateResults = {},
@@ -73,7 +74,12 @@ export function buildRuntimeReasoningGraph({
 
   const answerNodeByQuestionId = {};
   const answerNodeByAnswerId = {};
-  const records = activeAnswers(answerRecords);
+  const active = activeAnswers(answerRecords);
+  const representedQuestions = new Set(active.map(record => record.questionId));
+  const legacyOnly = migrateAnswerRecords(phaseData).filter(record => !representedQuestions.has(record.questionId));
+  const records = [...active, ...legacyOnly].sort((a, b) =>
+    Number(a.phase) - Number(b.phase) || String(a.questionId).localeCompare(String(b.questionId))
+  );
 
   for (const record of records) {
     const id = makeNodeId(NODE_TYPES.EVIDENCE, {
