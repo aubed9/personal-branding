@@ -14,11 +14,13 @@ import { InterviewController } from "./services/interviewController";
 import { formatSelectedAnswer } from "./services/interviewSchema";
 import { SessionKeyManager } from "./services/endpointSecurity";
 import { PersistenceManager } from "./services/persistenceManager";
+import { ReasoningRolloutManager } from "./services/reasoningRolloutManager";
 import { validatePhaseGate } from "./services/phaseGateValidator";
 
 export default function App() {
   const [engine, setEngine] = useState(() => new OrchestratorEngine());
   const persistenceManagerRef = useRef(new PersistenceManager());
+  const rolloutManagerRef = useRef(new ReasoningRolloutManager());
   const controllerRef = useRef(null);
   if (!controllerRef.current || controllerRef.current.engine !== engine) controllerRef.current = new InterviewController(engine);
   const [workflowMessage, setWorkflowMessage] = useState('');
@@ -93,7 +95,8 @@ export default function App() {
     setMarkdownContent(eng.generateMarkdownText(eng.currentPhase));
 
     // Autosave state securely via PersistenceManager (Requirement R8.1 / R11)
-    const saved = persistenceManagerRef.current.saveProjectState(eng);
+    const saveResult = rolloutManagerRef.current.saveEngine(eng, persistenceManagerRef.current);
+    const saved = Boolean(saveResult?.success);
     if (!saved) setWorkflowMessage('ذخیره خودکار انجام نشد. از تنظیمات، فایل پروژه را دانلود کنید.');
     setLastSavedTime(saved ? new Date().toLocaleTimeString("fa-IR", { hour: "2-digit", minute: "2-digit", second: "2-digit" }) : "");
   }, []);
@@ -101,7 +104,7 @@ export default function App() {
   // Initialize Engine, safely restore saved state (or recover if corrupt), & purge legacy keys
   useEffect(() => {
     SessionKeyManager.purgeLegacyKeys();
-    const loadRes = persistenceManagerRef.current.safeLoadOrInitialize(engine);
+    const loadRes = rolloutManagerRef.current.initializeEngine(engine, persistenceManagerRef.current);
     if (loadRes?.success) {
       setCurrentPhase(engine.currentPhase || 1);
     }
@@ -126,7 +129,7 @@ export default function App() {
       const result = await controller.submit({ userText, optionValue, structuredData, questionId: currentQuestion.id }, {
         engineMode, apiKey: apiKey || SessionKeyManager.getApiKey(), model, customEndpoint,
       }, eng => {
-        if (!persistenceManagerRef.current.saveProjectState(eng)) setWorkflowMessage('ذخیره خودکار انجام نشد؛ فایل پروژه را دانلود کنید.');
+        if (!rolloutManagerRef.current.saveEngine(eng, persistenceManagerRef.current)?.success) setWorkflowMessage('ذخیره خودکار انجام نشد؛ فایل پروژه را دانلود کنید.');
       });
       if (result.cancelled || result.ignored || controller !== controllerRef.current) return;
       setWorkflowMessage(result.message || '');
@@ -205,7 +208,7 @@ export default function App() {
   const handleReset = () => {
     if (window.confirm("آیا مایلید تمام فرآیند برندینگ را از فاز ۱ دوباره شروع کنید؟ تمام داده‌ها بازنشانی خواهند شد.")) {
       cancelPendingTurn();
-      persistenceManagerRef.current.resetProjectState();
+      rolloutManagerRef.current.reset(persistenceManagerRef.current);
       const newEng = new OrchestratorEngine();
       setEngine(newEng);
       setCurrentPhase(1);
@@ -217,7 +220,7 @@ export default function App() {
 
   // Export Project State to JSON file
   const handleExportProject = () => {
-    const jsonStr = persistenceManagerRef.current.exportProjectJSON(engine);
+    const jsonStr = rolloutManagerRef.current.exportProject(engine, persistenceManagerRef.current);
     if (!jsonStr) return;
     const blob = new Blob([jsonStr], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -230,13 +233,12 @@ export default function App() {
 
   // Import Project State from JSON file
   const handleImportProject = (jsonString) => {
-    const res = persistenceManagerRef.current.importProjectJSON(jsonString);
-    if (!res.success) return res;
     cancelPendingTurn();
-    if (!persistenceManagerRef.current.restoreToEngine(engine, res.state)) return { success: false, error: "فایل پروژه نامعتبر است." };
+    const res = rolloutManagerRef.current.importProject(jsonString, engine, persistenceManagerRef.current);
+    if (!res.success) return res;
     setCurrentPhase(engine.currentPhase || 1);
     syncFromEngine(engine);
-    return { success: true };
+    return { success: true, mode: res.mode };
   };
 
   const activeGuild = engine.businessContext?.resolvedType;
