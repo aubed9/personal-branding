@@ -261,3 +261,55 @@ test('critical claims require fresh Tier A evidence and retrieval filters before
   });
   assert.deepEqual(results.map(result => result.entry.claim_id), ['KCL-LEGAL']);
 });
+
+
+test('legacy RAG migration inventory accounts for every chunk with zero silent loss', () => {
+  const legacyChunks = json('knowledge_base/rag_chunks.json');
+  const inventory = json('wiki/migration/legacy-rag-inventory.json');
+  const parity = json('wiki/migration/retrieval-parity-report.json');
+  const generated = json('wiki/generated/retrieval-index.json');
+
+  assert.equal(inventory.legacy_chunk_count, legacyChunks.length);
+  assert.equal(inventory.entries.length, legacyChunks.length);
+
+  const expectedIds = legacyChunks.map((chunk, index) =>
+    chunk.id || `LEGACY-RAG-${String(index + 1).padStart(3, '0')}`
+  );
+  assert.deepEqual(inventory.entries.map(entry => entry.legacy_id), expectedIds);
+  assert.ok(inventory.entries.every(entry =>
+    entry.status === 'NEEDS_RESEARCH' &&
+    Array.isArray(entry.canonical_claim_ids) &&
+    typeof entry.migration_reason === 'string' &&
+    entry.migration_reason.length > 0
+  ));
+
+  assert.equal(parity.legacy_rag_chunks, legacyChunks.length);
+  assert.equal(parity.legacy_chunks_accounted_for, legacyChunks.length);
+  assert.equal(parity.silently_dropped_legacy_chunks, 0);
+  assert.equal(
+    parity.directly_mapped_legacy_chunks + parity.needs_research_legacy_chunks,
+    legacyChunks.length
+  );
+  assert.equal(parity.canonical_retrieval_entries, generated.count);
+
+  const legacyIds = new Set(expectedIds);
+  assert.equal(
+    generated.entries.some(entry => legacyIds.has(entry.claim_id) || legacyIds.has(entry.retrieval_id)),
+    false,
+    'unsourced legacy chunks must not enter canonical retrieval by identity'
+  );
+});
+
+test('legacy Wiki migration inventory accounts for every legacy authored markdown file', () => {
+  const inventory = json('wiki/migration/legacy-wiki-inventory.json');
+  const legacyDir = path.join(root, 'knowledge_base', 'wiki');
+  const actual = fs.readdirSync(legacyDir)
+    .filter(name => name.endsWith('.md'))
+    .map(name => `knowledge_base/wiki/${name}`)
+    .sort();
+
+  assert.equal(inventory.legacy_wiki_file_count, actual.length);
+  assert.deepEqual(inventory.files.map(item => item.path).sort(), actual);
+  assert.ok(inventory.files.every(item => item.status === 'MIGRATION_INPUT'));
+  assert.ok(inventory.files.every(item => typeof item.blob_sha === 'string' && item.blob_sha.length >= 40));
+});
