@@ -22,7 +22,7 @@ export function defineDecisionModule(definition) {
     values: uniq(definition.values),
     phases: uniq(definition.phases).map(Number).sort((a, b) => a - b),
     activation: definition.activation || null,
-    prerequisites: definition.prerequisites || [],
+    prerequisites: definition.prerequisites || [`AXIS:${definition.axis}`],
     decisionNodes: definition.decisionNodes || [],
     evidenceRequirements: definition.evidenceRequirements || [],
     calculations: definition.calculations || [],
@@ -32,7 +32,11 @@ export function defineDecisionModule(definition) {
     gates: definition.gates || [],
     knowledgeDependencies: definition.knowledgeDependencies || [],
     sourceDependencies: definition.sourceDependencies || [],
-    invalidationEdges: definition.invalidationEdges || [],
+    invalidationEdges: definition.invalidationEdges || (definition.decisionNodes || []).map(node => ({
+      type: 'INVALIDATES_ON_AXIS_CHANGE',
+      from: `AXIS:${definition.axis}`,
+      to: node.id,
+    })),
     priority: Number(definition.priority || 100),
   };
   Object.freeze(mod.values);
