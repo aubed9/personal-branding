@@ -1,0 +1,97 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://digital-market.local/schemas/v3/section.schema.json",
+  "title": "DigitalMarketCanonicalSectionV3",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "sectionId",
+    "sectionType",
+    "activationReason",
+    "applicability",
+    "status",
+    "claimIds",
+    "dependencyIds",
+    "blockerIds",
+    "contradictionIds",
+    "omissionReason",
+    "knowledgeNodeIds",
+    "sourceIds"
+  ],
+  "properties": {
+    "sectionId": {
+      "type": "string",
+      "pattern": "^SEC-[0-9a-f]{16}$"
+    },
+    "sectionType": {
+      "type": "string",
+      "minLength": 1
+    },
+    "activationReason": {
+      "type": "string"
+    },
+    "applicability": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "CONFIRMED",
+        "PROVISIONAL",
+        "NEEDS_REVIEW",
+        "BLOCKED",
+        "STALE",
+        "NOT_APPLICABLE"
+      ]
+    },
+    "claimIds": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "dependencyIds": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "blockerIds": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "contradictionIds": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "omissionReason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "knowledgeNodeIds": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "sourceIds": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}
