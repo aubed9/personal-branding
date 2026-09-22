@@ -17,14 +17,14 @@ export class InterviewController {
     this.busy = false;
   }
 
-  async submit({ userText, optionValue = null, questionId }, config = {}, onSaved = () => {}) {
+  async submit({ userText, optionValue = null, questionId, structuredData }, config = {}, onSaved = () => {}) {
     if (this.busy) return { ignored: true };
     this.busy = true;
     const epoch = ++this.epoch;
     const controller = new AbortController();
     this.abortController = controller;
     try {
-      const response = this.engine.processUserResponse(userText, optionValue, { expectedQuestionId: questionId });
+      const response = this.engine.processUserResponse(userText, optionValue, { expectedQuestionId: questionId, structuredData });
       // Persist before a network call; an interrupted request must never lose an answer.
       onSaved(this.engine);
       const turn = this.engine.createAITurn();

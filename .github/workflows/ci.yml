@@ -47,6 +47,23 @@ jobs:
         working-directory: platform
         run: npm run validate && npm run test:leakage
 
+      - name: Install Chromium for browser tests
+        working-directory: platform
+        run: npx playwright install --with-deps chromium
+
+      - name: Run real browser journeys on desktop and mobile
+        working-directory: platform
+        run: npm run test:browser
+
+      - name: Save browser failure screenshots and traces
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-test-failures
+          path: platform/test-results
+          if-no-files-found: ignore
+          retention-days: 7
+
       - name: Run Python system validation
         run: python scripts/validate_system.py
 

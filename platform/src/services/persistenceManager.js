@@ -1,4 +1,5 @@
 import { migrateAnswerRecords } from "./interviewSchema.js";
+import { validateUnitEconomics } from './unitEconomics.js';
 /**
  * DIGITAL MARKET — Versioned State Persistence Manager (Requirement R8.1)
  * 
@@ -66,6 +67,9 @@ function validateStateStructure(state) {
 
   for (const field of ['facts', 'decisions', 'assumptions', 'unknowns', 'contradictions', 'answerRecords', 'aiInsights', 'dynamicQuestionsHistory']) {
     if (state[field] !== undefined && !Array.isArray(state[field])) errors.push(`${field} باید آرایه باشد`);
+  }
+  for (const record of Array.isArray(state.answerRecords) ? state.answerRecords : []) {
+    if (record?.structuredData && (record.questionId !== 'unit_economics' || !validateUnitEconomics(record.structuredData).valid)) errors.push('اطلاعات مالی پاسخ واردشده معتبر نیست.');
   }
   if (state.phaseData && typeof state.phaseData === 'object') {
     for (const data of Object.values(state.phaseData)) {

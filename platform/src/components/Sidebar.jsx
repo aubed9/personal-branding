@@ -94,7 +94,7 @@ export default function Sidebar({
           </div>
 
           <div className="grid grid-cols-4 rounded-xl bg-[#111111] border border-white/10 divide-x divide-x-reverse divide-white/10 overflow-hidden">
-            <div className="p-2 text-center" title="حقایق تایید شده">
+            <div className="p-2 text-center" title="اطلاعات اعلام‌شده کاربر">
               <span className="block text-white font-black text-xs sm:text-sm font-mono">{stats.facts || 0}</span>
               <span className="text-[10px] text-zinc-400">حقایق</span>
             </div>

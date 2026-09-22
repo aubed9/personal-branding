@@ -7,6 +7,7 @@ import { detectUnknownIntent, parseSemanticInput } from './semanticParser.js';
 import { validatePhaseGate } from "./phaseGateValidator.js";
 import { UnknownsManager, UNKNOWN_STATUS } from "./unknownsManager.js";
 import { ContradictionEngine, CONTRADICTION_STATUS } from "./contradictionEngine.js";
+import { validateUnitEconomics, formatUnitEconomics } from './unitEconomics.js';
 
 /**
  * 4-State Lifecycle for AI-generated dynamic questions (Requirement R13, Feature 10)
@@ -174,10 +175,15 @@ export class OrchestratorEngine {
       this.businessContext,
       this.phaseData,
       this.unknowns,
-      this.phaseData[1]?.diagnosticVision || ""
+      this.phaseData[1]?.diagnosticVision || "",
+      { answerRecords: this.answerRecords }
     );
     const review = this.reviewRequired[this.currentPhase] || [];
-    return questions.map(q => review.includes(q.id) ? { ...q, isAnswered: false, needsReview: true } : q);
+    return questions.map(q => {
+      const answer = activeAnswers(this.answerRecords).find(a => a.questionId === q.id);
+      return { ...q, ...(review.includes(q.id) ? { isAnswered: false, needsReview: true } : {}),
+        ...(answer?.structuredData ? { structuredAnswer: answer.structuredData } : {}) };
+    });
   }
 
   getCurrentQuestion() {
@@ -483,6 +489,14 @@ export class OrchestratorEngine {
     if (phase !== this.currentPhase && !options.questionId) {
       throw new Error('این پاسخ متعلق به فاز جاری نیست.');
     }
+    let structuredData = null;
+    if (options.structuredData !== undefined && options.structuredData !== null) {
+      if (qId !== 'unit_economics') throw new Error('اطلاعات مالی فقط برای سؤال قیمت و هزینه قابل ثبت است.');
+      const validation = validateUnitEconomics(options.structuredData);
+      if (!validation.valid) throw new Error(Object.values(validation.errors).join(' '));
+      structuredData = validation.value;
+      userText = formatUnitEconomics(structuredData);
+    }
     if (this.dynamicQuestion) {
       this.dynamicQuestionsHistory.push({ ...this.dynamicQuestion,
         state: DYNAMIC_QUESTION_STATE.ARCHIVED, userAnswer: userText, optionValue,
@@ -499,8 +513,8 @@ export class OrchestratorEngine {
     const oldValue = this.phaseData[phase]?.[field];
     this.revision++;
     const unknownIntent = detectUnknownIntent(userText);
-    const unknown = optionValue === 'unknown' || unknownIntent.isUnknown;
-    const estimate = /حدود|تقریب|برآورد|حدس|احتمال|فکر می.کنم/.test(userText);
+    const unknown = !structuredData && (optionValue === 'unknown' || unknownIntent.isUnknown);
+    const estimate = structuredData ? structuredData.isEstimate : /(?:^|[\s،؛:])(?:حدود|تقریباً|تقریبا|تقریبی|برآورد|برآوردی|حدس|احتمال|احتمالی|احتمالاً)(?=$|[\s،؛:0-9۰-۹])|فکر می[‌\s]*کنم/.test(userText);
     const record = {
       id: `ANS-${this.revision}`, revision: this.revision, phase, questionId: qId, field,
       label: spec?.label || currentQ?.title || qId,
@@ -510,6 +524,7 @@ export class OrchestratorEngine {
       kind: unknown ? 'UNKNOWN' : estimate ? 'ASSUMPTION' : (spec?.kind || 'FACT'),
       status: 'ACTIVE', source: optionValue ? 'USER_OPTION' : 'USER_TEXT',
       createdAt: new Date().toISOString(),
+      ...(structuredData ? { structuredData } : {}),
     };
     if (previous) { previous.status = 'SUPERSEDED'; previous.supersededBy = record.id; }
     this.answerRecords.push(record);

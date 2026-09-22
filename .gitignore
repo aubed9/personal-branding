@@ -23,3 +23,7 @@ Thumbs.db
 .env
 .env.local
 .env.*.local
+
+# Browser test artifacts
+platform/test-results/
+platform/playwright-report/

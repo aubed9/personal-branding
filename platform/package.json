@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "npm run test:adaptive && npm run test:ui && node test_runtime_harmonization.js && node test_milestone2_gates_unknowns_contradictions.js && node test_milestone5_structured_ai_persian.js && node test_milestone6_security_endpoints.js && node test_milestone7_ui_workspace_guild_selector.js && node test_milestone8_persistence_recovery.js && node test_milestone9_accessibility_viewport.js && node test_milestone10_performance_chunking.js && node test_milestone12_pairwise_scenarios.js && node test_milestone13_browser_e2e.js && node test_milestone14_regression_ci.js",
+    "test": "npm run test:financial && npm run test:adaptive && npm run test:ui && node test_runtime_harmonization.js && node test_milestone2_gates_unknowns_contradictions.js && node test_milestone5_structured_ai_persian.js && node test_milestone6_security_endpoints.js && node test_milestone7_ui_workspace_guild_selector.js && node test_milestone8_persistence_recovery.js && node test_milestone9_accessibility_viewport.js && node test_milestone10_performance_chunking.js && node test_milestone12_pairwise_scenarios.js && node test_milestone13_browser_e2e.js && node test_milestone14_regression_ci.js",
     "test:unit": "node test_runtime_harmonization.js",
     "test:gates": "node test_milestone2_gates_unknowns_contradictions.js",
     "test:m5": "node test_milestone5_structured_ai_persian.js",
@@ -28,7 +28,9 @@
     "validate": "npm run test && npm run test:adversarial && npm run test:integration && npm run test:e2e",
     "ci": "npm run build && npm run validate && npm run test:753",
     "test:adaptive": "node --test test_adaptive_interview.js",
-    "test:ui": "node --test test_app_dom.cjs"
+    "test:ui": "node --test test_app_dom.cjs",
+    "test:financial": "node --test test_financial_strategy.js",
+    "test:browser": "playwright test"
   },
   "dependencies": {
     "canvas-confetti": "^1.9.4",
@@ -37,6 +39,7 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",
