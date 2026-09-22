@@ -122,6 +122,10 @@ test('feature policy can stop rollout and keep projects on LEGACY', () => {
 
   const newInit = manager.initializeEngine(engine, pm);
   assert.equal(newInit.mode, ROLLOUT_MODE.LEGACY);
+  let rolloutRecord = JSON.parse(mem.api.getItem(ROLLOUT_STORAGE_KEY));
+  assert.equal(rolloutRecord.stateSchemaVersion, 2);
+  assert.equal(rolloutRecord.shadowStateSchemaVersion, null);
+  assert.equal(rolloutRecord.persistenceAuthority, 'LEGACY_V2');
   const newSave = manager.saveEngine(engine, pm);
   assert.equal(newSave.success, true);
   assert.ok(mem.api.getItem(STORAGE_KEY));
@@ -135,6 +139,9 @@ test('feature policy can stop rollout and keep projects on LEGACY', () => {
 
   const existingInit = manager.initializeEngine(new OrchestratorEngine(), pm);
   assert.equal(existingInit.mode, ROLLOUT_MODE.LEGACY);
+  rolloutRecord = JSON.parse(mem.api.getItem(ROLLOUT_STORAGE_KEY));
+  assert.equal(rolloutRecord.stateSchemaVersion, 2);
+  assert.equal(rolloutRecord.persistenceAuthority, 'LEGACY_V2');
   assert.equal(mem.api.getItem(V3_STORAGE_KEY), null);
   assert.equal(mem.api.getItem(PRE_V3_BACKUP_KEY), null);
 });
@@ -180,6 +187,10 @@ test('existing legacy projects enter SHADOW, create exact backup, and temporaril
 
   assert.equal(init.success, true);
   assert.equal(init.mode, ROLLOUT_MODE.SHADOW);
+  const rolloutRecord = JSON.parse(mem.api.getItem(ROLLOUT_STORAGE_KEY));
+  assert.equal(rolloutRecord.stateSchemaVersion, 2);
+  assert.equal(rolloutRecord.shadowStateSchemaVersion, V3_STATE_SCHEMA_VERSION);
+  assert.equal(rolloutRecord.persistenceAuthority, 'LEGACY_V2');
   assert.equal(freshEngine.currentPhase, legacyEngine.currentPhase);
   assert.deepEqual(freshEngine.phaseData[1], legacyEngine.phaseData[1]);
   assert.equal(mem.api.getItem(PRE_V3_BACKUP_KEY), legacyRawBefore);
