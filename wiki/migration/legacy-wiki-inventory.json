@@ -1,0 +1,67 @@
+{
+  "version": "1.0.0",
+  "generated_at": "2026-09-22",
+  "legacy_wiki_file_count": 12,
+  "files": [
+    {
+      "path": "knowledge_base/wiki/01_pricing_and_revenue_playbook.md",
+      "blob_sha": "5ed85b29512d5bc84e4201f28825d7f1862818c1",
+      "status": "MIGRATION_INPUT"
+    },
+    {
+      "path": "knowledge_base/wiki/02_channel_and_acquisition_playbook.md",
+      "blob_sha": "53a9c707ad5f3211f8d9dc24808fa4b7c572c16d",
+      "status": "MIGRATION_INPUT"
+    },
+    {
+      "path": "knowledge_base/wiki/03_positioning_and_differentiation_playbook.md",
+      "blob_sha": "a042d8d4d60c5bdd0c3d832901cbd4226c573148",
+      "status": "MIGRATION_INPUT"
+    },
+    {
+      "path": "knowledge_base/wiki/04_brand_character_and_archetypes_playbook.md",
+      "blob_sha": "4d8dd9f62d133e4a168bc2a79bd362629b9890b0",
+      "status": "MIGRATION_INPUT"
+    },
+    {
+      "path": "knowledge_base/wiki/05_verbal_identity_and_messaging_playbook.md",
+      "blob_sha": "5007e8e5f2b334d4d6f31def986aeb7c01aad5f8",
+      "status": "MIGRATION_INPUT"
+    },
+    {
+      "path": "knowledge_base/wiki/06_naming_and_tagline_playbook.md",
+      "blob_sha": "17f6f0d17ce99f4278392f7bb1ddbfcfc3f9bfd2",
+      "status": "MIGRATION_INPUT"
+    },
+    {
+      "path": "knowledge_base/wiki/07_visual_identity_playbook.md",
+      "blob_sha": "66fdcc91483382bdef568efb1f87376ec9c564c1",
+      "status": "MIGRATION_INPUT"
+    },
+    {
+      "path": "knowledge_base/wiki/08_business_decision_chain_and_5_levels.md",
+      "blob_sha": "982a598079f24b01fbb08ec04cfb7d82cccbc3b8",
+      "status": "MIGRATION_INPUT"
+    },
+    {
+      "path": "knowledge_base/wiki/09_the_30_canonical_foundations.md",
+      "blob_sha": "a9d952d67b67cc636da70490c6f30a30f43b164d",
+      "status": "MIGRATION_INPUT"
+    },
+    {
+      "path": "knowledge_base/wiki/10_graphrag_ontology_and_cross_domain_relations.md",
+      "blob_sha": "06f6f27914e9a57fb2504963b35431f29cec2a9b",
+      "status": "MIGRATION_INPUT"
+    },
+    {
+      "path": "knowledge_base/wiki/11_conflict_resolution_and_evidence_hierarchy.md",
+      "blob_sha": "8b4a43b502c0b994f0f94c498d6e3100cb338207",
+      "status": "MIGRATION_INPUT"
+    },
+    {
+      "path": "knowledge_base/wiki/12_iran_market_and_economic_sources.md",
+      "blob_sha": "bf086ec1220aee59b7d7c904d24ac71bcee21c90",
+      "status": "MIGRATION_INPUT"
+    }
+  ]
+}
