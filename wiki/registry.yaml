@@ -1,5 +1,8 @@
 version: 1.0.0
-updated_at: '2026-09-05'
+updated_at: '2026-09-22'
+default_status: NEEDS_RESEARCH
+source_registry: wiki/source-registry.json
+claim_registry: wiki/claims.json
 knowledge_nodes:
   KB-SYS-ARCH-001:
     title: معماری جامع سیستم دیجیتال مارکت
@@ -674,3 +677,316 @@ knowledge_nodes:
     dependencies:
     - KB-SYS-ARCH-001
     relevance: mandatory
+
+# -----------------------------------------------------------------------------
+# Reasoning v3 Decision Module knowledge nodes
+# Generated from module knowledge dependencies; external facts are not asserted.
+# -----------------------------------------------------------------------------
+  KB-B2B-DMU:
+    title: "Decision Module knowledge contract: KB-B2B-DMU"
+    file: wiki/13-decision-modules/b2b-dmu.md
+    category: 13-decision-modules
+    phases: [2, 3, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-B2B-DMU]
+  KB-B2B-PROCUREMENT:
+    title: "Decision Module knowledge contract: KB-B2B-PROCUREMENT"
+    file: wiki/13-decision-modules/b2b-procurement.md
+    category: 13-decision-modules
+    phases: [2, 3, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-B2B-PROCUREMENT]
+  KB-B2C-BEHAVIOR:
+    title: "Decision Module knowledge contract: KB-B2C-BEHAVIOR"
+    file: wiki/13-decision-modules/b2c-behavior.md
+    category: 13-decision-modules
+    phases: [2, 3, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-B2C-BEHAVIOR]
+  KB-BRAND-ARCHITECTURE:
+    title: "Decision Module knowledge contract: KB-BRAND-ARCHITECTURE"
+    file: wiki/13-decision-modules/brand-architecture.md
+    category: 13-decision-modules
+    phases: [3, 6, 7, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-BRAND-ARCHITECTURE]
+  KB-COMPLIANCE:
+    title: "Decision Module knowledge contract: KB-COMPLIANCE"
+    file: wiki/13-decision-modules/compliance.md
+    category: 13-decision-modules
+    phases: [1, 2, 3, 5, 6, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-COMPLIANCE]
+  KB-DIGITAL-FUNNEL:
+    title: "Decision Module knowledge contract: KB-DIGITAL-FUNNEL"
+    file: wiki/13-decision-modules/digital-funnel.md
+    category: 13-decision-modules
+    phases: [2, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-DIGITAL-FUNNEL]
+  KB-DIGITAL-PRODUCT:
+    title: "Decision Module knowledge contract: KB-DIGITAL-PRODUCT"
+    file: wiki/13-decision-modules/digital-product.md
+    category: 13-decision-modules
+    phases: [1, 2, 3, 5, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-DIGITAL-PRODUCT]
+  KB-ENTERPRISE-GOVERNANCE:
+    title: "Decision Module knowledge contract: KB-ENTERPRISE-GOVERNANCE"
+    file: wiki/13-decision-modules/enterprise-governance.md
+    category: 13-decision-modules
+    phases: [1, 3, 7, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-ENTERPRISE-GOVERNANCE]
+  KB-FOUNDER-BRAND:
+    title: "Decision Module knowledge contract: KB-FOUNDER-BRAND"
+    file: wiki/13-decision-modules/founder-brand.md
+    category: 13-decision-modules
+    phases: [4, 5, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-FOUNDER-BRAND]
+  KB-LOCAL-CHANNEL:
+    title: "Decision Module knowledge contract: KB-LOCAL-CHANNEL"
+    file: wiki/13-decision-modules/local-channel.md
+    category: 13-decision-modules
+    phases: [2, 7, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-LOCAL-CHANNEL]
+  KB-LOCAL-MARKET:
+    title: "Decision Module knowledge contract: KB-LOCAL-MARKET"
+    file: wiki/13-decision-modules/local-market.md
+    category: 13-decision-modules
+    phases: [1, 2, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-LOCAL-MARKET]
+  KB-LONG-SALES-CYCLE:
+    title: "Decision Module knowledge contract: KB-LONG-SALES-CYCLE"
+    file: wiki/13-decision-modules/long-sales-cycle.md
+    category: 13-decision-modules
+    phases: [2, 3, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-LONG-SALES-CYCLE]
+  KB-LTV-CAC:
+    title: "Decision Module knowledge contract: KB-LTV-CAC"
+    file: wiki/13-decision-modules/ltv-cac.md
+    category: 13-decision-modules
+    phases: [1, 2, 3, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-LTV-CAC]
+  KB-MARKET-ENTRY:
+    title: "Decision Module knowledge contract: KB-MARKET-ENTRY"
+    file: wiki/13-decision-modules/market-entry.md
+    category: 13-decision-modules
+    phases: [1, 2, 3, 5, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-MARKET-ENTRY]
+  KB-MARKETPLACE-LIQUIDITY:
+    title: "Decision Module knowledge contract: KB-MARKETPLACE-LIQUIDITY"
+    file: wiki/13-decision-modules/marketplace-liquidity.md
+    category: 13-decision-modules
+    phases: [1, 2, 3, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-MARKETPLACE-LIQUIDITY]
+  KB-MICRO-OPERATIONS:
+    title: "Decision Module knowledge contract: KB-MICRO-OPERATIONS"
+    file: wiki/13-decision-modules/micro-operations.md
+    category: 13-decision-modules
+    phases: [1, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-MICRO-OPERATIONS]
+  KB-MULTI-BRANCH:
+    title: "Decision Module knowledge contract: KB-MULTI-BRANCH"
+    file: wiki/13-decision-modules/multi-branch.md
+    category: 13-decision-modules
+    phases: [1, 7, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-MULTI-BRANCH]
+  KB-OPERATIONS:
+    title: "Decision Module knowledge contract: KB-OPERATIONS"
+    file: wiki/13-decision-modules/operations.md
+    category: 13-decision-modules
+    phases: [1, 2, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-OPERATIONS]
+  KB-ORGANIZATIONAL-BRAND:
+    title: "Decision Module knowledge contract: KB-ORGANIZATIONAL-BRAND"
+    file: wiki/13-decision-modules/organizational-brand.md
+    category: 13-decision-modules
+    phases: [4, 5, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-ORGANIZATIONAL-BRAND]
+  KB-PHYSICAL-OFFER:
+    title: "Decision Module knowledge contract: KB-PHYSICAL-OFFER"
+    file: wiki/13-decision-modules/physical-offer.md
+    category: 13-decision-modules
+    phases: [1, 2, 3, 7, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-PHYSICAL-OFFER]
+  KB-PLATFORM-MECHANICS:
+    title: "Decision Module knowledge contract: KB-PLATFORM-MECHANICS"
+    file: wiki/13-decision-modules/platform-mechanics.md
+    category: 13-decision-modules
+    phases: [1, 2, 3, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-PLATFORM-MECHANICS]
+  KB-PROJECT-ECONOMICS:
+    title: "Decision Module knowledge contract: KB-PROJECT-ECONOMICS"
+    file: wiki/13-decision-modules/project-economics.md
+    category: 13-decision-modules
+    phases: [1, 2, 3, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-PROJECT-ECONOMICS]
+  KB-REBRAND:
+    title: "Decision Module knowledge contract: KB-REBRAND"
+    file: wiki/13-decision-modules/rebrand.md
+    category: 13-decision-modules
+    phases: [1, 2, 3, 6, 7, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-REBRAND]
+  KB-RETENTION:
+    title: "Decision Module knowledge contract: KB-RETENTION"
+    file: wiki/13-decision-modules/retention.md
+    category: 13-decision-modules
+    phases: [1, 2, 3, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-RETENTION]
+  KB-SERVICE-DELIVERY:
+    title: "Decision Module knowledge contract: KB-SERVICE-DELIVERY"
+    file: wiki/13-decision-modules/service-delivery.md
+    category: 13-decision-modules
+    phases: [1, 2, 3, 5, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-SERVICE-DELIVERY]
+  KB-TENDER:
+    title: "Decision Module knowledge contract: KB-TENDER"
+    file: wiki/13-decision-modules/tender.md
+    category: 13-decision-modules
+    phases: [2, 3, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-TENDER]
+  KB-UNIT-ECONOMICS:
+    title: "Decision Module knowledge contract: KB-UNIT-ECONOMICS"
+    file: wiki/13-decision-modules/unit-economics.md
+    category: 13-decision-modules
+    phases: [1, 2, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-UNIT-ECONOMICS]
+  KB-VALIDATION:
+    title: "Decision Module knowledge contract: KB-VALIDATION"
+    file: wiki/13-decision-modules/validation.md
+    category: 13-decision-modules
+    phases: [1, 2, 3, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-VALIDATION]
