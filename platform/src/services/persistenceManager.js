@@ -2,6 +2,7 @@ import { migrateAnswerRecords } from "./interviewSchema.js";
 import { validateUnitEconomics } from './unitEconomics.js';
 import { migrateLegacyStateToV3 } from '../state/v3/migration.js';
 import { validateCanonicalProjectState } from '../state/v3/canonicalState.js';
+import { projectCanonicalStateToLegacyEngineState } from '../state/v3/compatibilityBridge.js';
 import {
   PRE_V3_BACKUP_KEY,
   V3_STATE_SCHEMA_VERSION,
@@ -463,6 +464,75 @@ export class PersistenceManager {
     }
   }
 
+  /**
+   * Restore canonical v3 state into the current Orchestrator compatibility surface.
+   * Canonical state remains authoritative; this is a projection, not a reverse migration.
+   */
+  restoreCanonicalToEngine(engine, canonicalState) {
+    try {
+      const validation = validateCanonicalProjectState(canonicalState);
+      if (!validation.valid) {
+        console.warn('[PersistenceManager] Canonical restore validation failed:', validation.errors);
+        return false;
+      }
+      const legacyView = projectCanonicalStateToLegacyEngineState(canonicalState);
+      const restored = this.restoreToEngine(engine, legacyView);
+      if (!restored) return false;
+      if (typeof engine._syncReasoningGraphV3 === 'function') engine._syncReasoningGraphV3();
+      return true;
+    } catch (err) {
+      console.warn('[PersistenceManager] Canonical restore failed:', err.message);
+      return false;
+    }
+  }
+
+  /**
+   * Explicit rollback to the exact pre-v3 envelope.
+   * This never attempts to reverse-transform canonical writes.
+   */
+  restorePreV3Backup({ clearCanonical = true } = {}) {
+    try {
+      if (typeof localStorage === 'undefined') return { success: false, reason: 'localStorage not available' };
+      const raw = localStorage.getItem(PRE_V3_BACKUP_KEY);
+      if (!raw) return { success: false, reason: 'no_pre_v3_backup' };
+
+      // Validate the backup before replacing the active legacy key.
+      const envelope = JSON.parse(raw);
+      if (!envelope || typeof envelope !== 'object' || !envelope.state) {
+        return { success: false, reason: 'invalid_pre_v3_backup' };
+      }
+      const version = Number(envelope.schemaVersion || 0);
+      let state = envelope.state;
+      if (version < SCHEMA_VERSION) state = this.migrateState(state, version);
+      const validation = validateStateStructure(state);
+      if (!validation.valid) {
+        return { success: false, reason: 'backup_validation_failed', errors: validation.errors };
+      }
+
+      localStorage.setItem(STORAGE_KEY, raw);
+      if (clearCanonical) localStorage.removeItem(V3_STORAGE_KEY);
+      return {
+        success: true,
+        restoredSchemaVersion: version,
+        clearedCanonical: Boolean(clearCanonical),
+      };
+    } catch (err) {
+      console.warn('[PersistenceManager] Pre-v3 rollback failed:', err.message);
+      return { success: false, reason: 'rollback_failed', error: err.message };
+    }
+  }
+
+  clearV3ProjectState({ clearBackup = false } = {}) {
+    try {
+      if (typeof localStorage === 'undefined') return false;
+      localStorage.removeItem(V3_STORAGE_KEY);
+      if (clearBackup) localStorage.removeItem(PRE_V3_BACKUP_KEY);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
   hasV3ProjectState() {
     try {
       return typeof localStorage !== 'undefined' && Boolean(localStorage.getItem(V3_STORAGE_KEY));
@@ -487,6 +557,8 @@ export class PersistenceManager {
     try {
       if (typeof localStorage !== 'undefined') {
         localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(V3_STORAGE_KEY);
+        localStorage.removeItem(PRE_V3_BACKUP_KEY);
       }
       return true;
     } catch {

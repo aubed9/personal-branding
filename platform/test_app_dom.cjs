@@ -26,7 +26,36 @@ async function mount({ fresh = true, key = '' } = {}) {
   root = createRoot(document.getElementById('root'));
   await act(async () => { root.render(React.createElement(App)); });
 }
-const state = () => JSON.parse(localStorage.getItem('dm_project_state')).state;
+function state() {
+  const legacyRaw = localStorage.getItem('dm_project_state');
+  if (legacyRaw) return JSON.parse(legacyRaw).state;
+
+  const v3Raw = localStorage.getItem('dm_project_state_v3');
+  assert.ok(v3Raw, 'Expected legacy or canonical project state in localStorage');
+  const canonical = JSON.parse(v3Raw).state;
+  const records = Object.values(canonical?.ledgers?.legacyRecords || {});
+  const legacyValue = (path, fallback) => records.find(record => record.path === path)?.value ?? fallback;
+  const answerRecords = Object.values(canonical?.ledgers?.evidence || {})
+    .filter(item => item.sourceKind === 'ANSWER' && item.raw)
+    .map(item => item.raw)
+    .sort((a, b) => (Number(a.revision) || 0) - (Number(b.revision) || 0));
+  return {
+    revision: canonical.revision || 0,
+    currentPhase: canonical.session?.currentPhase || 1,
+    currentStepIndex: canonical.session?.currentStepIndex || 0,
+    completedPhases: legacyValue('completedPhases', {}),
+    phaseData: legacyValue('phaseData', {}),
+    phaseStatus: canonical.session?.phaseStatus || {},
+    reviewRequired: canonical.session?.reviewRequired || {},
+    answerRecords,
+    facts: records.filter(record => String(record.path || '').startsWith('facts[')).map(record => record.value),
+    decisions: Object.values(canonical?.ledgers?.decisions || {}).map(item => item.raw).filter(Boolean),
+    assumptions: records.filter(record => String(record.path || '').startsWith('assumptions[')).map(record => record.value),
+    unknowns: Object.values(canonical?.ledgers?.unknowns || {}).map(item => item.raw).filter(Boolean),
+    contradictions: Object.values(canonical?.ledgers?.contradictions || {}).map(item => item.raw).filter(Boolean),
+    businessContext: legacyValue('businessContext', canonical.businessContext || null),
+  };
+}
 function button(text) {
   const match = [...document.querySelectorAll('button')].find(el => el.textContent.includes(text));
   assert.ok(match, `Missing button: ${text}`); return match;
