@@ -1,0 +1,760 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://digital-market.local/schemas/v3/business-context.schema.json",
+  "title": "DigitalMarketBusinessContextV3",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "axes",
+    "activeOverlays"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "3.0.0"
+    },
+    "businessTypeId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "industryId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "primaryArchetype": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "axes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "customerModel",
+        "offerType",
+        "channelModel",
+        "revenueModel",
+        "maturity",
+        "scale",
+        "salesMotion",
+        "geography",
+        "branchStructure",
+        "founderRole",
+        "purchaseCycle",
+        "relationshipModel",
+        "regulatoryProfile",
+        "operationalComplexity",
+        "brandArchitecture"
+      ],
+      "properties": {
+        "customerModel": {
+          "type": "string",
+          "enum": [
+            "B2C",
+            "B2B",
+            "B2B2C",
+            "B2G",
+            "TWO_SIDED",
+            "MIXED"
+          ]
+        },
+        "offerType": {
+          "type": "string",
+          "enum": [
+            "PHYSICAL_PRODUCT",
+            "DIGITAL_PRODUCT",
+            "SERVICE",
+            "PLATFORM",
+            "MARKETPLACE",
+            "EXPERIENCE",
+            "MIXED"
+          ]
+        },
+        "channelModel": {
+          "type": "string",
+          "enum": [
+            "PHYSICAL_FIRST",
+            "ONLINE_FIRST",
+            "HYBRID",
+            "OMNICHANNEL",
+            "DIRECT_SALES_B2B",
+            "CHANNEL_FIRST",
+            "MIXED"
+          ]
+        },
+        "revenueModel": {
+          "type": "string",
+          "enum": [
+            "TRANSACTION",
+            "RECURRING",
+            "PROJECT_BASED",
+            "RETAINER",
+            "COMMISSION",
+            "WHOLESALE",
+            "LICENSING",
+            "USAGE_BASED",
+            "ADVERTISING",
+            "FRANCHISE",
+            "MIXED"
+          ]
+        },
+        "maturity": {
+          "type": "string",
+          "enum": [
+            "IDEA",
+            "PRE_LAUNCH",
+            "MVP",
+            "EARLY_ACTIVE",
+            "ACTIVE",
+            "GROWTH",
+            "SCALEUP",
+            "MATURE",
+            "REBRAND",
+            "TRANSFORMATION"
+          ]
+        },
+        "scale": {
+          "type": "string",
+          "enum": [
+            "SOLO",
+            "MICRO",
+            "SMALL",
+            "MEDIUM",
+            "LARGE",
+            "ENTERPRISE",
+            "HOLDING"
+          ]
+        },
+        "salesMotion": {
+          "type": "string",
+          "enum": [
+            "SELF_SERVE",
+            "RETAIL",
+            "INBOUND",
+            "INSIDE_SALES",
+            "FIELD_ENTERPRISE",
+            "CHANNEL_SALES",
+            "DISTRIBUTOR",
+            "TENDER",
+            "MIXED"
+          ]
+        },
+        "geography": {
+          "type": "string",
+          "enum": [
+            "NEIGHBORHOOD",
+            "CITY",
+            "PROVINCE",
+            "NATIONAL",
+            "REGIONAL_INTERNATIONAL",
+            "GLOBAL"
+          ]
+        },
+        "branchStructure": {
+          "type": "string",
+          "enum": [
+            "SINGLE_LOCATION",
+            "MULTI_BRANCH",
+            "FRANCHISE",
+            "DISTRIBUTED",
+            "REMOTE",
+            "MIXED"
+          ]
+        },
+        "founderRole": {
+          "type": "string",
+          "enum": [
+            "NOT_PUBLIC",
+            "SUPPORTING",
+            "FOUNDER_LED",
+            "EXECUTIVE_LED",
+            "PERSONAL_PRIMARY",
+            "INVESTOR_LED",
+            "DUAL"
+          ]
+        },
+        "purchaseCycle": {
+          "type": "string",
+          "enum": [
+            "IMPULSE",
+            "SHORT_DAYS",
+            "MEDIUM_WEEKS",
+            "LONG_MONTHS",
+            "ANNUAL_MULTI_YEAR"
+          ]
+        },
+        "relationshipModel": {
+          "type": "string",
+          "enum": [
+            "TRANSACTIONAL",
+            "REPEAT_HABITUAL",
+            "CONTRACTUAL_RETAINER",
+            "ACCOUNT_MANAGED",
+            "MEMBERSHIP",
+            "COMMUNITY",
+            "MIXED"
+          ]
+        },
+        "regulatoryProfile": {
+          "type": "string",
+          "enum": [
+            "LOW",
+            "NORMAL",
+            "HIGH_TRUST",
+            "REGULATED",
+            "HIGHLY_REGULATED"
+          ]
+        },
+        "operationalComplexity": {
+          "type": "string",
+          "enum": [
+            "LOW",
+            "MODERATE",
+            "HIGH",
+            "SEVERE"
+          ]
+        },
+        "brandArchitecture": {
+          "type": "string",
+          "enum": [
+            "STANDALONE",
+            "MASTERBRAND",
+            "SUB_BRAND",
+            "ENDORSED",
+            "HOUSE_OF_BRANDS",
+            "FOUNDER_NAMED"
+          ]
+        }
+      }
+    },
+    "activeOverlays": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "axisProvenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "customerModel": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sourceType": {
+              "type": "string",
+              "enum": [
+                "USER_CONFIRMED",
+                "USER_TEXT_INFERRED",
+                "TAXONOMY_DEFAULT",
+                "RULE_DERIVED",
+                "MIGRATED_LEGACY"
+              ]
+            },
+            "evidenceIds": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              }
+            },
+            "confidence": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "confirmed": {
+              "type": "boolean"
+            }
+          }
+        },
+        "offerType": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sourceType": {
+              "type": "string",
+              "enum": [
+                "USER_CONFIRMED",
+                "USER_TEXT_INFERRED",
+                "TAXONOMY_DEFAULT",
+                "RULE_DERIVED",
+                "MIGRATED_LEGACY"
+              ]
+            },
+            "evidenceIds": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              }
+            },
+            "confidence": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "confirmed": {
+              "type": "boolean"
+            }
+          }
+        },
+        "channelModel": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sourceType": {
+              "type": "string",
+              "enum": [
+                "USER_CONFIRMED",
+                "USER_TEXT_INFERRED",
+                "TAXONOMY_DEFAULT",
+                "RULE_DERIVED",
+                "MIGRATED_LEGACY"
+              ]
+            },
+            "evidenceIds": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              }
+            },
+            "confidence": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "confirmed": {
+              "type": "boolean"
+            }
+          }
+        },
+        "revenueModel": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sourceType": {
+              "type": "string",
+              "enum": [
+                "USER_CONFIRMED",
+                "USER_TEXT_INFERRED",
+                "TAXONOMY_DEFAULT",
+                "RULE_DERIVED",
+                "MIGRATED_LEGACY"
+              ]
+            },
+            "evidenceIds": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              }
+            },
+            "confidence": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "confirmed": {
+              "type": "boolean"
+            }
+          }
+        },
+        "maturity": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sourceType": {
+              "type": "string",
+              "enum": [
+                "USER_CONFIRMED",
+                "USER_TEXT_INFERRED",
+                "TAXONOMY_DEFAULT",
+                "RULE_DERIVED",
+                "MIGRATED_LEGACY"
+              ]
+            },
+            "evidenceIds": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              }
+            },
+            "confidence": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "confirmed": {
+              "type": "boolean"
+            }
+          }
+        },
+        "scale": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sourceType": {
+              "type": "string",
+              "enum": [
+                "USER_CONFIRMED",
+                "USER_TEXT_INFERRED",
+                "TAXONOMY_DEFAULT",
+                "RULE_DERIVED",
+                "MIGRATED_LEGACY"
+              ]
+            },
+            "evidenceIds": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              }
+            },
+            "confidence": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "confirmed": {
+              "type": "boolean"
+            }
+          }
+        },
+        "salesMotion": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sourceType": {
+              "type": "string",
+              "enum": [
+                "USER_CONFIRMED",
+                "USER_TEXT_INFERRED",
+                "TAXONOMY_DEFAULT",
+                "RULE_DERIVED",
+                "MIGRATED_LEGACY"
+              ]
+            },
+            "evidenceIds": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              }
+            },
+            "confidence": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "confirmed": {
+              "type": "boolean"
+            }
+          }
+        },
+        "geography": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sourceType": {
+              "type": "string",
+              "enum": [
+                "USER_CONFIRMED",
+                "USER_TEXT_INFERRED",
+                "TAXONOMY_DEFAULT",
+                "RULE_DERIVED",
+                "MIGRATED_LEGACY"
+              ]
+            },
+            "evidenceIds": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              }
+            },
+            "confidence": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "confirmed": {
+              "type": "boolean"
+            }
+          }
+        },
+        "branchStructure": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sourceType": {
+              "type": "string",
+              "enum": [
+                "USER_CONFIRMED",
+                "USER_TEXT_INFERRED",
+                "TAXONOMY_DEFAULT",
+                "RULE_DERIVED",
+                "MIGRATED_LEGACY"
+              ]
+            },
+            "evidenceIds": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              }
+            },
+            "confidence": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "confirmed": {
+              "type": "boolean"
+            }
+          }
+        },
+        "founderRole": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sourceType": {
+              "type": "string",
+              "enum": [
+                "USER_CONFIRMED",
+                "USER_TEXT_INFERRED",
+                "TAXONOMY_DEFAULT",
+                "RULE_DERIVED",
+                "MIGRATED_LEGACY"
+              ]
+            },
+            "evidenceIds": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              }
+            },
+            "confidence": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "confirmed": {
+              "type": "boolean"
+            }
+          }
+        },
+        "purchaseCycle": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sourceType": {
+              "type": "string",
+              "enum": [
+                "USER_CONFIRMED",
+                "USER_TEXT_INFERRED",
+                "TAXONOMY_DEFAULT",
+                "RULE_DERIVED",
+                "MIGRATED_LEGACY"
+              ]
+            },
+            "evidenceIds": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              }
+            },
+            "confidence": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "confirmed": {
+              "type": "boolean"
+            }
+          }
+        },
+        "relationshipModel": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sourceType": {
+              "type": "string",
+              "enum": [
+                "USER_CONFIRMED",
+                "USER_TEXT_INFERRED",
+                "TAXONOMY_DEFAULT",
+                "RULE_DERIVED",
+                "MIGRATED_LEGACY"
+              ]
+            },
+            "evidenceIds": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              }
+            },
+            "confidence": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "confirmed": {
+              "type": "boolean"
+            }
+          }
+        },
+        "regulatoryProfile": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sourceType": {
+              "type": "string",
+              "enum": [
+                "USER_CONFIRMED",
+                "USER_TEXT_INFERRED",
+                "TAXONOMY_DEFAULT",
+                "RULE_DERIVED",
+                "MIGRATED_LEGACY"
+              ]
+            },
+            "evidenceIds": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              }
+            },
+            "confidence": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "confirmed": {
+              "type": "boolean"
+            }
+          }
+        },
+        "operationalComplexity": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sourceType": {
+              "type": "string",
+              "enum": [
+                "USER_CONFIRMED",
+                "USER_TEXT_INFERRED",
+                "TAXONOMY_DEFAULT",
+                "RULE_DERIVED",
+                "MIGRATED_LEGACY"
+              ]
+            },
+            "evidenceIds": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              }
+            },
+            "confidence": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "confirmed": {
+              "type": "boolean"
+            }
+          }
+        },
+        "brandArchitecture": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sourceType": {
+              "type": "string",
+              "enum": [
+                "USER_CONFIRMED",
+                "USER_TEXT_INFERRED",
+                "TAXONOMY_DEFAULT",
+                "RULE_DERIVED",
+                "MIGRATED_LEGACY"
+              ]
+            },
+            "evidenceIds": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              }
+            },
+            "confidence": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "confirmed": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    }
+  }
+}
