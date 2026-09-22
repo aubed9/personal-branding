@@ -114,6 +114,31 @@ function fixedManager(policy = {}) {
   });
 }
 
+test('feature policy can stop rollout and keep projects on LEGACY', () => {
+  let mem = installStorage();
+  let pm = new PersistenceManager();
+  let manager = fixedManager({ newProjectsUseV3: false });
+  let engine = seedEngine();
+
+  const newInit = manager.initializeEngine(engine, pm);
+  assert.equal(newInit.mode, ROLLOUT_MODE.LEGACY);
+  const newSave = manager.saveEngine(engine, pm);
+  assert.equal(newSave.success, true);
+  assert.ok(mem.api.getItem(STORAGE_KEY));
+  assert.equal(mem.api.getItem(V3_STORAGE_KEY), null);
+
+  mem = installStorage();
+  pm = new PersistenceManager();
+  engine = seedEngine();
+  pm.saveProjectState(engine);
+  manager = fixedManager({ existingProjectsUseShadow: false });
+
+  const existingInit = manager.initializeEngine(new OrchestratorEngine(), pm);
+  assert.equal(existingInit.mode, ROLLOUT_MODE.LEGACY);
+  assert.equal(mem.api.getItem(V3_STORAGE_KEY), null);
+  assert.equal(mem.api.getItem(PRE_V3_BACKUP_KEY), null);
+});
+
 test('brand-new projects start in V3 and canonical save never creates a legacy project', () => {
   const mem = installStorage();
   const pm = new PersistenceManager();
