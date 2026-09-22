@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "npm run test:knowledge-v3 && npm run test:outputs-v3 && npm run test:invalidation-v3 && npm run test:modules-v3 && npm run test:state-v3 && npm run test:reasoning-v3 && npm run test:financial && npm run test:adaptive && npm run test:ui && node test_runtime_harmonization.js && node test_milestone2_gates_unknowns_contradictions.js && node test_milestone5_structured_ai_persian.js && node test_milestone6_security_endpoints.js && node test_milestone7_ui_workspace_guild_selector.js && node test_milestone8_persistence_recovery.js && node test_milestone9_accessibility_viewport.js && node test_milestone10_performance_chunking.js && node test_milestone12_pairwise_scenarios.js && node test_milestone13_browser_e2e.js && node test_milestone14_regression_ci.js",
+    "test": "npm run test:acceptance-v3 && npm run test:knowledge-v3 && npm run test:outputs-v3 && npm run test:invalidation-v3 && npm run test:modules-v3 && npm run test:state-v3 && npm run test:reasoning-v3 && npm run test:financial && npm run test:adaptive && npm run test:ui && node test_runtime_harmonization.js && node test_milestone2_gates_unknowns_contradictions.js && node test_milestone5_structured_ai_persian.js && node test_milestone6_security_endpoints.js && node test_milestone7_ui_workspace_guild_selector.js && node test_milestone8_persistence_recovery.js && node test_milestone9_accessibility_viewport.js && node test_milestone10_performance_chunking.js && node test_milestone12_pairwise_scenarios.js && node test_milestone13_browser_e2e.js && node test_milestone14_regression_ci.js",
     "test:unit": "node test_runtime_harmonization.js",
     "test:gates": "node test_milestone2_gates_unknowns_contradictions.js",
     "test:m5": "node test_milestone5_structured_ai_persian.js",
@@ -36,7 +36,9 @@
     "test:modules-v3": "node --test test_decision_modules_v3.js",
     "test:invalidation-v3": "node --test test_invalidation_gates_v3.js",
     "test:outputs-v3": "node --test test_output_projections_v3.js",
-    "test:knowledge-v3": "node --test test_knowledge_provenance_v3.js"
+    "test:knowledge-v3": "node --test test_knowledge_provenance_v3.js",
+    "test:acceptance-v3": "node --test test_reasoning_acceptance_harness_v3.js",
+    "acceptance:v3": "node acceptance/runReasoningV3Acceptance.js"
   },
   "dependencies": {
     "canvas-confetti": "^1.9.4",
