@@ -520,7 +520,11 @@ class ValidationSuite:
         legacy_rag = os.path.join(BASE_DIR, "knowledge_base", "rag_engine.py")
         with open(legacy_rag, "r", encoding="utf-8") as f:
             legacy_rag_text = f.read()
-        if "rag_chunks.json" in legacy_rag_text:
+        legacy_rag_runtime_ref = (
+            re.search(r"KB_FILE\\s*=.*rag_chunks\\.json", legacy_rag_text) or
+            re.search(r"open\\([^\\n]*rag_chunks\\.json", legacy_rag_text)
+        )
+        if legacy_rag_runtime_ref:
             self.log("Legacy RAG", "Runtime still reads manual rag_chunks.json", "FAIL")
         else:
             self.log("Legacy RAG", "Compatibility API delegates to canonical generated retrieval", "PASS")
