@@ -56,6 +56,12 @@ test('Decision Module registry is contract-valid and every module declares causa
   assert.equal(validation.valid, true, validation.errors.join('\n'));
   assert.ok(DECISION_MODULES.length >= 15);
 
+  assert.deepEqual(
+    new Set(DECISION_MODULES.map(module => module.axis)),
+    new Set(CANONICAL_CONTEXT_AXES),
+    'every canonical axis must have at least one executable Decision Module'
+  );
+
   for (const module of DECISION_MODULES) {
     assert.ok(module.prerequisites.length > 0, `${module.id} missing prerequisites`);
     assert.ok(module.decisionNodes.length > 0, `${module.id} missing Decision Nodes`);
