@@ -8,6 +8,18 @@ import { validatePhaseGate } from "./phaseGateValidator.js";
 import { UnknownsManager, UNKNOWN_STATUS } from "./unknownsManager.js";
 import { ContradictionEngine, CONTRADICTION_STATUS } from "./contradictionEngine.js";
 import { validateUnitEconomics, formatUnitEconomics } from './unitEconomics.js';
+import {
+  CHANGE_EVENT_TYPES,
+  applyInvalidation,
+  buildRuntimeReasoningGraph,
+  carryInvalidationToRebuiltGraph,
+  createChangeEvent,
+  derivePhaseCompletion,
+  discoverInvalidation,
+  projectPhaseCompletionCache,
+  summarizeInvalidation,
+} from '../reasoning/engine/index.js';
+import { toCanonicalModuleContext } from '../reasoning/modules/index.js';
 
 /**
  * 4-State Lifecycle for AI-generated dynamic questions (Requirement R13, Feature 10)
@@ -54,11 +66,151 @@ export class OrchestratorEngine {
     this.dynamicQuestionState = null;
     this.dynamicQuestionsHistory = [];
     this.dynamicQuestionOverride = null; // legacy backwards-compatible alias
+
+    // Reasoning v3 runtime. Legacy state remains as a compatibility projection,
+    // while graph/change events own invalidation decisions when enough structure exists.
+    this.reasoningProjectId = 'RUNTIME';
+    this.reasoningGraphV3 = null;
+    this.reasoningIndexesV3 = {};
+    this.reasoningChangeEvents = [];
+    this.phaseGateResultsV3 = {};
+    this._syncReasoningGraphV3();
+  }
+
+  _canonicalContextOrNull(context) {
+    if (!context) return null;
+    try {
+      return toCanonicalModuleContext(context);
+    } catch {
+      return null;
+    }
+  }
+
+  _changedContextAxes(beforeContext, afterContext) {
+    const before = this._canonicalContextOrNull(beforeContext);
+    const after = this._canonicalContextOrNull(afterContext);
+    if (!before || !after) return [];
+    return Object.keys(after.axes).filter(axis => before.axes[axis] !== after.axes[axis]).sort();
+  }
+
+  _syncReasoningGraphV3({ carryEvent = null, affectedNodeIds = [] } = {}) {
+    const built = buildRuntimeReasoningGraph({
+      projectId: this.reasoningProjectId,
+      revision: this.revision,
+      businessContext: this.businessContext,
+      answerRecords: this.answerRecords,
+      reviewRequired: this.reviewRequired,
+      contradictions: this.contradictions,
+      phaseGateResults: this.phaseGateResultsV3,
+    });
+    if (carryEvent && affectedNodeIds.length) {
+      carryInvalidationToRebuiltGraph(built.graph, affectedNodeIds, carryEvent);
+    }
+    this.reasoningGraphV3 = built.graph;
+    this.reasoningIndexesV3 = built.indexes;
+    this.completedPhases = projectPhaseCompletionCache(this.reasoningGraphV3, this.completedPhases);
+    return built;
+  }
+
+  _phaseCompletedFromGraph(phase) {
+    const projection = this.reasoningGraphV3 ? derivePhaseCompletion(this.reasoningGraphV3, Number(phase)) : null;
+    if (projection?.authoritative) return projection.passed;
+    return Boolean(this.completedPhases[Number(phase)]);
+  }
+
+  _applyReasoningV3Change({ previousAnswer = null, newAnswer = null, beforeContext = null, afterContext = null } = {}) {
+    const graphBefore = this.reasoningGraphV3;
+    if (!graphBefore) {
+      this._syncReasoningGraphV3();
+      return { precise: false, affectedPhases: [], affectedQuestionIds: [], affectedNodeIds: [] };
+    }
+
+    const changedNodeIds = [];
+    if (previousAnswer?.id) {
+      const previousNodeId = this.reasoningIndexesV3?.answerNodeByAnswerId?.[previousAnswer.id];
+      if (previousNodeId && graphBefore.nodes[previousNodeId]) changedNodeIds.push(previousNodeId);
+    }
+
+    const changedAxes = this._changedContextAxes(beforeContext, afterContext);
+    for (const axis of changedAxes) {
+      const oldAxisNodeId = this.reasoningIndexesV3?.contextNodeByAxis?.[axis];
+      if (oldAxisNodeId && graphBefore.nodes[oldAxisNodeId]) changedNodeIds.push(oldAxisNodeId);
+    }
+
+    if (!changedNodeIds.length) {
+      this._syncReasoningGraphV3();
+      return { precise: false, affectedPhases: [], affectedQuestionIds: [], affectedNodeIds: [], changedAxes };
+    }
+
+    const event = createChangeEvent({
+      type: previousAnswer ? CHANGE_EVENT_TYPES.ANSWER_CHANGED : CHANGE_EVENT_TYPES.CONTEXT_AXIS_CHANGED,
+      projectId: this.reasoningProjectId,
+      revision: this.revision,
+      changedNodeIds,
+      changedEntityIds: [previousAnswer?.id, newAnswer?.id, ...changedAxes.map(axis => `AXIS:${axis}`)].filter(Boolean),
+      before: previousAnswer ? { answerId: previousAnswer.id, text: previousAnswer.text, optionValue: previousAnswer.optionValue } : null,
+      after: newAnswer ? { answerId: newAnswer.id, text: newAnswer.text, optionValue: newAnswer.optionValue } : null,
+      metadata: { changedAxes },
+      occurredAt: newAnswer?.createdAt || null,
+    });
+
+    const discovery = discoverInvalidation(graphBefore, changedNodeIds);
+    applyInvalidation(graphBefore, event, discovery);
+    const byPhase = summarizeInvalidation(graphBefore, discovery);
+    const currentQuestionId = newAnswer?.questionId || previousAnswer?.questionId || null;
+    const currentPhase = Number(newAnswer?.phase || previousAnswer?.phase || 0);
+
+    if (currentPhase >= 1 && currentPhase <= 8) {
+      this.completedPhases[currentPhase] = false;
+      if (this.phaseGateResultsV3[currentPhase]) {
+        this.phaseGateResultsV3[currentPhase] = {
+          ...this.phaseGateResultsV3[currentPhase],
+          passed: false,
+          invalidatedBy: event.id,
+        };
+      }
+    }
+
+    for (const [phaseRaw, impact] of Object.entries(byPhase)) {
+      const phase = Number(phaseRaw);
+      const questionIds = (impact.questionIds || []).filter(id => id !== currentQuestionId);
+      if (questionIds.length) {
+        this.reviewRequired[phase] = [...new Set([...(this.reviewRequired[phase] || []), ...questionIds])].sort();
+      }
+      if (questionIds.length || this.completedPhases[phase]) {
+        this.completedPhases[phase] = false;
+        this.phaseStatus[phase] = 'INVALIDATED';
+        if (this.phaseGateResultsV3[phase]) {
+          this.phaseGateResultsV3[phase] = {
+            ...this.phaseGateResultsV3[phase],
+            passed: false,
+            invalidatedBy: event.id,
+          };
+        }
+      }
+    }
+
+    this.reasoningChangeEvents.push(event);
+    this._syncReasoningGraphV3({ carryEvent: event, affectedNodeIds: discovery.affectedNodeIds });
+
+    return {
+      precise: true,
+      eventId: event.id,
+      changedAxes,
+      ...discovery,
+      byPhase,
+    };
   }
 
   setBusinessContext(context) {
+    const before = this.businessContext ? JSON.parse(JSON.stringify(this.businessContext)) : null;
     this.businessContext = context;
     this.revision++;
+    if (before) {
+      this._applyReasoningV3Change({ beforeContext: before, afterContext: context });
+    } else {
+      this._syncReasoningGraphV3();
+    }
   }
 
   setContext(context) {
@@ -281,7 +433,7 @@ export class OrchestratorEngine {
     }
 
     // Phase N can ONLY be opened if Phase N-1 has passed its exit gate
-    if (!this.completedPhases[p - 1]) {
+    if (!this._phaseCompletedFromGraph(p - 1)) {
       return {
         allowed: false,
         reason: `ورود به فاز ${p} مجاز نیست. فاز پیش‌نیاز ${p - 1} هنوز تکمیل و تایید نشده است. سیستم دیجیتال مارکت از پرش فازها جلوگیری می‌کند.`
@@ -290,7 +442,7 @@ export class OrchestratorEngine {
 
     // Check all earlier phases 1 to p-2 as well
     for (let prev = 1; prev < p - 1; prev++) {
-      if (!this.completedPhases[prev]) {
+      if (!this._phaseCompletedFromGraph(prev)) {
         return {
           allowed: false,
           reason: `ورود به فاز ${p} مجاز نیست. فاز اولیه ${prev} تایید نشده یا ابطال گردیده است.`
@@ -312,7 +464,7 @@ export class OrchestratorEngine {
       return "INVALIDATED";
     }
 
-    if (this.completedPhases[p] === true) {
+    if (this._phaseCompletedFromGraph(p)) {
       return "COMPLETED";
     }
 
@@ -328,6 +480,7 @@ export class OrchestratorEngine {
     return "LOCKED";
   }
 
+  // Temporary migration fallback. Production edit flow no longer calls this method.
   invalidateDependentPhases(fromPhase) {
     const p = Number(fromPhase);
     const invalidated = [];
@@ -353,7 +506,8 @@ export class OrchestratorEngine {
     return {
       fromPhase: p,
       invalidatedPhases: invalidated,
-      message
+      message,
+      mode: 'LEGACY_MIGRATION_FALLBACK'
     };
   }
 
@@ -511,6 +665,7 @@ export class OrchestratorEngine {
     const previous = activeAnswers(this.answerRecords).find(a => a.phase === phase && a.questionId === qId);
     const field = spec?.field || qId;
     const oldValue = this.phaseData[phase]?.[field];
+    const beforeBusinessContext = this.businessContext ? JSON.parse(JSON.stringify(this.businessContext)) : null;
     this.revision++;
     const unknownIntent = detectUnknownIntent(userText);
     const unknown = !structuredData && (optionValue === 'unknown' || unknownIntent.isUnknown);
@@ -541,7 +696,7 @@ export class OrchestratorEngine {
     }
     this.reviewRequired[phase] = (this.reviewRequired[phase] || []).filter(id => id !== qId);
     this.completedPhases[phase] = false;
-    if (oldValue !== storedText || previous?.optionValue !== optionValue) this.invalidateDependentPhases(phase);
+    const answerChanged = oldValue !== storedText || previous?.optionValue !== optionValue;
 
     for (const entry of this.unknowns.filter(u => u.phase === phase && u.questionId === qId && u.status !== UNKNOWN_STATUS.RESOLVED)) {
       UnknownsManager.resolveUnknown(this.unknowns, entry.id, `پاسخ جایگزین ثبت شد: ${record.id}`);
@@ -591,6 +746,16 @@ export class OrchestratorEngine {
     this.decisions = ledger.filter(a => a.kind === 'DECISION');
     this.assumptions = ledger.filter(a => ['ASSUMPTION', 'UNKNOWN'].includes(a.kind));
     this.refreshContradictions();
+    if (answerChanged) {
+      this._applyReasoningV3Change({
+        previousAnswer: previous || null,
+        newAnswer: record,
+        beforeContext: beforeBusinessContext,
+        afterContext: this.businessContext,
+      });
+    } else {
+      this._syncReasoningGraphV3();
+    }
     this.currentStepIndex++;
     this.reviewCursor = reviewing && this.currentStepIndex < this.getCurrentPhaseQuestions().length ? this.currentStepIndex : null;
     const nextQuestion = this.getCurrentQuestion();
@@ -639,10 +804,17 @@ export class OrchestratorEngine {
     // Real Phase Gate Validation (Requirement R2)
     const gateResult = validatePhaseGate(p, this);
     this.lastGateResult = gateResult;
+    this.phaseGateResultsV3[p] = gateResult;
+    this._syncReasoningGraphV3();
+    const graphGateResult = derivePhaseCompletion(this.reasoningGraphV3, p);
+    const effectiveGatePassed = gateResult.passed && graphGateResult.passed;
 
-    if (!gateResult.passed) {
+    if (!effectiveGatePassed) {
       this.completedPhases[p] = false;
-      const reasonsList = gateResult.blockingReasons.map(r => `- ❌ ${r}`).join("\n");
+      const graphReasons = graphGateResult.blockingNodeIds.length
+        ? [`وابستگی‌های گرافی نیازمند بازبینی: ${graphGateResult.blockingNodeIds.join('، ')}`]
+        : [];
+      const reasonsList = [...gateResult.blockingReasons, ...graphReasons].map(r => `- ❌ ${r}`).join("\n");
       const missingList = gateResult.missingFacts.length > 0
         ? `\n\n📌 **اقلام اطلاعاتی مفقود:**\n` + gateResult.missingFacts.map(f => `- ⚠️ ${f}`).join("\n")
         : "";
@@ -652,14 +824,14 @@ export class OrchestratorEngine {
         nextQuestion: null,
         isCompleted: false,
         gatePassed: false,
-        gateResult: gateResult,
+        gateResult: { ...gateResult, graph: graphGateResult },
         completedPhase: null,
         nextPhase: null,
         isFinalGrandFinale: false
       };
     }
 
-    this.completedPhases[p] = true;
+    this.completedPhases[p] = graphGateResult.passed;
     if (this.phaseStatus[p] === "INVALIDATED") {
       delete this.phaseStatus[p];
     }
@@ -681,7 +853,7 @@ export class OrchestratorEngine {
         nextQuestion: null,
         isCompleted: true,
         gatePassed: true,
-        gateResult: gateResult,
+        gateResult: { ...gateResult, graph: graphGateResult },
         completedPhase: p,
         nextPhase: p + 1,
         isFinalGrandFinale: false
@@ -692,7 +864,7 @@ export class OrchestratorEngine {
         nextQuestion: null,
         isCompleted: true,
         gatePassed: true,
-        gateResult: gateResult,
+        gateResult: { ...gateResult, graph: graphGateResult },
         completedPhase: 8,
         nextPhase: null,
         isFinalGrandFinale: true
@@ -704,6 +876,8 @@ export class OrchestratorEngine {
     return generateDeliverable(phaseNum, this.phaseData, this.businessContext, this.decisions, this.facts, this.unknowns, {
       answerRecords: this.answerRecords, completedPhases: this.completedPhases,
       contradictions: this.contradictions, phaseStatus: this.phaseStatus, revision: this.revision,
+      reasoningGraphV3: this.reasoningGraphV3,
+      reasoningChangeEvents: this.reasoningChangeEvents,
     });
   }
 
