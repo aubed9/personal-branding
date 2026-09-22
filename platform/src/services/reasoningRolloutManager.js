@@ -188,7 +188,21 @@ export class ReasoningRolloutManager {
 
   saveEngine(engine, persistenceManager) {
     if (!engine || !persistenceManager) return { success: false, reason: 'engine_and_persistence_required' };
-    const mode = this.getMode() || (this.policy.newProjectsUseV3 ? ROLLOUT_MODE.V3 : ROLLOUT_MODE.LEGACY);
+    let mode = this.getMode();
+    if (!mode) {
+      // Safe implicit initialization for reset/new-engine autosave paths.
+      // If an unknown legacy project is present, never enter SHADOW without the
+      // normal initializeEngine() migration/backup sequence.
+      mode = this.hasLegacyProject()
+        ? ROLLOUT_MODE.LEGACY
+        : this.policy.newProjectsUseV3
+          ? ROLLOUT_MODE.V3
+          : ROLLOUT_MODE.LEGACY;
+      this._writeRecord({
+        mode,
+        projectKind: this.hasLegacyProject() ? 'EXISTING_UNINITIALIZED' : 'NEW',
+      });
+    }
 
     if (mode === ROLLOUT_MODE.LEGACY) {
       const legacySaved = persistenceManager.saveProjectState(engine);
