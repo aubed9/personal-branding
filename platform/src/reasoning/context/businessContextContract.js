@@ -1,4 +1,4 @@
-export const CANONICAL_CONTEXT_AXES = withUnknown([
+export const CANONICAL_CONTEXT_AXES = Object.freeze([
   'customerModel',
   'offerType',
   'channelModel',
