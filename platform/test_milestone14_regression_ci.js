@@ -282,8 +282,8 @@ console.log('\n--- TEST SUITE 5: Golden Deliverable Benchmarks across 9 Sectors 
 
     // Verify all 5 layers are present
     assert(masterData.sections.length >= 8, `[${sector.name}] Master deliverable contains all phase sections`);
-    assert(masterMd.includes("فرمول‌های محاسباتی") || masterMd.includes("[FORMULA]"), `[${sector.name}] Quantitative formula layer verified`);
-    assert(masterMd.includes("[CLASSIFICATION]"), `[${sector.name}] Classification remains labeled separately from user facts`);
+    assert(masterMd.includes("اقتصاد و سنجه‌ها"), `[${sector.name}] Economics/metrics semantic section is present without fabricating formulas`);
+    assert(masterMd.includes("[SYSTEM_CONTEXT]"), `[${sector.name}] Classification remains labeled as system context separately from user facts`);
   }
 }
 
