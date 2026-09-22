@@ -23,6 +23,7 @@ const HANDOFF_FIELDS = Object.freeze({
 });
 
 const FIELD_META = Object.fromEntries(INTERVIEW_FIELDS.map(spec => [spec.field, spec]));
+const faNumber = value => new Intl.NumberFormat('fa-IR', { useGrouping: false }).format(Number(value));
 
 export function buildEvidenceDerivedHandoff({
   targetPhase,
@@ -57,11 +58,11 @@ export function buildEvidenceDerivedHandoff({
 
   const rules = businessContext ? getPhaseAdaptationRules(phase, businessContext) : null;
   const specialization = rules?.v3Instruction
-    ? `\n\n[SYSTEM_INFERENCE] تمرکز تخصصی فعال:\n${rules.v3Instruction}`
+    ? `\n\n[SYSTEM_INFERENCE] انطباق تخصصی — تمرکز تخصصی فعال:\n${rules.v3Instruction}`
     : '';
 
   const message = [
-    `## ورود به فاز ${phase}: ${PHASE_TITLES[phase]}`,
+    `## ورود به فاز ${faNumber(phase)}: ${PHASE_TITLES[phase]}`,
     '',
     '### Handoff مبتنی بر شواهد ثبت‌شده',
     ...(lines.length ? lines : ['- [UNKNOWN] هیچ داده معتبر بالادستی برای Handoff ثبت نشده است.']),
