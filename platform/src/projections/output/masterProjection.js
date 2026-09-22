@@ -89,6 +89,22 @@ export function projectSemanticMaster(state, model, phaseDocuments) {
     },
   ];
 
+  const activationSection = sections.find(section => section.id === 'M8');
+  if (activationSection) {
+    const phase8ByField = Object.fromEntries(
+      model.claims
+        .filter(claim => claim.phase === 8 && claim.claimType === CLAIM_TYPES.USER_DECISION && claim.metadata?.field)
+        .map(claim => [claim.metadata.field, claim])
+    );
+    activationSection.content = {
+      ...(activationSection.content || {}),
+      ...(phase8ByField.thoughtLeadership ? { thoughtLeadership: phase8ByField.thoughtLeadership.statement.replace(/^.*?:\s*/, '') } : {}),
+      ...(phase8ByField.prChannels ? { prChannels: phase8ByField.prChannels.statement.replace(/^.*?:\s*/, '') } : {}),
+      ...(phase8ByField.leadFunnel ? { leadFunnel: phase8ByField.leadFunnel.statement.replace(/^.*?:\s*/, '') } : {}),
+      ...(phase8ByField.reputationCrisis ? { reputationCrisis: phase8ByField.reputationCrisis.statement.replace(/^.*?:\s*/, '') } : {}),
+    };
+  }
+
   const contextSection = sections.find(section => section.id === 'M1');
   if (contextSection && state.businessContext) {
     const ctx = state.businessContext;
