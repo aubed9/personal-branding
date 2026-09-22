@@ -32,7 +32,7 @@ export function buildStrategicActions(phase, rows, economics, businessContext = 
     if (value && offer) add('value_pilot', 30, `فرضیه ${text(value)} را در معرفی ${text(offer)} با مشتری امتحان کنید؛ دلیل خرید یا نخریدن را با عبارت خود مشتری ثبت کنید.`, [value, offer], 'تفاوت ادعای تمایز با دلایل خرید واقعی');
   }
 
-  if ([1, 2, 3, 8].includes(phase) && economics && costs) {
+  if (phase === 1 && economics && costs) {
     if (economics.contributionPerUnit <= 0) {
       add('repair_unit_margin', 30, `پیش از افزایش فروش ${offer ? text(offer) : 'پیشنهاد اصلی'}، قیمت و اجزای هزینه متغیر را بازبینی کنید؛ حاشیه مشارکت محاسبه‌شده مثبت نیست. کاهش دامنه خدمت یا اصلاح قیمت را فقط بعد از آزمون پذیرش مشتری بررسی کنید.`, [costs, offer], 'حاشیه مشارکت مثبت پس از ثبت مجدد هزینه‌ها؛ افزایش فروش به‌تنهایی این مسئله را حل نمی‌کند');
     } else if (economics.breakEvenUnits !== null && economics.inputs.monthlyCapacity !== null && economics.breakEvenUnits > economics.inputs.monthlyCapacity) {
