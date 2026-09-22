@@ -241,17 +241,23 @@ class ValidationSuite:
         else:
             self.log("Registry Files", f"Orphaned nodes (missing files): {orphaned_nodes[:5]}...", "FAIL")
 
-        # Verify source count claim: actual wiki nodes vs documentation claims
-        claimed_source_count = 165
-        actual_source_count = node_count
-        if actual_source_count >= claimed_source_count:
-            self.log("Source Count", f"Claimed {claimed_source_count}, actual {actual_source_count}", "PASS")
+        # Source counts come only from the canonical Source Registry.
+        source_registry_path = os.path.join(wiki_dir, "source-registry.json")
+        if not os.path.exists(source_registry_path):
+            self.log("Source Registry", "wiki/source-registry.json missing", "FAIL")
         else:
-            self.log("Source Count",
-                     f"Documentation claims {claimed_source_count} sources, but only {actual_source_count} wiki nodes exist. "
-                     f"Claim includes {claimed_source_count - actual_source_count} unregistered references from llm-wiki categories.",
-                     "WARN",
-                     "Update documentation to reflect verifiable count or add missing source registrations")
+            with open(source_registry_path, "r", encoding="utf-8") as f:
+                source_registry = json.load(f)
+            sources = source_registry.get("sources", {})
+            by_status = {}
+            for record in sources.values():
+                status = record.get("status", "UNKNOWN")
+                by_status[status] = by_status.get(status, 0) + 1
+            self.log(
+                "Source Count",
+                f"Registered sources: {len(sources)}; status counts: {by_status}",
+                "PASS"
+            )
 
     # ====================================================================
     # 3. Taxonomy 753 Data Integrity (JSON-based validation)
@@ -352,36 +358,25 @@ class ValidationSuite:
         print("4. 15-AXIS CONTEXT SCHEMA CONSISTENCY")
         print("=" * 70)
 
-        # Define the canonical 15 axes (camelCase runtime format)
+        # Canonical v3 model has exactly 15 axes. primaryArchetype is derived metadata.
         canonical_axes_runtime = [
-            "primaryArchetype", "customerModel", "offerType", "channelModel",
-            "revenueModel", "maturity", "scale", "salesMotion", "deliveryModel",
-            "geography", "industry", "regulatoryProfile", "brandArchitecture",
-            "founderRole", "growthContext"
+            "customerModel", "offerType", "channelModel", "revenueModel",
+            "maturity", "scale", "salesMotion", "geography", "branchStructure",
+            "founderRole", "purchaseCycle", "relationshipModel",
+            "regulatoryProfile", "operationalComplexity", "brandArchitecture"
         ]
 
-        # Define the schema format (snake_case)
-        canonical_axes_schema = [
-            "primary_archetype", "customer_model", "offer_type", "channel_model",
-            "revenue_model", "maturity", "scale", "sales_motion", "delivery_model",
-            "geography", "industry", "regulatory_profile", "brand_architecture",
-            "founder_role", "growth_context"
-        ]
-
-        # Check business-context.schema.json
-        schema_path = os.path.join(BASE_DIR, "schemas", "business-context.schema.json")
+        schema_path = os.path.join(BASE_DIR, "schemas", "v3", "business-context.schema.json")
         if os.path.exists(schema_path):
             with open(schema_path, "r", encoding="utf-8") as f:
                 schema = json.load(f)
-            schema_props = set(schema.get("properties", {}).keys())
-            expected_schema = set(canonical_axes_schema)
-            # Allow partial overlap (some axes may have different names)
-            overlap = schema_props & expected_schema
-            if len(overlap) >= 10:
-                self.log("15-Axis Schema", f"{len(overlap)}/15 canonical axes found in schema", "PASS")
+            axes_schema = schema.get("properties", {}).get("axes", {})
+            schema_props = set(axes_schema.get("properties", {}).keys())
+            expected_schema = set(canonical_axes_runtime)
+            if schema_props == expected_schema and len(schema_props) == 15:
+                self.log("15-Axis Schema", "Exact 15-axis v3 schema match", "PASS")
             else:
-                self.log("15-Axis Schema", f"Only {len(overlap)}/15 axes match canonical names", "WARN",
-                         f"Schema has: {schema_props}")
+                self.log("15-Axis Schema", f"Schema drift. expected={sorted(expected_schema)} actual={sorted(schema_props)}", "FAIL")
         else:
             self.log("15-Axis Schema", "business-context.schema.json not found", "FAIL")
 
@@ -399,7 +394,139 @@ class ValidationSuite:
             self.log("15-Axis Runtime", "businessContextRouter.js not found", "FAIL")
 
     # ====================================================================
-    # 5. Phase-Specific Knowledge Coverage
+    # 5. Canonical Knowledge Provenance & Retrieval
+    # ====================================================================
+    def validate_knowledge_provenance(self):
+        print("\n" + "=" * 70)
+        print("5. CANONICAL KNOWLEDGE PROVENANCE & RETRIEVAL")
+        print("=" * 70)
+
+        if yaml is None:
+            self.log("Knowledge Provenance", "PyYAML unavailable", "FAIL")
+            return
+
+        wiki_dir = os.path.join(BASE_DIR, "wiki")
+        registry_path = os.path.join(wiki_dir, "registry.yaml")
+        sources_path = os.path.join(wiki_dir, "source-registry.json")
+        claims_path = os.path.join(wiki_dir, "claims.json")
+        retrieval_path = os.path.join(wiki_dir, "generated", "retrieval-index.json")
+
+        required = [registry_path, sources_path, claims_path, retrieval_path]
+        missing = [p for p in required if not os.path.exists(p)]
+        if missing:
+            self.log("Knowledge Files", f"Missing canonical knowledge files: {missing}", "FAIL")
+            return
+
+        with open(registry_path, "r", encoding="utf-8") as f:
+            node_registry = yaml.safe_load(f) or {}
+        with open(sources_path, "r", encoding="utf-8") as f:
+            source_registry = json.load(f)
+        with open(claims_path, "r", encoding="utf-8") as f:
+            claim_registry = json.load(f)
+        with open(retrieval_path, "r", encoding="utf-8") as f:
+            retrieval = json.load(f)
+
+        nodes = node_registry.get("knowledge_nodes", {})
+        sources = source_registry.get("sources", {})
+        claims = claim_registry.get("claims", {})
+        admissible = {"VERIFIED", "CANONICAL"}
+
+        broken_source_refs = []
+        broken_node_refs = []
+        untraceable = []
+        canonical_provenance_failures = []
+
+        for claim_id, claim in claims.items():
+            node_id = claim.get("knowledge_node_id")
+            if node_id not in nodes:
+                broken_node_refs.append((claim_id, node_id))
+
+            source_ids = claim.get("source_ids", [])
+            missing_sources = [sid for sid in source_ids if sid not in sources]
+            if missing_sources:
+                broken_source_refs.append((claim_id, missing_sources))
+
+            if claim.get("decision_driving"):
+                locators = claim.get("locators", [])
+                located_sources = {loc.get("source_id") for loc in locators if loc.get("locator")}
+                if not source_ids or not all(sid in located_sources for sid in source_ids):
+                    untraceable.append(claim_id)
+
+            if claim.get("status") == "CANONICAL":
+                if not source_ids or missing_sources:
+                    canonical_provenance_failures.append(claim_id)
+                elif any(sources[sid].get("status") not in admissible for sid in source_ids):
+                    canonical_provenance_failures.append(claim_id)
+
+        if broken_source_refs:
+            self.log("Broken Source Refs", str(broken_source_refs[:10]), "FAIL")
+        else:
+            self.log("Broken Source Refs", "0 broken source references", "PASS")
+
+        if broken_node_refs:
+            self.log("Broken Knowledge Refs", str(broken_node_refs[:10]), "FAIL")
+        else:
+            self.log("Broken Knowledge Refs", "0 broken knowledge-node references", "PASS")
+
+        decision_claims = [c for c in claims.values() if c.get("decision_driving")]
+        traceable = len(decision_claims) - len(untraceable)
+        trace_rate = 100.0 if not decision_claims else traceable / len(decision_claims) * 100
+        if trace_rate == 100.0:
+            self.log("Source Traceability", f"{trace_rate:.1f}% ({traceable}/{len(decision_claims)})", "PASS")
+        else:
+            self.log("Source Traceability", f"{trace_rate:.1f}% missing={untraceable[:10]}", "FAIL")
+
+        canonical_claims = [c for c in claims.values() if c.get("status") == "CANONICAL"]
+        canonical_ok = len(canonical_claims) - len(canonical_provenance_failures)
+        canonical_rate = 100.0 if not canonical_claims else canonical_ok / len(canonical_claims) * 100
+        if canonical_rate == 100.0:
+            self.log("Canonical Provenance", f"{canonical_rate:.1f}% ({canonical_ok}/{len(canonical_claims)})", "PASS")
+        else:
+            self.log("Canonical Provenance", f"{canonical_rate:.1f}% failures={canonical_provenance_failures[:10]}", "FAIL")
+
+        # Every Decision Module KB dependency must resolve to a root-Wiki registry node.
+        module_path = os.path.join(PLATFORM_DIR, "src", "reasoning", "modules", "registry.js")
+        with open(module_path, "r", encoding="utf-8") as f:
+            module_text = f.read()
+        module_kb_refs = set(re.findall(r"'(KB-[A-Z0-9-]+)'", module_text))
+        missing_module_nodes = sorted(module_kb_refs - set(nodes))
+        if missing_module_nodes:
+            self.log("Module Knowledge Edges", f"Missing nodes: {missing_module_nodes}", "FAIL")
+        else:
+            self.log("Module Knowledge Edges", f"All {len(module_kb_refs)} module KB refs resolve", "PASS")
+
+        entries = retrieval.get("entries", [])
+        retrieval_errors = []
+        for entry in entries:
+            claim = claims.get(entry.get("claim_id"))
+            if not claim:
+                retrieval_errors.append(f"missing claim {entry.get('claim_id')}")
+                continue
+            if entry.get("knowledge_node_id") != claim.get("knowledge_node_id"):
+                retrieval_errors.append(f"node mismatch {entry.get('retrieval_id')}")
+            if entry.get("source_ids") != claim.get("source_ids"):
+                retrieval_errors.append(f"source mismatch {entry.get('retrieval_id')}")
+            if claim.get("status") not in admissible:
+                retrieval_errors.append(f"inadmissible claim {entry.get('claim_id')}")
+
+        if retrieval.get("count") != len(entries):
+            retrieval_errors.append("retrieval count mismatch")
+
+        if retrieval_errors:
+            self.log("Generated Retrieval", f"Errors: {retrieval_errors[:10]}", "FAIL")
+        else:
+            self.log("Generated Retrieval", f"{len(entries)} entries with canonical claim/source origin", "PASS")
+
+        legacy_rag = os.path.join(BASE_DIR, "knowledge_base", "rag_engine.py")
+        with open(legacy_rag, "r", encoding="utf-8") as f:
+            legacy_rag_text = f.read()
+        if "rag_chunks.json" in legacy_rag_text:
+            self.log("Legacy RAG", "Runtime still reads manual rag_chunks.json", "FAIL")
+        else:
+            self.log("Legacy RAG", "Compatibility API delegates to canonical generated retrieval", "PASS")
+
+    # ====================================================================
+    # 6. Phase-Specific Knowledge Coverage
     # ====================================================================
     def validate_phase_knowledge_coverage(self):
         print("\n" + "=" * 70)
@@ -553,6 +680,7 @@ if __name__ == "__main__":
     suite.validate_wiki_and_registry()
     suite.validate_taxonomy_753()
     suite.validate_15_axis_consistency()
+    suite.validate_knowledge_provenance()
     suite.validate_phase_knowledge_coverage()
     suite.validate_platform_config()
     suite.validate_no_secrets()
