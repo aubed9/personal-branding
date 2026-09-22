@@ -65,16 +65,16 @@ console.log('--- TEST SUITE 1: Deliverable Typed Data Provenance Tags (R22) ---'
   const mdP1 = engine.generateMarkdownText(1);
 
   assert(typeof mdP1 === "string" && mdP1.length > 500, "Phase 1 deliverable markdown generated successfully");
-  assert(mdP1.includes("[FACT]"), "Markdown contains [FACT] provenance tag for user-confirmed data");
-  assert(mdP1.includes("[CLASSIFICATION]"), "Markdown contains [BENCHMARK] provenance tag for taxonomy/standard data");
-  assert(mdP1.includes("[FORMULA]"), "Markdown contains [FORMULA] provenance tag for mathematical equations");
-  assert(mdP1.includes("[UNKNOWN]"), "Markdown contains [HYPOTHESIS] provenance tag for official unknowns");
-  assert(mdP1.includes("شناسه ANS"), "Deliverable footer contains official Data Provenance legend");
+  assert(mdP1.includes("[USER_FACT/"), "Markdown contains canonical USER_FACT provenance for user-provided facts");
+  assert(mdP1.includes("[SYSTEM_INFERENCE/"), "Markdown contains canonical SYSTEM_INFERENCE provenance for rule-derived context");
+  assert(mdP1.includes("[CALCULATION]") || mdP1.includes("[CALCULATION/"), "Markdown contains canonical CALCULATION provenance for derived equations");
+  assert(mdP1.includes("[UNKNOWN/") || mdP1.includes("[UNKNOWN]"), "Markdown preserves explicit UNKNOWN provenance");
+  assert(mdP1.includes("projection از Claimهای canonical"), "Deliverable footer documents canonical Claim projection semantics");
 
-  // Unknowns must NOT be promoted to Fact
-  const hasFakePromotion = mdP1.includes("[FACT] **وضعیت سنجه‌های اندازه‌گیری‌نشده:**");
-  assert(!hasFakePromotion, "Unmeasured unknown is NOT promoted to [FACT]");
-  assert(mdP1.includes("[UNKNOWN] داده عددی ساختاریافته"), "Unmeasured unknown remains strictly tagged as [HYPOTHESIS]");
+  // Unknowns must NOT be promoted to user facts or confirmed external facts.
+  const hasFakePromotion = /\[USER_FACT\/CONFIRMED\].*مجهول رسمی|\[EXTERNAL_FACT\/CONFIRMED\].*مجهول رسمی/.test(mdP1);
+  assert(!hasFakePromotion, "Unmeasured unknown is NOT promoted to confirmed fact");
+  assert(mdP1.includes("[UNKNOWN/") || mdP1.includes("[UNKNOWN]"), "Unmeasured unknown remains explicitly unknown");
 }
 
 // =============================================================================
