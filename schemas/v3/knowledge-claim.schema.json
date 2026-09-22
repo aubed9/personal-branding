@@ -1,0 +1,141 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://digital-market.local/schemas/v3/knowledge-claim.schema.json",
+  "title": "DigitalMarketKnowledgeClaimV3",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "knowledge_node_id",
+    "statement",
+    "claim_kind",
+    "decision_driving",
+    "status",
+    "source_ids",
+    "locators",
+    "authority_requirement",
+    "freshness_class",
+    "max_age_days",
+    "jurisdiction_or_scope",
+    "phases",
+    "decision_node_ids",
+    "module_ids",
+    "limitations"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^KCL-[A-Z0-9-]+$"
+    },
+    "knowledge_node_id": {
+      "type": "string",
+      "pattern": "^KB-[A-Z0-9-]+$"
+    },
+    "statement": {
+      "type": "string",
+      "minLength": 1
+    },
+    "claim_kind": {
+      "type": "string",
+      "enum": [
+        "INTERNAL_NORMATIVE",
+        "BACKGROUND",
+        "EXTERNAL_FACT",
+        "THRESHOLD",
+        "LEGAL_REQUIREMENT",
+        "MARKET_OBSERVATION"
+      ]
+    },
+    "decision_driving": {
+      "type": "boolean"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "DRAFT",
+        "NEEDS_RESEARCH",
+        "VERIFIED",
+        "CANONICAL",
+        "STALE",
+        "DEPRECATED"
+      ]
+    },
+    "source_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^SRC-[A-Z0-9-]+$"
+      }
+    },
+    "locators": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "source_id",
+          "locator"
+        ],
+        "properties": {
+          "source_id": {
+            "type": "string"
+          },
+          "locator": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "authority_requirement": {
+      "type": "string",
+      "enum": [
+        "A",
+        "A_OR_B",
+        "A_TO_C",
+        "ANY"
+      ]
+    },
+    "freshness_class": {
+      "type": "string"
+    },
+    "max_age_days": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "jurisdiction_or_scope": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "phases": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 8
+      }
+    },
+    "decision_node_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "module_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "limitations": {
+      "type": "string"
+    }
+  }
+}
