@@ -177,7 +177,11 @@ export class OrchestratorEngine {
       if (questionIds.length) {
         this.reviewRequired[phase] = [...new Set([...(this.reviewRequired[phase] || []), ...questionIds])].sort();
       }
-      if (questionIds.length || this.completedPhases[phase]) {
+      const hasPhaseMaterial =
+        Object.keys(this.phaseData[phase] || {}).length > 0 ||
+        this.currentPhase === phase ||
+        this.completedPhases[phase] === true;
+      if ((impact.nodeIds || []).length && hasPhaseMaterial) {
         this.completedPhases[phase] = false;
         this.phaseStatus[phase] = 'INVALIDATED';
         if (this.phaseGateResultsV3[phase]) {
