@@ -2,7 +2,33 @@ import { test, expect } from '@playwright/test';
 import fs from 'node:fs/promises';
 
 const firstAnswers = ['کافه و برشته‌کاری قهوه', 'رست تازه برای مشتریان شرق تهران', 'کسب‌وکار فعال', 'شرق تهران', 'افزایش سفارش‌های هفتگی', 'قهوه با رست هفتگی', 'تاریخ رست مشخص روی بسته'];
-const getState = page => page.evaluate(() => JSON.parse(localStorage.getItem('dm_project_state')).state);
+const getState = page => page.evaluate(() => {
+  const legacyRaw = localStorage.getItem('dm_project_state');
+  if (legacyRaw) return JSON.parse(legacyRaw).state;
+
+  const v3Raw = localStorage.getItem('dm_project_state_v3');
+  if (!v3Raw) throw new Error('No persisted project state found');
+  const canonical = JSON.parse(v3Raw).state;
+  const records = Object.values(canonical?.ledgers?.legacyRecords || {});
+  const legacyValue = (path, fallback) => records.find(record => record.path === path)?.value ?? fallback;
+  const answerRecords = Object.values(canonical?.ledgers?.evidence || {})
+    .filter(item => item.sourceKind === 'ANSWER' && item.raw)
+    .map(item => item.raw)
+    .sort((a, b) => (Number(a.revision) || 0) - (Number(b.revision) || 0));
+  return {
+    revision: canonical.revision || 0,
+    currentPhase: canonical.session?.currentPhase || 1,
+    currentStepIndex: canonical.session?.currentStepIndex || 0,
+    completedPhases: legacyValue('completedPhases', {}),
+    phaseData: legacyValue('phaseData', {}),
+    phaseStatus: canonical.session?.phaseStatus || {},
+    answerRecords,
+    facts: records.filter(record => String(record.path || '').startsWith('facts[')).map(record => record.value),
+    decisions: Object.values(canonical?.ledgers?.decisions || {}).map(item => item.raw).filter(Boolean),
+    unknowns: Object.values(canonical?.ledgers?.unknowns || {}).map(item => item.raw).filter(Boolean),
+    businessContext: legacyValue('businessContext', canonical.businessContext || null),
+  };
+});
 async function answer(page, text) {
   await page.getByRole('button', { name: /پاسخ اختصاصی خودم/ }).click();
   await page.getByRole('textbox', { name: 'دیدگاه، توضیحات یا راهبرد مدنظرتان' }).fill(text);
