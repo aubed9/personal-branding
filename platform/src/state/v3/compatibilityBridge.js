@@ -27,7 +27,42 @@ export function extractLegacyEngineState(engine) {
 }
 
 export function projectLegacyEngineToCanonicalState(engine, options = {}) {
-  return migrateLegacyStateToV3(extractLegacyEngineState(engine), options);
+  const migrated = migrateLegacyStateToV3(extractLegacyEngineState(engine), options);
+  const state = migrated.state;
+
+  if (engine?.reasoningGraphV3) {
+    state.graph = JSON.parse(JSON.stringify(engine.reasoningGraphV3));
+  }
+  state.revision = Number(engine?.revision) || state.revision;
+
+  if (typeof engine?.generateDeliverableData === 'function') {
+    try {
+      const master = engine.generateDeliverableData('master');
+      const ledger = master?.claimLedger || {};
+      state.ledgers.claims = JSON.parse(JSON.stringify(ledger));
+      state.ledgers.proposals = Object.fromEntries(
+        Object.entries(ledger).filter(([, claim]) => claim?.claimType === 'PROPOSAL')
+      );
+      state.ledgers.risks = Object.fromEntries(
+        Object.entries(ledger).filter(([, claim]) => claim?.claimType === 'RISK')
+      );
+      const sourceIds = new Set();
+      const knowledgeNodeIds = new Set();
+      for (const claim of Object.values(ledger)) {
+        for (const id of claim?.sourceIds || []) sourceIds.add(id);
+        for (const id of claim?.knowledgeNodeIds || claim?.metadata?.knowledgeNodeIds || []) knowledgeNodeIds.add(id);
+      }
+      state.knowledgeRefs = {
+        sourceIds: [...sourceIds].sort(),
+        knowledgeNodeIds: [...knowledgeNodeIds].sort(),
+      };
+    } catch {
+      // Output projection is supplementary to migration; state migration must remain usable
+      // even if a partially completed project cannot render a Master projection yet.
+    }
+  }
+
+  return migrated;
 }
 
 export function projectCanonicalStateToLegacyReadView(state) {
@@ -44,4 +79,79 @@ export function projectCanonicalStateToLegacyReadView(state) {
     phaseData,
     completedPhases,
   });
+}
+
+
+function legacyRecordEntries(state, predicate) {
+  return Object.values(state?.ledgers?.legacyRecords || {})
+    .filter(predicate)
+    .sort((a, b) => String(a.path || '').localeCompare(String(b.path || '')));
+}
+
+function legacyRecordValue(state, path, fallback = null) {
+  return legacyRecordEntries(state, record => record.path === path)[0]?.value ?? fallback;
+}
+
+export function projectCanonicalStateToLegacyEngineState(state) {
+  if (!state?.ledgers) throw new Error('Canonical state with ledgers is required.');
+
+  const answerRecords = Object.values(state.ledgers.evidence || {})
+    .filter(item => item.sourceKind === 'ANSWER' && item.raw && typeof item.raw === 'object')
+    .map(item => JSON.parse(JSON.stringify(item.raw)))
+    .sort((a, b) => (Number(a.revision) || 0) - (Number(b.revision) || 0) || String(a.id || '').localeCompare(String(b.id || '')));
+
+  const runtimeArray = prefix => legacyRecordEntries(
+    state,
+    record => String(record.path || '').startsWith(`${prefix}[`)
+  ).map(record => JSON.parse(JSON.stringify(record.value)));
+
+  const facts = runtimeArray('facts');
+  const assumptions = runtimeArray('assumptions');
+  const decisions = Object.values(state.ledgers.decisions || {})
+    .map(item => item.raw)
+    .filter(Boolean)
+    .map(value => JSON.parse(JSON.stringify(value)));
+  const unknowns = Object.values(state.ledgers.unknowns || {})
+    .map(item => item.raw)
+    .filter(Boolean)
+    .map(value => JSON.parse(JSON.stringify(value)));
+  const contradictions = Object.values(state.ledgers.contradictions || {})
+    .map(item => item.raw)
+    .filter(Boolean)
+    .map(value => JSON.parse(JSON.stringify(value)));
+
+  const legacyContext = legacyRecordValue(state, 'businessContext', null);
+  const phaseData = legacyRecordValue(state, 'phaseData', {});
+  const completedPhases = legacyRecordValue(state, 'completedPhases', {});
+  const aiInsights = legacyRecordValue(state, 'aiInsights', []);
+  const dynamicQuestion = legacyRecordValue(state, 'dynamicQuestion', null);
+  const dynamicQuestionState = legacyRecordValue(state, 'dynamicQuestionState', null);
+  const dynamicQuestionsHistory = legacyRecordValue(state, 'dynamicQuestionsHistory', []);
+
+  return {
+    revision: Number(state.revision) || 0,
+    answerRecords,
+    aiInsights,
+    reviewRequired: JSON.parse(JSON.stringify(state.session?.reviewRequired || {})),
+    dynamicQuestion,
+    dynamicQuestionState,
+    dynamicQuestionsHistory,
+    isNavigatingBack: Boolean(state.session?.navigation?.isNavigatingBack),
+    reviewCursor: Number.isInteger(state.session?.navigation?.reviewCursor)
+      ? state.session.navigation.reviewCursor
+      : null,
+    currentPhase: Number(state.session?.currentPhase) || 1,
+    currentStepIndex: Number(state.session?.currentStepIndex) || 0,
+    completedPhases: JSON.parse(JSON.stringify(completedPhases || {})),
+    phaseData: JSON.parse(JSON.stringify(phaseData || {})),
+    phaseStatus: JSON.parse(JSON.stringify(state.session?.phaseStatus || {})),
+    facts,
+    decisions,
+    assumptions,
+    unknowns,
+    contradictions,
+    businessContext: legacyContext
+      ? JSON.parse(JSON.stringify(legacyContext))
+      : JSON.parse(JSON.stringify(state.businessContext || null)),
+  };
 }
