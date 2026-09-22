@@ -233,3 +233,29 @@ export function getPhaseModuleProjection(context, phase) {
     invalidationEdges: modules.flatMap(module => module.invalidationEdges.map(edge => ({ ...edge, moduleId: module.id }))),
   };
 }
+
+
+export function renderPhaseModuleInstruction(context, phase) {
+  const projection = getPhaseModuleProjection(context, phase);
+  if (projection.decisionNodes.length === 0) {
+    return {
+      title: `فاز ${projection.phase} — بدون ماژول تخصصی فعال`,
+      instruction: '',
+      projection,
+    };
+  }
+
+  const decisions = projection.decisionNodes.map(node => node.title).join('؛ ');
+  const evidence = projection.evidenceRequirements.length
+    ? `شواهد موردنیاز: ${projection.evidenceRequirements.join('، ')}.`
+    : '';
+  const gates = projection.gates.length
+    ? `گیت‌های فعال: ${projection.gates.join('، ')}.`
+    : '';
+
+  return {
+    title: `فاز ${projection.phase} — تصمیم‌های تخصصی فعال`,
+    instruction: [`تمرکز تصمیمی این فاز: ${decisions}.`, evidence, gates].filter(Boolean).join(' '),
+    projection,
+  };
+}
