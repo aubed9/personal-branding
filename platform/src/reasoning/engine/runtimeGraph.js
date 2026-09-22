@@ -12,6 +12,7 @@ import { activeAnswers } from '../../services/interviewSchema.js';
 import { DEPENDENCIES } from '../../services/adaptiveInterview.js';
 import { materializePhaseExitGate } from './gateProjection.js';
 import { projectContradictionsToGraph } from './contradictionProjection.js';
+import { applyInvalidation, discoverInvalidation } from './invalidation.js';
 
 export const AXIS_QUESTION_DEPENDENCIES = Object.freeze({
   customerModel: ['p2_step1_customer_pain', 'p2_step3_primary_channel', 'p3_target_segment', 'p3_positioning_frame', 'p3_brand_promise', 'p8_lead_funnel'],
@@ -154,6 +155,20 @@ export function buildRuntimeReasoningGraph({
   }
 
   const contradictionProjection = projectContradictionsToGraph(graph, contradictions, answerNodeByQuestionId);
+
+  // Rebuilds must preserve unresolved review/stale propagation. A graph rebuild is
+  // recomputation of topology, not an implicit approval of previously invalidated evidence.
+  for (const [questionId, nodeId] of Object.entries(answerNodeByQuestionId)) {
+    const node = graph.nodes[nodeId];
+    if (node?.status !== ENTITY_STATUS.NEEDS_REVIEW) continue;
+    const discovery = discoverInvalidation(graph, [nodeId]);
+    applyInvalidation(graph, {
+      id: `REVIEW-CARRY-${questionId}-R${revision}`,
+      type: 'REVIEW_REQUIRED',
+      revision,
+      changedNodeIds: [nodeId],
+    }, discovery);
+  }
 
   return {
     graph,
