@@ -1,0 +1,173 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://digital-market.local/schemas/v3/source-record.schema.json",
+  "title": "DigitalMarketSourceRecordV3",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "source_type",
+    "title",
+    "author_or_institution",
+    "issuing_authority",
+    "published_at",
+    "effective_from",
+    "effective_until",
+    "observed_period",
+    "edition_or_version",
+    "url",
+    "repository_location",
+    "accessed_at",
+    "verified_at",
+    "jurisdiction_or_scope",
+    "language",
+    "authority_tier",
+    "freshness_class",
+    "max_age_days",
+    "status",
+    "checksum",
+    "limitations"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^SRC-[A-Z0-9-]+$"
+    },
+    "source_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "author_or_institution": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "issuing_authority": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "published_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "effective_from": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "effective_until": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "observed_period": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "edition_or_version": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "url": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "repository_location": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "accessed_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "verified_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "jurisdiction_or_scope": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "language": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "authority_tier": {
+      "type": "string",
+      "enum": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ]
+    },
+    "freshness_class": {
+      "type": "string",
+      "enum": [
+        "VOLATILE_PRICE",
+        "PLATFORM_POLICY",
+        "LEGAL",
+        "TAX",
+        "REGULATORY",
+        "MACRO",
+        "INDUSTRY_REPORT",
+        "INTERNAL_PLAYBOOK",
+        "ACADEMIC"
+      ]
+    },
+    "max_age_days": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "DRAFT",
+        "NEEDS_RESEARCH",
+        "VERIFIED",
+        "CANONICAL",
+        "STALE",
+        "DEPRECATED"
+      ]
+    },
+    "checksum": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "limitations": {
+      "type": "string"
+    }
+  }
+}
