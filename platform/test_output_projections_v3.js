@@ -4,6 +4,8 @@ import assert from 'node:assert/strict';
 import { generateDeliverable, deliverableToMarkdown } from './src/services/deliverableGenerator.js';
 import { migrateAnswerRecords } from './src/services/interviewSchema.js';
 import { buildEvidenceDerivedHandoff } from './src/projections/output/handoffProjection.js';
+import { assertOutputAcceptance, auditOutputModel } from './src/projections/output/audit.js';
+import { buildCanonicalOutputClaims } from './src/projections/output/claims.js';
 import { CLAIM_TYPES, PROPOSAL_STATUS, validateCanonicalClaim } from './src/reasoning/contracts.js';
 
 const GENERIC_FALLBACKS = [
@@ -262,4 +264,95 @@ test('markdown renders canonical claim IDs and conditional module subsections', 
   assert.ok(claim);
   assert.ok(md.includes(claim.claimId));
   assert.ok(md.includes('تمرکز تصمیمی فعال'));
+});
+
+
+test('output acceptance audit reaches all hard #19 invariants on specialized evidence-rich state', () => {
+  const data = phaseData();
+  const meta = metadata(data);
+  const model = buildCanonicalOutputClaims({
+    phaseData: data,
+    businessContext: context(),
+    unknowns: [],
+    contradictions: [],
+    metadata: meta,
+  });
+  const result = assertOutputAcceptance(model, { specializedContext: true });
+  assert.equal(result.valid, true, result.errors.join('\n'));
+  assert.equal(result.audit.evidenceCoverageRate, 1);
+  assert.equal(result.audit.genericFallbackRatio, 0);
+  assert.equal(result.audit.staleConfirmedLeakageCount, 0);
+  assert.equal(result.audit.illegalCertaintyUpgradeCount, 0);
+  assert.equal(result.audit.semanticDuplicateCount, 0);
+});
+
+test('shared module risks are one canonical claim referenced by every affected phase view', () => {
+  const data = phaseData();
+  const meta = metadata(data);
+  const ctx = context({
+    customerModel: 'B2B',
+    revenueModel: 'RECURRING',
+    regulatoryProfile: 'REGULATED',
+    founderRole: 'FOUNDER_LED',
+  });
+  const model = buildCanonicalOutputClaims({
+    phaseData: data,
+    businessContext: ctx,
+    unknowns: [],
+    contradictions: [],
+    metadata: meta,
+  });
+
+  const founderRisk = model.claims.find(claim =>
+    claim.claimType === CLAIM_TYPES.RISK &&
+    claim.moduleId === 'MOD-FOUNDER-PUBLIC' &&
+    claim.metadata?.riskId === 'founder_dependency'
+  );
+  assert.ok(founderRisk);
+  assert.equal(founderRisk.phase, null);
+  assert.ok(founderRisk.metadata.affectedPhases.includes(4));
+  assert.ok(founderRisk.metadata.affectedPhases.includes(5));
+  assert.ok(founderRisk.metadata.affectedPhases.includes(8));
+
+  const p4 = generateDeliverable(4, data, ctx, [], [], [], meta);
+  const p5 = generateDeliverable(5, data, ctx, [], [], [], meta);
+  const p8 = generateDeliverable(8, data, ctx, [], [], [], meta);
+  assert.ok(p4.claimIds.includes(founderRisk.claimId));
+  assert.ok(p5.claimIds.includes(founderRisk.claimId));
+  assert.ok(p8.claimIds.includes(founderRisk.claimId));
+
+  const master = generateDeliverable('master', data, ctx, [], [], [], meta);
+  const refs = master.sections.flatMap(section => section.claimIds || []).filter(id => id === founderRisk.claimId);
+  assert.equal(refs.length, 1, 'shared risk must appear once in the semantic Master');
+});
+
+test('audit detects unsupported generated claims and semantic duplicate regressions', () => {
+  const fake = {
+    claims: [
+      {
+        claimId: 'CLM-A',
+        claimType: CLAIM_TYPES.PROPOSAL,
+        statement: 'اقدام یکسان',
+        status: 'PROVISIONAL',
+        evidenceIds: [],
+        dependencyIds: [],
+        ruleId: null,
+        moduleId: null,
+      },
+      {
+        claimId: 'CLM-B',
+        claimType: CLAIM_TYPES.PROPOSAL,
+        statement: 'اقدام یکسان',
+        status: 'PROVISIONAL',
+        evidenceIds: [],
+        dependencyIds: [],
+        ruleId: null,
+        moduleId: null,
+      },
+    ],
+  };
+  const audit = auditOutputModel(fake, { specializedContext: true });
+  assert.equal(audit.evidenceCoverageRate, 0);
+  assert.ok(audit.genericFallbackRatio > 0);
+  assert.equal(audit.semanticDuplicateCount, 1);
 });
