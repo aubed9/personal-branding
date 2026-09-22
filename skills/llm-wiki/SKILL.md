@@ -7,11 +7,11 @@ customer_output_language: fa
 status: production-spec
 description: >-
   Comprehensive LLM Wiki, Knowledge Graph & Business Decision System for Antigravity.
-  Bridges 165 master academic and Iranian business intelligence sources, GraphRAG multi-hop traversal,
+  Uses a canonical Source Registry plus claim-level academic and Iranian business intelligence provenance, GraphRAG multi-hop traversal,
   conflict resolution, and Iranian macroeconomic & platform data across the 10-link business decision chain.
 ---
 
-# DIGITAL MARKET — LLM Wiki & Strategic Decision System (165 Sources)
+# DIGITAL MARKET — Registry-Backed LLM Wiki & Strategic Decision System
 
 ## 1. Master Evidence Architecture
 - **Academic Foundations (30 Canonical Works):** Porter, Kotler, Aaker, Cialdini, Sharp, Christensen, Kahneman, Ries, Trout, Neumeier, Godin, Moore, Osterwalder, Kim & Mauborgne.
