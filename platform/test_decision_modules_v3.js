@@ -251,7 +251,9 @@ test('module contributions create a valid graph with all 15 context nodes and ty
   assert.ok(composition.moduleIds.length > 5);
 
   const activationEdges = Object.values(graph.edges).filter(edge => edge.type === 'ACTIVATES');
+  const invalidationEdges = Object.values(graph.edges).filter(edge => edge.type === 'INVALIDATES');
   assert.ok(activationEdges.length >= contributed.decisionNodeIds.length);
+  assert.ok(invalidationEdges.length >= contributed.decisionNodeIds.length);
   for (const edge of activationEdges) {
     assert.ok(graph.nodes[edge.from]);
     assert.ok(graph.nodes[edge.to]);
