@@ -1,0 +1,208 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://digital-market.local/schemas/v3/project-state.schema.json",
+  "title": "DigitalMarketCanonicalProjectStateV3",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "stateSchemaVersion",
+    "reasoningEngineVersion",
+    "projectId",
+    "revision",
+    "businessContext",
+    "ledgers",
+    "graph",
+    "session",
+    "knowledgeRefs",
+    "migration"
+  ],
+  "properties": {
+    "stateSchemaVersion": {
+      "const": 3
+    },
+    "reasoningEngineVersion": {
+      "type": "string",
+      "minLength": 1
+    },
+    "projectId": {
+      "type": "string",
+      "pattern": "^PRJ-[0-9a-f]{16}$"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "businessContext": {
+      "$ref": "business-context.schema.json"
+    },
+    "ledgers": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidence",
+        "decisions",
+        "proposals",
+        "claims",
+        "risks",
+        "contradictions",
+        "unknowns",
+        "legacyRecords"
+      ],
+      "properties": {
+        "evidence": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        },
+        "decisions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        },
+        "proposals": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        },
+        "claims": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        },
+        "risks": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        },
+        "contradictions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        },
+        "unknowns": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        },
+        "legacyRecords": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "graph": {
+      "$ref": "reasoning-graph.schema.json"
+    },
+    "session": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "currentPhase",
+        "currentStepIndex",
+        "reviewRequired",
+        "phaseStatus",
+        "navigation"
+      ],
+      "properties": {
+        "currentPhase": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8
+        },
+        "currentStepIndex": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "reviewRequired": {
+          "type": "object"
+        },
+        "phaseStatus": {
+          "type": "object"
+        },
+        "navigation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "isNavigatingBack",
+            "reviewCursor"
+          ],
+          "properties": {
+            "isNavigatingBack": {
+              "type": "boolean"
+            },
+            "reviewCursor": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "knowledgeRefs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourceIds",
+        "knowledgeNodeIds"
+      ],
+      "properties": {
+        "sourceIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "knowledgeNodeIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "migration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourceSchemaVersion",
+        "legacyIdMap",
+        "latestReport"
+      ],
+      "properties": {
+        "sourceSchemaVersion": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "legacyIdMap": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "latestReport": {
+          "type": [
+            "object",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

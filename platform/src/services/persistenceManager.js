@@ -1,5 +1,12 @@
 import { migrateAnswerRecords } from "./interviewSchema.js";
 import { validateUnitEconomics } from './unitEconomics.js';
+import { migrateLegacyStateToV3 } from '../state/v3/migration.js';
+import { validateCanonicalProjectState } from '../state/v3/canonicalState.js';
+import {
+  PRE_V3_BACKUP_KEY,
+  V3_STATE_SCHEMA_VERSION,
+  V3_STORAGE_KEY,
+} from '../state/v3/constants.js';
 /**
  * DIGITAL MARKET — Versioned State Persistence Manager (Requirement R8.1)
  * 
@@ -333,6 +340,147 @@ export class PersistenceManager {
   }
 
   /**
+   * One-way, opt-in migration from the current legacy envelope to canonical v3 state.
+   * The legacy storage key is left untouched. A pre-v3 backup is captured once and
+   * canonical state is written only to V3_STORAGE_KEY.
+   */
+  migrateStoredProjectToV3({ projectId = null, migratedAt = new Date().toISOString() } = {}) {
+    try {
+      if (typeof localStorage === 'undefined') return { success: false, reason: 'localStorage not available' };
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return { success: false, reason: 'no_saved_state' };
+
+      let envelope;
+      try {
+        envelope = JSON.parse(raw);
+      } catch (err) {
+        return { success: false, corrupted: true, reason: 'corrupted_json', error: err.message };
+      }
+      if (!envelope || typeof envelope !== 'object' || !envelope.state) {
+        return { success: false, corrupted: true, reason: 'malformed_envelope' };
+      }
+
+      const sourceVersion = Number(envelope.schemaVersion || 0);
+      if (sourceVersion > SCHEMA_VERSION) {
+        return { success: false, reason: 'unsupported_future_legacy_version', schemaVersion: sourceVersion };
+      }
+
+      let sourceState = envelope.state;
+      if (sourceVersion < SCHEMA_VERSION) sourceState = this.migrateState(sourceState, sourceVersion);
+      const legacyValidation = validateStateStructure(sourceState);
+      if (!legacyValidation.valid) {
+        return { success: false, corrupted: true, reason: 'validation_failed', errors: legacyValidation.errors };
+      }
+
+      if (!localStorage.getItem(PRE_V3_BACKUP_KEY)) {
+        localStorage.setItem(PRE_V3_BACKUP_KEY, raw);
+      }
+
+      const sanitized = sanitizeForPersistence(sourceState);
+      const migrated = migrateLegacyStateToV3(sanitized, {
+        fromSchemaVersion: sourceVersion,
+        projectId,
+        migratedAt,
+      });
+      const canonicalValidation = validateCanonicalProjectState(migrated.state);
+      if (!canonicalValidation.valid) {
+        return { success: false, reason: 'canonical_validation_failed', errors: canonicalValidation.errors };
+      }
+
+      const v3Envelope = {
+        stateSchemaVersion: V3_STATE_SCHEMA_VERSION,
+        reasoningEngineVersion: migrated.state.reasoningEngineVersion,
+        savedAt: migratedAt,
+        sourceSavedAt: envelope.savedAt || null,
+        migrationReport: migrated.report,
+        state: sanitizeForPersistence(migrated.state),
+      };
+      localStorage.setItem(V3_STORAGE_KEY, JSON.stringify(v3Envelope));
+
+      return {
+        success: true,
+        state: migrated.state,
+        report: migrated.report,
+        backupKey: PRE_V3_BACKUP_KEY,
+        storageKey: V3_STORAGE_KEY,
+      };
+    } catch (err) {
+      console.warn('[PersistenceManager] v3 migration failed:', err.message);
+      return { success: false, reason: 'migration_failed', error: err.message };
+    }
+  }
+
+  /**
+   * Persist canonical v3 state only. This method never writes the legacy key.
+   */
+  saveCanonicalProjectState(canonicalState, { savedAt = new Date().toISOString() } = {}) {
+    try {
+      if (typeof localStorage === 'undefined') return false;
+      const validation = validateCanonicalProjectState(canonicalState);
+      if (!validation.valid) {
+        console.warn('[PersistenceManager] Canonical state validation failed:', validation.errors);
+        return false;
+      }
+      const envelope = {
+        stateSchemaVersion: V3_STATE_SCHEMA_VERSION,
+        reasoningEngineVersion: canonicalState.reasoningEngineVersion,
+        savedAt,
+        state: sanitizeForPersistence(canonicalState),
+      };
+      localStorage.setItem(V3_STORAGE_KEY, JSON.stringify(envelope));
+      return true;
+    } catch (err) {
+      console.warn('[PersistenceManager] Canonical save failed:', err.message);
+      return false;
+    }
+  }
+
+  /**
+   * Load canonical v3 state without mutating or projecting it into the legacy engine.
+   */
+  loadV3ProjectState() {
+    try {
+      if (typeof localStorage === 'undefined') return null;
+      const raw = localStorage.getItem(V3_STORAGE_KEY);
+      if (!raw) return null;
+      const envelope = JSON.parse(raw);
+      if (!envelope || envelope.stateSchemaVersion !== V3_STATE_SCHEMA_VERSION || !envelope.state) return null;
+      const validation = validateCanonicalProjectState(envelope.state);
+      if (!validation.valid) {
+        console.warn('[PersistenceManager] Loaded canonical state validation failed:', validation.errors);
+        return null;
+      }
+      return {
+        state: envelope.state,
+        savedAt: envelope.savedAt || null,
+        stateSchemaVersion: envelope.stateSchemaVersion,
+        reasoningEngineVersion: envelope.reasoningEngineVersion || envelope.state.reasoningEngineVersion,
+        migrationReport: envelope.migrationReport || envelope.state.migration?.latestReport || null,
+      };
+    } catch (err) {
+      console.warn('[PersistenceManager] Canonical load failed:', err.message);
+      return null;
+    }
+  }
+
+  hasV3ProjectState() {
+    try {
+      return typeof localStorage !== 'undefined' && Boolean(localStorage.getItem(V3_STORAGE_KEY));
+    } catch {
+      return false;
+    }
+  }
+
+  getPreV3Backup() {
+    try {
+      if (typeof localStorage === 'undefined') return null;
+      return localStorage.getItem(PRE_V3_BACKUP_KEY);
+    } catch {
+      return null;
+    }
+  }
+
+  /**
    * Reset / clear all persisted state
    */
   resetProjectState() {
@@ -401,4 +549,4 @@ export class PersistenceManager {
   }
 }
 
-export { sanitizeForPersistence, validateStateStructure, SCHEMA_VERSION, STORAGE_KEY };
+export { sanitizeForPersistence, validateStateStructure, SCHEMA_VERSION, STORAGE_KEY, V3_STATE_SCHEMA_VERSION, V3_STORAGE_KEY, PRE_V3_BACKUP_KEY };
