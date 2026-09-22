@@ -3,6 +3,8 @@ updated_at: '2026-09-22'
 default_status: NEEDS_RESEARCH
 source_registry: wiki/source-registry.json
 claim_registry: wiki/claims.json
+article_frontmatter_status_authoritative: false
+retrieval_index: wiki/generated/retrieval-index.json
 knowledge_nodes:
   KB-SYS-ARCH-001:
     title: معماری جامع سیستم دیجیتال مارکت
