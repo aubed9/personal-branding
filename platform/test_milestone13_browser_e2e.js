@@ -250,8 +250,16 @@ console.log('\n▶ SUITE 6: Deliverable Modal & 9-Section Tab Navigation');
 
   // Content inspection
   const p1Deliv = generateDeliverable(1, engine.phaseData, engine.businessContext, engine.decisions, engine.facts, engine.unknowns);
-  assert(p1Deliv.sections.length === 5, "Phase 1 deliverable contains 5 actionable layers");
-  assert(p1Deliv.sections.some(s => s.checklist?.length >= 5), "Phase 1 operational checklist rendered with >=5 items");
+  assert(p1Deliv.sections.length === 5, "Phase 1 deliverable contains 5 stable shell sections");
+  const p1ChecklistItems = p1Deliv.sections.flatMap(s => s.checklist || []);
+  assert(
+    p1Deliv.actions.every(action => Array.isArray(action.evidenceIds) && action.evidenceIds.length > 0),
+    "Phase 1 operational proposals are evidence-linked"
+  );
+  assert(
+    p1ChecklistItems.every(item => !/داده .* را تکمیل|۳۰ روز: داده|review_experiment|revise_plan/.test(String(item))),
+    "Phase 1 checklist contains no synthetic filler actions"
+  );
 }
 
 // ============================================================================
