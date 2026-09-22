@@ -16,6 +16,7 @@ import {
   detectCrossDomainLeakage
 } from "./industryVocabularyMap.js";
 import { isAutomotiveService } from './businessDomain.js';
+import { getPhaseModuleProjection, renderPhaseModuleInstruction } from '../reasoning/modules/composer.js';
 
 export {
   MACRO_INDUSTRIES,
@@ -945,12 +946,30 @@ export function getPhaseAdaptationRules(phaseNum, context) {
   if (!context) return null;
   const p = parseInt(phaseNum, 10);
   const spec = resolveDomainSpecialization(context, context.axes, p);
+  const moduleView = getPhaseModuleProjection(spec, p);
+  const moduleNarrative = renderPhaseModuleInstruction(spec, p);
   return {
+    // Legacy fields remain stable until the later reasoning-engine cutover.
     title: spec.phaseTitle,
     instruction: spec.phaseInstruction,
     specializationLevel: spec.specializationLevel,
     kpis: spec.kpis,
-    risks: spec.risks
+    risks: spec.risks,
+
+    // Reasoning v3 projection: deterministic, additive, and graph-ready.
+    decisionModules: moduleView.moduleIds,
+    decisionNodes: moduleView.decisionNodes,
+    evidenceRequirements: moduleView.evidenceRequirements,
+    moduleKpis: moduleView.metrics,
+    moduleRisks: moduleView.risks,
+    outputSections: moduleView.outputSections,
+    gates: moduleView.gates,
+    knowledgeDependencies: moduleView.knowledgeDependencies,
+    sourceDependencies: moduleView.sourceDependencies,
+    prerequisites: moduleView.prerequisites,
+    invalidationEdges: moduleView.invalidationEdges,
+    v3Title: moduleNarrative.title,
+    v3Instruction: moduleNarrative.instruction
   };
 }
 

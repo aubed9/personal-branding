@@ -1,0 +1,178 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://digital-market.local/schemas/v3/decision-module.schema.json",
+  "title": "DigitalMarketDecisionModuleV3",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "title",
+    "axis",
+    "values",
+    "phases",
+    "prerequisites",
+    "decisionNodes",
+    "evidenceRequirements",
+    "calculations",
+    "metrics",
+    "risks",
+    "outputSections",
+    "gates",
+    "knowledgeDependencies",
+    "sourceDependencies",
+    "invalidationEdges",
+    "priority"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^MOD-[A-Z0-9-]+$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "axis": {
+      "type": "string",
+      "enum": [
+        "customerModel",
+        "offerType",
+        "channelModel",
+        "revenueModel",
+        "maturity",
+        "scale",
+        "salesMotion",
+        "geography",
+        "branchStructure",
+        "founderRole",
+        "purchaseCycle",
+        "relationshipModel",
+        "regulatoryProfile",
+        "operationalComplexity",
+        "brandArchitecture"
+      ]
+    },
+    "values": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "phases": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 8
+      }
+    },
+    "prerequisites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "decisionNodes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "phase",
+          "title"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "phase": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 8
+          },
+          "title": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "evidenceRequirements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "calculations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "metrics": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "risks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "outputSections": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "gates": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "knowledgeDependencies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sourceDependencies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "invalidationEdges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "type",
+          "from",
+          "to"
+        ],
+        "properties": {
+          "type": {
+            "const": "INVALIDATES_ON_AXIS_CHANGE"
+          },
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "priority": {
+      "type": "number"
+    }
+  }
+}
