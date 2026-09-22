@@ -12,6 +12,8 @@ import { auditOutputModel } from '../src/projections/output/audit.js';
 import { migrateAnswerRecords } from '../src/services/interviewSchema.js';
 import { getPhaseAdaptationRules } from '../src/data/businessContextRouter.js';
 import { migrateLegacyStateToV3 } from '../src/state/v3/migration.js';
+import { buildRuntimeReasoningGraph, discoverInvalidation } from '../src/reasoning/engine/index.js';
+import { buildEvidenceDerivedHandoff } from '../src/projections/output/handoffProjection.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '../..');
@@ -334,6 +336,65 @@ function migrationInvariantAudit() {
   };
 }
 
+function reachabilityMutationAudit() {
+  const answers = [
+    { id:'ANS-P', revision:1, phase:2, questionId:'p2_step2_pricing_models', field:'pricingModel', text:'قیمت ثابت', kind:'DECISION', status:'ACTIVE', source:'USER_TEXT' },
+    { id:'ANS-C', revision:2, phase:2, questionId:'p2_step3_primary_channel', field:'primaryChannel', text:'کانال آنلاین', kind:'DECISION', status:'ACTIVE', source:'USER_TEXT' },
+    { id:'ANS-O', revision:3, phase:2, questionId:'p2_step4_golden_opportunity', field:'goldenOpportunity', text:'فرصت', kind:'ASSUMPTION', status:'ACTIVE', source:'USER_TEXT' },
+    { id:'ANS-T', revision:4, phase:3, questionId:'p3_target_segment', field:'targetSegment', text:'شرکت متوسط', kind:'DECISION', status:'ACTIVE', source:'USER_TEXT' },
+  ];
+  const built = buildRuntimeReasoningGraph({
+    projectId:'HARNESS-MUTATION',
+    revision:4,
+    businessContext:baseContext(),
+    answerRecords:answers,
+  });
+  const pricing = built.indexes.answerNodeByQuestionId.p2_step2_pricing_models;
+  const discovery = discoverInvalidation(built.graph, [pricing]);
+  const affected = new Set(discovery.affectedQuestionIds);
+  return {
+    passed:
+      affected.has('p2_step4_golden_opportunity') &&
+      affected.has('p3_target_segment') &&
+      !affected.has('p2_step3_primary_channel'),
+    affectedQuestionIds:[...affected].sort(),
+    independentSurvives:!affected.has('p2_step3_primary_channel'),
+  };
+}
+
+function handoffInvariantAudit() {
+  const data = commonPhaseData();
+  delete data[2].customerPain;
+  const handoff = buildEvidenceDerivedHandoff({
+    targetPhase:3,
+    phaseData:data,
+    answerRecords:migrateAnswerRecords(data),
+    businessContext:baseContext(),
+  });
+  const forbidden = [
+    'کیفیت پایین و عدم همراهی',
+    'سادگی و ضمانت واقعی',
+    'مشتریان ارزش‌محور',
+    'ارائه باکیفیت و بدون دردسر',
+    'رفیق کاربلد و راهنما',
+    'صادق، دقیق و متعهد',
+    'صمیمی و حرفه‌ای',
+    'برند تخصصی',
+    'تعهد پایدار به کیفیت و رضایت',
+    'حل مستقیم درد مخاطب',
+  ];
+  return {
+    passed:
+      handoff.missingFields.includes('customerPain') &&
+      handoff.message.includes('[UNKNOWN]') &&
+      forbidden.every(value => !handoff.message.includes(value)) &&
+      handoff.sourceAnswerIds.every(id => handoff.message.includes(id)),
+    missingFields:handoff.missingFields,
+    sourceAnswerIds:handoff.sourceAnswerIds,
+    genericFallbackHits:forbidden.filter(value => handoff.message.includes(value)),
+  };
+}
+
 function shadowAudit() {
   const pairs = [
     ['b2b-b2c',
@@ -422,17 +483,19 @@ export function runReasoningV3AcceptanceHarness() {
   const output = outputInvariantAudit();
   const knowledge = knowledgeInvariantAudit();
   const migration = migrationInvariantAudit();
+  const reachability = reachabilityMutationAudit();
+  const handoff = handoffInvariantAudit();
   const shadow = shadowAudit();
 
   const hardInvariantResults = {
     BROKEN_GRAPH_REFS_ZERO: graph.brokenEdgeCount === 0 && graph.passed,
     BROKEN_KNOWLEDGE_REFS_ZERO: knowledge.brokenSourceRefs.length === 0 && knowledge.brokenClaimRefCount === 0,
-    INVENTED_HANDOFF_VALUES_ZERO: output.genericFallbackRatio === 0,
+    INVENTED_HANDOFF_VALUES_ZERO: handoff.passed,
     STALE_CONFIRMED_LEAKAGE_ZERO: output.staleConfirmedLeakageCount === 0,
     ILLEGAL_CERTAINTY_UPGRADES_ZERO: output.illegalCertaintyUpgradeCount === 0,
     PROTECTED_CROSS_DOMAIN_LEAKAGE_ZERO: matchedPairs.find(p => p.id === 'local-retail-vs-b2b-manufacturing')?.passed === true,
     SILENT_MIGRATION_DATA_LOSS_ZERO: migration.passed,
-    REACHABILITY_MUTATION_PASS: true, // authoritative mutation suite is invoked by the acceptance npm script.
+    REACHABILITY_MUTATION_PASS: reachability.passed,
     MATCHED_PAIR_CAUSAL_PASS: matchedPairs.every(pair => pair.passed),
     DECISION_CLAIM_PROVENANCE_100: knowledge.traceabilityRate === 1 && output.evidenceCoverageRate === 1,
   };
@@ -448,6 +511,8 @@ export function runReasoningV3AcceptanceHarness() {
     output,
     knowledge,
     migration,
+    reachability,
+    handoff,
     matchedPairs,
     shadow,
     compatibilityCoverage: {
