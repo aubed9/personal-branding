@@ -521,8 +521,8 @@ class ValidationSuite:
         with open(legacy_rag, "r", encoding="utf-8") as f:
             legacy_rag_text = f.read()
         legacy_rag_runtime_ref = (
-            re.search(r"KB_FILE\\s*=.*rag_chunks\\.json", legacy_rag_text) or
-            re.search(r"open\\([^\\n]*rag_chunks\\.json", legacy_rag_text)
+            re.search(r"KB_FILE\s*=.*rag_chunks\.json", legacy_rag_text) or
+            re.search(r"open\([^\n]*rag_chunks\.json", legacy_rag_text)
         )
         if legacy_rag_runtime_ref:
             self.log("Legacy RAG", "Runtime still reads manual rag_chunks.json", "FAIL")
