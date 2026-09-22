@@ -132,7 +132,7 @@ export function contributeDecisionModulesToGraph(graph, context) {
       for (const calculation of module.calculations) {
         const calcNode = addOrReuseNode(graph, {
           type: NODE_TYPES.CALCULATION,
-          stableKey: { moduleId: module.id, calculation },
+          stableKey: { moduleId: module.id, calculation, phase: decision.phase },
           status: ENTITY_STATUS.ACTIVE,
           phase: decision.phase,
           moduleId: module.id,
@@ -150,7 +150,7 @@ export function contributeDecisionModulesToGraph(graph, context) {
       for (const risk of module.risks) {
         const riskNode = addOrReuseNode(graph, {
           type: NODE_TYPES.RISK,
-          stableKey: { moduleId: module.id, risk },
+          stableKey: { moduleId: module.id, risk, phase: decision.phase },
           status: ENTITY_STATUS.ACTIVE,
           phase: decision.phase,
           moduleId: module.id,
