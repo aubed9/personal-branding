@@ -49,9 +49,19 @@ export const QUESTION_MODULE_DEPENDENCIES = Object.freeze({
   p8_crisis_reputation: ['MOD-REG-HIGH', 'MOD-REL-RECURRING'],
 });
 
-function answerNodeStatus(record, reviewRequired) {
+function answerNodeStatus(record, reviewRequired, unknowns = []) {
   const needsReview = (reviewRequired?.[record.phase] || []).includes(record.questionId);
-  if (needsReview || record.kind === 'UNKNOWN') return ENTITY_STATUS.NEEDS_REVIEW;
+  if (needsReview) return ENTITY_STATUS.NEEDS_REVIEW;
+  if (record.kind === 'UNKNOWN') {
+    const related = unknowns.find(item =>
+      item?.answerId === record.id ||
+      (item?.phase === record.phase && item?.questionId === record.questionId)
+    );
+    if (related && ['ACCEPTED_RISK', 'RESOLVED'].includes(related.status)) {
+      return ENTITY_STATUS.PROVISIONAL;
+    }
+    return ENTITY_STATUS.NEEDS_REVIEW;
+  }
   return ENTITY_STATUS.CONFIRMED;
 }
 
@@ -62,6 +72,7 @@ export function buildRuntimeReasoningGraph({
   answerRecords = [],
   phaseData = {},
   reviewRequired = {},
+  unknowns = [],
   contradictions = [],
   phaseGateResults = {},
 } = {}) {
@@ -90,7 +101,7 @@ export function buildRuntimeReasoningGraph({
       id,
       type: NODE_TYPES.EVIDENCE,
       stableKey: { answerId: record.id, questionId: record.questionId },
-      status: answerNodeStatus(record, reviewRequired),
+      status: answerNodeStatus(record, reviewRequired, unknowns),
       phase: Number(record.phase) || null,
       payload: {
         answerId: record.id,
