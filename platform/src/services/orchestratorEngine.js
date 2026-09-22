@@ -101,6 +101,7 @@ export class OrchestratorEngine {
       answerRecords: this.answerRecords,
       phaseData: this.phaseData,
       reviewRequired: this.reviewRequired,
+      unknowns: this.unknowns,
       contradictions: this.contradictions,
       phaseGateResults: this.phaseGateResultsV3,
     });
