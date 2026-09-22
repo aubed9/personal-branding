@@ -22,6 +22,7 @@ export function defineDecisionModule(definition) {
     values: uniq(definition.values),
     phases: uniq(definition.phases).map(Number).sort((a, b) => a - b),
     activation: definition.activation || null,
+    prerequisites: definition.prerequisites || [],
     decisionNodes: definition.decisionNodes || [],
     evidenceRequirements: definition.evidenceRequirements || [],
     calculations: definition.calculations || [],
@@ -30,6 +31,7 @@ export function defineDecisionModule(definition) {
     outputSections: definition.outputSections || [],
     gates: definition.gates || [],
     knowledgeDependencies: definition.knowledgeDependencies || [],
+    sourceDependencies: definition.sourceDependencies || [],
     invalidationEdges: definition.invalidationEdges || [],
     priority: Number(definition.priority || 100),
   };
@@ -45,6 +47,7 @@ export function validateDecisionModule(mod) {
   if (!Array.isArray(mod?.values) || mod.values.length === 0) errors.push('module values are required');
   else for (const value of mod.values) if (!CONTEXT_AXIS_VALUES[mod.axis]?.includes(value)) errors.push(`invalid activation value ${value} for ${mod.axis}`);
   if (!Array.isArray(mod?.phases) || mod.phases.some(p => !Number.isInteger(p) || p < 1 || p > 8)) errors.push('module phases must be 1..8');
+  if (!Array.isArray(mod?.prerequisites)) errors.push('prerequisites must be an array');
   if (!Array.isArray(mod?.decisionNodes)) errors.push('decisionNodes must be an array');
   if (!Array.isArray(mod?.evidenceRequirements)) errors.push('evidenceRequirements must be an array');
   if (!Array.isArray(mod?.metrics)) errors.push('metrics must be an array');
@@ -52,6 +55,8 @@ export function validateDecisionModule(mod) {
   if (!Array.isArray(mod?.outputSections)) errors.push('outputSections must be an array');
   if (!Array.isArray(mod?.gates)) errors.push('gates must be an array');
   if (!Array.isArray(mod?.knowledgeDependencies)) errors.push('knowledgeDependencies must be an array');
+  if (!Array.isArray(mod?.sourceDependencies)) errors.push('sourceDependencies must be an array');
+  if (!Array.isArray(mod?.invalidationEdges)) errors.push('invalidationEdges must be an array');
 
   for (const node of mod?.decisionNodes || []) {
     if (!node.id || !node.phase) errors.push(`decision node missing id/phase in ${mod?.id}`);
