@@ -58,7 +58,10 @@ function phaseStatus(phase, state, claims) {
   const blocked = claims.some(claim => claim.status === CLAIM_STATUS.BLOCKED);
   const needsReview = claims.some(claim => [CLAIM_STATUS.STALE, CLAIM_STATUS.NEEDS_REVIEW].includes(claim.status));
   if (blocked) return 'BLOCKED';
-  if (stale || needsReview) return 'NEEDS_REVIEW';
+  // Keep the document-level lifecycle backward-compatible: an invalidated/incomplete
+  // document is DRAFT, while the exact affected sections/claims retain NEEDS_REVIEW
+  // or STALE so certainty is never upgraded.
+  if (stale || needsReview) return 'DRAFT';
   const gate = validatePhaseGate(phase, state);
   if (state.completedPhases?.[phase] && gate.passed) return 'CONFIRMED';
   return 'DRAFT';
@@ -158,7 +161,9 @@ export function projectPhaseDeliverable(phase, state, model) {
     }, {
       id: `P${p}_EVIDENCE`,
       title: '۲. ورودی‌های تأییدشده، فرضیات و مجهولات',
-      items: evidenceClaims.map(claimPresentation),
+      items: evidenceClaims.length
+        ? evidenceClaims.map(claimPresentation)
+        : ['[UNKNOWN] هنوز پاسخی ثبت نشده است.'],
     }),
 
     sectionOrThrow({
