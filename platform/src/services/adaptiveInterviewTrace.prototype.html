@@ -1,0 +1,620 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>PROTOTYPE — DIGITAL MARKET Adaptive Interview Trace</title>
+<style>
+  :root{
+    --bg:#f7f8fb;--panel:#fff;--text:#172033;--muted:#64748b;--line:#e2e8f0;
+    --accent:#335cff;--accent-soft:#eef2ff;--danger:#b42318;--ok:#067647;--warn:#b54708;
+    font-family:Tahoma,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);line-height:1.7}
+  .wrap{max-width:1320px;margin:auto;padding:24px}
+  .hero{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px;margin-bottom:18px}
+  .prototype-badge{display:inline-block;background:#fff1f2;color:#9f1239;border:1px solid #fecdd3;border-radius:999px;padding:3px 10px;font-weight:700;font-size:12px}
+  h1{font-size:26px;margin:12px 0 6px}
+  h2{font-size:18px;margin:0 0 12px}
+  h3{font-size:15px;margin:0 0 8px}
+  p{margin:6px 0}
+  .muted{color:var(--muted);font-size:13px}
+  .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;min-width:0}
+  .full{grid-column:1/-1}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+  button{font:inherit;border:1px solid var(--line);background:white;color:var(--text);border-radius:10px;padding:8px 12px;cursor:pointer}
+  button:hover{border-color:#a5b4fc}
+  button.primary{background:var(--accent);color:white;border-color:var(--accent)}
+  button.active{background:var(--accent-soft);border-color:#a5b4fc;color:#3730a3}
+  button.danger{color:var(--danger);border-color:#fecaca}
+  .actions{display:flex;gap:8px;flex-wrap:wrap}
+  .cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .card{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff}
+  .k{font-size:11px;color:var(--muted)}
+  .v{font-weight:700;word-break:break-word}
+  .chips{display:flex;gap:6px;flex-wrap:wrap}
+  .chip{border:1px solid var(--line);background:#f8fafc;border-radius:999px;padding:3px 8px;font-size:12px}
+  .chip.ok{background:#ecfdf3;border-color:#abefc6;color:var(--ok)}
+  .chip.warn{background:#fffaeb;border-color:#fedf89;color:var(--warn)}
+  .chip.info{background:#eef2ff;border-color:#c7d2fe;color:#3730a3}
+  .chip.stale{background:#fff1f2;border-color:#fecdd3;color:#9f1239}
+  .decision{border:1px solid var(--line);border-radius:12px;padding:12px;margin:8px 0}
+  .decision.current{border-color:#818cf8;background:#f8faff}
+  .decision.closed{opacity:.55}
+  .decision.stale{border-color:#fda4af;background:#fff7f8}
+  .row{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+  .why{margin-top:6px;color:var(--muted);font-size:12px}
+  .trace{max-height:320px;overflow:auto;border-top:1px solid var(--line);margin-top:8px}
+  .trace-item{padding:9px 0;border-bottom:1px dashed var(--line);font-size:13px}
+  .code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;direction:ltr;text-align:left;background:#0f172a;color:#e2e8f0;border-radius:10px;padding:10px;overflow:auto;font-size:12px;white-space:pre-wrap}
+  .scenario-help{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:12px;padding:12px;margin-top:10px}
+  .step{display:flex;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid #f1f5f9}
+  .step:last-child{border-bottom:0}
+  .step-num{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);color:#3730a3;font-size:12px;font-weight:700;flex:0 0 auto}
+  .stale-box{border:1px solid #fecdd3;background:#fff7f8;border-radius:12px;padding:10px}
+  .empty{color:var(--muted);font-style:italic}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}.cards{grid-template-columns:1fr}.full{grid-column:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="hero">
+    <span class="prototype-badge">PROTOTYPE — THROWAWAY LOGIC DEMO</span>
+    <h1>ردیاب مصاحبه تطبیقی DIGITAL MARKET</h1>
+    <p><strong>سؤال این Prototype:</strong> آیا ترکیب هم‌زمان Business Contextها + Decision Moduleها + invalidation دقیق، حس یک مصاحبه واقعاً Adaptive را می‌دهد؟</p>
+    <p class="muted">این فایل production نیست. هدف فقط این است که با کلیک روی سناریوها ببینیم «چه سؤال‌هایی باز/بسته می‌شوند، چرا، و با تغییر یک پاسخ چه چیزهایی stale می‌شوند».</p>
+  </section>
+
+  <section class="panel full">
+    <h2>Walkthroughهای هدایت‌شده</h2>
+    <div id="scenarioTabs" class="tabs"></div>
+    <div id="scenarioDescription" class="scenario-help"></div>
+    <div id="scenarioSteps"></div>
+  </section>
+
+  <div class="grid">
+    <section class="panel">
+      <h2>وضعیت فعلی کسب‌وکار</h2>
+      <div id="contextCards" class="cards"></div>
+      <h3 style="margin-top:16px">ماژول‌های فعال</h3>
+      <div id="modules" class="chips"></div>
+      <h3 style="margin-top:16px">Evidence موجود</h3>
+      <div id="evidence"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Free Play</h2>
+      <p class="muted">می‌توانی مستقل از walkthroughها وضعیت را دست‌کاری کنی.</p>
+      <div class="actions">
+        <button data-action="ANSWER_CURRENT" class="primary">پاسخ به سؤال جاری</button>
+        <button data-action="CONFIRM_REGULATORY">تأیید وضعیت رگولاتوری</button>
+        <button data-action="EDIT_REVENUE_TO_PROJECT">تغییر Revenue به Project</button>
+        <button data-action="EDIT_REVENUE_TO_SUBSCRIPTION">تغییر Revenue به Subscription</button>
+        <button data-action="EDIT_CHANNEL_HYBRID">تغییر Channel به Hybrid</button>
+        <button data-action="EDIT_FOUNDER_LED">Founder-led کن</button>
+        <button data-action="RESET" class="danger">Reset</button>
+      </div>
+      <h3 style="margin-top:16px">آخرین تغییر</h3>
+      <div id="lastChange" class="scenario-help"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Decision Trace</h2>
+      <div id="decisionList"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Branchهای بسته / Stale</h2>
+      <h3>بسته به‌خاطر Context</h3>
+      <div id="closedList"></div>
+      <h3 style="margin-top:14px">نیازمند بازبینی</h3>
+      <div id="staleList"></div>
+    </section>
+
+    <section class="panel full">
+      <h2>چرا سؤال بعدی انتخاب شد؟</h2>
+      <div id="currentWhy" class="scenario-help"></div>
+    </section>
+
+    <section class="panel full">
+      <h2>Trace Log</h2>
+      <div id="trace" class="trace"></div>
+    </section>
+
+    <section class="panel full">
+      <h2>State Snapshot</h2>
+      <div id="snapshot" class="code"></div>
+    </section>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   PORTABLE PURE LOGIC MODULE
+   No DOM access in this block.
+   ========================================================= */
+const AdaptiveTraceModel = (() => {
+  const NODES = [
+    {
+      id:"FOUNDATION_GOAL", label:"هدف اصلی و وضعیت کسب‌وکار",
+      phase:1, activates:()=>true,
+      why:()=>["پایه همه مسیرهاست"],
+      dependsOn:["context.maturity"]
+    },
+    {
+      id:"CUSTOMER_PAIN", label:"درد/کار اصلی مشتری",
+      phase:2, activates:()=>true,
+      why:()=>["برای ساخت positioning و offer لازم است"],
+      dependsOn:["evidence.businessGoal"]
+    },
+    {
+      id:"B2B_DMU", label:"نقشه کمیته تصمیم‌گیری و خرید سازمانی",
+      phase:2, activates:s=>s.context.customerModel==="B2B",
+      why:s=>["customerModel = B2B","فروش سازمانی بدون DMU و procurement ناقص است"],
+      dependsOn:["context.customerModel"]
+    },
+    {
+      id:"B2C_TRIGGER", label:"محرک خرید فردی و حساسیت قیمت",
+      phase:2, activates:s=>s.context.customerModel==="B2C",
+      why:s=>["customerModel = B2C","تصمیم خرید فردی به trigger، اعتماد و price sensitivity وابسته است"],
+      dependsOn:["context.customerModel"]
+    },
+    {
+      id:"MARKETPLACE_SIDES", label:"سمت عرضه و تقاضا به‌صورت جداگانه",
+      phase:2, activates:s=>["TWO_SIDED","MARKETPLACE"].includes(s.context.customerModel),
+      why:s=>["مدل دوطرفه فعال است","هر سمت pain و activation جدا دارد"],
+      dependsOn:["context.customerModel"]
+    },
+    {
+      id:"RECURRING_ACTIVATION", label:"Activation / Time-to-Value",
+      phase:2, activates:s=>["SUBSCRIPTION","RECURRING"].includes(s.context.revenueModel),
+      why:s=>["revenueModel = Subscription/Recurring","بدون activation، retention قابل تفسیر نیست"],
+      dependsOn:["context.revenueModel"]
+    },
+    {
+      id:"RECURRING_RETENTION", label:"Retention / Churn / Renewal",
+      phase:8, activates:s=>["SUBSCRIPTION","RECURRING"].includes(s.context.revenueModel),
+      why:s=>["درآمد تکرارشونده است","بقای مشتری جزو اقتصاد مدل است"],
+      dependsOn:["context.revenueModel","evidence.activation"]
+    },
+    {
+      id:"PROJECT_SCOPE", label:"Scope، milestone و ریسک تغییر دامنه",
+      phase:2, activates:s=>s.context.revenueModel==="PROJECT_BASED",
+      why:s=>["revenueModel = PROJECT_BASED","سود پروژه بدون کنترل scope قابل سنجش نیست"],
+      dependsOn:["context.revenueModel"]
+    },
+    {
+      id:"PROJECT_MARGIN", label:"حاشیه پروژه و ظرفیت تیم",
+      phase:8, activates:s=>s.context.revenueModel==="PROJECT_BASED",
+      why:s=>["مدل پروژه‌ای فعال است","utilization و project margin KPI اصلی‌اند"],
+      dependsOn:["context.revenueModel","evidence.projectScope"]
+    },
+    {
+      id:"PHYSICAL_CATCHMENT", label:"Catchment، پاخور و اقتصاد مکان",
+      phase:2, activates:s=>["PHYSICAL_FIRST","HYBRID","OMNICHANNEL"].includes(s.context.channelModel),
+      why:s=>["کانال فیزیکی در مدل حضور دارد","مکان و ظرفیت بر تقاضای واقعی اثر می‌گذارند"],
+      dependsOn:["context.channelModel","context.geography"]
+    },
+    {
+      id:"ONLINE_FUNNEL", label:"منبع ترافیک، Funnel و Conversion",
+      phase:2, activates:s=>["ONLINE_FIRST","HYBRID","OMNICHANNEL"].includes(s.context.channelModel),
+      why:s=>["کانال آنلاین در مدل حضور دارد","باید مسیر acquisition تا conversion سنجیده شود"],
+      dependsOn:["context.channelModel"]
+    },
+    {
+      id:"LONG_CYCLE_PROOF", label:"Proof، nurturing و stakeholder mapping",
+      phase:3, activates:s=>["LONG_MONTHS","ANNUAL_MULTI_YEAR"].includes(s.context.purchaseCycle),
+      why:s=>["چرخه خرید طولانی است","تصمیم دیرهنگام به proof و nurturing بیشتری نیاز دارد"],
+      dependsOn:["context.purchaseCycle","context.customerModel"]
+    },
+    {
+      id:"TENDER_PROCUREMENT", label:"Tender / Procurement / Vendor-list",
+      phase:8, activates:s=>["TENDER","ENTERPRISE_SALES","FIELD_ENTERPRISE"].includes(s.context.salesMotion),
+      why:s=>["salesMotion سازمانی/مناقصه‌ای است","کانال فروش به procurement و qualification رسمی وابسته است"],
+      dependsOn:["context.salesMotion","context.customerModel"]
+    },
+    {
+      id:"COMPLIANCE_EVIDENCE", label:"مدارک رگولاتوری و Claim Safety",
+      phase:2, activates:s=>["REGULATED","HIGHLY_REGULATED","HIGH_TRUST"].includes(s.context.regulatoryProfile),
+      why:s=>["regulatoryProfile حساس است","ادعاهای عمومی باید قبل از انتشار evidence داشته باشند"],
+      dependsOn:["context.regulatoryProfile"]
+    },
+    {
+      id:"FOUNDER_REPUTATION", label:"وابستگی برند به بنیان‌گذار و Reputation",
+      phase:4, activates:s=>["FOUNDER_LED","PERSONAL_PRIMARY"].includes(s.context.founderRole),
+      why:s=>["founderRole عمومی/محوری است","هویت برند و انتقال‌پذیری به اعتبار شخص متصل می‌شود"],
+      dependsOn:["context.founderRole","context.brandArchitecture"]
+    },
+    {
+      id:"ENTERPRISE_GOVERNANCE", label:"Governance، approval layer و rollout",
+      phase:8, activates:s=>["ENTERPRISE","HOLDING"].includes(s.context.scale) || ["HIGH","SEVERE"].includes(s.context.operationalComplexity),
+      why:s=>["مقیاس/پیچیدگی بالا است","تصمیم بدون governance و rollout control ناقص می‌ماند"],
+      dependsOn:["context.scale","context.operationalComplexity","context.branchStructure"]
+    }
+  ];
+
+  const MODULES = [
+    ["B2B", s=>s.context.customerModel==="B2B"],
+    ["B2C", s=>s.context.customerModel==="B2C"],
+    ["Marketplace", s=>["TWO_SIDED","MARKETPLACE"].includes(s.context.customerModel)],
+    ["Recurring", s=>["SUBSCRIPTION","RECURRING"].includes(s.context.revenueModel)],
+    ["Project", s=>s.context.revenueModel==="PROJECT_BASED"],
+    ["Physical", s=>["PHYSICAL_FIRST","HYBRID","OMNICHANNEL"].includes(s.context.channelModel)],
+    ["Online", s=>["ONLINE_FIRST","HYBRID","OMNICHANNEL"].includes(s.context.channelModel)],
+    ["Long-cycle", s=>["LONG_MONTHS","ANNUAL_MULTI_YEAR"].includes(s.context.purchaseCycle)],
+    ["Compliance", s=>["REGULATED","HIGHLY_REGULATED","HIGH_TRUST"].includes(s.context.regulatoryProfile)],
+    ["Founder-led", s=>["FOUNDER_LED","PERSONAL_PRIMARY"].includes(s.context.founderRole)],
+    ["Governance", s=>["ENTERPRISE","HOLDING"].includes(s.context.scale) || ["HIGH","SEVERE"].includes(s.context.operationalComplexity)]
+  ];
+
+  const SCENARIOS = {
+    saas:{
+      name:"SaaS B2B اشتراکی",
+      description:"نرم‌افزار حسابداری B2B، آنلاین، Subscription، چرخه خرید چند هفته‌ای، محیط رگولاتوری بالا. باید DMU + recurring + online + compliance هم‌زمان فعال شوند.",
+      context:{
+        customerModel:"B2B", offerType:"SOFTWARE", channelModel:"ONLINE_FIRST",
+        revenueModel:"SUBSCRIPTION", maturity:"ACTIVE", scale:"SMALL",
+        salesMotion:"INSIDE_SALES", geography:"NATIONAL", branchStructure:"SINGLE_LOCATION",
+        founderRole:"SUPPORTING", purchaseCycle:"MEDIUM_WEEKS",
+        relationshipModel:"CONTRACTUAL_COMMITTED", regulatoryProfile:"HIGHLY_REGULATED",
+        operationalComplexity:"MODERATE", brandArchitecture:"STANDALONE"
+      }
+    },
+    retail:{
+      name:"فروشگاه محلی B2C",
+      description:"مغازه لوازم آرایشی محلی، B2C، فروش تراکنشی و Physical-first. باید pain فردی + catchment فعال باشد و شاخه‌های DMU/Subscription بسته بمانند.",
+      context:{
+        customerModel:"B2C", offerType:"PRODUCT", channelModel:"PHYSICAL_FIRST",
+        revenueModel:"TRANSACTION", maturity:"ACTIVE", scale:"MICRO",
+        salesMotion:"RETAIL", geography:"CITY", branchStructure:"SINGLE_LOCATION",
+        founderRole:"SUPPORTING", purchaseCycle:"SHORT_DAYS",
+        relationshipModel:"REPEAT_HABITUAL", regulatoryProfile:"HIGH_TRUST",
+        operationalComplexity:"MODERATE", brandArchitecture:"STANDALONE"
+      }
+    },
+    manufacturing:{
+      name:"تولیدکننده B2B پروژه‌ای",
+      description:"سازنده تجهیزات/قطعات صنعتی B2B با فروش پروژه‌ای و Field Enterprise. باید DMU + scope/margin + long-cycle proof + procurement + governance فعال شوند.",
+      context:{
+        customerModel:"B2B", offerType:"PRODUCT", channelModel:"HYBRID",
+        revenueModel:"PROJECT_BASED", maturity:"GROWTH", scale:"MEDIUM",
+        salesMotion:"FIELD_ENTERPRISE", geography:"NATIONAL", branchStructure:"SINGLE_LOCATION",
+        founderRole:"EXECUTIVE_LED", purchaseCycle:"LONG_MONTHS",
+        relationshipModel:"CONTRACTUAL_COMMITTED", regulatoryProfile:"REGULATED",
+        operationalComplexity:"HIGH", brandArchitecture:"MASTERBRAND"
+      }
+    },
+    edit:{
+      name:"Edit / Invalidation",
+      description:"از SaaS اشتراکی شروع می‌کنیم، چند تصمیم را جواب می‌دهیم، سپس revenueModel را به PROJECT_BASED تغییر می‌دهیم. انتظار: فقط dependents مربوط به recurring stale/close شوند و project branch باز شود؛ DMU و compliance نباید بی‌دلیل stale شوند.",
+      context:{
+        customerModel:"B2B", offerType:"SOFTWARE", channelModel:"ONLINE_FIRST",
+        revenueModel:"SUBSCRIPTION", maturity:"ACTIVE", scale:"SMALL",
+        salesMotion:"INSIDE_SALES", geography:"NATIONAL", branchStructure:"SINGLE_LOCATION",
+        founderRole:"SUPPORTING", purchaseCycle:"MEDIUM_WEEKS",
+        relationshipModel:"CONTRACTUAL_COMMITTED", regulatoryProfile:"HIGHLY_REGULATED",
+        operationalComplexity:"MODERATE", brandArchitecture:"STANDALONE"
+      }
+    }
+  };
+
+  function clone(v){ return JSON.parse(JSON.stringify(v)); }
+
+  function initialState(key="saas"){
+    const scenario=SCENARIOS[key];
+    return {
+      scenario:key,
+      context:clone(scenario.context),
+      confirmed:{
+        customerModel:true, channelModel:true, revenueModel:true, maturity:true,
+        geography:true, regulatoryProfile:false, founderRole:true
+      },
+      evidence:{},
+      answered:{},
+      stale:{},
+      trace:[{type:"LOAD",message:"سناریو بارگذاری شد: "+scenario.name}],
+      lastChange:"سناریو آماده است."
+    };
+  }
+
+  function derive(state){
+    const active=NODES.filter(n=>n.activates(state));
+    const activeIds=new Set(active.map(n=>n.id));
+    const closed=NODES.filter(n=>!activeIds.has(n.id));
+    const modules=MODULES.filter(([,fn])=>fn(state)).map(([name])=>name);
+    const current=active.find(n=>!state.answered[n.id] || state.stale[n.id]) || null;
+    return {active,closed,modules,current};
+  }
+
+  function affectedByPath(path){
+    return NODES.filter(n=>n.dependsOn.includes(path)).map(n=>n.id);
+  }
+
+  function invalidateForChange(next, path, beforeDerived){
+    const direct=new Set(affectedByPath(path));
+    const afterDerived=derive(next);
+    const beforeActive=new Set(beforeDerived.active.map(n=>n.id));
+    const afterActive=new Set(afterDerived.active.map(n=>n.id));
+
+    for(const id of Object.keys(next.answered)){
+      if(direct.has(id) || (beforeActive.has(id) && !afterActive.has(id)) || (!beforeActive.has(id) && afterActive.has(id))){
+        next.stale[id]={
+          causedBy:path,
+          reason:"پیش‌نیاز یا activation این تصمیم با تغییر "+path+" عوض شد."
+        };
+      }
+    }
+    return next;
+  }
+
+  function sampleAnswerFor(nodeId){
+    const map={
+      FOUNDATION_GOAL:"هدف ۹۰روزه روشن شد",
+      CUSTOMER_PAIN:"درد اصلی مشتری ثبت شد",
+      B2B_DMU:"تصمیم‌گیرنده، کاربر و مالی مشخص شدند",
+      B2C_TRIGGER:"محرک خرید و حساسیت قیمت ثبت شد",
+      MARKETPLACE_SIDES:"عرضه و تقاضا جداگانه مدل شدند",
+      RECURRING_ACTIVATION:"Time-to-Value و activation ثبت شد",
+      RECURRING_RETENTION:"Retention/Churn baseline ثبت شد",
+      PROJECT_SCOPE:"Scope و milestone مشخص شد",
+      PROJECT_MARGIN:"Project margin و capacity ثبت شد",
+      PHYSICAL_CATCHMENT:"Catchment و foot traffic ثبت شد",
+      ONLINE_FUNNEL:"Traffic source و conversion ثبت شد",
+      LONG_CYCLE_PROOF:"Proof و stakeholder map ثبت شد",
+      TENDER_PROCUREMENT:"Vendor qualification و procurement ثبت شد",
+      COMPLIANCE_EVIDENCE:"Evidence رگولاتوری ثبت شد",
+      FOUNDER_REPUTATION:"ریسک founder dependency ثبت شد",
+      ENTERPRISE_GOVERNANCE:"Approval و rollout governance ثبت شد"
+    };
+    return map[nodeId]||"پاسخ ثبت شد";
+  }
+
+  function evidenceKeyFor(nodeId){
+    const map={
+      FOUNDATION_GOAL:"businessGoal",
+      CUSTOMER_PAIN:"customerPain",
+      RECURRING_ACTIVATION:"activation",
+      PROJECT_SCOPE:"projectScope"
+    };
+    return map[nodeId]||null;
+  }
+
+  function reduce(state,action){
+    if(action.type==="LOAD_SCENARIO" || action.type==="RESET"){
+      return initialState(action.key || state.scenario || "saas");
+    }
+
+    const next=clone(state);
+    const before=derive(state);
+
+    if(action.type==="ANSWER_CURRENT"){
+      const current=before.current;
+      if(!current){
+        next.lastChange="همه Decision Nodeهای فعال پاسخ داده شده‌اند.";
+        next.trace.push({type:"INFO",message:next.lastChange});
+        return next;
+      }
+      next.answered[current.id]={
+        value:sampleAnswerFor(current.id),
+        at:new Date().toISOString()
+      };
+      delete next.stale[current.id];
+      const eKey=evidenceKeyFor(current.id);
+      if(eKey){
+        next.evidence[eKey]={
+          value:sampleAnswerFor(current.id),
+          source:"USER_CONFIRMED",
+          confidence:1
+        };
+      }
+      next.lastChange="پاسخ ثبت شد: "+current.label;
+      next.trace.push({type:"ANSWER",message:next.lastChange});
+      return next;
+    }
+
+    if(action.type==="CONFIRM_REGULATORY"){
+      next.confirmed.regulatoryProfile=true;
+      next.lastChange="regulatoryProfile توسط کاربر تأیید شد.";
+      next.trace.push({type:"CONFIRM",message:next.lastChange});
+      return next;
+    }
+
+    const edits={
+      EDIT_REVENUE_TO_PROJECT:["revenueModel","PROJECT_BASED"],
+      EDIT_REVENUE_TO_SUBSCRIPTION:["revenueModel","SUBSCRIPTION"],
+      EDIT_CHANNEL_HYBRID:["channelModel","HYBRID"],
+      EDIT_FOUNDER_LED:["founderRole","FOUNDER_LED"]
+    };
+
+    if(edits[action.type]){
+      const [field,value]=edits[action.type];
+      const old=next.context[field];
+      next.context[field]=value;
+      next.confirmed[field]=true;
+      invalidateForChange(next,"context."+field,before);
+      next.lastChange=field+" تغییر کرد: "+old+" → "+value;
+      next.trace.push({type:"EDIT",message:next.lastChange});
+      return next;
+    }
+
+    return next;
+  }
+
+  return {NODES,SCENARIOS,initialState,derive,reduce};
+})();
+</script>
+
+<script>
+/* =========================================================
+   THROWAWAY PAGE SHELL
+   ========================================================= */
+const {SCENARIOS,derive,reduce}=AdaptiveTraceModel;
+let state=AdaptiveTraceModel.initialState("saas");
+let activeScenario="saas";
+
+const walkthroughs={
+  saas:[
+    {label:"سناریوی SaaS را Reset کن",action:{type:"LOAD_SCENARIO",key:"saas"}},
+    {label:"هدف اصلی را ثبت کن",action:{type:"ANSWER_CURRENT"}},
+    {label:"درد مشتری را ثبت کن",action:{type:"ANSWER_CURRENT"}},
+    {label:"DMU سازمانی را ثبت کن",action:{type:"ANSWER_CURRENT"}},
+    {label:"Activation را ثبت کن",action:{type:"ANSWER_CURRENT"}},
+    {label:"Funnel آنلاین را ثبت کن",action:{type:"ANSWER_CURRENT"}},
+    {label:"Evidence رگولاتوری را تأیید کن",action:{type:"CONFIRM_REGULATORY"}},
+    {label:"سؤال جاری بعدی را پاسخ بده",action:{type:"ANSWER_CURRENT"}}
+  ],
+  retail:[
+    {label:"سناریوی فروشگاه را Reset کن",action:{type:"LOAD_SCENARIO",key:"retail"}},
+    {label:"هدف را ثبت کن",action:{type:"ANSWER_CURRENT"}},
+    {label:"Pain مشتری را ثبت کن",action:{type:"ANSWER_CURRENT"}},
+    {label:"محرک خرید B2C را ثبت کن",action:{type:"ANSWER_CURRENT"}},
+    {label:"Catchment فیزیکی را ثبت کن",action:{type:"ANSWER_CURRENT"}}
+  ],
+  manufacturing:[
+    {label:"سناریوی تولیدی را Reset کن",action:{type:"LOAD_SCENARIO",key:"manufacturing"}},
+    {label:"هدف را ثبت کن",action:{type:"ANSWER_CURRENT"}},
+    {label:"Pain را ثبت کن",action:{type:"ANSWER_CURRENT"}},
+    {label:"DMU را ثبت کن",action:{type:"ANSWER_CURRENT"}},
+    {label:"Scope پروژه را ثبت کن",action:{type:"ANSWER_CURRENT"}},
+    {label:"Proof چرخه طولانی را ثبت کن",action:{type:"ANSWER_CURRENT"}},
+    {label:"Procurement را ثبت کن",action:{type:"ANSWER_CURRENT"}}
+  ],
+  edit:[
+    {label:"سناریوی Edit را Reset کن",action:{type:"LOAD_SCENARIO",key:"edit"}},
+    {label:"هدف را ثبت کن",action:{type:"ANSWER_CURRENT"}},
+    {label:"Pain را ثبت کن",action:{type:"ANSWER_CURRENT"}},
+    {label:"DMU را ثبت کن",action:{type:"ANSWER_CURRENT"}},
+    {label:"Activation اشتراک را ثبت کن",action:{type:"ANSWER_CURRENT"}},
+    {label:"Revenue را از Subscription به Project تغییر بده",action:{type:"EDIT_REVENUE_TO_PROJECT"}},
+    {label:"Project Scope جدید را پاسخ بده",action:{type:"ANSWER_CURRENT"}}
+  ]
+};
+
+function dispatch(action){
+  state=reduce(state,action);
+  if(action.type==="LOAD_SCENARIO") activeScenario=action.key;
+  render();
+}
+
+function el(id){return document.getElementById(id)}
+function esc(v){return String(v??"").replace(/[&<>"]/g,s=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[s]))}
+
+function renderTabs(){
+  el("scenarioTabs").innerHTML=Object.entries(SCENARIOS).map(([key,s])=>
+    \`<button class="\${key===activeScenario?"active":""}" onclick="selectScenario('\${key}')">\${esc(s.name)}</button>\`
+  ).join("");
+}
+
+function selectScenario(key){
+  activeScenario=key;
+  dispatch({type:"LOAD_SCENARIO",key});
+}
+
+function renderScenario(){
+  const sc=SCENARIOS[activeScenario];
+  el("scenarioDescription").innerHTML=\`<strong>\${esc(sc.name)}</strong><br>\${esc(sc.description)}\`;
+  el("scenarioSteps").innerHTML=(walkthroughs[activeScenario]||[]).map((st,i)=>
+    \`<div class="step"><span class="step-num">\${i+1}</span><button onclick='dispatch(\${JSON.stringify(st.action)})'>\${esc(st.label)}</button></div>\`
+  ).join("");
+}
+
+function renderContext(){
+  const important=["customerModel","channelModel","revenueModel","maturity","scale","salesMotion","geography","founderRole","purchaseCycle","regulatoryProfile","operationalComplexity","brandArchitecture"];
+  el("contextCards").innerHTML=important.map(k=>{
+    const confirmed=state.confirmed[k];
+    return \`<div class="card"><div class="k">\${esc(k)}</div><div class="v">\${esc(state.context[k])}</div><div class="chips" style="margin-top:6px"><span class="chip \${confirmed?"ok":"warn"}">\${confirmed?"USER_CONFIRMED":"INFERRED/UNCONFIRMED"}</span></div></div>\`;
+  }).join("");
+}
+
+function renderModules(d){
+  el("modules").innerHTML=d.modules.map(m=>\`<span class="chip info">\${esc(m)}</span>\`).join("")||'<span class="empty">ماژولی فعال نیست</span>';
+}
+
+function renderEvidence(){
+  const entries=Object.entries(state.evidence);
+  el("evidence").innerHTML=entries.length?entries.map(([k,v])=>
+    \`<div class="card" style="margin:7px 0"><div class="k">\${esc(k)} • \${esc(v.source)}</div><div>\${esc(v.value)}</div></div>\`
+  ).join(""):'<span class="empty">هنوز Evidence ثبت نشده.</span>';
+}
+
+function renderDecisions(d){
+  el("decisionList").innerHTML=d.active.map(n=>{
+    const answered=state.answered[n.id];
+    const stale=state.stale[n.id];
+    const current=d.current?.id===n.id;
+    let cls="decision"+(current?" current":"")+(stale?" stale":"");
+    let status=stale?"STALE":answered?"ANSWERED":current?"CURRENT":"OPEN";
+    return \`<div class="\${cls}">
+      <div class="row"><strong>\${esc(n.label)}</strong><span class="chip \${stale?"stale":answered?"ok":current?"info":""}">\${status}</span></div>
+      <div class="k">Phase \${n.phase} • \${esc(n.id)}</div>
+      <div class="why">چرا فعال است: \${n.why(state).map(esc).join(" • ")}</div>
+    </div>\`;
+  }).join("");
+}
+
+function renderClosed(d){
+  el("closedList").innerHTML=d.closed.length?d.closed.map(n=>
+    \`<div class="decision closed"><strong>\${esc(n.label)}</strong><div class="k">\${esc(n.id)}</div></div>\`
+  ).join(""):'<span class="empty">هیچ branch بسته‌ای نیست.</span>';
+
+  const stale=Object.entries(state.stale);
+  el("staleList").innerHTML=stale.length?stale.map(([id,info])=>{
+    const node=AdaptiveTraceModel.NODES.find(n=>n.id===id);
+    return \`<div class="stale-box" style="margin:7px 0"><strong>\${esc(node?.label||id)}</strong><div class="k">\${esc(info.reason)}</div></div>\`;
+  }).join(""):'<span class="empty">هیچ آیتم stale نیست.</span>';
+}
+
+function renderCurrentWhy(d){
+  if(!d.current){
+    el("currentWhy").innerHTML="<strong>همه Decision Nodeهای فعال پاسخ داده شده‌اند.</strong>";
+    return;
+  }
+  const reasons=d.current.why(state);
+  const deps=d.current.dependsOn;
+  el("currentWhy").innerHTML=
+    \`<strong>\${esc(d.current.label)}</strong><br>
+     <span class="muted">Decision ID: \${esc(d.current.id)}</span>
+     <p>علت انتخاب: \${reasons.map(esc).join(" • ")}</p>
+     <p>Dependencies: \${deps.map(x=>\`<span class="chip">\${esc(x)}</span>\`).join(" ")}</p>\`;
+}
+
+function renderTrace(){
+  el("trace").innerHTML=[...state.trace].reverse().map(t=>
+    \`<div class="trace-item"><span class="chip">\${esc(t.type)}</span> \${esc(t.message)}</div>\`
+  ).join("");
+}
+
+function renderSnapshot(d){
+  el("snapshot").textContent=JSON.stringify({
+    scenario:state.scenario,
+    context:state.context,
+    confirmed:state.confirmed,
+    activeModules:d.modules,
+    currentDecision:d.current?.id||null,
+    answered:Object.keys(state.answered),
+    stale:state.stale,
+    closedBranches:d.closed.map(n=>n.id),
+    evidence:state.evidence
+  },null,2);
+}
+
+function render(){
+  const d=derive(state);
+  renderTabs();renderScenario();renderContext();renderModules(d);renderEvidence();
+  renderDecisions(d);renderClosed(d);renderCurrentWhy(d);renderTrace();renderSnapshot(d);
+  el("lastChange").textContent=state.lastChange;
+}
+
+document.querySelectorAll("[data-action]").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const type=btn.getAttribute("data-action");
+    dispatch(type==="RESET"?{type:"RESET",key:activeScenario}:{type});
+  });
+});
+
+render();
+</script>
+</body>
+</html>
