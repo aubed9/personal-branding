@@ -22,7 +22,7 @@ function themeFor(claim) {
 }
 
 const THEME_META = Object.freeze({
-  M1: ['بافتار کسب‌وکار و محدودیت‌ها', 'Business Context & Constraints'],
+  M1: ['بنیاد و بافتار کسب‌وکار و محدودیت‌ها', 'Business Foundation, Context & Constraints'],
   M2: ['شواهد مشتری و بازار', 'Customer & Market Evidence'],
   M3: ['انتخاب‌های استراتژیک', 'Strategic Choices'],
   M4: ['سیستم برند', 'Brand System'],
@@ -74,7 +74,7 @@ export function projectSemanticMaster(state, model, phaseDocuments) {
     })),
     {
       id: 'M8',
-      title: 'ردیابی تصمیم و Provenance',
+      title: 'فعال‌سازی اجرایی — ردیابی تصمیم و Provenance',
       sectionType: 'DECISION_TRACE',
       status: 'PROVISIONAL',
       claimIds: [],
