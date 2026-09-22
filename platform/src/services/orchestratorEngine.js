@@ -99,6 +99,7 @@ export class OrchestratorEngine {
       revision: this.revision,
       businessContext: this.businessContext,
       answerRecords: this.answerRecords,
+      phaseData: this.phaseData,
       reviewRequired: this.reviewRequired,
       contradictions: this.contradictions,
       phaseGateResults: this.phaseGateResultsV3,
@@ -183,7 +184,7 @@ export class OrchestratorEngine {
         this.completedPhases[phase] === true;
       if ((impact.nodeIds || []).length && hasPhaseMaterial) {
         this.completedPhases[phase] = false;
-        this.phaseStatus[phase] = 'INVALIDATED';
+        if (phase !== currentPhase) this.phaseStatus[phase] = 'INVALIDATED';
         if (this.phaseGateResultsV3[phase]) {
           this.phaseGateResultsV3[phase] = {
             ...this.phaseGateResultsV3[phase],
