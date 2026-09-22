@@ -23,7 +23,8 @@
     "createdRevision",
     "lastValidatedRevision",
     "supersedes",
-    "supersededBy"
+    "supersededBy",
+    "metadata"
   ],
   "properties": {
     "claimId": {
@@ -164,6 +165,9 @@
         "string",
         "null"
       ]
+    },
+    "metadata": {
+      "type": "object"
     }
   }
 }
