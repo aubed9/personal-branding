@@ -81,5 +81,16 @@
   "compatibility_coverage": {
     "suite": "simulate_753_businesses.js",
     "included_in_strategic_quality_score": false
-  }
+  },
+  "shadow_dimensions": [
+    "legacy_question_surface",
+    "legacy_broad_invalidation_fallback",
+    "v3_decision_topology",
+    "v3_gates",
+    "v3_canonical_claims",
+    "v3_action_rules",
+    "v3_exact_invalidation",
+    "v3_deliverable_claim_refs",
+    "migration_warnings_and_dropped_paths"
+  ]
 }
