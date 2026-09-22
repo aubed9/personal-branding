@@ -57,7 +57,9 @@ export function projectSemanticMaster(state, model, phaseDocuments) {
         'تعداد Claimهای یکتا': Object.keys(assigned).length,
         'فازهای تأییدشده': phaseDocuments.filter(doc => doc.status === 'CONFIRMED').map(doc => doc.phaseNumber).join('، ') || 'هیچ‌کدام',
       },
-      items: [],
+      items: Object.keys(assigned).length
+        ? []
+        : ['[UNKNOWN] هنوز پاسخی ثبت نشده است.'],
     },
     ...Object.entries(THEME_META).map(([id, [title]]) => ({
       id,
