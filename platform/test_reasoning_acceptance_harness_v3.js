@@ -8,6 +8,8 @@ import {
   AXIS_CAUSAL_PAIRS,
   REQUIRED_MATCHED_PAIR_IDS,
   classifyShadowSnapshot,
+  classifyOperationalShadowScenario,
+  captureOperationalShadowScenario,
   compareShadowPhase,
   evaluateAllAxisCausalSensitivity,
   evaluateMatchedPair,
@@ -327,6 +329,47 @@ test('shadow mode reports expected improvement for specialized contexts and dete
   assert.ok(malformed.regressionReasons.includes('ACTIVE_MODULE_WITHOUT_DECISION_NODE'));
 });
 
+
+test('operational shadow captures questions, canonical claims/actions, exact invalidation, deliverable refs, and migration loss', () => {
+  const scenarios = [
+    ['b2b-operational', b2b, 2, 'p2_step2_pricing_models'],
+    ['recurring-operational', recurring, 2, 'p2_step2_pricing_models'],
+    ['regulated-operational', regulated, 2, 'p2_step2_pricing_models'],
+    ['local-retail-operational', localRetail, 2, 'p2_step2_pricing_models'],
+  ];
+
+  const results = scenarios.map(([id, ctx, phase, mutationQuestionId]) =>
+    classifyOperationalShadowScenario(captureOperationalShadowScenario({
+      id,
+      context: ctx,
+      phase,
+      phaseData: baseData,
+      mutationQuestionId,
+    }))
+  );
+
+  const regressions = results.filter(result => result.verdict === 'REGRESSION');
+  assert.deepEqual(regressions.map(result => ({
+    id: result.id,
+    reasons: result.regressionReasons,
+  })), []);
+
+  for (const result of results) {
+    const snapshot = result.snapshot;
+    assert.ok(snapshot.legacy.questionIds.length > 0, `${result.id} must capture current question surface`);
+    assert.ok(snapshot.v3.decisionNodeIds.length > 0, `${result.id} must capture canonical decision topology`);
+    assert.ok(snapshot.v3.deliverableClaimIds.length > 0, `${result.id} must expose canonical deliverable Claim refs`);
+    assert.equal(snapshot.v3.audit.evidenceCoverageRate, 1);
+    assert.equal(snapshot.v3.audit.staleConfirmedLeakageCount, 0);
+    assert.equal(snapshot.v3.audit.illegalCertaintyUpgradeCount, 0);
+    assert.deepEqual(snapshot.migration.droppedPaths, []);
+    assert.ok(
+      snapshot.v3.exactInvalidatedPhases.length <= snapshot.legacy.broadInvalidatedPhases.length,
+      `${result.id} exact invalidation must not be broader than legacy phase invalidation`
+    );
+  }
+});
+
 test('graph invariant and mutation layer preserve unrelated evidence during exact invalidation', () => {
   const records = migrateAnswerRecords(baseData);
   const built = buildRuntimeReasoningGraph({
@@ -442,7 +485,15 @@ test('aggregate reasoning-v3 acceptance report passes hard gates and keeps 753 c
     ['local-retail-phase2', localRetail, 2],
     ['manufacturing-phase2', b2bManufacturing, 2],
   ];
-  const shadowResults = shadowContexts.map(([id, ctx, phase]) => compareShadowPhase({ id, context: ctx, phase }));
+  const shadowResults = shadowContexts.map(([id, ctx, phase]) =>
+    classifyOperationalShadowScenario(captureOperationalShadowScenario({
+      id,
+      context: ctx,
+      phase,
+      phaseData: baseData,
+      mutationQuestionId: phase === 2 ? 'p2_step2_pricing_models' : null,
+    }))
+  );
 
   const invariantFailures = [];
   const sources = readJson('wiki/source-registry.json').sources;
