@@ -1,6 +1,6 @@
 # DIGITAL MARKET Decision Context
 
-This glossary defines the product concepts used to specialize the eight-phase interview and its strategic outputs. It is the shared language for Wayfinder decisions and later implementation.
+This glossary defines the product concepts used to specialize the eight-phase interview, its evidence model, and its strategic knowledge base.
 
 ## Business classification
 
@@ -77,3 +77,30 @@ _Avoid_: lower-confidence defaults overriding confirmed evidence.
 **Additive Composition**:
 The default behavior where all compatible active modules contribute to the decision graph and are deduplicated by canonical Decision Node ID.
 _Avoid_: choosing one “winning” module when multiple business realities are simultaneously true.
+
+## Knowledge and provenance
+
+**Source Record**:
+A canonical metadata record for one real source, identified by a stable `SRC-...` ID and carrying authority, version/effective dates, scope, freshness, locator information, and limitations.
+_Avoid_: using a Wiki article itself as the source.
+
+**Knowledge Node**:
+A curated decision-support article or module in the Wiki that synthesizes one or more Source Records for a defined domain use.
+_Avoid_: counting Knowledge Nodes as source count.
+
+**Decision-Driving Claim**:
+A claim whose truth can materially alter a recommendation, calculation, KPI threshold, compliance result, gate, or strategic action.
+_Avoid_: treating decision-driving claims as uncited background prose.
+
+**Claim-Level Provenance**:
+A direct link from a Decision-Driving Claim to one or more Source Records plus the most precise available locator such as article/clause/page/table/section.
+
+**Authority Tier**:
+The evidence authority class A, B, C, or D used in source conflict resolution and trust gating; Tier A is primary authoritative evidence and Tier D is exploratory/unsourced opinion.
+
+**Canonical Knowledge**:
+Knowledge that is verified, provenance-complete for all Decision-Driving Claims, within its freshness contract, and currently admissible for decision support.
+_Avoid_: using CANONICAL to mean merely preferred wording.
+
+**Source Conflict**:
+A recorded disagreement between applicable sources that must be resolved by scope, effective version/date, authority, methodology, freshness, and directness or remain explicit as uncertainty.
