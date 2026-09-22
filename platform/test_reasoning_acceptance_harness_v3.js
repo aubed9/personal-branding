@@ -363,9 +363,11 @@ test('operational shadow captures questions, canonical claims/actions, exact inv
     assert.equal(snapshot.v3.audit.staleConfirmedLeakageCount, 0);
     assert.equal(snapshot.v3.audit.illegalCertaintyUpgradeCount, 0);
     assert.deepEqual(snapshot.migration.droppedPaths, []);
+    const downstreamExact = snapshot.v3.exactInvalidatedPhases.filter(affectedPhase => affectedPhase > snapshot.phase);
     assert.ok(
-      snapshot.v3.exactInvalidatedPhases.length <= snapshot.legacy.broadInvalidatedPhases.length,
-      `${result.id} exact invalidation must not be broader than legacy phase invalidation`
+      downstreamExact.length <= snapshot.legacy.broadInvalidatedPhases.length &&
+      downstreamExact.every(affectedPhase => snapshot.legacy.broadInvalidatedPhases.includes(affectedPhase)),
+      `${result.id} downstream exact invalidation must stay inside the legacy downstream envelope`
     );
   }
 });
