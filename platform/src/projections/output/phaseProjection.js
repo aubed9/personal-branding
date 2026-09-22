@@ -58,10 +58,11 @@ function phaseStatus(phase, state, claims) {
   const blocked = claims.some(claim => claim.status === CLAIM_STATUS.BLOCKED);
   const needsReview = claims.some(claim => [CLAIM_STATUS.STALE, CLAIM_STATUS.NEEDS_REVIEW].includes(claim.status));
   if (blocked) return 'BLOCKED';
-  // Keep the document-level lifecycle backward-compatible: an invalidated/incomplete
-  // document is DRAFT, while the exact affected sections/claims retain NEEDS_REVIEW
-  // or STALE so certainty is never upgraded.
-  if (stale || needsReview) return 'DRAFT';
+  // A graph-invalidated downstream phase explicitly needs review.
+  if (stale) return 'NEEDS_REVIEW';
+  // The currently edited/incomplete phase remains a draft while exact claims/sections
+  // retain NEEDS_REVIEW/STALE, so certainty is never upgraded.
+  if (needsReview) return 'DRAFT';
   const gate = validatePhaseGate(phase, state);
   if (state.completedPhases?.[phase] && gate.passed) return 'CONFIRMED';
   return 'DRAFT';
