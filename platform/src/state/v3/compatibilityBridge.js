@@ -27,7 +27,42 @@ export function extractLegacyEngineState(engine) {
 }
 
 export function projectLegacyEngineToCanonicalState(engine, options = {}) {
-  return migrateLegacyStateToV3(extractLegacyEngineState(engine), options);
+  const migrated = migrateLegacyStateToV3(extractLegacyEngineState(engine), options);
+  const state = migrated.state;
+
+  if (engine?.reasoningGraphV3) {
+    state.graph = JSON.parse(JSON.stringify(engine.reasoningGraphV3));
+  }
+  state.revision = Number(engine?.revision) || state.revision;
+
+  if (typeof engine?.generateDeliverableData === 'function') {
+    try {
+      const master = engine.generateDeliverableData('master');
+      const ledger = master?.claimLedger || {};
+      state.ledgers.claims = JSON.parse(JSON.stringify(ledger));
+      state.ledgers.proposals = Object.fromEntries(
+        Object.entries(ledger).filter(([, claim]) => claim?.claimType === 'PROPOSAL')
+      );
+      state.ledgers.risks = Object.fromEntries(
+        Object.entries(ledger).filter(([, claim]) => claim?.claimType === 'RISK')
+      );
+      const sourceIds = new Set();
+      const knowledgeNodeIds = new Set();
+      for (const claim of Object.values(ledger)) {
+        for (const id of claim?.sourceIds || []) sourceIds.add(id);
+        for (const id of claim?.knowledgeNodeIds || claim?.metadata?.knowledgeNodeIds || []) knowledgeNodeIds.add(id);
+      }
+      state.knowledgeRefs = {
+        sourceIds: [...sourceIds].sort(),
+        knowledgeNodeIds: [...knowledgeNodeIds].sort(),
+      };
+    } catch {
+      // Output projection is supplementary to migration; state migration must remain usable
+      // even if a partially completed project cannot render a Master projection yet.
+    }
+  }
+
+  return migrated;
 }
 
 export function projectCanonicalStateToLegacyReadView(state) {
