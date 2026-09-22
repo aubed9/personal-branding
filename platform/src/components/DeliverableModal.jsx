@@ -246,6 +246,43 @@ export default function DeliverableModal({
                     ))}
                   </ul>
                 )}
+
+                {section.omissionReason && (!section.items?.length && !section.checklist?.length) && (
+                  <div className="text-xs text-zinc-500 border border-dashed border-white/10 rounded-xl p-3 print:text-gray-600">
+                    {section.omissionReason}
+                  </div>
+                )}
+
+                {Array.isArray(section.subsections) && section.subsections.length > 0 && (
+                  <div className="space-y-3 pt-2">
+                    {section.subsections.map((subsection) => (
+                      <div key={subsection.id} className="p-4 rounded-xl bg-black/50 border border-white/10 print:border-gray-200">
+                        <div className="flex items-center justify-between gap-2">
+                          <h4 className="text-xs sm:text-sm font-black text-zinc-100 print:text-black">{subsection.title}</h4>
+                          {subsection.moduleId && <code className="text-[10px] text-zinc-500">{subsection.moduleId}</code>}
+                        </div>
+                        {subsection.activationReason && (
+                          <p className="text-[11px] text-zinc-400 mt-1.5 leading-relaxed">{subsection.activationReason}</p>
+                        )}
+                        {Array.isArray(subsection.items) && subsection.items.length > 0 && (
+                          <ul className="mt-3 space-y-2">
+                            {subsection.items.map((item, idx) => (
+                              <li key={idx} className="text-xs text-zinc-200 print:text-gray-800 flex items-start gap-2">
+                                <CheckCircle2 className="w-3.5 h-3.5 text-blue-400 shrink-0 mt-0.5" />
+                                <span>{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                        {Array.isArray(subsection.evidenceRequirements) && subsection.evidenceRequirements.length > 0 && (
+                          <div className="mt-3 text-[11px] text-zinc-500">
+                            Evidence موردنیاز: {subsection.evidenceRequirements.join(" • ")}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
           </div>
