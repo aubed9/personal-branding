@@ -219,6 +219,60 @@ test('existing project promotion is blocked until shadow acceptance has no regre
   assert.equal(manager.getMode(), ROLLOUT_MODE.SHADOW);
 });
 
+test('promotion is blocked by migration data loss or a missing pre-v3 backup', () => {
+  let mem = installStorage();
+  let pm = new PersistenceManager();
+  let engine = seedEngine();
+  pm.saveProjectState(engine);
+
+  let manager = fixedManager();
+  manager.initializeEngine(engine, pm);
+  manager.recordShadowEvidence([{ id: 'shadow-ok', verdict: 'EXPECTED_IMPROVEMENT' }]);
+
+  const envelope = JSON.parse(mem.api.getItem(V3_STORAGE_KEY));
+  envelope.migrationReport = {
+    ...(envelope.migrationReport || {}),
+    droppedPaths: ['customCriticalField'],
+  };
+  mem.api.setItem(V3_STORAGE_KEY, JSON.stringify(envelope));
+
+  const lost = manager.promoteExistingProject({ engine, persistenceManager: pm });
+  assert.equal(lost.success, false);
+  assert.equal(lost.reason, 'migration_data_loss_detected');
+  assert.deepEqual(lost.droppedPaths, ['customCriticalField']);
+  assert.equal(manager.getMode(), ROLLOUT_MODE.SHADOW);
+
+  mem = installStorage();
+  pm = new PersistenceManager();
+  engine = seedEngine();
+  pm.saveProjectState(engine);
+  manager = fixedManager();
+  manager.initializeEngine(engine, pm);
+  manager.recordShadowEvidence([{ id: 'shadow-ok', verdict: 'EXPECTED_IMPROVEMENT' }]);
+  mem.api.removeItem(PRE_V3_BACKUP_KEY);
+
+  const noBackup = manager.promoteExistingProject({ engine, persistenceManager: pm });
+  assert.equal(noBackup.success, false);
+  assert.equal(noBackup.reason, 'pre_v3_backup_required');
+  assert.equal(manager.getMode(), ROLLOUT_MODE.SHADOW);
+});
+
+test('operator policy can disable existing-project promotion even after shadow passes', () => {
+  installStorage();
+  const pm = new PersistenceManager();
+  const engine = seedEngine();
+  pm.saveProjectState(engine);
+
+  const manager = fixedManager({ allowExistingPromotion: false });
+  manager.initializeEngine(engine, pm);
+  manager.recordShadowEvidence([{ id: 'shadow-ok', verdict: 'EXPECTED_IMPROVEMENT' }]);
+
+  const result = manager.promoteExistingProject({ engine, persistenceManager: pm });
+  assert.equal(result.success, false);
+  assert.equal(result.reason, 'existing_project_promotion_disabled');
+  assert.equal(manager.getMode(), ROLLOUT_MODE.SHADOW);
+});
+
 test('promotion requires migration, backup and shadow pass; V3 saves stop legacy writes', () => {
   const mem = installStorage();
   const pm = new PersistenceManager();
