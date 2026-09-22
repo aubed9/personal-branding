@@ -1,4 +1,9 @@
 import { getPhaseAdaptationRules } from '../../data/businessContextRouter.js';
+import { OrchestratorEngine } from '../../services/orchestratorEngine.js';
+import { migrateAnswerRecords } from '../../services/interviewSchema.js';
+import { buildRuntimeReasoningGraph, discoverInvalidation } from '../engine/index.js';
+import { migrateLegacyStateToV3 } from '../../state/v3/migration.js';
+import { captureReasoningSnapshot } from './snapshot.js';
 import { summarizeSetDelta } from './metrics.js';
 
 const uniqSorted = values => [...new Set((values || []).filter(Boolean))].sort();
@@ -81,4 +86,141 @@ export function classifyShadowSnapshot(snapshot, { id = null } = {}) {
 
 export function compareShadowPhase({ id, context, phase } = {}) {
   return classifyShadowSnapshot(captureShadowPhase(context, phase), { id });
+}
+
+
+function clone(value) {
+  return value === undefined ? undefined : JSON.parse(JSON.stringify(value));
+}
+
+export function captureOperationalShadowScenario({
+  id,
+  context,
+  phase,
+  phaseData = {},
+  mutationQuestionId = null,
+} = {}) {
+  const p = Number(phase);
+  const answerRecords = migrateAnswerRecords(phaseData);
+
+  const engine = new OrchestratorEngine();
+  engine.currentPhase = p;
+  engine.phaseData = clone({
+    1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {}, 8: {},
+    ...phaseData,
+  });
+  engine.answerRecords = clone(answerRecords);
+  engine.businessContext = clone(context);
+  engine.completedPhases = { 1: true, 2: true, 3: true, 4: true, 5: true, 6: true, 7: true, 8: true };
+  engine._syncReasoningGraphV3();
+
+  const legacyQuestions = engine.getCurrentPhaseQuestions().map(question => question.id).sort();
+  const legacyFallback = new OrchestratorEngine();
+  legacyFallback.phaseData = clone(engine.phaseData);
+  legacyFallback.completedPhases = { 1: true, 2: true, 3: true, 4: true, 5: true, 6: true, 7: true, 8: true };
+  const broadInvalidation = legacyFallback.invalidateDependentPhases(p);
+
+  const built = buildRuntimeReasoningGraph({
+    projectId: `SHADOW-${id || p}`,
+    revision: 1,
+    businessContext: context,
+    answerRecords,
+    phaseData,
+  });
+  const mutationId = mutationQuestionId
+    ? built.indexes.answerNodeByQuestionId?.[mutationQuestionId]
+    : null;
+  const exactInvalidation = mutationId
+    ? discoverInvalidation(built.graph, [mutationId])
+    : { affectedPhases: [], affectedQuestionIds: [], affectedNodeIds: [] };
+
+  const canonical = captureReasoningSnapshot({
+    context,
+    phaseData,
+    metadata: { answerRecords, reasoningGraphV3: built.graph, revision: 1 },
+  });
+
+  const deliverable = engine.generateDeliverableData(p);
+  const migration = migrateLegacyStateToV3({
+    revision: 1,
+    currentPhase: p,
+    currentStepIndex: 0,
+    phaseData,
+    answerRecords,
+    completedPhases: engine.completedPhases,
+    businessContext: context,
+  }, {
+    fromSchemaVersion: 2,
+    migratedAt: '2026-09-23T00:00:00.000Z',
+  });
+
+  return {
+    id: id || `phase-${p}`,
+    phase: p,
+    legacy: {
+      questionIds: legacyQuestions,
+      broadInvalidatedPhases: [...(broadInvalidation.invalidatedPhases || [])].sort((a, b) => a - b),
+      deliverableSectionIds: (deliverable.sections || []).map(section => section.id || section.title).filter(Boolean),
+    },
+    v3: {
+      moduleIds: canonical.moduleIds,
+      decisionNodeIds: canonical.decisionNodeIds,
+      gates: canonical.gates,
+      claimCount: canonical.claimCount,
+      actionRuleIds: canonical.actionRuleIds,
+      generatedClaimKeys: canonical.generatedClaimKeys,
+      exactInvalidatedPhases: [...(exactInvalidation.affectedPhases || [])].sort((a, b) => a - b),
+      exactInvalidatedQuestionIds: [...(exactInvalidation.affectedQuestionIds || [])].sort(),
+      deliverableClaimIds: [...(deliverable.claimIds || [])].sort(),
+      deliverableSectionIds: (deliverable.sections || []).map(section => section.id || section.title).filter(Boolean),
+      audit: canonical.audit,
+    },
+    migration: {
+      warningCodes: (migration.report?.warnings || []).map(item => item.code).filter(Boolean).sort(),
+      droppedPaths: [...(migration.report?.droppedPaths || [])].sort(),
+      preservedLegacyPaths: [...(migration.report?.preservedLegacyPaths || [])].sort(),
+    },
+  };
+}
+
+export function classifyOperationalShadowScenario(snapshot) {
+  const regressionReasons = [];
+  const v3 = snapshot?.v3 || {};
+  const legacy = snapshot?.legacy || {};
+  const migration = snapshot?.migration || {};
+
+  if ((v3.moduleIds || []).length > 0 && (v3.decisionNodeIds || []).length === 0) {
+    regressionReasons.push('ACTIVE_MODULE_WITHOUT_DECISION_TOPOLOGY');
+  }
+  if ((v3.moduleIds || []).length > 0 && (v3.generatedClaimKeys || []).length === 0) {
+    regressionReasons.push('ACTIVE_MODULE_WITHOUT_CANONICAL_CLAIMS');
+  }
+  if ((v3.deliverableClaimIds || []).length === 0) {
+    regressionReasons.push('DELIVERABLE_WITHOUT_CANONICAL_CLAIM_REFS');
+  }
+  if ((migration.droppedPaths || []).length > 0) {
+    regressionReasons.push('MIGRATION_DROPPED_PATHS');
+  }
+  if (v3.audit?.evidenceCoverageRate !== 1) regressionReasons.push('EVIDENCE_COVERAGE_BELOW_100');
+  if (v3.audit?.staleConfirmedLeakageCount !== 0) regressionReasons.push('STALE_CONFIRMED_LEAKAGE');
+  if (v3.audit?.illegalCertaintyUpgradeCount !== 0) regressionReasons.push('ILLEGAL_CERTAINTY_UPGRADE');
+
+  const exact = new Set(v3.exactInvalidatedPhases || []);
+  const broad = new Set(legacy.broadInvalidatedPhases || []);
+  const invalidationEscapedLegacyEnvelope = [...exact].some(value => !broad.has(value) && value > snapshot.phase);
+  if (invalidationEscapedLegacyEnvelope) regressionReasons.push('EXACT_INVALIDATION_OUTSIDE_LEGACY_ENVELOPE');
+
+  const expectedImprovement = regressionReasons.length === 0 && (
+    (v3.decisionNodeIds || []).length > 0 ||
+    (v3.actionRuleIds || []).length > 0 ||
+    (legacy.broadInvalidatedPhases || []).length > (v3.exactInvalidatedPhases || []).length
+  );
+
+  return {
+    id: snapshot?.id,
+    phase: snapshot?.phase,
+    verdict: regressionReasons.length ? 'REGRESSION' : expectedImprovement ? 'EXPECTED_IMPROVEMENT' : 'COMPATIBLE',
+    regressionReasons,
+    snapshot,
+  };
 }
