@@ -287,6 +287,61 @@ export class ReasoningRolloutManager {
     };
   }
 
+  exportProject(engine, persistenceManager) {
+    if (!engine || !persistenceManager) return null;
+    const mode = this.getMode() || ROLLOUT_MODE.LEGACY;
+    if (mode !== ROLLOUT_MODE.V3) return persistenceManager.exportProjectJSON(engine);
+
+    const projected = projectLegacyEngineToCanonicalState(engine, {
+      fromSchemaVersion: 2,
+      migratedAt: nowIso(this.clock),
+    });
+    return JSON.stringify({
+      stateSchemaVersion: V3_STATE_SCHEMA_VERSION,
+      reasoningEngineVersion: V3_REASONING_ENGINE_VERSION,
+      exportedAt: nowIso(this.clock),
+      platform: 'DIGITAL MARKET',
+      state: projected.state,
+    }, null, 2);
+  }
+
+  importProject(jsonString, engine, persistenceManager) {
+    if (!engine || !persistenceManager) return { success: false, error: 'engine_and_persistence_required' };
+    try {
+      const envelope = JSON.parse(jsonString);
+      if (envelope?.stateSchemaVersion === V3_STATE_SCHEMA_VERSION && envelope?.state) {
+        if (!persistenceManager.restoreCanonicalToEngine(engine, envelope.state)) {
+          return { success: false, error: 'فایل canonical v3 معتبر نیست.' };
+        }
+        if (!persistenceManager.saveCanonicalProjectState(envelope.state, { savedAt: nowIso(this.clock) })) {
+          return { success: false, error: 'ذخیره canonical v3 ناموفق بود.' };
+        }
+        this._writeRecord({ mode: ROLLOUT_MODE.V3, projectKind: 'IMPORTED_CANONICAL' });
+        return {
+          success: true,
+          mode: ROLLOUT_MODE.V3,
+          stateSchemaVersion: V3_STATE_SCHEMA_VERSION,
+          reasoningEngineVersion: envelope.reasoningEngineVersion || envelope.state.reasoningEngineVersion,
+        };
+      }
+
+      const legacy = persistenceManager.importProjectJSON(jsonString);
+      if (!legacy.success) return legacy;
+      if (!persistenceManager.restoreToEngine(engine, legacy.state)) {
+        return { success: false, error: 'فایل پروژه نامعتبر است.' };
+      }
+      persistenceManager.saveProjectState(engine);
+      const mode = this.policy.existingProjectsUseShadow ? ROLLOUT_MODE.SHADOW : ROLLOUT_MODE.LEGACY;
+      this._writeRecord({ mode, projectKind: 'IMPORTED_LEGACY' });
+      if (mode === ROLLOUT_MODE.SHADOW) {
+        persistenceManager.migrateStoredProjectToV3({ migratedAt: nowIso(this.clock) });
+      }
+      return { success: true, mode, schemaVersion: legacy.schemaVersion };
+    } catch (err) {
+      return { success: false, error: `خطا در خواندن فایل: ${err.message}` };
+    }
+  }
+
   rollbackToLegacy({ engine = null, persistenceManager } = {}) {
     if (!persistenceManager) return { success: false, reason: 'persistence_required' };
     const restored = persistenceManager.restorePreV3Backup({ clearCanonical: true });
