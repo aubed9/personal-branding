@@ -246,14 +246,18 @@ export function projectPhaseDeliverable(phase, state, model) {
     sourceRevision: state.revision || 0,
     claimLedger: model.ledger,
     claimIds: phaseClaims.map(claim => claim.claimId),
-    evidence: evidenceClaims.map(claim => ({
-      statement: claim.statement,
-      kind: claim.metadata?.rawKind || claim.claimType,
-      evidenceIds: claim.evidenceIds,
-      field: claim.metadata?.field || null,
-      claimId: claim.claimId,
-      status: claim.status,
-    })),
+    // Compatibility read projection: expose every user-provided answer (including USER_DECISION)
+    // through the legacy top-level evidence array. Canonical section ownership remains unchanged.
+    evidence: phaseClaims
+      .filter(claim => [CLAIM_TYPES.USER_FACT, CLAIM_TYPES.USER_DECISION, CLAIM_TYPES.ASSUMPTION, CLAIM_TYPES.UNKNOWN].includes(claim.claimType))
+      .map(claim => ({
+        statement: claim.statement,
+        kind: claim.metadata?.rawKind || claim.claimType,
+        evidenceIds: claim.evidenceIds,
+        field: claim.metadata?.field || null,
+        claimId: claim.claimId,
+        status: claim.status,
+      })),
     actions: actionClaims.filter(c => c.claimType === CLAIM_TYPES.PROPOSAL).map(claim => ({
       ruleId: claim.ruleId,
       kind: 'PROPOSAL',
