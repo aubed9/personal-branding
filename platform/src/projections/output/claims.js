@@ -205,7 +205,7 @@ function buildModuleClaims(phase, businessContext, metadata) {
   const graphRiskNodes = [];
   for (const node of Object.values(graph?.nodes || {})) {
     if (node.type === NODE_TYPES.DECISION_NODE && node.payload?.decisionNodeId) graphNodeByDecisionId[node.payload.decisionNodeId] = node;
-    if (node.type === NODE_TYPES.RISK && node.phase === phase) graphRiskNodes.push(node);
+    if (node.type === NODE_TYPES.RISK) graphRiskNodes.push(node);
   }
 
   const inferenceClaims = projection.decisionNodes.map(node => {
@@ -236,25 +236,46 @@ function buildModuleClaims(phase, businessContext, metadata) {
     }));
   });
 
-  const riskClaims = graphRiskNodes.map(node => {
+  const riskGroups = new Map();
+  for (const node of graphRiskNodes) {
     const moduleId = node.moduleId || null;
-    return validateOrThrow(createCanonicalClaim({
-      stableKey: { kind: 'RISK_NODE', nodeId: node.id },
-      claimType: CLAIM_TYPES.RISK,
-      statement: `ریسک فعال در ماژول ${moduleId || 'سیستم'}: ${node.payload?.riskId || 'ریسک نیازمند بررسی'}`,
-      status: GRAPH_TO_CLAIM_STATUS[node.status] || CLAIM_STATUS.PROVISIONAL,
-      phase,
+    const riskId = node.payload?.riskId || 'UNSPECIFIED_RISK';
+    const key = `${moduleId || 'SYSTEM'}:${riskId}`;
+    const group = riskGroups.get(key) || {
       moduleId,
-      dependencyIds: [node.id],
+      riskId,
+      nodes: [],
+      affectedPhases: new Set(),
+      statuses: [],
+    };
+    group.nodes.push(node);
+    if (Number.isInteger(node.phase)) group.affectedPhases.add(node.phase);
+    group.statuses.push(GRAPH_TO_CLAIM_STATUS[node.status] || CLAIM_STATUS.PROVISIONAL);
+    riskGroups.set(key, group);
+  }
+
+  const riskClaims = [...riskGroups.values()]
+    .filter(group => group.affectedPhases.has(phase))
+    .map(group => validateOrThrow(createCanonicalClaim({
+      stableKey: { kind: 'MODULE_RISK', moduleId: group.moduleId, riskId: group.riskId },
+      claimType: CLAIM_TYPES.RISK,
+      statement: `ریسک فعال در ماژول ${group.moduleId || 'سیستم'}: ${group.riskId}`,
+      status: worstStatus(group.statuses),
+      phase: null,
+      moduleId: group.moduleId,
+      dependencyIds: group.nodes.map(node => node.id),
       evidenceIds: [],
-      ruleId: moduleId || 'GRAPH-RISK',
+      ruleId: group.moduleId || 'GRAPH-RISK',
       confidence: null,
       verificationState: 'RULE_DERIVED_RISK',
-      createdRevision: Number(node.createdRevision) || 0,
-      lastValidatedRevision: Number(node.lastValidatedRevision) || Number(metadata.revision) || 0,
-      metadata: { graphNodeId: node.id, riskId: node.payload?.riskId || null },
-    }));
-  });
+      createdRevision: Math.min(...group.nodes.map(node => Number(node.createdRevision) || 0)),
+      lastValidatedRevision: Math.max(...group.nodes.map(node => Number(node.lastValidatedRevision) || Number(metadata.revision) || 0)),
+      metadata: {
+        graphNodeIds: group.nodes.map(node => node.id).sort(),
+        riskId: group.riskId,
+        affectedPhases: [...group.affectedPhases].sort((a, b) => a - b),
+      },
+    })));
 
   return { inferenceClaims, riskClaims, moduleProjection: projection };
 }
@@ -270,13 +291,13 @@ function buildContradictionClaims(contradictions, rows, metadata) {
       }));
       if (!evidenceIds.length) return [];
       const phaseCandidates = Object.keys(item.resolutionTargets || {}).map(Number).filter(Number.isInteger);
-      const phase = phaseCandidates.length ? Math.min(...phaseCandidates) : null;
+      const affectedPhases = [...new Set(phaseCandidates)].sort((a, b) => a - b);
       return [validateOrThrow(createCanonicalClaim({
         stableKey: { kind: 'CONTRADICTION', id: item.id, ruleId: item.ruleId || null },
         claimType: CLAIM_TYPES.CONTRADICTION,
         statement: `${item.statementA || 'ادعای اول'} ↔ ${item.statementB || 'ادعای دوم'}؛ ${item.resolutionQuestion || 'نیازمند رفع تعارض'}`,
         status: CLAIM_STATUS.BLOCKED,
-        phase,
+        phase: null,
         dependencyIds: evidenceIds,
         evidenceIds,
         ruleId: item.ruleId || 'CONTRADICTION',
@@ -288,6 +309,7 @@ function buildContradictionClaims(contradictions, rows, metadata) {
           contradictionId: item.id,
           severity: item.severity,
           resolutionTargets: item.resolutionTargets || {},
+          affectedPhases,
         },
       }))];
     });
@@ -342,7 +364,8 @@ export function buildCanonicalOutputClaims({
 }
 
 export function claimsForPhase(model, phase) {
-  return model.claims.filter(claim => claim.phase === Number(phase));
+  const p = Number(phase);
+  return model.claims.filter(claim => claim.phase === p || claim.metadata?.affectedPhases?.includes(p));
 }
 
 export function claimPresentation(claim) {
