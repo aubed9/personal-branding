@@ -32,6 +32,23 @@ export const AXIS_QUESTION_DEPENDENCIES = Object.freeze({
   brandArchitecture: ['p3_positioning_frame', 'p3_strategic_boundary', 'p6_naming_territory', 'p6_tagline_archetype', 'p7_color_palette', 'p7_typography_mood', 'p7_logo_direction', 'p8_thought_leadership'],
 });
 
+export const QUESTION_MODULE_DEPENDENCIES = Object.freeze({
+  unit_economics: ['MOD-REV-TRANSACTION', 'MOD-REV-RECURRING', 'MOD-REV-PROJECT'],
+  cash_constraint: ['MOD-SCALE-MICRO', 'MOD-SCALE-ENTERPRISE', 'MOD-OPS-HIGH'],
+  p2_step1_customer_pain: ['MOD-CUSTOMER-B2B', 'MOD-CUSTOMER-B2C', 'MOD-CUSTOMER-TWO-SIDED'],
+  p2_step2_pricing_models: ['MOD-REV-TRANSACTION', 'MOD-REV-RECURRING', 'MOD-REV-PROJECT'],
+  p2_step3_primary_channel: ['MOD-CHANNEL-PHYSICAL', 'MOD-CHANNEL-ONLINE', 'MOD-GEO-LOCAL', 'MOD-GEO-CROSSBORDER', 'MOD-SALES-TENDER'],
+  p3_target_segment: ['MOD-CUSTOMER-B2B', 'MOD-CUSTOMER-B2C', 'MOD-CUSTOMER-TWO-SIDED', 'MOD-CYCLE-LONG'],
+  p3_positioning_frame: ['MOD-CUSTOMER-B2B', 'MOD-CUSTOMER-B2C', 'MOD-GEO-CROSSBORDER', 'MOD-BRAND-PORTFOLIO'],
+  p3_brand_promise: ['MOD-REV-RECURRING', 'MOD-REL-RECURRING', 'MOD-REG-HIGH', 'MOD-OFFER-PHYSICAL', 'MOD-OFFER-DIGITAL', 'MOD-OFFER-SERVICE', 'MOD-OFFER-PLATFORM'],
+  p4_archetype: ['MOD-FOUNDER-PUBLIC', 'MOD-FOUNDER-INSTITUTIONAL'],
+  p5_voice_style: ['MOD-FOUNDER-PUBLIC', 'MOD-FOUNDER-INSTITUTIONAL', 'MOD-GEO-CROSSBORDER'],
+  p6_naming_territory: ['MOD-REG-HIGH', 'MOD-BRAND-PORTFOLIO', 'MOD-MATURITY-REBRAND'],
+  p7_color_palette: ['MOD-BRANCH-MULTI', 'MOD-SCALE-ENTERPRISE', 'MOD-BRAND-PORTFOLIO', 'MOD-MATURITY-REBRAND'],
+  p8_lead_funnel: ['MOD-CHANNEL-PHYSICAL', 'MOD-CHANNEL-ONLINE', 'MOD-SALES-TENDER', 'MOD-CYCLE-LONG', 'MOD-REL-RECURRING'],
+  p8_crisis_reputation: ['MOD-REG-HIGH', 'MOD-REL-RECURRING'],
+});
+
 function answerNodeStatus(record, reviewRequired) {
   const needsReview = (reviewRequired?.[record.phase] || []).includes(record.questionId);
   if (needsReview || record.kind === 'UNKNOWN') return ENTITY_STATUS.NEEDS_REVIEW;
@@ -126,8 +143,8 @@ export function buildRuntimeReasoningGraph({
       }
     }
 
-    // Answer evidence supports only active Decision Nodes in the same phase.
-    // Fine-grained downstream invalidation is then controlled by question dependencies.
+    // Answer evidence supports same-phase decisions plus explicitly declared cross-phase
+    // module decisions (for example unit economics -> recurring/project economics outputs).
     const decisionNodesByPhase = {};
     for (const id of moduleContribution.contributed.decisionNodeIds) {
       const node = graph.nodes[id];
@@ -137,13 +154,25 @@ export function buildRuntimeReasoningGraph({
     for (const record of records) {
       const answerId = answerNodeByQuestionId[record.questionId];
       if (!answerId) continue;
-      for (const decisionId of decisionNodesByPhase[record.phase] || []) {
+
+      const targetIds = new Set(decisionNodesByPhase[record.phase] || []);
+      for (const moduleId of QUESTION_MODULE_DEPENDENCIES[record.questionId] || []) {
+        for (const decisionId of moduleContribution.contributed.moduleNodeIds[moduleId] || []) {
+          targetIds.add(decisionId);
+        }
+      }
+
+      for (const decisionId of [...targetIds].sort()) {
         addGraphEdge(graph, {
           type: EDGE_TYPES.SUPPORTS,
           from: answerId,
           to: decisionId,
-          qualifier: 'PHASE_DECISION_EVIDENCE',
-          metadata: { questionId: record.questionId, phase: record.phase },
+          qualifier: 'DECISION_EVIDENCE',
+          metadata: {
+            questionId: record.questionId,
+            phase: record.phase,
+            crossPhase: graph.nodes[decisionId]?.phase !== record.phase,
+          },
         }, { bumpRevision: false });
       }
     }
