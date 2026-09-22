@@ -57,6 +57,23 @@ test('canonical business context has exactly the approved 15 axes and schema mir
   assert.deepEqual(validateCanonicalBusinessContext(context), { valid: true, errors: [] });
 });
 
+test('reasoning graph and claim schemas mirror runtime enums', () => {
+  const graphSchema = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../schemas/v3/reasoning-graph.schema.json'), 'utf8'));
+  const claimSchema = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../schemas/v3/claim.schema.json'), 'utf8'));
+  const proposalSchema = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../schemas/v3/proposal.schema.json'), 'utf8'));
+
+  const schemaNodeTypes = graphSchema.properties.nodes.additionalProperties.properties.type.enum;
+  const schemaEdgeTypes = graphSchema.properties.edges.additionalProperties.properties.type.enum;
+  const schemaEntityStatuses = graphSchema.properties.nodes.additionalProperties.properties.status.enum;
+
+  assert.deepEqual(new Set(schemaNodeTypes), new Set(Object.values(NODE_TYPES)));
+  assert.deepEqual(new Set(schemaEdgeTypes), new Set(Object.values(EDGE_TYPES)));
+  assert.deepEqual(new Set(schemaEntityStatuses), new Set(Object.values(ENTITY_STATUS)));
+  assert.deepEqual(new Set(claimSchema.properties.claimType.enum), new Set(Object.values(CLAIM_TYPES)));
+  assert.deepEqual(new Set(claimSchema.properties.status.enum), new Set(Object.values(CLAIM_STATUS)));
+  assert.deepEqual(new Set(proposalSchema.allOf[1].properties.proposalStatus.enum), new Set(Object.values(PROPOSAL_STATUS)));
+});
+
 test('stable IDs are deterministic across object key ordering', () => {
   const a = makeStableId('TST', { phase: 2, field: 'customerPain', nested: { b: 2, a: 1 } });
   const b = makeStableId('TST', { nested: { a: 1, b: 2 }, field: 'customerPain', phase: 2 });
