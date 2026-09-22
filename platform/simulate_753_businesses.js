@@ -250,32 +250,53 @@ for (let i = 0; i < BUSINESS_TYPES.length; i++) {
   }
   const m2Score = Number(((m2Passed / m2Total) * 100).toFixed(1));
 
-  // Metric 3: Identity Preservation & Zero Drift (M3) — 8 assertions (R3)
-  let m3Passed = 0;
-  const m3Total = 8;
-  if (engine.businessContext?.taxonomyId === bt.id) m3Passed++;
-  if (engine.businessContext?.industryId === bt.industryId) m3Passed++;
-  if (engine.businessContext?.taxonomyTitleFa || engine.businessContext?.titleFa || engine.businessContext?.descriptionOriginal) m3Passed++;
-  if (Object.keys(engine.phaseData[1] || {}).length > 0) m3Passed++;
-  if (Object.keys(engine.phaseData[8] || {}).length > 0) m3Passed++;
-  if (isUnmeasuredSample ? (engine.unknowns && engine.unknowns.length > 0) : (engine.facts && engine.facts.length > 0)) m3Passed++;
-  if (!hasMalformedOutput) m3Passed++;
-  if (!hasEmptyQuestionOrOptions && !hasQuestionLoopOrRepeat) m3Passed++;
+  // Metric 3: Identity Preservation & Zero Drift (M3) — 8 canonical assertions (R3)
+  // Claim/evidence projection is authoritative in v5; legacy engine.facts is only a compatibility view.
+  const masterLedger = masterDeliv?.claimLedger || {};
+  const activeIds = new Set(activeAnswers(engine.answerRecords).map(answer => answer.id));
+  const userEvidenceClaims = Object.values(masterLedger).filter(claim =>
+    ['USER_FACT', 'USER_DECISION', 'ASSUMPTION', 'UNKNOWN'].includes(claim.claimType)
+  );
+  const m3Checks = {
+    taxonomyIdentity: engine.businessContext?.taxonomyId === bt.id,
+    industryIdentity: engine.businessContext?.industryId === bt.industryId,
+    contextDescriptionPreserved: Boolean(engine.businessContext?.taxonomyTitleFa || engine.businessContext?.titleFa || engine.businessContext?.descriptionOriginal),
+    phase1DataPreserved: Object.keys(engine.phaseData[1] || {}).length > 0,
+    phase8DataPreserved: Object.keys(engine.phaseData[8] || {}).length > 0,
+    activeEvidencePreserved: userEvidenceClaims.length > 0 && userEvidenceClaims.every(claim =>
+      claim.evidenceIds?.length > 0 && claim.evidenceIds.every(id => activeIds.has(id))
+    ),
+    outputWellFormed: !hasMalformedOutput,
+    interviewStable: !hasEmptyQuestionOrOptions && !hasQuestionLoopOrRepeat,
+  };
+  const failedM3Checks = Object.entries(m3Checks).filter(([, passed]) => !passed).map(([name]) => name);
+  const m3Passed = Object.values(m3Checks).filter(Boolean).length;
+  const m3Total = Object.keys(m3Checks).length;
   const m3Score = Number(((m3Passed / m3Total) * 100).toFixed(1));
 
-  // Metric 4: Exit Gates & Structural Integrity (M4) — 8 assertions
-  let m4Passed = 0;
-  const m4Total = 8;
+  // Metric 4: Exit Gates & Canonical Structural Integrity (M4) — 8 assertions.
+  // Do not require a filler checklist/formula. Empty conditional sections are valid when
+  // explicitly NOT_APPLICABLE; structural integrity is proven through canonical references.
   const completedPhasesCount = Object.values(engine.completedPhases).filter(Boolean).length;
-  if (completedPhasesCount === 8) m4Passed++;
-  if (masterDeliv?.status === 'CONFIRMED' && Array.isArray(masterDeliv.sections) && masterDeliv.sections.length === 9) m4Passed++;
-  if (p1Deliv && Array.isArray(p1Deliv.sections) && p1Deliv.sections.length === 5) m4Passed++;
-  if (p8Deliv && Array.isArray(p8Deliv.sections) && p8Deliv.sections.length > 0) m4Passed++;
-  if (p1Deliv?.sections?.some(s => Array.isArray(s.checklist) && s.checklist.length > 0)) m4Passed++;
-  if (p1Deliv?.sections?.some(s => (Array.isArray(s.formulas) && s.formulas.length > 0) || (Array.isArray(s.kpis) && s.kpis.length > 0))) m4Passed++;
-  const filledPhases = Object.values(engine.phaseData).filter(pd => pd && Object.keys(pd).length > 0).length;
-  if (filledPhases === 8) m4Passed++;
-  if (engine.businessContext && engine.businessContext.archetype && engine.businessContext.taxonomyId === bt.id) m4Passed++;
+  const masterClaimIds = masterDeliv?.claimIds || [];
+  const p8ClaimIds = p8Deliv?.claimIds || [];
+  const m4Checks = {
+    allPhasesCompleted: completedPhasesCount === 8,
+    semanticMasterShell: Array.isArray(masterDeliv?.sections) && masterDeliv.sections.length === 9,
+    phase1CanonicalShell: Array.isArray(p1Deliv?.sections) && p1Deliv.sections.length === 5,
+    phase8CanonicalShell: Array.isArray(p8Deliv?.sections) && p8Deliv.sections.length === 5,
+    masterRefsResolveAndUnique: masterClaimIds.length > 0 &&
+      new Set(masterClaimIds).size === masterClaimIds.length &&
+      masterClaimIds.every(id => masterLedger[id]),
+    phase8RefsResolveAndUnique: p8ClaimIds.length > 0 &&
+      new Set(p8ClaimIds).size === p8ClaimIds.length &&
+      p8ClaimIds.every(id => p8Deliv?.claimLedger?.[id]),
+    allPhaseDataPresent: Object.values(engine.phaseData).filter(pd => pd && Object.keys(pd).length > 0).length === 8,
+    contextIdentityPreserved: Boolean(engine.businessContext?.archetype && engine.businessContext?.taxonomyId === bt.id),
+  };
+  const failedM4Checks = Object.entries(m4Checks).filter(([, passed]) => !passed).map(([name]) => name);
+  const m4Passed = Object.values(m4Checks).filter(Boolean).length;
+  const m4Total = Object.keys(m4Checks).length;
   const m4Score = Number(((m4Passed / m4Total) * 100).toFixed(1));
 
   // Composite Score Calculation (Empirical Average)
@@ -304,7 +325,9 @@ for (let i = 0; i < BUSINESS_TYPES.length; i++) {
     failedM1Checks,
     m2Score,
     m3Score,
+    failedM3Checks,
     m4Score,
+    failedM4Checks,
     compositeScore,
     status: compositeScore === 100 && completedPhasesCount === 8 && !leakageResult.hasLeakage && bizJargonViolations === 0 ? 'PASS' : 'FAIL',
     hasUnknownHypothesis: isUnmeasuredSample,
@@ -335,7 +358,9 @@ for (let i = 0; i < BUSINESS_TYPES.length; i++) {
       `${bt.titleFa.slice(0, 24).padEnd(25, ' ')} | ` +
       `صنعت: ${bt.industryId} | نمره: ${compositeScore}% | ` +
       `وضعیت: ${auditEntry.status} | زمان: ${elapsedSec}s` +
-      (failedM1Checks.length ? ` | M1 fail: ${failedM1Checks.join(',')}` : '')
+      (failedM1Checks.length ? ` | M1 fail: ${failedM1Checks.join(',')}` : '') +
+      (failedM3Checks.length ? ` | M3 fail: ${failedM3Checks.join(',')}` : '') +
+      (failedM4Checks.length ? ` | M4 fail: ${failedM4Checks.join(',')}` : '')
     );
   }
 }
