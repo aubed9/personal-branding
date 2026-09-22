@@ -833,7 +833,7 @@ export class OrchestratorEngine {
   generateDeliverableData(phaseNum = this.currentPhase) {
     return generateDeliverable(phaseNum, this.phaseData, this.businessContext, this.decisions, this.facts, this.unknowns, {
       answerRecords: this.answerRecords, completedPhases: this.completedPhases,
-      contradictions: this.contradictions, phaseStatus: this.phaseStatus, revision: this.revision,
+      contradictions: this.contradictions, phaseStatus: this.phaseStatus, reviewRequired: this.reviewRequired, revision: this.revision,
       reasoningGraphV3: this.reasoningGraphV3,
       reasoningChangeEvents: this.reasoningChangeEvents,
     });
