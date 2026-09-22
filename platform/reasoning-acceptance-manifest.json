@@ -1,0 +1,85 @@
+{
+  "version": "1.0.0",
+  "purpose": "Reasoning v3 strategic-quality acceptance. Existing 753 simulation is compatibility coverage only.",
+  "layers": [
+    {
+      "id": "graph-invariants",
+      "tests": [
+        "test_reasoning_graph_v3.js",
+        "test_invalidation_gates_v3.js",
+        "test_reasoning_acceptance_harness_v3.js"
+      ]
+    },
+    {
+      "id": "axis-causal-sensitivity",
+      "tests": [
+        "test_decision_modules_v3.js",
+        "test_reasoning_acceptance_harness_v3.js"
+      ]
+    },
+    {
+      "id": "matched-pair-topology-output",
+      "tests": [
+        "test_reasoning_acceptance_harness_v3.js"
+      ]
+    },
+    {
+      "id": "edit-mutation-invalidation",
+      "tests": [
+        "test_invalidation_gates_v3.js",
+        "test_reasoning_acceptance_harness_v3.js"
+      ]
+    },
+    {
+      "id": "knowledge-provenance-freshness",
+      "tests": [
+        "test_knowledge_provenance_v3.js",
+        "test_reasoning_acceptance_harness_v3.js"
+      ]
+    },
+    {
+      "id": "output-integrity",
+      "tests": [
+        "test_output_projections_v3.js",
+        "test_reasoning_acceptance_harness_v3.js"
+      ]
+    },
+    {
+      "id": "migration-determinism-retention",
+      "tests": [
+        "test_state_migration_v3.js",
+        "test_reasoning_acceptance_harness_v3.js"
+      ]
+    },
+    {
+      "id": "shadow-mode",
+      "tests": [
+        "test_reasoning_acceptance_harness_v3.js"
+      ]
+    }
+  ],
+  "hard_invariants": [
+    "BROKEN_GRAPH_SOURCE_CLAIM_REFS_ZERO",
+    "INVENTED_HANDOFF_VALUES_ZERO",
+    "STALE_TO_CONFIRMED_LEAKAGE_ZERO",
+    "ILLEGAL_CERTAINTY_UPGRADES_ZERO",
+    "PROTECTED_CROSS_DOMAIN_LEAKAGE_ZERO",
+    "SILENT_MIGRATION_DATA_LOSS_ZERO",
+    "REQUIRED_REACHABILITY_MUTATION_TESTS_100_PERCENT",
+    "REQUIRED_MATCHED_PAIR_CAUSAL_TESTS_100_PERCENT",
+    "DECISION_DRIVING_CLAIM_PROVENANCE_100_PERCENT"
+  ],
+  "required_matched_pairs": [
+    "positive-vs-negative-unit-economics",
+    "b2b-vs-b2c",
+    "recurring-vs-project",
+    "normal-vs-highly-regulated",
+    "founder-led-vs-non-public",
+    "micro-vs-enterprise",
+    "local-retail-vs-b2b-manufacturing"
+  ],
+  "compatibility_coverage": {
+    "suite": "simulate_753_businesses.js",
+    "included_in_strategic_quality_score": false
+  }
+}
