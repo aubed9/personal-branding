@@ -1,6 +1,7 @@
 import { buildCanonicalOutputClaims } from '../projections/output/claims.js';
 import { projectPhaseDeliverable } from '../projections/output/phaseProjection.js';
 import { projectSemanticMaster } from '../projections/output/masterProjection.js';
+import { describeUnitEconomics } from './unitEconomics.js';
 
 export function generateDeliverable(
   phaseNum,
@@ -80,6 +81,15 @@ function markdownSection(section, level = 2) {
 export function deliverableToMarkdown(data) {
   let text = `# ${data.title}\n\nنسخه ${data.version} | ${data.date} | وضعیت: ${data.status}\nRevision: ${data.sourceRevision || 0}\n\n`;
   for (const section of data.sections || []) text += markdownSection(section, 2);
+
+  if (data.calculations?.length) {
+    text += '## محاسبات فعال و مبنای عددی\n\n';
+    for (const calculation of data.calculations) {
+      for (const line of describeUnitEconomics(calculation)) text += `- ${line}\n`;
+    }
+    text += '\n';
+  }
+
   text += [
     '---',
     '',
