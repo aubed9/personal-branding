@@ -137,12 +137,17 @@ console.log("▶ TEST 1: Automotive Service Full Phase 1 to 8 Transition & Grand
   assert(engine.phaseData[8].leadFunnel !== undefined, "p8_lead_funnel stored in phaseData[8]");
   assert(engine.phaseData[8].reputationCrisis !== undefined, "p8_crisis_reputation stored in phaseData[8]");
 
-  // Verify Master Deliverable contains Section M8
+  // Verify semantic Master uses 9 themes and preserves the same canonical Phase 8 claim.
   const master = engine.generateDeliverableData("master");
-  assert(master.sections.length === 9, "Master deliverable contains M0 through M8");
+  assert(master.sections.length === 9, "Master deliverable contains semantic M0 through M8");
+  const m5 = master.sections.find(s => s.id === "M5");
   const m8 = master.sections.find(s => s.id === "M8");
-  assert(m8 !== undefined, "Section M8 exists in Master Deliverable");
-  assert(m8.content.thoughtLeadership === "تحلیل نقادانه روندهای آینده صنعت و نقد رویکردهای سنتی ناکارآمد", "M8 contains actual user thoughtLeadership response");
+  assert(m5 !== undefined, "Semantic activation section M5 exists");
+  assert(m8 !== undefined, "Decision trace section M8 exists");
+  const thoughtClaim = Object.values(master.claimLedger).find(c => c.metadata?.field === "thoughtLeadership");
+  assert(Boolean(thoughtClaim), "Master claim ledger contains thoughtLeadership claim");
+  assert(m5.claimIds.includes(thoughtClaim.claimId), "M5 references the canonical thoughtLeadership claim");
+  assert(m8.items.some(item => item.includes(thoughtClaim.claimId)), "M8 trace references the same canonical thoughtLeadership claim");
 }
 
 // -----------------------------------------------------------------------------
