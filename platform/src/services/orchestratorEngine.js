@@ -20,6 +20,7 @@ import {
   summarizeInvalidation,
 } from '../reasoning/engine/index.js';
 import { toCanonicalModuleContext } from '../reasoning/modules/index.js';
+import { buildEvidenceDerivedHandoff } from '../projections/output/handoffProjection.js';
 
 /**
  * 4-State Lifecycle for AI-generated dynamic questions (Requirement R13, Feature 10)
@@ -563,63 +564,14 @@ export class OrchestratorEngine {
     this.isNavigatingBack = false;
 
 
-    const offer = this.phaseData[1]?.coreOffer || this.phaseData[1]?.description || "خدمات و تخصص محوری";
-    const seg = this.phaseData[3]?.targetSegment || "مشتریان ارزش‌محور";
-    const char = this.phaseData[4]?.archetype || "رفیق کاربلد و راهنما";
-    const voice = this.phaseData[5]?.voiceStyle || "صمیمی و حرفه‌ای";
-    const name = this.phaseData[6]?.naming || "برند تخصصی";
-
-    let handoffMsg = "";
-
-    if (phaseNum === 2) {
-      handoffMsg = `🔍 **ورود به فاز ۲: هوش بازار و پژوهش مشتری (Market Intelligence)**\n\n` +
-        `اطلاعات فاز ۱ به همراه بافتار شناسایی‌شده صنف شما ثبت شد:\n` +
-        `- 📌 **صنف و پیشنهاد اصلی:** ${offer}\n` +
-        `- 🎯 **آرکی‌تایپ بافتار:** ${this.businessContext?.archetypeTitle || "کسب‌وکار تخصصی"}\n\n` +
-        `اکنون تحلیل رقبا، دغدغه و درد مشتریان و فرصت‌های طلایی تمایز را بررسی می‌کنیم:`;
-    } else if (phaseNum === 3) {
-      handoffMsg = `🎯 **ورود به فاز ۳: استراتژی و جهت‌گیری برند (Brand Strategy)**\n\n` +
-        `شواهد هوش بازار فاز ۲ تحویل شد:\n` +
-        `- 💡 **درد اصلی بازار:** ${this.phaseData[2]?.customerPain || "کیفیت پایین و عدم همراهی"}\n` +
-        `- 🌟 **فرصت طلایی تمایز:** ${this.phaseData[2]?.goldenOpportunity || "سادگی و ضمانت واقعی"}\n\n` +
-        `حالا این شواهد را به انتخاب‌های استراتژیک، جایگاه‌یابی منحصربه‌فرد و وعده برند تبدیل می‌کنیم:`;
-    } else if (phaseNum === 4) {
-      handoffMsg = `✨ **ورود به فاز ۴: هویت و شخصیت برند (Brand Character)**\n\n` +
-        `بنیاد استراتژی فاز ۳ تحویل شد:\n` +
-        `- 🎯 **بخش هدف:** ${seg}\n` +
-        `- 🛡️ **جایگاه تمایز:** ${this.phaseData[3]?.positioning || "ارائه باکیفیت و بدون دردسر"}\n\n` +
-        `حالا استراتژی را به یک کاراکتر انسانی ملموس با کهن‌الگو و صفات رفتاری متمایز تبدیل می‌کنیم:`;
-    } else if (phaseNum === 5) {
-      handoffMsg = `🗣️ **ورود به فاز ۵: سیستم هویت کلامی و پیام‌رسانی (Verbal Identity)**\n\n` +
-        `کاراکتر فاز ۴ تحویل شد:\n` +
-        `- 🎭 **کهن‌الگو:** ${char}\n` +
-        `- 💎 **صفات رفتاری:** ${this.phaseData[4]?.traits || "صادق، دقیق و متعهد"}\n\n` +
-        `اکنون صدای برند، لحن، قلاب معرفی آسانسوری ۳۰ ثانیه‌ای و واژگان ممنوعه را طراحی می‌کنیم:`;
-    } else if (phaseNum === 6) {
-      handoffMsg = `🔥 **ورود به فاز ۶: نام‌گذاری، شعار و جهت‌گیری خلاقانه (Naming & Creative Direction)**\n\n` +
-        `هویت کلامی فاز ۵ تحویل شد:\n` +
-        `- 📢 **سبک صدا:** ${voice}\n` +
-        `- 🎯 **قلاب معرفی:** ${this.phaseData[5]?.elevatorHook || "حل مستقیم درد مخاطب"}\n\n` +
-        `حالا قلمرو نام‌گذاری، سبک شعار محوری و بریف دیزاین را مشخص می‌کنیم:`;
-    } else if (phaseNum === 7) {
-      handoffMsg = `🎨 **ورود به فاز ۷: طراحی سیستم هویت بصری (Visual Identity Design System)**\n\n` +
-        `نام و شعار فاز ۶ تحویل شد:\n` +
-        `- 🏷️ **نام برند:** ${name}\n` +
-        `- ⚡ **شعار:** ${this.phaseData[6]?.tagline || "تعهد پایدار به کیفیت و رضایت"}\n\n` +
-        `در این فاز، پالت رنگی روان‌شناختی، تایپوگرافی فارسی و فرم نشان بصری را انتخاب می‌کنیم:`;
-    } else if (phaseNum === 8) {
-      handoffMsg = `🚀 **ورود به فاز ۸: برنامه فعال‌سازی اجرایی و مدیریت اعتبار (Executive Activation & Reputation)**\n\n` +
-        `سیستم کامل ۷ فاز قبلی با موفقیت تصویب شد:\n` +
-        `- 🏷️ **نام و هویت برند:** ${name}\n` +
-        `- 🎯 **جایگاه و بخش هدف:** ${seg}\n` +
-        `- 📢 **سبک پیام و صدا:** ${voice}\n\n` +
-        `اکنون برند طراحی‌شده را وارد میدان عملیات می‌کنیم: سئوی محلی/شخصی، رسانه‌ها، قیف تجاری و پروتکل حل بحران:`;
-    }
-
-    const adaptationRule = getPhaseAdaptationRules(phaseNum, this.businessContext);
-    if (adaptationRule && adaptationRule.instruction) {
-      handoffMsg += `\n\n🎯 **انطباق تخصصی بافتار صنف (${this.businessContext?.archetypeTitle || ""}):**\n${adaptationRule.instruction}`;
-    }
+    const handoff = buildEvidenceDerivedHandoff({
+      targetPhase: phaseNum,
+      phaseData: this.phaseData,
+      answerRecords: this.answerRecords,
+      reviewRequired: this.reviewRequired,
+      businessContext: this.businessContext,
+    });
+    const handoffMsg = handoff.message;
 
     const firstQ = this.getCurrentQuestion();
     return {
@@ -855,7 +807,7 @@ export class OrchestratorEngine {
 
     if (p < 8) {
       return {
-        reply: `🎉 **تبریک می‌گویم! تمامی مراحل فاز ${p} (${phaseNames[p]}) با موفقیت تکمیل شد.**\n\nگیت اعتبارسنجی با نمره شواهد ${gateResult.evidenceScore}/100 تایید شد و سند تخصصی صادر گردید.\n\n👇 **روی دکمه «ورود به فاز ${p + 1}: ${phaseNames[p + 1]}» کلیک کنید تا ادامه دهیم:**`,
+        reply: `✅ **فاز ${p} (${phaseNames[p]}) از گیت فعلی عبور کرد.**\n\nپوشش الزامات ثبت‌شده این فاز ${gateResult.evidenceScore}/100 است. این عدد شاخص تکمیل داده‌ها و تصمیم‌های الزامی است و به‌تنهایی کیفیت بازار یا صحت استراتژی را اثبات نمی‌کند. سند فاز بر اساس Claimها و شواهد فعلی قابل تولید است.\n\n👇 **روی دکمه «ورود به فاز ${p + 1}: ${phaseNames[p + 1]}» کلیک کنید تا ادامه دهیم:**`,
         nextQuestion: null,
         isCompleted: true,
         gatePassed: true,
@@ -866,7 +818,7 @@ export class OrchestratorEngine {
       };
     } else {
       return {
-        reply: `🏆 **شاهکار است! تبریک صمیمانه، شما تمامی ۸ فاز برندینگ و فعال‌سازی اجرایی را با موفقیت ۱۰۰٪ نهایی کردید!**\n\nاکنون کل هویت برند، تمایز محوری، کاراکتر، پیام‌رسانی، نام، سیستم بصری و ماشین فعال‌سازی تجاری و سئوی شما به صورت علمی و هماهنگ تدوین شد.\n\n🌟 **«کتابچه جامع استراتژی و ماشین اجرای برند (Master Brand Book & Execution Machine)»** شامل تمامی اسناد ۸ گانه تولید شده و آماده دانلود یکپارچه است!`,
+        reply: `✅ **هر ۸ فاز از گیت‌های فعلی عبور کرده‌اند.**\n\nکتابچه جامع اکنون به‌صورت یک projection یکپارچه از Claimها، تصمیم‌های کاربر، پیشنهادها، ریسک‌ها، مجهولات و وضعیت اعتبار آن‌ها قابل تولید است. موارد PROVISIONAL، STALE، NEEDS_REVIEW یا REQUIRES_VERIFICATION همچنان با همان وضعیت باقی می‌مانند و به نتیجه قطعی ارتقا داده نمی‌شوند.\n\n📘 **«کتابچه جامع استراتژی و ماشین اجرای برند (Master Brand Book & Execution Machine)»** آماده تولید و دانلود یکپارچه است.`,
         nextQuestion: null,
         isCompleted: true,
         gatePassed: true,
@@ -881,7 +833,7 @@ export class OrchestratorEngine {
   generateDeliverableData(phaseNum = this.currentPhase) {
     return generateDeliverable(phaseNum, this.phaseData, this.businessContext, this.decisions, this.facts, this.unknowns, {
       answerRecords: this.answerRecords, completedPhases: this.completedPhases,
-      contradictions: this.contradictions, phaseStatus: this.phaseStatus, revision: this.revision,
+      contradictions: this.contradictions, phaseStatus: this.phaseStatus, reviewRequired: this.reviewRequired, revision: this.revision,
       reasoningGraphV3: this.reasoningGraphV3,
       reasoningChangeEvents: this.reasoningChangeEvents,
     });

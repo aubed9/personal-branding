@@ -1,6 +1,6 @@
 // Recommendations are proposals with cited inputs, not assertions about a market.
 const short = text => String(text).replace(/\s+/g, ' ').slice(0, 180);
-export function buildStrategicActions(phase, rows, economics) {
+export function buildStrategicActions(phase, rows, economics, businessContext = null) {
   const get = (p, field) => rows.find(r => p <= phase && r.phase === p && r.field === field && r.answer && r.answer.kind !== 'UNKNOWN');
   const text = row => `«${short(row.text)}»`;
   const offer = get(1, 'coreOffer'), goal = get(1, 'primaryGoal'), budget = get(1, 'budgetConstraint');
@@ -10,8 +10,19 @@ export function buildStrategicActions(phase, rows, economics) {
   const add = (ruleId, days, statement, refs, successMeasure) => {
     const evidenceIds = [...new Set(refs.filter(Boolean).flatMap(row => row.evidenceIds))];
     if (!evidenceIds.length) return;
-    actions.push({ ruleId, kind: 'PROPOSAL', horizonDays: days, evidenceIds, successMeasure,
-      owner: null, statement: `${days.toLocaleString('fa-IR')} روز: ${statement} معیار بررسی: ${successMeasure}. مسئول اجرا هنوز باید تعیین شود.` });
+    actions.push({
+      ruleId,
+      kind: 'PROPOSAL',
+      proposalStatus: 'RECOMMENDED',
+      horizonDays: days,
+      evidenceIds,
+      successMeasure,
+      owner: null,
+      businessContextKey: businessContext?.taxonomyId || businessContext?.businessTypeId || businessContext?.primaryArchetype || null,
+      objective: successMeasure,
+      invalidationCondition: 'هر تغییر در شواهد پشتیبان یا بافتار فعال باید این پیشنهاد را دوباره ارزیابی کند.',
+      statement: `${days.toLocaleString('fa-IR')} روز: ${statement} معیار بررسی: ${successMeasure}. مسئول اجرا هنوز باید تعیین شود.`
+    });
   };
 
   if (phase === 1) {
@@ -21,7 +32,7 @@ export function buildStrategicActions(phase, rows, economics) {
     if (value && offer) add('value_pilot', 30, `فرضیه ${text(value)} را در معرفی ${text(offer)} با مشتری امتحان کنید؛ دلیل خرید یا نخریدن را با عبارت خود مشتری ثبت کنید.`, [value, offer], 'تفاوت ادعای تمایز با دلایل خرید واقعی');
   }
 
-  if ([1, 2, 3, 8].includes(phase) && economics && costs) {
+  if (phase === 1 && economics && costs) {
     if (economics.contributionPerUnit <= 0) {
       add('repair_unit_margin', 30, `پیش از افزایش فروش ${offer ? text(offer) : 'پیشنهاد اصلی'}، قیمت و اجزای هزینه متغیر را بازبینی کنید؛ حاشیه مشارکت محاسبه‌شده مثبت نیست. کاهش دامنه خدمت یا اصلاح قیمت را فقط بعد از آزمون پذیرش مشتری بررسی کنید.`, [costs, offer], 'حاشیه مشارکت مثبت پس از ثبت مجدد هزینه‌ها؛ افزایش فروش به‌تنهایی این مسئله را حل نمی‌کند');
     } else if (economics.breakEvenUnits !== null && economics.inputs.monthlyCapacity !== null && economics.breakEvenUnits > economics.inputs.monthlyCapacity) {
@@ -77,11 +88,12 @@ export function buildStrategicActions(phase, rows, economics) {
     if (crisis) add('complaint_rehearsal', 30, `برای شیوه رسیدگی ${text(crisis)}، یک شکایت نمونه تمرین کنید. مسئول پاسخ، شواهد لازم، راه‌حل مجاز و زمان پاسخ قابل اجرا را مشخص کنید.`, [crisis, promise, get(4, 'toneGuardrail')], 'ثبت و پیگیری شکایت تا نتیجه، بدون وعده جبران خارج از اختیار');
   }
 
-  if (budget) add('resource_ceiling', 30, `برای اجرای این فاز، محدودیت ${text(budget)} را به سقف هزینه و زمان هر اقدام تبدیل کنید. تخصیص نهایی باید توسط خودتان تأیید شود.`, [budget], 'جمع هزینه و زمان برنامه در محدوده منابع تأییدشده');
-  const own = rows.filter(row => row.phase === phase && row.answer && row.answer.kind !== 'UNKNOWN');
-  if (own.length) {
-    add('review_experiment', 60, `نتیجه اقدام‌های دوره اول را ${channel && phase >= 2 ? `در ${text(channel)} ` : ''}با مبنای ثبت‌شده مقایسه کنید و علت ادامه، توقف یا اصلاح را بنویسید.`, [...own, channel], 'تفاوت نتیجه واقعی با فرضیه اولیه و هزینه صرف‌شده');
-    add('revise_plan', 90, `بر اساس نتیجه ثبت‌شده، برنامه ${goal ? `رسیدن به ${text(goal)}` : 'فاز'} را بازبینی کنید؛ افزایش هزینه مشروط به شواهد و ظرفیت اجرا باشد.`, [...own, goal, budget], 'تصمیم ادامه یا اصلاح همراه با منبع و مسئول اجرا');
+  // Resource constraints are a foundation decision, not a generic filler action on every phase.
+  if (phase === 1 && budget) {
+    add('resource_ceiling', 30, `محدودیت ${text(budget)} را به سقف هزینه و زمان اقدام‌های همین دوره تبدیل کنید. تخصیص نهایی باید توسط خودتان تأیید شود.`, [budget], 'جمع هزینه و زمان برنامه در محدوده منابع تأییدشده');
   }
+
+  // No unconditional 60/90-day filler actions. Later review/revision actions must be
+  // emitted by an active Decision Module or by measured evidence in a dedicated rule.
   return actions;
 }

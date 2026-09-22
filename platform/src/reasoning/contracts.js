@@ -65,6 +65,7 @@ export function createCanonicalClaim({
   lastValidatedRevision = createdRevision,
   supersedes = null,
   supersededBy = null,
+  metadata = {},
 } = {}) {
   const id = claimId || makeStableId('CLM', { claimType, stableKey, phase, moduleId });
   return {
@@ -87,6 +88,7 @@ export function createCanonicalClaim({
     lastValidatedRevision,
     supersedes,
     supersededBy,
+    metadata: metadata && typeof metadata === 'object' && !Array.isArray(metadata) ? { ...metadata } : {},
   };
 }
 

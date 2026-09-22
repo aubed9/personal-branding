@@ -51,14 +51,15 @@ test('financial form, invalid input, reload, and downloaded calculations', async
   await page.reload();
   await page.getByRole('button', { name: 'مشاهده سند خروجی فاز' }).click();
   const dialog = page.getByRole('dialog');
-  await expect(dialog).toContainText('۳۳۴ واحد کامل');
-  await expect(dialog).toContainText('۱۰٬۰۰۰٬۰۰۰ تومان');
+  await expect(dialog).toContainText('فروش سربه‌سر ماهانه');
+  await expect(dialog).toContainText('334');
+  await expect(dialog).toContainText('10000000');
   await noPageOverflow(page);
   const downloadPromise = page.waitForEvent('download');
   await dialog.getByRole('button', { name: /دانلود/ }).click();
   const download = await downloadPromise;
   const output = await fs.readFile(await download.path(), 'utf8');
-  expect(output).toContain('۳۳۴ واحد کامل'); expect(output).toContain('[CALCULATION]');
+  expect(output).toContain('فروش سربه‌سر ماهانه: 334'); expect(output).toMatch(/\[CALCULATION(?:\/CONFIRMED)?\]/);
   expect(output).toContain((await getState(page)).answerRecords.find(a => a.questionId === 'unit_economics').id);
   await page.screenshot({ path: testInfo.outputPath('financial-report.png'), fullPage: true });
   await dialog.getByRole('button', { name: 'بستن سند' }).click();
@@ -83,7 +84,8 @@ test('complete eight phases and download one consistent master book', async ({ p
   }
   await page.getByRole('main').getByRole('button', { name: 'مشاهده کتابچه جامع استراتژی', exact: true }).click();
   const dialog = page.getByRole('dialog');
-  await expect(dialog).toContainText('۳۳۴ واحد کامل');
+  await expect(dialog).toContainText('اقتصاد و سنجه‌ها');
+  await expect(dialog).toContainText('فروش سربه‌سر ماهانه');
   const s = await getState(page);
   expect(Object.values(s.completedPhases).every(Boolean)).toBe(true);
   const downloadPromise = page.waitForEvent('download');
@@ -93,7 +95,16 @@ test('complete eight phases and download one consistent master book', async ({ p
   expect(output).toContain('قهوه با رست هفتگی');
   expect(output).toContain(s.phaseData[8].leadFunnel);
   expect(output).toContain('CONFIRMED');
-  for (let p = 1; p <= 8; p++) expect(output).toContain(`## فاز ${p}:`);
+  for (const heading of [
+    'بنیاد و بافتار کسب‌وکار',
+    'شواهد مشتری و بازار',
+    'انتخاب‌های استراتژیک',
+    'سیستم برند',
+    'ورود به بازار و فعال‌سازی',
+    'اقتصاد و سنجه‌ها',
+    'ریسک‌ها، تعارض‌ها و مجهولات باز',
+    'ردیابی تصمیم و Provenance',
+  ]) expect(output).toContain(heading);
 });
 
 test('changed finances invalidate a later phase and replace its numeric evidence', async ({ page }) => {
@@ -110,6 +121,7 @@ test('changed finances invalidate a later phase and replace its numeric evidence
   await expect(page.locator('#strategic-question-heading')).toContainText('قیمت هر واحد از هزینه متغیر بیشتر نیست');
   expect((await getState(page)).phaseStatus[2]).toBe('INVALIDATED');
   await page.getByTitle('مشاهده پیش‌نویس یا سند رسمی فاز').click();
-  await expect(page.getByRole('dialog')).toContainText('حاشیه مشارکت غیرمثبت');
-  await expect(page.getByRole('dialog')).not.toContainText('۳۳۴ واحد کامل');
+  await expect(page.getByRole('dialog')).toContainText('حاشیه مشارکت هر واحد: -20000');
+  await expect(page.getByRole('dialog')).toContainText('فروش سربه‌سر ماهانه: قابل تعیین نیست');
+  await expect(page.getByRole('dialog')).not.toContainText('فروش سربه‌سر ماهانه: 334');
 });

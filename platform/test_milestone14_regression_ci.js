@@ -65,16 +65,16 @@ console.log('--- TEST SUITE 1: Deliverable Typed Data Provenance Tags (R22) ---'
   const mdP1 = engine.generateMarkdownText(1);
 
   assert(typeof mdP1 === "string" && mdP1.length > 500, "Phase 1 deliverable markdown generated successfully");
-  assert(mdP1.includes("[FACT]"), "Markdown contains [FACT] provenance tag for user-confirmed data");
-  assert(mdP1.includes("[CLASSIFICATION]"), "Markdown contains [BENCHMARK] provenance tag for taxonomy/standard data");
-  assert(mdP1.includes("[FORMULA]"), "Markdown contains [FORMULA] provenance tag for mathematical equations");
-  assert(mdP1.includes("[UNKNOWN]"), "Markdown contains [HYPOTHESIS] provenance tag for official unknowns");
-  assert(mdP1.includes("شناسه ANS"), "Deliverable footer contains official Data Provenance legend");
+  assert(mdP1.includes("[USER_FACT/"), "Markdown contains canonical USER_FACT provenance for user-provided facts");
+  assert(mdP1.includes("[SYSTEM_INFERENCE/"), "Markdown contains canonical SYSTEM_INFERENCE provenance for rule-derived context");
+  assert(!mdP1.includes("[FORMULA]"), "Legacy FORMULA provenance tag is not used; calculations appear only when real structured inputs exist");
+  assert(mdP1.includes("[UNKNOWN/") || mdP1.includes("[UNKNOWN]"), "Markdown preserves explicit UNKNOWN provenance");
+  assert(mdP1.includes("projection از Claimهای canonical"), "Deliverable footer documents canonical Claim projection semantics");
 
-  // Unknowns must NOT be promoted to Fact
-  const hasFakePromotion = mdP1.includes("[FACT] **وضعیت سنجه‌های اندازه‌گیری‌نشده:**");
-  assert(!hasFakePromotion, "Unmeasured unknown is NOT promoted to [FACT]");
-  assert(mdP1.includes("[UNKNOWN] داده عددی ساختاریافته"), "Unmeasured unknown remains strictly tagged as [HYPOTHESIS]");
+  // Unknowns must NOT be promoted to user facts or confirmed external facts.
+  const hasFakePromotion = /\[USER_FACT\/CONFIRMED\].*مجهول رسمی|\[EXTERNAL_FACT\/CONFIRMED\].*مجهول رسمی/.test(mdP1);
+  assert(!hasFakePromotion, "Unmeasured unknown is NOT promoted to confirmed fact");
+  assert(mdP1.includes("[UNKNOWN/") || mdP1.includes("[UNKNOWN]"), "Unmeasured unknown remains explicitly unknown");
 }
 
 // =============================================================================
@@ -282,8 +282,8 @@ console.log('\n--- TEST SUITE 5: Golden Deliverable Benchmarks across 9 Sectors 
 
     // Verify all 5 layers are present
     assert(masterData.sections.length >= 8, `[${sector.name}] Master deliverable contains all phase sections`);
-    assert(masterMd.includes("فرمول‌های محاسباتی") || masterMd.includes("[FORMULA]"), `[${sector.name}] Quantitative formula layer verified`);
-    assert(masterMd.includes("[CLASSIFICATION]"), `[${sector.name}] Classification remains labeled separately from user facts`);
+    assert(masterMd.includes("اقتصاد و سنجه‌ها"), `[${sector.name}] Economics/metrics semantic section is present without fabricating formulas`);
+    assert(masterMd.includes("[SYSTEM_CONTEXT]"), `[${sector.name}] Classification remains labeled as system context separately from user facts`);
   }
 }
 
