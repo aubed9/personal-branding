@@ -59,7 +59,7 @@ export default function DeliverableModal({
   const canGoNextFromModal = isCurrentNumeric && completedPhases[activeDeliverablePhase] && activeDeliverablePhase < 8;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/90 backdrop-blur-xl flex items-center justify-center p-3 sm:p-6 print:p-0 print:bg-white text-white">
+    <div role="dialog" aria-modal="true" aria-labelledby="deliverable-title" className="fixed inset-0 z-50 overflow-y-auto bg-black/90 backdrop-blur-xl flex items-center justify-center p-3 sm:p-6 print:p-0 print:bg-white text-white">
       <div className="relative w-full max-w-4xl bg-[#08080a] border border-white/20 rounded-3xl shadow-glass overflow-hidden flex flex-col max-h-[92vh] print:max-h-none print:border-none print:shadow-none print:bg-white print:text-black">
         
         {/* Modal Top Bar */}
@@ -69,17 +69,18 @@ export default function DeliverableModal({
               {activeDeliverablePhase === "master" ? <Award className="w-5 h-5 text-blue-400" /> : <FileText className="w-5 h-5" />}
             </div>
             <div>
-              <h2 className="text-sm sm:text-base font-black text-white tracking-tight">
+              <h2 id="deliverable-title" className="text-sm sm:text-base font-black text-white tracking-tight">
                 {deliverableData.title}
               </h2>
               <p className="text-[11px] text-zinc-400 font-mono">
-                پرونده راهبردی مصوب {deliverableData.phase} • نسخه {deliverableData.version}
+                پرونده راهبردی {deliverableData.phase} • نسخه {deliverableData.version}
               </p>
             </div>
           </div>
 
           <button
             onClick={onClose}
+            aria-label="بستن سند"
             className="p-2 text-zinc-400 hover:text-white obsidian-card obsidian-card-hover rounded-xl transition-colors"
           >
             <X className="w-5 h-5" />

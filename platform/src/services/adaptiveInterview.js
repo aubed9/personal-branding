@@ -1,4 +1,5 @@
-import { FIELD_BY_QUESTION, isUnknownAnswer } from './interviewSchema.js';
+import { FIELD_BY_QUESTION, isUnknownAnswer, activeAnswers } from './interviewSchema.js';
+import { calculateUnitEconomics } from './unitEconomics.js';
 
 // These are question dependencies, not an invitation for the model to skip a phase.
 const DEPENDENCIES = {
@@ -38,7 +39,7 @@ const DEPENDENCIES = {
 const short = text => String(text).replace(/\s+/g, ' ').slice(0, 220);
 const option = (label, value, detail) => ({ label, text: label, value, detail });
 
-export function adaptQuestionToAnswers(question, context, phaseData) {
+export function adaptQuestionToAnswers(question, context, phaseData, answerRecords = []) {
   const q = { ...question };
   const dependencies = (DEPENDENCIES[q.id] || []).flatMap(id => {
     const spec = FIELD_BY_QUESTION[id];
@@ -57,6 +58,14 @@ export function adaptQuestionToAnswers(question, context, phaseData) {
   const isLimitedBudget = /محدود|بودجه کم|بدون بودجه|کمبود|صفر/.test(p1.budgetConstraint || '');
   const priceSensitive = /کم.درآمد|اقتصادی|توان خرید|حساس.*قیمت|کشش قیمتی محدود/.test(`${p2.customerPain || ''} ${p3.targetSegment || ''}`);
   const local = p1.geographyValue === 'local_city' || /محلی|محله/.test(p1.geography || '');
+  const economics = calculateUnitEconomics(activeAnswers(answerRecords).find(a => a.questionId === 'unit_economics'));
+
+  if (economics && ['cash_constraint', 'p2_step2_pricing_models'].includes(q.id)) {
+    if (economics.contributionPerUnit <= 0) q.text += '\nطبق اعداد ثبت‌شده، قیمت هر واحد از هزینه متغیر بیشتر نیست. برای اصلاح قیمت، دامنه خدمت یا هزینه چه تغییری قابل اجراست؟';
+    else if (economics.breakEvenUnits !== null && economics.inputs.monthlyCapacity !== null && economics.breakEvenUnits > economics.inputs.monthlyCapacity) {
+      q.text += `\nفروش سربه‌سر محاسبه‌شده ${economics.breakEvenUnits.toLocaleString('fa-IR')} واحد در ماه است، اما ظرفیت اعلامی ${economics.inputs.monthlyCapacity.toLocaleString('fa-IR')} واحد است. کدام محدودیت را می‌توانید اصلاح کنید؟`;
+    }
+  }
 
   if (q.id === 'p2_step2_pricing_models' && priceSensitive) {
     q.text += '\nبا این محدودیت توان خرید، کدام روش را برای آزمون قیمت انتخاب می‌کنید؟ هزینه هر گزینه باید پیش از اجرا بررسی شود.';
@@ -65,6 +74,14 @@ export function adaptQuestionToAnswers(question, context, phaseData) {
       option('دو سطح اقتصادی و تخصصی', 'tiered_offer', 'برای هر سطح، هزینه و تقاضا را جدا می‌سنجیم تا سطح اقتصادی زیان‌ده نباشد.'),
       option('آزمون خرید واقعی پیش از تغییر', 'price_experiment', 'ابتدا پیشنهاد محدود را با مشتریان فعلی آزمایش می‌کنیم.'),
       option('بازبینی مشتری هدف', 'review_target', 'اگر قیمت لازم با توان خرید این گروه سازگار نیست، مشتری هدف را بازبینی می‌کنیم.'),
+    ];
+  }
+  if (q.id === 'p2_step2_pricing_models' && economics?.contributionPerUnit <= 0) {
+    q.options = [
+      option('بازبینی اجزای هزینه', 'review_costs', 'هزینه متغیر هر واحد را با فاکتور و هزینه تحویل دوباره ثبت می‌کنیم.'),
+      option('آزمون قیمت قابل اجرا', 'test_viable_price', 'قیمتی با حاشیه مشارکت مثبت را با مشتری آزمایش می‌کنیم؛ پذیرش آن هنوز معلوم نیست.'),
+      option('کاهش دامنه پیشنهاد', 'reduce_scope', 'اجزای خدمت و هزینه هر نسخه را جدا می‌کنیم و نسخه محدودتر را آزمایش می‌کنیم.'),
+      option('توقف توسعه تا اصلاح اعداد', 'pause_expansion', 'تا روشن شدن هزینه و قیمت، افزایش فروش و هزینه تبلیغ را تعهد نمی‌کنیم.'),
     ];
   }
 

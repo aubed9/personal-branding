@@ -71,7 +71,7 @@ export default function App() {
     
     setCurrentQuestion(q);
     setTotalQuestions(questions?.length || 5);
-    setQuestionIndex(eng.currentStepIndex || 0);
+    setQuestionIndex(Math.min(eng.currentStepIndex || 0, Math.max(0, questions.length - 1)));
 
     const gate = validatePhaseGate(eng.currentPhase, eng);
     setPhaseGateStatus(gate);
@@ -116,14 +116,14 @@ export default function App() {
 
   useEffect(() => () => controllerRef.current?.cancel(), [engine]);
 
-  const submitAnswer = async (userText, optionValue = null) => {
+  const submitAnswer = async (userText, optionValue = null, structuredData = undefined) => {
     const controller = controllerRef.current;
     if (controller.busy || !userText?.trim() || !currentQuestion) return;
     setIsProcessing(true);
     setIsAiAnalyzing(engineMode === 'gemini' && Boolean(apiKey || customEndpoint));
     setWorkflowMessage('');
     try {
-      const result = await controller.submit({ userText, optionValue, questionId: currentQuestion.id }, {
+      const result = await controller.submit({ userText, optionValue, structuredData, questionId: currentQuestion.id }, {
         engineMode, apiKey: apiKey || SessionKeyManager.getApiKey(), model, customEndpoint,
       }, eng => {
         if (!persistenceManagerRef.current.saveProjectState(eng)) setWorkflowMessage('ذخیره خودکار انجام نشد؛ فایل پروژه را دانلود کنید.');
@@ -255,7 +255,7 @@ export default function App() {
         onStartNextPhase={handleStartNextPhase}
         engineMode={engineMode}
         onOpenGuildSelector={() => setIsGuildSelectorOpen(true)}
-        activeGuildTitle={activeGuild?.titleFa}
+        activeGuildTitle={engine.businessContext?.taxonomyTitleFa || activeGuild?.titleFa}
       />
 
       {/* 2. Phase Progress Rail (8-Phase status) */}
@@ -293,6 +293,7 @@ export default function App() {
             businessContext={engine.businessContext}
             facts={engine.facts}
             decisions={engine.decisions}
+            assumptions={engine.assumptions}
             unknowns={engine.unknowns}
             contradictions={engine.contradictions}
             currentPhase={currentPhase}
@@ -319,6 +320,7 @@ export default function App() {
             }}
             onSelectOption={handleSelectOption}
             onSubmitCustomAnswer={handleSubmitCustomAnswer}
+            onSubmitFinancialAnswer={(text, data) => submitAnswer(text, null, data)}
             onUnknownSelect={handleUnknownSelect}
             onNavigateBack={handleNavigateBack}
             canNavigateBack={engine.currentStepIndex > 0}

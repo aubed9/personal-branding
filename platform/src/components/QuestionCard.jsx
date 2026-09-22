@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import UnitEconomicsForm from './UnitEconomicsForm.jsx';
 import { 
   CheckCircle2, 
   ArrowLeft, 
@@ -22,6 +23,7 @@ export default function QuestionCard({
   phaseGateStatus = null,
   onSelectOption,
   onSubmitCustomAnswer,
+  onSubmitFinancialAnswer,
   onUnknownSelect,
   onNavigateBack,
   canNavigateBack = false,
@@ -151,6 +153,7 @@ export default function QuestionCard({
 
   const options = currentQuestion?.options || [];
   const hasManyOptions = options.length > 4;
+  const isFinancialQuestion = (currentQuestion?.baseQuestionId || currentQuestion?.id) === 'unit_economics';
 
   const filteredOptions = hasManyOptions && searchFilter.trim()
     ? options.filter(opt => {
@@ -223,6 +226,7 @@ export default function QuestionCard({
         
         {!isCustomOpen ? (
           <>
+            {isFinancialQuestion && <UnitEconomicsForm key={currentQuestion.id} initialValue={currentQuestion.structuredAnswer} onSubmit={onSubmitFinancialAnswer} disabled={isProcessing} />}
             {/* Filter for >4 options */}
             {hasManyOptions && (
               <div className="mb-2">

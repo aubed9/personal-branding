@@ -1,6 +1,8 @@
 import { INTERVIEW_FIELDS, activeAnswers, migrateAnswerRecords } from './interviewSchema.js';
 import { validatePhaseGate } from './phaseGateValidator.js';
 import { PHASES_DATA } from '../data/phase1Templates.js';
+import { calculateUnitEconomics, describeUnitEconomics } from './unitEconomics.js';
+import { buildStrategicActions } from './strategicActions.js';
 
 const MISSING = 'هنوز پاسخی ثبت نشده است';
 const STATUS_LABELS = { FACT: 'گفته کاربر، تأیید مستقل نشده', DECISION: 'انتخاب کاربر', ASSUMPTION: 'فرضیه نیازمند آزمون', UNKNOWN: 'مجهول' };
@@ -58,6 +60,7 @@ function buildPhase(phase, state, rows) {
   const promise = value(3, 'promise');
   const dependencies = [offer, goal, budget, channel, audience, promise].filter(row => row && row.phase < phase && row.answer);
   const missing = own.filter(row => !row.answer || row.answer.kind === 'UNKNOWN');
+  const economics = calculateUnitEconomics(value(1, 'unitEconomics')?.answer);
   const decisions = own.filter(row => row.answer?.kind === 'DECISION');
   const claims = available.map(row => ({
     statement: `${row.label}: ${row.text}`, kind: row.answer.kind,
@@ -67,21 +70,7 @@ function buildPhase(phase, state, rows) {
   for (const row of missing) {
     actions.push({ statement: `۳۰ روز: داده «${row.label}» را جمع‌آوری کنید. مسئول و مهلت دقیق هنوز باید تعیین شود.`, kind: 'PROPOSAL', evidenceIds: row.evidenceIds });
   }
-  for (const row of available) {
-    actions.push({
-      statement: `۳۰ روز: «${row.label}: ${quote(row.text)}» را ${row.answer.kind === 'FACT' ? 'با سند یا مشاهده واقعی بررسی و ثبت کنید' : 'در یک آزمون محدود با مشتری بررسی کنید'}.`,
-      kind: 'PROPOSAL', evidenceIds: row.evidenceIds,
-    });
-  }
-  if (budget?.answer && /محدود|کمبود|بدون بودجه|صفر/.test(budget.text)) {
-    actions.push({ statement: `پیش از هزینه: برای هر آزمون سقف هزینه و شرط توقف تعیین کنید. محدودیت اعلام‌شده شما «${quote(budget.text)}» است؛ توسعه کانال تا تأیید نتیجه آزمون پیشنهاد نمی‌شود.`, kind: 'PROPOSAL', evidenceIds: budget.evidenceIds });
-  }
-  if (phase >= 3 && channel?.answer) {
-    actions.push({ statement: `۶۰ روز: نتیجه آزمون را در کانال منتخب «${quote(channel.text)}» با مبنای دوره اول مقایسه کنید.`, kind: 'PROPOSAL', evidenceIds: channel.evidenceIds });
-  } else {
-    actions.push({ statement: '۶۰ روز: نتیجه آزمون‌های دوره اول را ثبت کنید؛ بدون اندازه‌گیری اولیه، درصد رشد یا موفقیت تعیین نکنید.', kind: 'PROPOSAL', evidenceIds: available.flatMap(row => row.evidenceIds) });
-  }
-  actions.push({ statement: `۹۰ روز: بر اساس نتیجه آزمون‌ها، ادامه یا اصلاح «${quote(goal?.text || MISSING)}» را تصمیم بگیرید. افزایش بودجه مشروط به شواهد است.`, kind: 'PROPOSAL', evidenceIds: goal?.evidenceIds || [] });
+  actions.push(...buildStrategicActions(phase, rows, economics));
 
   const framework = [`[METHOD] ${METHOD[phase]}`, `[METHOD] مرجع داخلی روش: ${WIKI_PATHS[phase]}. این مرجع شاهد اختصاصی کسب‌وکار یا منبع زنده بازار نیست.`];
   if (dependencies.length) framework.push(...dependencies.map(row => `[DEPENDENCY] ${row.label}: ${sourceNote(row)}`));
@@ -100,11 +89,11 @@ function buildPhase(phase, state, rows) {
     ...gate.warnings.map(warning => `[UNKNOWN] ${warning}`),
     ...openUnknowns.map(u => `[UNKNOWN] ${u.reason}؛ اقدام: ${u.actionItem} [${u.answerId || u.id}]`),
   ];
-  const formulas = METRICS[phase].map(([name, formula]) => ({ name, formula, description: 'روش محاسبه؛ مقدار واقعی محاسبه نشده است. دوره‌ها و واحدها باید یکسان و مخرج غیرصفر باشد. حاشیه مشارکت غیرمثبت، نقطه سربه‌سر قابل دستیابی نمی‌دهد.' }));
+  const formulas = METRICS[phase].map(([name, formula]) => ({ name, formula, description: phase === 1 && economics ? 'نتیجه از ورودی فرم مالی در همین بخش آمده است؛ تعداد فروش سربه‌سر به بالا گرد می‌شود.' : 'روش محاسبه؛ مقدار واقعی محاسبه نشده است. دوره‌ها و واحدها باید یکسان و مخرج غیرصفر باشد.' }));
   return {
     title: PHASES_DATA[phase - 1].deliverableName, phase: `فاز ${phase}`, phaseNumber: phase,
-    version: '4.0.0', date: new Date().toLocaleDateString('fa-IR'), status,
-    evidence: claims, actions, sourceRevision: state.revision || 0,
+    version: '4.1.0', date: new Date().toLocaleDateString('fa-IR'), status,
+    evidence: claims, actions, calculations: phase === 1 && economics ? [economics] : [], sourceRevision: state.revision || 0,
     sections: [
       { id: `P${phase}_SEC_1`, title: '۱. پاسخ‌های ثبت‌شده و منشأ آن‌ها', type: 'snapshot',
         content: Object.fromEntries(own.map(row => [row.label, sourceNote(row)])),
@@ -113,7 +102,7 @@ function buildPhase(phase, state, rows) {
       { id: `P${phase}_SEC_3`, title: '۳. برنامه پیشنهادی ۳۰، ۶۰ و ۹۰ روزه', checklist: actions.map(a => `[PROPOSAL] ${a.statement} ${a.evidenceIds.length ? `[${a.evidenceIds.join(', ')}]` : '[داده لازم هنوز ثبت نشده]'}`) },
       { id: `P${phase}_SEC_4`, title: '۴. روش سنجش و اطلاعات لازم', formulas,
         kpis: METRICS[phase].map(([metric, formula]) => ({ metric, formula, green: 'پس از ثبت مبنا و تأیید کاربر تعیین شود', yellow: 'هنوز تعیین نشده', red: 'هنوز تعیین نشده' })),
-        items: ['[UNKNOWN] داده عددی ساختاریافته و هم‌دوره برای محاسبه خودکار ثبت نشده؛ فرمول‌ها صرفاً روش محاسبه‌اند.'] },
+        items: phase === 1 && economics ? describeUnitEconomics(economics) : ['[UNKNOWN] داده عددی ساختاریافته و هم‌دوره برای این شاخص‌ها ثبت نشده؛ فرمول‌ها صرفاً روش محاسبه‌اند.'] },
       { id: `P${phase}_SEC_5`, title: '۵. گیت، مجهولات و محدودیت‌های اجرا', items: constraints },
     ],
   };
@@ -128,10 +117,10 @@ export function generateDeliverable(phaseNum, phaseData = {}, businessContext = 
   const phases = Array.from({ length: 8 }, (_, i) => buildPhase(i + 1, state, rows));
   return {
     title: 'کتابچه جامع استراتژی برند', phase: 'مجموع ۸ فاز', phaseNumber: 'master',
-    version: '4.0.0', date: new Date().toLocaleDateString('fa-IR'),
+    version: '4.1.0', date: new Date().toLocaleDateString('fa-IR'),
     status: phases.every(doc => doc.status === 'CONFIRMED') ? 'CONFIRMED' : 'DRAFT',
     sourceRevision: state.revision || 0,
-    evidence: phases.flatMap(doc => doc.evidence), actions: phases.flatMap(doc => doc.actions),
+    evidence: phases.flatMap(doc => doc.evidence), actions: phases.flatMap(doc => doc.actions), calculations: phases.flatMap(doc => doc.calculations),
     sections: [
       { id: 'M0', title: 'خلاصه و وضعیت اعتبار کتابچه', content: {
         'صنف': businessContext?.taxonomyTitleFa || MISSING,

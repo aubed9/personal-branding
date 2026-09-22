@@ -109,7 +109,7 @@ export default function Header({
           <button
             onClick={onOpenGuildSelector}
             className="hidden sm:flex items-center gap-1.5 text-xs text-zinc-300 hover:text-white px-3 py-2 rounded-xl border border-white/15 hover:border-white/30 bg-[#0C0C0C] font-mono transition-all"
-            title="انتخاب و جستجوی صنف از بین ۷۵۳ صنف رسمی"
+            title="انتخاب و جستجو در فهرست ۷۵۳ صنف"
           >
             <Building2 className="w-3.5 h-3.5 text-white" />
             <span>۷۵۳ صنف</span>
@@ -120,7 +120,7 @@ export default function Header({
         <button
           onClick={onOpenWiki}
           className="hidden md:flex items-center gap-1.5 text-xs text-zinc-300 hover:text-white px-3 py-2 rounded-xl border border-white/15 hover:border-white/30 bg-[#0C0C0C] transition-all"
-          title="پایگاه دانش و ۱۶۵ فریم‌ورک بازاریابی"
+          title="پایگاه دانش برندینگ و بازاریابی"
         >
           <BookOpen className="w-3.5 h-3.5 text-white" />
           <span>پایگاه دانش</span>

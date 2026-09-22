@@ -872,7 +872,7 @@ export function composeChainedQuestions(
 
     // Apply context-aware options and jargon sanitization
     question = synthesizeContextOptions(question, context, vision, priorAnswers);
-    question = adaptQuestionToAnswers(question, context, priorAnswers);
+    question = adaptQuestionToAnswers(question, context, priorAnswers, options.answerRecords || []);
 
     return question;
   });
