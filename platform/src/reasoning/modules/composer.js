@@ -128,6 +128,13 @@ export function contributeDecisionModulesToGraph(graph, context) {
         qualifier: module.id,
         metadata: { axis: module.axis, axisValue: composition.context.axes[module.axis] },
       });
+      addGraphEdge(graph, {
+        type: EDGE_TYPES.INVALIDATES,
+        from: axisNodeId,
+        to: node.id,
+        qualifier: module.id,
+        metadata: { cause: 'AXIS_VALUE_CHANGED', axis: module.axis },
+      });
 
       for (const calculation of module.calculations) {
         const calcNode = addOrReuseNode(graph, {
