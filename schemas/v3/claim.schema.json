@@ -1,0 +1,169 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://digital-market.local/schemas/v3/claim.schema.json",
+  "title": "DigitalMarketCanonicalClaimV3",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "claimId",
+    "claimType",
+    "statement",
+    "status",
+    "phase",
+    "moduleId",
+    "sectionId",
+    "dependencyIds",
+    "evidenceIds",
+    "sourceClaimIds",
+    "sourceIds",
+    "ruleId",
+    "confidence",
+    "verificationState",
+    "proposalStatus",
+    "createdRevision",
+    "lastValidatedRevision",
+    "supersedes",
+    "supersededBy"
+  ],
+  "properties": {
+    "claimId": {
+      "type": "string",
+      "pattern": "^CLM-[0-9a-f]{16}$"
+    },
+    "claimType": {
+      "type": "string",
+      "enum": [
+        "USER_FACT",
+        "USER_DECISION",
+        "ASSUMPTION",
+        "UNKNOWN",
+        "CALCULATION",
+        "EXTERNAL_FACT",
+        "SYSTEM_INFERENCE",
+        "PROPOSAL",
+        "RISK",
+        "CONTRADICTION"
+      ]
+    },
+    "statement": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "DRAFT",
+        "CONFIRMED",
+        "PROVISIONAL",
+        "NEEDS_REVIEW",
+        "BLOCKED",
+        "STALE",
+        "NOT_APPLICABLE",
+        "SUPERSEDED"
+      ]
+    },
+    "phase": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1,
+      "maximum": 8
+    },
+    "moduleId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sectionId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "dependencyIds": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidenceIds": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "sourceClaimIds": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "sourceIds": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "ruleId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "confidence": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "verificationState": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "proposalStatus": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        null,
+        "CANDIDATE",
+        "RECOMMENDED",
+        "ACCEPTED",
+        "REJECTED",
+        "SUPERSEDED",
+        "STALE"
+      ]
+    },
+    "createdRevision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "lastValidatedRevision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "supersedes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "supersededBy": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}
