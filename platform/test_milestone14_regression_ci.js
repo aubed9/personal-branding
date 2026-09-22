@@ -67,7 +67,7 @@ console.log('--- TEST SUITE 1: Deliverable Typed Data Provenance Tags (R22) ---'
   assert(typeof mdP1 === "string" && mdP1.length > 500, "Phase 1 deliverable markdown generated successfully");
   assert(mdP1.includes("[USER_FACT/"), "Markdown contains canonical USER_FACT provenance for user-provided facts");
   assert(mdP1.includes("[SYSTEM_INFERENCE/"), "Markdown contains canonical SYSTEM_INFERENCE provenance for rule-derived context");
-  assert(mdP1.includes("[CALCULATION]") || mdP1.includes("[CALCULATION/"), "Markdown contains canonical CALCULATION provenance for derived equations");
+  assert(!mdP1.includes("[FORMULA]"), "Legacy FORMULA provenance tag is not used; calculations appear only when real structured inputs exist");
   assert(mdP1.includes("[UNKNOWN/") || mdP1.includes("[UNKNOWN]"), "Markdown preserves explicit UNKNOWN provenance");
   assert(mdP1.includes("projection از Claimهای canonical"), "Deliverable footer documents canonical Claim projection semantics");
 
