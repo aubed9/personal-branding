@@ -75,6 +75,7 @@ function addOrReuseNode(graph, spec) {
 export function contributeDecisionModulesToGraph(graph, context) {
   const composition = composeDecisionModules(context);
   const contextNodes = {};
+  const classificationNodes = {};
 
   for (const [axis, value] of Object.entries(composition.context.axes)) {
     const node = addOrReuseNode(graph, {
@@ -86,8 +87,25 @@ export function contributeDecisionModulesToGraph(graph, context) {
     contextNodes[axis] = node.id;
   }
 
+  const classificationSpecs = [
+    ['BUSINESS_TYPE', 'businessTypeId'],
+    ['INDUSTRY', 'industryId'],
+    ['ARCHETYPE', 'primaryArchetype'],
+  ];
+  for (const [dimension, key] of classificationSpecs) {
+    const value = composition.context[key] || 'UNKNOWN';
+    const node = addOrReuseNode(graph, {
+      type: NODE_TYPES.CONTEXT_AXIS_VALUE,
+      stableKey: { dimension, value },
+      status: value === 'UNKNOWN' ? ENTITY_STATUS.NEEDS_REVIEW : ENTITY_STATUS.CONFIRMED,
+      payload: { dimension, key, value, classification: true },
+    });
+    classificationNodes[dimension] = node.id;
+  }
+
   const contributed = {
     contextNodeIds: { ...contextNodes },
+    classificationNodeIds: { ...classificationNodes },
     moduleNodeIds: {},
     decisionNodeIds: [],
     calculationNodeIds: [],
@@ -97,7 +115,10 @@ export function contributeDecisionModulesToGraph(graph, context) {
   };
 
   for (const module of composition.modules) {
-    const axisNodeId = contextNodes[module.axis];
+    const activationNodeIds = (module.contextDimensions || ['AXIS'])
+      .map(dimension => dimension === 'AXIS' ? contextNodes[module.axis] : classificationNodes[dimension])
+      .filter(Boolean);
+    if (!activationNodeIds.length) throw new Error(`No activation dependency nodes for ${module.id}`);
     contributed.moduleNodeIds[module.id] = [];
 
     for (const decision of module.decisionNodes) {
@@ -121,20 +142,35 @@ export function contributeDecisionModulesToGraph(graph, context) {
       });
       contributed.decisionNodeIds.push(node.id);
       contributed.moduleNodeIds[module.id].push(node.id);
-      addGraphEdge(graph, {
-        type: EDGE_TYPES.ACTIVATES,
-        from: axisNodeId,
-        to: node.id,
-        qualifier: module.id,
-        metadata: { axis: module.axis, axisValue: composition.context.axes[module.axis] },
-      });
-      addGraphEdge(graph, {
-        type: EDGE_TYPES.INVALIDATES,
-        from: axisNodeId,
-        to: node.id,
-        qualifier: module.id,
-        metadata: { cause: 'AXIS_VALUE_CHANGED', axis: module.axis },
-      });
+      for (const activationNodeId of activationNodeIds) {
+        const activationNode = graph.nodes[activationNodeId];
+        const dimension = activationNode?.payload?.dimension || 'AXIS';
+        addGraphEdge(graph, {
+          type: EDGE_TYPES.ACTIVATES,
+          from: activationNodeId,
+          to: node.id,
+          qualifier: module.id,
+          metadata: {
+            contextDimension: dimension,
+            axis: module.axis,
+            axisValue: composition.context.axes[module.axis],
+            businessTypeId: composition.context.businessTypeId || null,
+            industryId: composition.context.industryId || null,
+            primaryArchetype: composition.context.primaryArchetype || null,
+          },
+        });
+        addGraphEdge(graph, {
+          type: EDGE_TYPES.INVALIDATES,
+          from: activationNodeId,
+          to: node.id,
+          qualifier: module.id,
+          metadata: {
+            cause: dimension === 'AXIS' ? 'AXIS_VALUE_CHANGED' : `${dimension}_CHANGED`,
+            contextDimension: dimension,
+            axis: module.axis,
+          },
+        });
+      }
 
       for (const calculation of module.calculations) {
         const calcNode = addOrReuseNode(graph, {
