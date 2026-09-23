@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updated_at": "2026-09-22",
+  "updated_at": "2026-09-24",
   "claims": {
     "KCL-B2B-DMU": {
       "id": "KCL-B2B-DMU",
@@ -1165,6 +1165,150 @@
         "MOD-MATURITY-VALIDATION"
       ],
       "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
+    },
+    "KCL-IR-SCI-CPI-1405-05": {
+      "id": "KCL-IR-SCI-CPI-1405-05",
+      "knowledge_node_id": "KB-IR-MACRO-SCI-CPI-001",
+      "statement": "مرکز آمار ایران برای مرداد ۱۴۰۵ شاخص قیمت مصرف‌کننده خانوارهای کشور را 700.1، تورم ماهانه را 3.4٪، تورم نقطه‌به‌نقطه را 89.0٪ و تورم دوازده‌ماهه را 69.9٪ گزارش کرده است.",
+      "claim_kind": "MARKET_OBSERVATION",
+      "decision_driving": true,
+      "status": "VERIFIED",
+      "source_ids": [
+        "SRC-IR-SCI-CPI-1405-05"
+      ],
+      "locators": [
+        {
+          "source_id": "SRC-IR-SCI-CPI-1405-05",
+          "locator": "درگاه ملی آمار، «شاخص قیمت مصرف کننده – مرداد ماه 1405»، منتشرشده 1405/06/05، متن شاخص کل خانوارهای کشور"
+        }
+      ],
+      "authority_requirement": "A",
+      "freshness_class": "MACRO",
+      "max_age_days": 90,
+      "jurisdiction_or_scope": "IRAN",
+      "phases": [
+        1,
+        2,
+        3,
+        8
+      ],
+      "decision_node_ids": [],
+      "module_ids": [
+        "MOD-REV-TRANSACTION",
+        "MOD-REV-RECURRING",
+        "MOD-REV-PROJECT",
+        "MOD-GEO-LOCAL",
+        "MOD-GEO-CROSSBORDER"
+      ],
+      "limitations": "این شاخص برای خانوارهای کشور است و نباید با شاخص بانک مرکزی برای مناطق شهری یکسان فرض شود؛ مشاهده تاریخی است و پیش‌بینی آینده نیست."
+    },
+    "KCL-IR-CBI-CPI-1405-05": {
+      "id": "KCL-IR-CBI-CPI-1405-05",
+      "knowledge_node_id": "KB-IR-MACRO-CBI-CPI-001",
+      "statement": "بازنشرهای منتسب به گزارش بانک مرکزی برای مرداد ۱۴۰۵، تورم نقطه‌به‌نقطه مناطق شهری را 84.4٪ و تورم سالانه را حدود 65٪ گزارش می‌کنند؛ نسخه مستقیم بولتن هنوز باید ثبت شود.",
+      "claim_kind": "MARKET_OBSERVATION",
+      "decision_driving": true,
+      "status": "NEEDS_RESEARCH",
+      "source_ids": [
+        "SRC-IR-CBI-CPI-1405-05"
+      ],
+      "locators": [
+        {
+          "source_id": "SRC-IR-CBI-CPI-1405-05",
+          "locator": "موضوع بولتن: شاخص بهای کالاها و خدمات مصرفی در مناطق شهری ایران، مرداد 1405؛ URL/نسخه مستقیم در انتظار بازیابی"
+        }
+      ],
+      "authority_requirement": "A",
+      "freshness_class": "MACRO",
+      "max_age_days": 90,
+      "jurisdiction_or_scope": "IRAN_URBAN",
+      "phases": [
+        1,
+        2,
+        3,
+        8
+      ],
+      "decision_node_ids": [],
+      "module_ids": [
+        "MOD-REV-TRANSACTION",
+        "MOD-REV-RECURRING",
+        "MOD-REV-PROJECT",
+        "MOD-GEO-LOCAL"
+      ],
+      "limitations": "تا ثبت بولتن مستقیم بانک مرکزی، این claim برای decision support غیرقابل استفاده است. جمعیت مرجع مناطق شهری است."
+    },
+    "KCL-IR-SHAPARAK-134": {
+      "id": "KCL-IR-SHAPARAK-134",
+      "knowledge_node_id": "KB-IR-PAYMENTS-SHAPARAK-001",
+      "statement": "شاپرک برای مرداد ۱۴۰۵ حدود 4 میلیارد و 651 میلیون تراکنش شبکه پرداخت به ارزش 3 هزار و 654 همت گزارش کرده است.",
+      "claim_kind": "MARKET_OBSERVATION",
+      "decision_driving": true,
+      "status": "VERIFIED",
+      "source_ids": [
+        "SRC-IR-SHAPARAK-REPORT-134"
+      ],
+      "locators": [
+        {
+          "source_id": "SRC-IR-SHAPARAK-REPORT-134",
+          "locator": "خبر رسمی شاپرک، کد SHP-1788764678581، 1405/06/16؛ headline figures for Mordad 1405"
+        }
+      ],
+      "authority_requirement": "A",
+      "freshness_class": "MACRO",
+      "max_age_days": 90,
+      "jurisdiction_or_scope": "IRAN",
+      "phases": [
+        2,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-PHYS-LOCAL-GROWTH",
+        "DN-ONLINE-FUNNEL"
+      ],
+      "module_ids": [
+        "MOD-CHANNEL-PHYSICAL",
+        "MOD-CHANNEL-ONLINE"
+      ],
+      "limitations": "آمار کل شبکه پرداخت شاپرک است؛ اندازه کل تجارت الکترونیکی یا فروش یک کسب‌وکار خاص نیست."
+    },
+    "KCL-IR-ECOM-1403": {
+      "id": "KCL-IR-ECOM-1403",
+      "knowledge_node_id": "KB-IR-ECOM-REPORT-001",
+      "statement": "گزارش تجارت الکترونیکی ایران در سال ۱۴۰۳ ارزش معاملات تجارت الکترونیکی را بیش از 5,500 همت و رشد ارزش معاملات نسبت به سال قبل را حدود 73٪ گزارش می‌کند و بیش از 306 هزار کسب‌وکار دارای اینماد را نشان می‌دهد.",
+      "claim_kind": "MARKET_OBSERVATION",
+      "decision_driving": true,
+      "status": "VERIFIED",
+      "source_ids": [
+        "SRC-IR-ECOM-REPORT-1403"
+      ],
+      "locators": [
+        {
+          "source_id": "SRC-IR-ECOM-REPORT-1403",
+          "locator": "گزارش تجارت الکترونیکی ایران در سال 1403؛ رونمایی رسمی 24 مهر 1404؛ headline indicators / official report release"
+        }
+      ],
+      "authority_requirement": "A",
+      "freshness_class": "INDUSTRY_REPORT",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "IRAN",
+      "phases": [
+        1,
+        2,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-ONLINE-FUNNEL",
+        "DN-OFFER-DIGITAL-ADOPTION",
+        "DN-OFFER-PLATFORM-LOOP",
+        "DN-MKT-LIQUIDITY"
+      ],
+      "module_ids": [
+        "MOD-CHANNEL-ONLINE",
+        "MOD-OFFER-DIGITAL",
+        "MOD-OFFER-PLATFORM",
+        "MOD-CUSTOMER-TWO-SIDED"
+      ],
+      "limitations": "گزارش سالانه و کلان است؛ برای CAC/CPC روز، قیمت‌گذاری یک صنعت یا اندازه بازار یک زیرگروه باید منبع تخصصی‌تر استفاده شود."
     }
   }
 }
