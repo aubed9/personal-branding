@@ -3,6 +3,10 @@ import assert from 'node:assert/strict';
 
 import { resolveDomainSpecialization } from './src/data/businessContextRouter.js';
 import { generateDeliverable } from './src/services/deliverableGenerator.js';
+import { retrieveCanonicalKnowledge } from './src/knowledge/index.js';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { migrateAnswerRecords } from './src/services/interviewSchema.js';
 
 function phaseData() {
@@ -155,6 +159,10 @@ const MFG_AXES = Object.freeze({
   brandArchitecture: 'STANDALONE',
 });
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const root = path.resolve(__dirname, '..');
+const readJson = rel => JSON.parse(fs.readFileSync(path.join(root, rel), 'utf8'));
+
 const PAIRS = [
   {
     id: 'cafe-vs-local-retail',
@@ -167,6 +175,8 @@ const PAIRS = [
       primaryArchetype: 'RESTAURANT_CAFE_HOSPITALITY',
       axes: LOCAL_AXES,
     }),
+    expectedLeftModule: 'MOD-DOMAIN-CAFE',
+    expectedRightModule: 'MOD-DOMAIN-LOCAL-RETAIL',
     right: context({
       taxonomyId: 'BT-0003',
       taxonomyTitleFa: 'فروشگاه محلی خرده‌فروشی',
@@ -187,6 +197,8 @@ const PAIRS = [
       primaryArchetype: 'SAAS_SOFTWARE',
       axes: SAAS_AXES,
     }),
+    expectedLeftModule: 'MOD-DOMAIN-TAX-SAAS',
+    expectedRightModule: 'MOD-DOMAIN-SAAS-GENERAL',
     right: context({
       taxonomyId: 'BT-0998',
       taxonomyTitleFa: 'نرم‌افزار مدیریت باشگاه و CRM',
@@ -207,6 +219,8 @@ const PAIRS = [
       primaryArchetype: 'LOCAL_SERVICE',
       axes: CLINIC_AXES,
     }),
+    expectedLeftModule: 'MOD-DOMAIN-MEDICAL',
+    expectedRightModule: 'MOD-DOMAIN-BEAUTY',
     right: context({
       taxonomyId: 'BT-0997',
       taxonomyTitleFa: 'سالن زیبایی و مراقبت مو',
@@ -227,6 +241,8 @@ const PAIRS = [
       primaryArchetype: 'MANUFACTURER',
       axes: MFG_AXES,
     }),
+    expectedLeftModule: 'MOD-DOMAIN-MACHINING',
+    expectedRightModule: 'MOD-DOMAIN-MANUFACTURING',
     right: context({
       taxonomyId: 'BT-0996',
       taxonomyTitleFa: 'تولیدکننده محصولات صنعتی عمومی',
@@ -309,7 +325,33 @@ test('canonical generated outputs preserve exact business-type/domain differenti
       generatedClaims: setDiff(left.generatedClaims, right.generatedClaims),
     };
     const substantiveDimensions = Object.entries(deltas).filter(([, values]) => values.length > 0).map(([key]) => key);
-    if (substantiveDimensions.length === 0) failures.push({ id: pair.id, deltas });
+    const leakage = [];
+    if (!left.modules.includes(pair.expectedLeftModule)) leakage.push(`left missing ${pair.expectedLeftModule}`);
+    if (!right.modules.includes(pair.expectedRightModule)) leakage.push(`right missing ${pair.expectedRightModule}`);
+    if (left.modules.includes(pair.expectedRightModule)) leakage.push(`left leaked ${pair.expectedRightModule}`);
+    if (right.modules.includes(pair.expectedLeftModule)) leakage.push(`right leaked ${pair.expectedLeftModule}`);
+    if (substantiveDimensions.length === 0 || leakage.length) failures.push({ id: pair.id, deltas, leakage });
   }
   assert.deepEqual(failures, [], JSON.stringify(failures, null, 2));
+});
+
+test('canonical retrieval selects the domain claim for each exact-domain module with valid provenance', () => {
+  const retrieval = readJson('wiki/generated/retrieval-index.json');
+  const claims = readJson('wiki/claims.json').claims;
+  const sources = readJson('wiki/source-registry.json').sources;
+
+  for (const pair of PAIRS) {
+    for (const [side, moduleId] of [['left', pair.expectedLeftModule], ['right', pair.expectedRightModule]]) {
+      const results = retrieveCanonicalKnowledge(
+        'domain specialization decision evidence metrics risks',
+        retrieval.entries,
+        claims,
+        sources,
+        { moduleIds: [moduleId], topK: 5, asOf: new Date('2026-09-23T21:00:00Z') }
+      );
+      assert.ok(results.length > 0, `${pair.id} ${side}: no canonical retrieval result for ${moduleId}`);
+      assert.ok(results.some(result => result.entry.module_ids.includes(moduleId)), `${pair.id} ${side}: wrong module retrieval`);
+      assert.ok(results.every(result => result.admission.admissible), `${pair.id} ${side}: inadmissible domain claim leaked into retrieval`);
+    }
+  }
 });
