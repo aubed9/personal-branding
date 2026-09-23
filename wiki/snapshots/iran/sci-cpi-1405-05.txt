@@ -1,0 +1,10 @@
+Verification note — SRC-IR-SCI-CPI-1405-05
+Verified at: 2026-09-24
+Issuer identity: Statistical Center of Iran / National Statistics Portal
+Indexed title: شاخص قیمت مصرف کننده – مرداد ماه 1405
+Indexed publication: 1405/06/05 17:33
+Observed period: 1405-05
+Verified figures: CPI 700.1; MoM 3.4%; YoY/point-to-point 89.0%; 12-month annual inflation 69.9%.
+Origin domain: amar.org.ir
+Retrieval limitation: the origin domain timed out during this verification pass; identity/figures were captured from the indexed National Statistics Portal representation and independent reporting quoting the same release.
+Do not treat this note as an independent source; it is a reproducibility record for the Source Record.
