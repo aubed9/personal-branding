@@ -1,4 +1,5 @@
 import { defineDecisionModule, isModuleActive, validateDecisionModule } from './contract.js';
+import { DOMAIN_DECISION_MODULES, validateDomainDecisionModules } from './domainRegistry.js';
 
 const d = defineDecisionModule;
 
@@ -476,14 +477,16 @@ export const DECISION_MODULES = Object.freeze([
   }),
 ]);
 
-const ids = DECISION_MODULES.map(module => module.id);
+export const ALL_DECISION_MODULES = Object.freeze([...DECISION_MODULES, ...DOMAIN_DECISION_MODULES]);
+
+const ids = ALL_DECISION_MODULES.map(module => module.id);
 if (new Set(ids).size !== ids.length) throw new Error('Duplicate Decision Module IDs');
 
-export const DECISION_MODULES_BY_ID = Object.freeze(Object.fromEntries(DECISION_MODULES.map(module => [module.id, module])));
+export const DECISION_MODULES_BY_ID = Object.freeze(Object.fromEntries(ALL_DECISION_MODULES.map(module => [module.id, module])));
 
 export function validateDecisionModuleRegistry() {
   const errors = [];
-  for (const module of DECISION_MODULES) {
+  for (const module of ALL_DECISION_MODULES) {
     const validation = validateDecisionModule(module);
     errors.push(...validation.errors.map(error => `${module.id}: ${error}`));
   }
@@ -493,11 +496,13 @@ export function validateDecisionModuleRegistry() {
   const duplicates = decisionNodeIds.filter((id, index) => decisionNodeIds.indexOf(id) !== index);
   for (const id of [...new Set(duplicates)]) errors.push(`Duplicate canonical Decision Node ID: ${id}`);
 
+  const domainValidation = validateDomainDecisionModules();
+  errors.push(...domainValidation.errors);
   return { valid: errors.length === 0, errors };
 }
 
 export function resolveActiveDecisionModules(canonicalContext) {
-  return DECISION_MODULES
+  return ALL_DECISION_MODULES
     .filter(module => isModuleActive(module, canonicalContext))
     .sort((a, b) => a.priority - b.priority || a.id.localeCompare(b.id));
 }
