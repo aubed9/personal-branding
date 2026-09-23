@@ -992,7 +992,7 @@ knowledge_nodes:
     status: CANONICAL
     source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
     claim_ids: [KCL-VALIDATION]
-KB-IR-MACRO-SCI-CPI-001:
+  KB-IR-MACRO-SCI-CPI-001:
     title: "تورم مصرف‌کننده ایران — مرکز آمار، مرداد ۱۴۰۵"
     file: wiki/14-iran-evidence/sci-cpi-1405-05.md
     category: 14-iran-evidence
