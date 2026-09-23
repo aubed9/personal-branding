@@ -1,13 +1,13 @@
 {
   "version": "1.0.0",
-  "generated_at": "2026-09-22",
+  "generated_at": "2026-09-24",
   "legacy_rag_chunks": 74,
   "legacy_wiki_files": 12,
-  "canonical_retrieval_entries": 28,
+  "canonical_retrieval_entries": 31,
   "legacy_chunks_accounted_for": 74,
   "silently_dropped_legacy_chunks": 0,
   "directly_mapped_legacy_chunks": 0,
   "needs_research_legacy_chunks": 74,
   "retrieval_parity_status": "STRICTER_CANONICAL_COVERAGE_WITH_EXPLICIT_RESEARCH_GAPS",
-  "note": "Coverage is intentionally reduced until legacy assertions obtain Source Records and claim-level locators. No unsourced legacy chunk is promoted merely to preserve count parity."
+  "note": "Canonical retrieval now includes 3 verified external Iran observations (SCI CPI, Shaparak, E-Commerce Report 1403) in addition to internal contracts. CBI CPI remains NEEDS_RESEARCH pending a direct bulletin URL/version. Legacy unsourced chunks remain unpromoted."
 }
