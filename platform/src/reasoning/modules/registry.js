@@ -1,5 +1,5 @@
 import { defineDecisionModule, isModuleActive, validateDecisionModule } from './contract.js';
-import { DOMAIN_DECISION_MODULES, validateDomainDecisionModules } from './domainRegistry.js';
+import { DOMAIN_DECISION_MODULES } from './domainRegistry.js';
 
 const d = defineDecisionModule;
 
@@ -492,12 +492,10 @@ export function validateDecisionModuleRegistry() {
   }
 
   const decisionNodeIds = [];
-  for (const module of DECISION_MODULES) for (const node of module.decisionNodes) decisionNodeIds.push(node.id);
+  for (const module of ALL_DECISION_MODULES) for (const node of module.decisionNodes) decisionNodeIds.push(node.id);
   const duplicates = decisionNodeIds.filter((id, index) => decisionNodeIds.indexOf(id) !== index);
   for (const id of [...new Set(duplicates)]) errors.push(`Duplicate canonical Decision Node ID: ${id}`);
 
-  const domainValidation = validateDomainDecisionModules();
-  errors.push(...domainValidation.errors);
   return { valid: errors.length === 0, errors };
 }
 
