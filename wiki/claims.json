@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updated_at": "2026-09-22",
+  "updated_at": "2026-09-23",
   "claims": {
     "KCL-B2B-DMU": {
       "id": "KCL-B2B-DMU",
@@ -1165,6 +1165,368 @@
         "MOD-MATURITY-VALIDATION"
       ],
       "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
+    },
+    "KCL-DOMAIN-CAFE": {
+      "id": "KCL-DOMAIN-CAFE",
+      "knowledge_node_id": "KB-DOMAIN-CAFE",
+      "statement": "Internal domain specialization contract for MOD-DOMAIN-CAFE: canonical business identity activates domain-specific decision topology, evidence requirements, metrics, risks and knowledge dependencies; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "locators": [
+        {
+          "source_id": "SRC-INT-CONTEXT-CONTRACT",
+          "locator": "Exact business-type / industry specialization for MOD-DOMAIN-CAFE"
+        },
+        {
+          "source_id": "SRC-INT-ARCH-V3",
+          "locator": "Section 2 reasoning/modules"
+        }
+      ],
+      "authority_requirement": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        1,
+        2,
+        3,
+        5,
+        7,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-CAFE-ECONOMICS",
+        "DN-CAFE-TASTE-PROOF",
+        "DN-CAFE-POSITIONING",
+        "DN-CAFE-STORY",
+        "DN-CAFE-TOUCHPOINTS",
+        "DN-CAFE-RETENTION"
+      ],
+      "module_ids": [
+        "MOD-DOMAIN-CAFE"
+      ],
+      "limitations": "Internal normative domain-specialization claim only; laws, thresholds, market facts and benchmarks require separately sourced External Knowledge Claims."
+    },
+    "KCL-DOMAIN-LOCAL-RETAIL": {
+      "id": "KCL-DOMAIN-LOCAL-RETAIL",
+      "knowledge_node_id": "KB-DOMAIN-LOCAL-RETAIL",
+      "statement": "Internal domain specialization contract for MOD-DOMAIN-LOCAL-RETAIL: canonical business identity activates domain-specific decision topology, evidence requirements, metrics, risks and knowledge dependencies; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "locators": [
+        {
+          "source_id": "SRC-INT-CONTEXT-CONTRACT",
+          "locator": "Exact business-type / industry specialization for MOD-DOMAIN-LOCAL-RETAIL"
+        },
+        {
+          "source_id": "SRC-INT-ARCH-V3",
+          "locator": "Section 2 reasoning/modules"
+        }
+      ],
+      "authority_requirement": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        1,
+        2,
+        3,
+        7,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-RETAIL-INVENTORY",
+        "DN-RETAIL-ASSORTMENT",
+        "DN-RETAIL-POSITIONING",
+        "DN-RETAIL-TOUCHPOINTS",
+        "DN-RETAIL-LOYALTY"
+      ],
+      "module_ids": [
+        "MOD-DOMAIN-LOCAL-RETAIL"
+      ],
+      "limitations": "Internal normative domain-specialization claim only; laws, thresholds, market facts and benchmarks require separately sourced External Knowledge Claims."
+    },
+    "KCL-DOMAIN-TAX-SAAS": {
+      "id": "KCL-DOMAIN-TAX-SAAS",
+      "knowledge_node_id": "KB-DOMAIN-TAX-SAAS",
+      "statement": "Internal domain specialization contract for MOD-DOMAIN-TAX-SAAS: canonical business identity activates domain-specific decision topology, evidence requirements, metrics, risks and knowledge dependencies; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "locators": [
+        {
+          "source_id": "SRC-INT-CONTEXT-CONTRACT",
+          "locator": "Exact business-type / industry specialization for MOD-DOMAIN-TAX-SAAS"
+        },
+        {
+          "source_id": "SRC-INT-ARCH-V3",
+          "locator": "Section 2 reasoning/modules"
+        }
+      ],
+      "authority_requirement": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        1,
+        2,
+        3,
+        5,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-TAX-SAAS-COMPLIANCE-SCOPE",
+        "DN-TAX-SAAS-FAILURE-MODES",
+        "DN-TAX-SAAS-PROOF",
+        "DN-TAX-SAAS-MESSAGING",
+        "DN-TAX-SAAS-UPDATES"
+      ],
+      "module_ids": [
+        "MOD-DOMAIN-TAX-SAAS"
+      ],
+      "limitations": "Internal normative domain-specialization claim only; laws, thresholds, market facts and benchmarks require separately sourced External Knowledge Claims."
+    },
+    "KCL-DOMAIN-SAAS-GENERAL": {
+      "id": "KCL-DOMAIN-SAAS-GENERAL",
+      "knowledge_node_id": "KB-DOMAIN-SAAS-GENERAL",
+      "statement": "Internal domain specialization contract for MOD-DOMAIN-SAAS-GENERAL: canonical business identity activates domain-specific decision topology, evidence requirements, metrics, risks and knowledge dependencies; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "locators": [
+        {
+          "source_id": "SRC-INT-CONTEXT-CONTRACT",
+          "locator": "Exact business-type / industry specialization for MOD-DOMAIN-SAAS-GENERAL"
+        },
+        {
+          "source_id": "SRC-INT-ARCH-V3",
+          "locator": "Section 2 reasoning/modules"
+        }
+      ],
+      "authority_requirement": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        1,
+        2,
+        3,
+        5,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-SAAS-TTV",
+        "DN-SAAS-ONBOARDING",
+        "DN-SAAS-VALUE-PROOF",
+        "DN-SAAS-EXPLAIN",
+        "DN-SAAS-ADOPTION"
+      ],
+      "module_ids": [
+        "MOD-DOMAIN-SAAS-GENERAL"
+      ],
+      "limitations": "Internal normative domain-specialization claim only; laws, thresholds, market facts and benchmarks require separately sourced External Knowledge Claims."
+    },
+    "KCL-DOMAIN-MEDICAL": {
+      "id": "KCL-DOMAIN-MEDICAL",
+      "knowledge_node_id": "KB-DOMAIN-MEDICAL",
+      "statement": "Internal domain specialization contract for MOD-DOMAIN-MEDICAL: canonical business identity activates domain-specific decision topology, evidence requirements, metrics, risks and knowledge dependencies; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "locators": [
+        {
+          "source_id": "SRC-INT-CONTEXT-CONTRACT",
+          "locator": "Exact business-type / industry specialization for MOD-DOMAIN-MEDICAL"
+        },
+        {
+          "source_id": "SRC-INT-ARCH-V3",
+          "locator": "Section 2 reasoning/modules"
+        }
+      ],
+      "authority_requirement": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        1,
+        2,
+        3,
+        5,
+        7,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-MEDICAL-SCOPE",
+        "DN-MEDICAL-TRUST",
+        "DN-MEDICAL-CLAIMS",
+        "DN-MEDICAL-MESSAGE",
+        "DN-MEDICAL-VISUAL",
+        "DN-MEDICAL-PATIENT-JOURNEY"
+      ],
+      "module_ids": [
+        "MOD-DOMAIN-MEDICAL"
+      ],
+      "limitations": "Internal normative domain-specialization claim only; laws, thresholds, market facts and benchmarks require separately sourced External Knowledge Claims."
+    },
+    "KCL-DOMAIN-BEAUTY": {
+      "id": "KCL-DOMAIN-BEAUTY",
+      "knowledge_node_id": "KB-DOMAIN-BEAUTY",
+      "statement": "Internal domain specialization contract for MOD-DOMAIN-BEAUTY: canonical business identity activates domain-specific decision topology, evidence requirements, metrics, risks and knowledge dependencies; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "locators": [
+        {
+          "source_id": "SRC-INT-CONTEXT-CONTRACT",
+          "locator": "Exact business-type / industry specialization for MOD-DOMAIN-BEAUTY"
+        },
+        {
+          "source_id": "SRC-INT-ARCH-V3",
+          "locator": "Section 2 reasoning/modules"
+        }
+      ],
+      "authority_requirement": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        1,
+        2,
+        3,
+        5,
+        7,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-BEAUTY-CAPACITY",
+        "DN-BEAUTY-SAFETY",
+        "DN-BEAUTY-PROOF",
+        "DN-BEAUTY-MESSAGE",
+        "DN-BEAUTY-VISUAL",
+        "DN-BEAUTY-REBOOK"
+      ],
+      "module_ids": [
+        "MOD-DOMAIN-BEAUTY"
+      ],
+      "limitations": "Internal normative domain-specialization claim only; laws, thresholds, market facts and benchmarks require separately sourced External Knowledge Claims."
+    },
+    "KCL-DOMAIN-MACHINING": {
+      "id": "KCL-DOMAIN-MACHINING",
+      "knowledge_node_id": "KB-DOMAIN-MACHINING",
+      "statement": "Internal domain specialization contract for MOD-DOMAIN-MACHINING: canonical business identity activates domain-specific decision topology, evidence requirements, metrics, risks and knowledge dependencies; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "locators": [
+        {
+          "source_id": "SRC-INT-CONTEXT-CONTRACT",
+          "locator": "Exact business-type / industry specialization for MOD-DOMAIN-MACHINING"
+        },
+        {
+          "source_id": "SRC-INT-ARCH-V3",
+          "locator": "Section 2 reasoning/modules"
+        }
+      ],
+      "authority_requirement": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        1,
+        2,
+        3,
+        5,
+        7,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-MACHINING-CAPACITY",
+        "DN-MACHINING-TOLERANCE",
+        "DN-MACHINING-PROOF",
+        "DN-MACHINING-MESSAGE",
+        "DN-MACHINING-VISUAL",
+        "DN-MACHINING-VENDOR"
+      ],
+      "module_ids": [
+        "MOD-DOMAIN-MACHINING"
+      ],
+      "limitations": "Internal normative domain-specialization claim only; laws, thresholds, market facts and benchmarks require separately sourced External Knowledge Claims."
+    },
+    "KCL-DOMAIN-MANUFACTURING": {
+      "id": "KCL-DOMAIN-MANUFACTURING",
+      "knowledge_node_id": "KB-DOMAIN-MANUFACTURING",
+      "statement": "Internal domain specialization contract for MOD-DOMAIN-MANUFACTURING: canonical business identity activates domain-specific decision topology, evidence requirements, metrics, risks and knowledge dependencies; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "locators": [
+        {
+          "source_id": "SRC-INT-CONTEXT-CONTRACT",
+          "locator": "Exact business-type / industry specialization for MOD-DOMAIN-MANUFACTURING"
+        },
+        {
+          "source_id": "SRC-INT-ARCH-V3",
+          "locator": "Section 2 reasoning/modules"
+        }
+      ],
+      "authority_requirement": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        1,
+        2,
+        3,
+        5,
+        7,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-MFG-CAPACITY",
+        "DN-MFG-QUALITY",
+        "DN-MFG-PROOF",
+        "DN-MFG-MESSAGE",
+        "DN-MFG-VISUAL",
+        "DN-MFG-GROWTH"
+      ],
+      "module_ids": [
+        "MOD-DOMAIN-MANUFACTURING"
+      ],
+      "limitations": "Internal normative domain-specialization claim only; laws, thresholds, market facts and benchmarks require separately sourced External Knowledge Claims."
     }
   }
 }
