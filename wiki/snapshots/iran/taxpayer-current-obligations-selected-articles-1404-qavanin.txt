@@ -1,0 +1,28 @@
+# Official-source snapshot — current taxpayer-system obligations (selected articles)
+
+Captured: 2026-09-25
+Jurisdiction: Iran
+Source authority: National Laws and Regulations System / Legal Vice Presidency
+
+Official consolidated source
+- Law: قانون پایانه‌های فروشگاهی و سامانه مؤدیان
+- qavanin IDS: 12936955486234542481
+- Current official text: https://qavanin.ir/Law/TreeText/?IDS=12936955486234542481
+- Base approval: 1398/07/21
+- The official page is explicitly presented with subsequent amendments and additions.
+
+Current Article 2 — verified decision-useful meaning
+- Retailers and guild/business units that deal directly with final consumers must, in addition to membership in the Taxpayer System, use a sales terminal.
+- Taxpayers that do not deal directly with final consumers are not required by Article 2 to use a sales terminal, but they must issue their invoices through the Taxpayer System in the manner prescribed by the Tax Organization.
+- Article locator: current consolidated Article 2, including the 1404-04-08 amendment.
+
+Current Article 10 — verified decision-useful meaning
+- Commercial persons must declare to the Tax Organization the account(s) used as commercial accounts and the unique identifiers of POS devices or electronic payment gateways used for their business activity.
+- Article locator: current consolidated Article 10, amended 1404-04-08.
+
+Current Article 15 — provenance note
+- The current text reflects the 1401 amendment: the instruction for access to Taxpayer System information is determined by the e-government interoperability working group; the prior notes were deleted.
+- Article locator: current consolidated Article 15; source-chain evidence also captured in national-data-law-1401-taxpayer-article15.txt.
+
+Verification scope
+This source supports only the selected current-article meanings above. It does not establish every obligation, exemption, penalty, threshold, implementation circular, or sector-specific rule under the taxpayer-system regime. Each additional decision-driving obligation requires its own current locator and freshness review.
