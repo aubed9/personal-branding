@@ -313,3 +313,28 @@ test('legacy Wiki migration inventory accounts for every legacy authored markdow
   assert.ok(inventory.files.every(item => item.status === 'MIGRATION_INPUT'));
   assert.ok(inventory.files.every(item => typeof item.blob_sha === 'string' && item.blob_sha.length >= 40));
 });
+
+
+test('verified foundational publisher editions remain bibliographic evidence until claim-level locators exist', () => {
+  const sources = json('wiki/source-registry.json').sources;
+  const index = json('wiki/generated/retrieval-index.json');
+  for (const id of ['SRC-FOUNDATION-03', 'SRC-FOUNDATION-15']) {
+    const source = sources[id];
+    assert.ok(source, id);
+    assert.equal(source.status, 'VERIFIED');
+    assert.equal(source.authority_tier, 'B');
+    assert.equal(source.source_type, 'OFFICIAL_PUBLISHER_EDITION');
+    assert.equal(source.verified_at, '2026-09-26');
+    assert.match(source.checksum || '', /^git-blob:[0-9a-f]{40}$/);
+    assert.ok(source.repository_location?.startsWith('wiki/snapshots/foundations/'));
+    assert.ok(fs.existsSync(path.join(root, source.repository_location)));
+    assert.match(source.limitations, /decision-driving propositions.*require.*locator/i);
+  }
+
+  assert.match(sources['SRC-FOUNDATION-03'].edition_or_version, /5th Edition.*9780743222099/i);
+  assert.match(sources['SRC-FOUNDATION-15'].edition_or_version, /5th Edition.*9780135641316/i);
+
+  const indexedSourceIds = new Set(index.entries.flatMap(entry => entry.source_ids || []));
+  assert.equal(indexedSourceIds.has('SRC-FOUNDATION-03'), false);
+  assert.equal(indexedSourceIds.has('SRC-FOUNDATION-15'), false);
+});
