@@ -1285,6 +1285,30 @@
       "status": "VERIFIED",
       "checksum": "git-blob:3b6dadffb765e98869bb53cb65f9402fba435b3b",
       "limitations": "Verified historical amendment publication only. This source does not prove the current consolidated law because later amendments exist, including 1403 changes. Current licensing/guild recommendations still require the later primary amendment chain."
+    },
+    "SRC-IR-TRADE-UNION-AMENDMENT-1403-DISCOVERY": {
+      "id": "SRC-IR-TRADE-UNION-AMENDMENT-1403-DISCOVERY",
+      "source_type": "LEGAL_DISCOVERY_RECORD",
+      "title": "قانون اصلاح قانون نظام صنفی کشور — اصلاحیه مصوب ۱۴۰۳/۰۵/۰۲ (discovery record)",
+      "author_or_institution": "مجلس شورای اسلامی",
+      "issuing_authority": "مجلس شورای اسلامی / ریاست جمهوری",
+      "published_at": "1403-05-29",
+      "effective_from": null,
+      "effective_until": null,
+      "observed_period": null,
+      "edition_or_version": "مصوب 1403-05-02؛ تأیید شورای نگهبان 1403-05-17؛ نامه مجلس 271/27838 مورخ 1403-05-21؛ ابلاغ ریاست جمهوری 80114 مورخ 1403-05-24",
+      "url": "https://nezamat.ir/%D9%82%D8%A7%D9%86%D9%88%D9%86-%D8%A7%D8%B5%D9%84%D8%A7%D8%AD-%D9%82%D8%A7%D9%86%D9%88%D9%86-%D9%86%D8%B8%D8%A7%D9%85-%D8%B5%D9%86%D9%81%DB%8C-%DA%A9%D8%B4%D9%88%D8%B1/",
+      "repository_location": null,
+      "accessed_at": "2026-09-25",
+      "verified_at": null,
+      "jurisdiction_or_scope": "IRAN",
+      "language": "fa",
+      "authority_tier": "C",
+      "freshness_class": "LEGAL",
+      "max_age_days": 30,
+      "status": "NEEDS_RESEARCH",
+      "checksum": null,
+      "limitations": "Discovery-only record. Multiple secondary/consolidated sources consistently identify the 1403 amendment and its promulgation metadata, but no reproducible repository snapshot of the exact Official Gazette/other primary publication has yet been captured. This record must not unlock current licensing/guild recommendations or be promoted to VERIFIED/CANONICAL until the primary publication, exact locator, amendment chain and checksum are recorded."
     }
   }
 }
