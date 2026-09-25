@@ -270,3 +270,32 @@ test('1402 taxpayer facilitation sources are primary-verified while the current 
   const indexed = new Set(index.entries.map(entry => entry.claim_id));
   assert.equal(indexed.has(currentClaim.id), false);
 });
+
+
+test('verification gate blocks an accidental manual VERIFIED upgrade until legal coverage is complete', () => {
+  const current = claims['KCL-IR-TAX-TERMINALS-1398-UNVERIFIED'];
+  assert.equal(current.verification_gate.type, 'LEGAL_AMENDMENT_COVERAGE');
+  assert.equal(current.verification_gate.status, 'INCOMPLETE');
+  assert.ok(current.verification_gate.blocking_reasons.includes('ARTICLE_LEVEL_CURRENT_MAP_PENDING'));
+
+  const prematurelyPromoted = JSON.parse(JSON.stringify(current));
+  prematurelyPromoted.status = 'VERIFIED';
+
+  const blocked = evaluateKnowledgeClaim(prematurelyPromoted, sources, {
+    asOf: new Date('2026-09-25T00:00:00Z'),
+    criticalUse: true,
+  });
+  assert.equal(blocked.admissible, false);
+  assert.equal(blocked.status, 'REQUIRES_VERIFICATION');
+  assert.ok(blocked.reasons.includes('VERIFICATION_GATE_INCOMPLETE:LEGAL_AMENDMENT_COVERAGE'));
+  assert.ok(blocked.reasons.includes('VERIFICATION_GATE_BLOCKER:ARTICLE_LEVEL_CURRENT_MAP_PENDING'));
+
+  const completed = JSON.parse(JSON.stringify(prematurelyPromoted));
+  completed.verification_gate.status = 'COMPLETE';
+  completed.verification_gate.blocking_reasons = [];
+  const admitted = evaluateKnowledgeClaim(completed, sources, {
+    asOf: new Date('2026-09-25T00:00:00Z'),
+    criticalUse: true,
+  });
+  assert.equal(admitted.admissible, true, JSON.stringify(admitted, null, 2));
+});
