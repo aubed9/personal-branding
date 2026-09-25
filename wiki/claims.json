@@ -1973,6 +1973,111 @@
         "MOD-CHANNEL-ONLINE"
       ],
       "limitations": "این یک روند ارزش سفارش در پلتفرم دیجی‌کالا است، بدون رقم مطلق در پست رسمی؛ شاخص درآمد واقعی، قدرت خرید کل کشور یا اندازه بازار ایران محسوب نمی‌شود."
+    },
+    "KCL-IR-SNAPP-1404-SUPERAPP-VISITS": {
+      "id": "KCL-IR-SNAPP-1404-SUPERAPP-VISITS",
+      "knowledge_node_id": "KB-IR-PLATFORM-SNAPP-1404",
+      "statement": "اسنپ در گزارش سال ۱۴۰۴ از ۸.۲ میلیارد بار مراجعه کاربران به سوپراپلیکیشن اسنپ خبر داده است.",
+      "claim_kind": "MARKET_OBSERVATION",
+      "decision_driving": true,
+      "status": "VERIFIED",
+      "source_ids": [
+        "SRC-IR-SNAPP-REPORT-1404-OFFICIAL-COMPANY"
+      ],
+      "locators": [
+        {
+          "source_id": "SRC-IR-SNAPP-REPORT-1404-OFFICIAL-COMPANY",
+          "locator": "صفحه رسمی شرکت Snapp! درباره گزارش سال ۱۴۰۴؛ متن صریح: ۸.۲ میلیارد بار مراجعه کاربران به سوپراپ."
+        }
+      ],
+      "authority_requirement": "A_TO_C",
+      "freshness_class": "INDUSTRY_REPORT",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "SNAPP_PLATFORM",
+      "phases": [
+        1,
+        2,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-ONLINE-FUNNEL",
+        "DN-OFFER-PLATFORM-LOOP"
+      ],
+      "module_ids": [
+        "MOD-CHANNEL-ONLINE",
+        "MOD-OFFER-PLATFORM"
+      ],
+      "limitations": "این عدد شدت استفاده از سوپراپ اسنپ را نشان می‌دهد و تعداد کاربران یکتا، اندازه کل بازار دیجیتال ایران یا سهم بازار اسنپ نیست."
+    },
+    "KCL-IR-SNAPP-1404-RIDE-HOURS": {
+      "id": "KCL-IR-SNAPP-1404-RIDE-HOURS",
+      "knowledge_node_id": "KB-IR-PLATFORM-SNAPP-1404",
+      "statement": "اسنپ برای سال ۱۴۰۴ بیش از ۴۰۷ میلیون ساعت حضور کاربران در سفرهای اسنپ را گزارش کرده است.",
+      "claim_kind": "MARKET_OBSERVATION",
+      "decision_driving": true,
+      "status": "VERIFIED",
+      "source_ids": [
+        "SRC-IR-SNAPP-REPORT-1404-OFFICIAL-COMPANY"
+      ],
+      "locators": [
+        {
+          "source_id": "SRC-IR-SNAPP-REPORT-1404-OFFICIAL-COMPANY",
+          "locator": "صفحه رسمی شرکت Snapp! درباره گزارش سال ۱۴۰۴؛ متن صریح: بیشتر از ۴۰۷ میلیون ساعت حضور در سفرهای اسنپ."
+        }
+      ],
+      "authority_requirement": "A_TO_C",
+      "freshness_class": "INDUSTRY_REPORT",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "SNAPP_PLATFORM",
+      "phases": [
+        1,
+        2,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-OFFER-PLATFORM-LOOP",
+        "DN-MKT-LIQUIDITY"
+      ],
+      "module_ids": [
+        "MOD-OFFER-PLATFORM",
+        "MOD-CUSTOMER-TWO-SIDED"
+      ],
+      "limitations": "این شاخص زمان تجمعی اعلام‌شده در سفرهای اسنپ است؛ زمان سفر کل کشور، تعداد سفر، تعداد کاربر یکتا یا سهم بازار را به‌تنهایی اثبات نمی‌کند."
+    },
+    "KCL-IR-SNAPP-1404-URBAN-TRIPS": {
+      "id": "KCL-IR-SNAPP-1404-URBAN-TRIPS",
+      "knowledge_node_id": "KB-IR-PLATFORM-SNAPP-1404",
+      "statement": "اسنپ در یک پست رسمی گزارش سال ۱۴۰۴ از بیش از ۱.۵ میلیارد سفر شهری در این پلتفرم طی سال ۱۴۰۴ خبر داده است.",
+      "claim_kind": "MARKET_OBSERVATION",
+      "decision_driving": true,
+      "status": "VERIFIED",
+      "source_ids": [
+        "SRC-IR-SNAPP-REPORT-1404-URBAN-TRIPS-POST"
+      ],
+      "locators": [
+        {
+          "source_id": "SRC-IR-SNAPP-REPORT-1404-URBAN-TRIPS-POST",
+          "locator": "پست رسمی Snapp! با عنوان روایت گروه اسنپ در ۱۴۰۴؛ متن صریح: بیشتر از ۱.۵ میلیارد سفر شهری."
+        }
+      ],
+      "authority_requirement": "A_TO_C",
+      "freshness_class": "INDUSTRY_REPORT",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "SNAPP_PLATFORM",
+      "phases": [
+        1,
+        2,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-TXN-GROWTH",
+        "DN-MKT-LIQUIDITY"
+      ],
+      "module_ids": [
+        "MOD-REV-TRANSACTION",
+        "MOD-CUSTOMER-TWO-SIDED"
+      ],
+      "limitations": "این رقم سفرهای شهری گزارش‌شده در پلتفرم اسنپ است؛ کل سفرهای شهری ایران یا سهم بازار اسنپ را نشان نمی‌دهد."
     }
   }
 }
