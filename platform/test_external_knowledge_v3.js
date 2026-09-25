@@ -212,3 +212,98 @@ test('Digikala 1404 admission contains only metrics reproduced on the first-part
   assert.ok(admitted.every(claim => claim.jurisdiction_or_scope === 'DIGIKALA_PLATFORM'));
 });
 
+test('Snapp 1404 first-party metrics are verified but strictly platform-scoped', () => {
+  const sourceIds = [
+    'SRC-IR-SNAPP-REPORT-1404-OFFICIAL-COMPANY',
+    'SRC-IR-SNAPP-REPORT-1404-URBAN-TRIPS-POST',
+  ];
+  const claimIds = [
+    'KCL-IR-SNAPP-1404-SUPERAPP-VISITS',
+    'KCL-IR-SNAPP-1404-RIDE-HOURS',
+    'KCL-IR-SNAPP-1404-URBAN-TRIPS',
+  ];
+
+  for (const id of sourceIds) {
+    const source = sources[id];
+    assert.ok(source, id);
+    assert.equal(source.status, 'VERIFIED');
+    assert.equal(source.authority_tier, 'C');
+    assert.equal(source.verified_at, '2026-09-25');
+    assert.equal(source.jurisdiction_or_scope, 'SNAPP_PLATFORM');
+    assert.match(source.checksum || '', /^git-blob:[0-9a-f]{40}$/);
+    assert.ok(fs.existsSync(path.join(root, source.repository_location)));
+  }
+
+  const indexed = new Set(index.entries.map(entry => entry.claim_id));
+  for (const id of claimIds) {
+    const claim = claims[id];
+    assert.ok(claim, id);
+    assert.equal(claim.status, 'VERIFIED');
+    assert.equal(claim.decision_driving, true);
+    assert.equal(claim.authority_requirement, 'A_TO_C');
+    assert.equal(claim.jurisdiction_or_scope, 'SNAPP_PLATFORM');
+    assert.equal(claim.locators.length, claim.source_ids.length);
+    assert.ok(claim.limitations.length > 50);
+    assert.ok(indexed.has(id), `${id} missing from canonical retrieval`);
+
+    const admission = evaluateKnowledgeClaim(claim, sources, {
+      asOf: new Date('2026-09-25T00:00:00Z'),
+    });
+    assert.equal(admission.admissible, true, JSON.stringify(admission, null, 2));
+  }
+});
+
+test('Snapp platform evidence is retrievable only in SNAPP_PLATFORM scope, not generic Iran scope', () => {
+  const query = 'سوپراپ ۸.۲ میلیارد ۴۰۷ میلیون ساعت ۱.۵ میلیارد سفر شهری';
+
+  const platformResults = retrieveCanonicalKnowledge(
+    query,
+    index.entries,
+    claims,
+    sources,
+    {
+      phase: 2,
+      jurisdiction: 'SNAPP_PLATFORM',
+      asOf: new Date('2026-09-25T00:00:00Z'),
+      topK: 20,
+    }
+  );
+  const platformIds = new Set(platformResults.map(result => result.entry.claim_id));
+  assert.ok(platformIds.has('KCL-IR-SNAPP-1404-SUPERAPP-VISITS'));
+  assert.ok(platformIds.has('KCL-IR-SNAPP-1404-RIDE-HOURS'));
+  assert.ok(platformIds.has('KCL-IR-SNAPP-1404-URBAN-TRIPS'));
+
+  const iranResults = retrieveCanonicalKnowledge(
+    query,
+    index.entries,
+    claims,
+    sources,
+    {
+      phase: 2,
+      jurisdiction: 'IRAN',
+      asOf: new Date('2026-09-25T00:00:00Z'),
+      topK: 50,
+    }
+  );
+  const iranIds = new Set(iranResults.map(result => result.entry.claim_id));
+  assert.equal(iranIds.has('KCL-IR-SNAPP-1404-SUPERAPP-VISITS'), false);
+  assert.equal(iranIds.has('KCL-IR-SNAPP-1404-RIDE-HOURS'), false);
+  assert.equal(iranIds.has('KCL-IR-SNAPP-1404-URBAN-TRIPS'), false);
+});
+
+test('Snapp 1404 admission contains only first-party reproduced platform metrics', () => {
+  const sourceIds = new Set([
+    'SRC-IR-SNAPP-REPORT-1404-OFFICIAL-COMPANY',
+    'SRC-IR-SNAPP-REPORT-1404-URBAN-TRIPS-POST',
+  ]);
+  const admitted = Object.values(claims).filter(claim =>
+    (claim.source_ids || []).some(sourceId => sourceIds.has(sourceId))
+  );
+
+  assert.equal(admitted.length, 3);
+  assert.ok(admitted.some(claim => /۸\.۲ میلیارد/.test(claim.statement)));
+  assert.ok(admitted.some(claim => /۴۰۷ میلیون ساعت/.test(claim.statement)));
+  assert.ok(admitted.some(claim => /۱\.۵ میلیارد سفر شهری/.test(claim.statement)));
+  assert.ok(admitted.every(claim => claim.jurisdiction_or_scope === 'SNAPP_PLATFORM'));
+});
+
