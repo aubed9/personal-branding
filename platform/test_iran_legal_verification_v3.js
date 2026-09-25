@@ -113,7 +113,7 @@ test('1398 base, 1401 Article 15 change and 1404 amendment relationship are prim
 
   const article15Snapshot = fs.readFileSync(path.join(root, data1401.repository_location), 'utf8');
   assert.match(article15Snapshot, /ماده15/);
-  assert.match(article15Snapshot, /تبصره.*حذف/);
+  assert.match(article15Snapshot, /notes are deleted/);
 
   assert.equal(claim.source_ids.includes('SRC-IR-TAX-TERMINALS-1398-DISCOVERY'), false);
   assert.equal(claim.source_ids.includes('SRC-IR-TAX-SPECULATION-1404-DISCOVERY'), false);
