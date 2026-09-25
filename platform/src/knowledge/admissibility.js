@@ -77,6 +77,24 @@ export function evaluateKnowledgeClaim(claim, sourceRegistry, {
     return { admissible: false, status: claim.status, reasons: ['CLAIM_NOT_ADMISSIBLE'], sources: [] };
   }
 
+  // Source verification is necessary but not sufficient for claims that declare
+  // an explicit verification/completeness gate (for example, mutable legal
+  // amendment chains). This prevents a manual status flip to VERIFIED from
+  // bypassing required claim-level decomposition or coverage work.
+  if (claim.verification_gate && claim.verification_gate.status !== 'COMPLETE') {
+    const gateType = claim.verification_gate.type || 'UNSPECIFIED';
+    const blockers = claim.verification_gate.blocking_reasons || [];
+    return {
+      admissible: false,
+      status: 'REQUIRES_VERIFICATION',
+      reasons: [
+        `VERIFICATION_GATE_INCOMPLETE:${gateType}`,
+        ...blockers.map(reason => `VERIFICATION_GATE_BLOCKER:${reason}`),
+      ],
+      sources: [],
+    };
+  }
+
   const sourceIds = claim.source_ids || [];
   const evaluations = sourceIds.map(sourceId => {
     const source = sourceRegistry?.[sourceId] || null;
