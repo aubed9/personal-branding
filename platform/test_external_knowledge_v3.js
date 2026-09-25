@@ -127,3 +127,105 @@ test('all promoted external claims retain exact locators and explicit applicabil
     assert.ok(claim.limitations.length > 20);
   }
 });
+
+
+test('first-party 1404 platform reports preserve platform scope and immutable snapshot identity', () => {
+  for (const id of [
+    'SRC-IR-DIGIKALA-REPORT-1404-LINKEDIN',
+    'SRC-IR-SNAPP-REPORT-1404-LINKEDIN',
+  ]) {
+    const source = sources[id];
+    assert.ok(source, `missing ${id}`);
+    assert.equal(source.status, 'VERIFIED');
+    assert.equal(source.authority_tier, 'A');
+    assert.equal(source.freshness_class, 'INDUSTRY_REPORT');
+    assert.equal(source.max_age_days, 365);
+    assert.equal(source.verified_at, '2026-09-25');
+    assert.match(source.checksum || '', /^git-blob:[0-9a-f]{40}$/);
+    assert.ok(source.repository_location?.startsWith('wiki/snapshots/iran/'));
+    assert.ok(fs.existsSync(path.join(root, source.repository_location)));
+    assert.match(source.jurisdiction_or_scope, /^IRAN_PLATFORM_/);
+  }
+});
+
+test('Digikala platform behavior claim is retrievable only under its platform scope', () => {
+  const claimId = 'KCL-IR-DIGIKALA-SECONDHAND-SEARCH-1404';
+  assert.equal(claims[claimId].status, 'VERIFIED');
+  assert.ok(index.entries.some(entry => entry.claim_id === claimId));
+
+  const scoped = retrieveCanonicalKnowledge(
+    'جست‌وجوی دست دوم رفتار خرید آنلاین',
+    index.entries,
+    claims,
+    sources,
+    {
+      phase: 2,
+      moduleIds: ['MOD-CUSTOMER-B2C', 'MOD-CHANNEL-ONLINE'],
+      jurisdiction: 'IRAN_PLATFORM_DIGIKALA',
+      asOf: new Date('2026-09-25T00:00:00Z'),
+      topK: 10,
+    }
+  );
+  assert.ok(scoped.some(result => result.entry.claim_id === claimId));
+
+  const national = retrieveCanonicalKnowledge(
+    'جست‌وجوی دست دوم رفتار خرید آنلاین',
+    index.entries,
+    claims,
+    sources,
+    {
+      phase: 2,
+      moduleIds: ['MOD-CUSTOMER-B2C', 'MOD-CHANNEL-ONLINE'],
+      jurisdiction: 'IRAN',
+      asOf: new Date('2026-09-25T00:00:00Z'),
+      topK: 10,
+    }
+  );
+  assert.equal(national.some(result => result.entry.claim_id === claimId), false);
+  assert.match(claims[claimId].limitations, /دیجی‌کالا|کل تقاضای ایران/);
+});
+
+test('Snapp 1404 usage claim is platform-scoped and expires after its annual freshness window', () => {
+  const claimId = 'KCL-IR-SNAPP-SUPERAPP-VISITS-1404';
+  const claim = claims[claimId];
+  assert.ok(claim);
+  assert.equal(claim.status, 'VERIFIED');
+
+  const current = retrieveCanonicalKnowledge(
+    'مقیاس استفاده سوپراپ مراجعه کاربران',
+    index.entries,
+    claims,
+    sources,
+    {
+      phase: 8,
+      moduleIds: ['MOD-OFFER-PLATFORM', 'MOD-CHANNEL-ONLINE'],
+      jurisdiction: 'IRAN_PLATFORM_SNAPP',
+      asOf: new Date('2026-09-25T00:00:00Z'),
+      topK: 10,
+    }
+  );
+  assert.ok(current.some(result => result.entry.claim_id === claimId));
+
+  const staleAdmission = evaluateKnowledgeClaim(
+    claim,
+    sources,
+    { asOf: new Date('2027-09-26T00:00:00Z') }
+  );
+  assert.equal(staleAdmission.admissible, false);
+  assert.ok(staleAdmission.reasons.some(reason => reason.startsWith('MAX_AGE_EXCEEDED:')));
+
+  const national = retrieveCanonicalKnowledge(
+    'مقیاس استفاده سوپراپ مراجعه کاربران',
+    index.entries,
+    claims,
+    sources,
+    {
+      phase: 8,
+      moduleIds: ['MOD-OFFER-PLATFORM', 'MOD-CHANNEL-ONLINE'],
+      jurisdiction: 'IRAN',
+      asOf: new Date('2026-09-25T00:00:00Z'),
+      topK: 10,
+    }
+  );
+  assert.equal(national.some(result => result.entry.claim_id === claimId), false);
+});
