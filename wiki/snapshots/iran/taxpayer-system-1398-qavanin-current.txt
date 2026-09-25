@@ -1,0 +1,23 @@
+# Official-source snapshot — Shop Terminals & Taxpayer System Law (1398)
+
+Captured: 2026-09-25
+Jurisdiction: Iran
+Source authority: National Laws and Regulations System / Legal Vice Presidency
+
+Official qavanin.ir record
+- Title: قانون پایانه‌های فروشگاهی و سامانه مؤدیان
+- Record ID (IDS): 12936955486234542481
+- Approval authority: مجلس شورای اسلامی
+- Approval date: 1398/07/21
+- Current official text is published by qavanin as "با اصلاحات و الحاقات بعدی".
+- qavanin text: https://qavanin.ir/Law/TreeText/?IDS=12936955486234542481
+- qavanin status: https://qavanin.ir/Law/StatusIndex/?IDS=12936955486234542481
+
+Official consolidation status
+The official qavanin status page identifies these laws as affecting this law:
+1. قانون مدیریت داده‌ها و اطلاعات ملی — approved 1401/06/30
+2. قانون تسهیل تکالیف مؤدیان جهت اجرای قانون پایانه‌های فروشگاهی و سامانه مؤدیان — approved 1402/08/23
+3. قانون مالیات بر سوداگری و سفته‌بازی — approved 1404/04/08
+
+Verification scope
+This snapshot verifies the official identity of the 1398 base law and the official registry's current amendment-chain relationship. It does not claim that every current article-level obligation has been independently mapped into canonical claims yet.

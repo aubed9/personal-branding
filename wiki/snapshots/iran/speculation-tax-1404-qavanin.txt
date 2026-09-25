@@ -1,0 +1,25 @@
+# Official-source snapshot — Taxation of Speculation and Profiteering Law (1404) impact on taxpayer-system law
+
+Captured: 2026-09-25
+Jurisdiction: Iran
+Source authority: National Laws and Regulations System / Legal Vice Presidency
+
+Official qavanin.ir record
+- Title: قانون مالیات بر سوداگری و سفته‌بازی
+- Record ID (IDS): 5523794137275046041
+- Approval authority: مجلس شورای اسلامی
+- Approval date: 1404/04/08
+- Promulgation number: 80519
+- Promulgating authority: رئیس جمهور
+- Promulgation date: 1404/05/25
+- Official Gazette number: 23416
+- Official Gazette date: 1404/05/28
+- Publication date: 1404/05/27
+- qavanin attribute: https://qavanin.ir/Law/Attribute/?IDS=5523794137275046041
+- qavanin text: https://qavanin.ir/Law/TreeText/?IDS=5523794137275046041
+
+Verified effect on Shop Terminals law
+The official qavanin consolidation status for the 1398 law identifies this 1404 law as an affecting law. The status index shows, among other changes, amendment of Article 1 clause «پ» and numerous additional provisions.
+
+Verification scope
+This snapshot verifies the official identity/publication metadata and the official amendment relationship to the 1398 taxpayer-system law. A complete article-by-article canonical amendment map is still required before decision-driving current obligations are promoted.

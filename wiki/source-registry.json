@@ -1212,7 +1212,7 @@
       "max_age_days": 30,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Discovery record only. A current consolidated secondary reproduction indicates later amendments, including 1404 changes, but the exact primary official text/amendment chain has not yet been snapshotted. Do not use for definitive tax obligations."
+      "limitations": "Discovery record only. A current consolidated secondary reproduction indicates later amendments, including 1404 changes, but the exact primary official text/amendment chain has not yet been snapshotted. Do not use for definitive tax obligations. Superseded for decision-driving provenance by verified qavanin records; retained only as discovery lineage."
     },
     "SRC-IR-TRADE-UNION-1382-DISCOVERY": {
       "id": "SRC-IR-TRADE-UNION-1382-DISCOVERY",
@@ -1356,7 +1356,7 @@
       "max_age_days": 30,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Discovery-only amendment record. Secondary/current consolidated reproductions indicate this 1404 law materially amends the Shop Terminals and Taxpayer System Law, including Article 1 and additional provisions. Exact primary publication, effective-date chain, affected-article locators and consolidated current text must be captured before definitive tax obligations are generated."
+      "limitations": "Discovery-only amendment record. Secondary/current consolidated reproductions indicate this 1404 law materially amends the Shop Terminals and Taxpayer System Law, including Article 1 and additional provisions. Exact primary publication, effective-date chain, affected-article locators and consolidated current text must be captured before definitive tax obligations are generated. Superseded for decision-driving provenance by verified qavanin records; retained only as discovery lineage."
     },
     "SRC-IR-DIGIKALA-REPORT-1404-OFFICIAL-POST": {
       "id": "SRC-IR-DIGIKALA-REPORT-1404-OFFICIAL-POST",
@@ -1453,6 +1453,78 @@
       "status": "VERIFIED",
       "checksum": "git-blob:69f70c5f63dca2f3bf963be980a67e385fecb940",
       "limitations": "Verifies the official replacement of Article 1 and its publication metadata. It is one link in the current-law chain and must not be treated as proof of all current taxpayer-system obligations."
+    },
+    "SRC-IR-TAX-TERMINALS-1398-QAVANIN": {
+      "id": "SRC-IR-TAX-TERMINALS-1398-QAVANIN",
+      "source_type": "OFFICIAL_LEGAL_REGISTRY",
+      "title": "قانون پایانه‌های فروشگاهی و سامانه مؤدیان — official current qavanin record",
+      "author_or_institution": "مجلس شورای اسلامی",
+      "issuing_authority": "سامانه ملی قوانین و مقررات جمهوری اسلامی ایران / معاونت حقوقی ریاست جمهوری",
+      "published_at": null,
+      "effective_from": null,
+      "effective_until": null,
+      "observed_period": null,
+      "edition_or_version": "qavanin IDS 12936955486234542481; approved 1398-07-21; official current text with later amendments",
+      "url": "https://qavanin.ir/Law/TreeText/?IDS=12936955486234542481",
+      "repository_location": "wiki/snapshots/iran/taxpayer-system-1398-qavanin-current.txt",
+      "accessed_at": "2026-09-25",
+      "verified_at": "2026-09-25",
+      "jurisdiction_or_scope": "IRAN",
+      "language": "fa",
+      "authority_tier": "A",
+      "freshness_class": "TAX",
+      "max_age_days": 30,
+      "status": "VERIFIED",
+      "checksum": "git-blob:c8ce99e495a591d3dce572419ce409dbc6602e96",
+      "limitations": "Verifies the official base-law identity and the official current registry's amendment relationships. Decision-driving current obligations still require article-level canonical mapping."
+    },
+    "SRC-IR-NATIONAL-DATA-1401-TAX-ARTICLE15-QAVANIN": {
+      "id": "SRC-IR-NATIONAL-DATA-1401-TAX-ARTICLE15-QAVANIN",
+      "source_type": "OFFICIAL_LEGAL_REGISTRY",
+      "title": "قانون مدیریت داده‌ها و اطلاعات ملی — amendment of taxpayer-system Article 15",
+      "author_or_institution": "مجلس شورای اسلامی",
+      "issuing_authority": "سامانه ملی قوانین و مقررات جمهوری اسلامی ایران / معاونت حقوقی ریاست جمهوری",
+      "published_at": null,
+      "effective_from": null,
+      "effective_until": null,
+      "observed_period": null,
+      "edition_or_version": "qavanin IDS 4060880044189512334; approved 1401-06-30; Guardian Council confirmation 1401-07-20; Article 12(ث)",
+      "url": "https://qavanin.ir/Law/TreeText/?IDS=4060880044189512334",
+      "repository_location": "wiki/snapshots/iran/national-data-law-1401-taxpayer-article15.txt",
+      "accessed_at": "2026-09-25",
+      "verified_at": "2026-09-25",
+      "jurisdiction_or_scope": "IRAN",
+      "language": "fa",
+      "authority_tier": "A",
+      "freshness_class": "TAX",
+      "max_age_days": 30,
+      "status": "VERIFIED",
+      "checksum": "git-blob:b27cc5f38ea39fecf35935c68a16bb1efb8b22c9",
+      "limitations": "Verifies the exact 1401 amendment of Article 15 and deletion of its notes. It is one link in the current consolidated chain, not a complete statement of all taxpayer obligations."
+    },
+    "SRC-IR-TAX-SPECULATION-1404-QAVANIN": {
+      "id": "SRC-IR-TAX-SPECULATION-1404-QAVANIN",
+      "source_type": "OFFICIAL_LEGAL_REGISTRY",
+      "title": "قانون مالیات بر سوداگری و سفته‌بازی — official qavanin record affecting taxpayer-system law",
+      "author_or_institution": "مجلس شورای اسلامی",
+      "issuing_authority": "سامانه ملی قوانین و مقررات جمهوری اسلامی ایران / معاونت حقوقی ریاست جمهوری",
+      "published_at": "1404-05-27",
+      "effective_from": null,
+      "effective_until": null,
+      "observed_period": null,
+      "edition_or_version": "qavanin IDS 5523794137275046041; approved 1404-04-08; promulgation 80519 dated 1404-05-25; Official Gazette 23416 dated 1404-05-28",
+      "url": "https://qavanin.ir/Law/Attribute/?IDS=5523794137275046041",
+      "repository_location": "wiki/snapshots/iran/speculation-tax-1404-qavanin.txt",
+      "accessed_at": "2026-09-25",
+      "verified_at": "2026-09-25",
+      "jurisdiction_or_scope": "IRAN",
+      "language": "fa",
+      "authority_tier": "A",
+      "freshness_class": "TAX",
+      "max_age_days": 30,
+      "status": "VERIFIED",
+      "checksum": "git-blob:84a6afa49f5026d38cfccaade3578cf682e27670",
+      "limitations": "Verifies official identity/publication metadata and the official amendment relationship to the 1398 law. A complete article-by-article canonical current-law map is still required before specific obligations are promoted."
     }
   }
 }

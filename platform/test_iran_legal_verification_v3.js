@@ -89,20 +89,36 @@ test('unverified legal claims are excluded from canonical retrieval index', () =
   }
 });
 
-test('1404 tax amendment discovery keeps the 1398 taxpayer-system claim blocked until the primary chain is complete', () => {
-  const amendment = sources['SRC-IR-TAX-SPECULATION-1404-DISCOVERY'];
+test('1398 base, 1401 Article 15 change and 1404 amendment relationship are primary-verified', () => {
+  const base1398 = sources['SRC-IR-TAX-TERMINALS-1398-QAVANIN'];
+  const data1401 = sources['SRC-IR-NATIONAL-DATA-1401-TAX-ARTICLE15-QAVANIN'];
+  const tax1404 = sources['SRC-IR-TAX-SPECULATION-1404-QAVANIN'];
   const claim = claims['KCL-IR-TAX-TERMINALS-1398-UNVERIFIED'];
 
-  assert.ok(amendment);
-  assert.equal(amendment.status, 'NEEDS_RESEARCH');
-  assert.equal(amendment.authority_tier, 'C');
-  assert.equal(amendment.verified_at, null);
-  assert.equal(amendment.repository_location, null);
-  assert.equal(amendment.checksum, null);
-  assert.ok(amendment.edition_or_version.includes('80519'));
+  for (const source of [base1398, data1401, tax1404]) {
+    assert.ok(source);
+    assert.equal(source.status, 'VERIFIED');
+    assert.equal(source.authority_tier, 'A');
+    assert.equal(source.verified_at, '2026-09-25');
+    assert.match(source.checksum, /^git-blob:[0-9a-f]{40}$/);
+    assert.ok(fs.existsSync(path.join(root, source.repository_location)));
+    assert.ok(claim.source_ids.includes(source.id));
+  }
 
-  assert.ok(claim.source_ids.includes(amendment.id));
+  assert.match(base1398.edition_or_version, /12936955486234542481/);
+  assert.match(data1401.edition_or_version, /4060880044189512334/);
+  assert.match(data1401.edition_or_version, /Article 12/);
+  assert.match(tax1404.edition_or_version, /80519/);
+  assert.match(tax1404.edition_or_version, /23416/);
+
+  const article15Snapshot = fs.readFileSync(path.join(root, data1401.repository_location), 'utf8');
+  assert.match(article15Snapshot, /ماده15/);
+  assert.match(article15Snapshot, /notes are deleted/);
+
+  assert.equal(claim.source_ids.includes('SRC-IR-TAX-TERMINALS-1398-DISCOVERY'), false);
+  assert.equal(claim.source_ids.includes('SRC-IR-TAX-SPECULATION-1404-DISCOVERY'), false);
   assert.equal(claim.locators.length, claim.source_ids.length);
+  assert.equal(claim.status, 'NEEDS_RESEARCH');
 
   const indexed = new Set(index.entries.map(entry => entry.claim_id));
   assert.equal(indexed.has(claim.id), false);
@@ -147,24 +163,33 @@ test('regulated Iran retrieval cannot surface unverified legal discovery claims'
   for (const id of CLAIM_IDS) assert.equal(ids.has(id), false);
 });
 
-test('current legal claims stay blocked until every required source in their chain is primary-ready', () => {
+test('primary-ready sources do not automatically upgrade an incomplete decision-driving legal claim', () => {
   for (const id of CLAIM_IDS) {
     const claim = claims[id];
     assert.equal(claim.locators.length, claim.source_ids.length);
-    const readiness = claim.source_ids.map(sourceId => {
-      const source = sources[sourceId];
-      assert.ok(source);
-      return Boolean(
-        source.verified_at &&
-        source.checksum &&
-        source.repository_location &&
-        source.status === 'VERIFIED' &&
-        source.authority_tier === 'A'
-      );
-    });
-    assert.ok(readiness.some(ready => !ready), `${id} must retain at least one unresolved required source while NEEDS_RESEARCH`);
+    for (const sourceId of claim.source_ids) assert.ok(sources[sourceId], `missing source ${sourceId}`);
     assert.equal(claim.status, 'NEEDS_RESEARCH');
   }
+
+  const taxClaim = claims['KCL-IR-TAX-TERMINALS-1398-UNVERIFIED'];
+  const readiness = taxClaim.source_ids.map(sourceId => {
+    const source = sources[sourceId];
+    return Boolean(
+      source.verified_at &&
+      source.checksum &&
+      source.repository_location &&
+      source.status === 'VERIFIED' &&
+      source.authority_tier === 'A'
+    );
+  });
+  assert.ok(readiness.every(Boolean), 'known tax amendment-chain sources should all be primary-ready');
+
+  const admission = evaluateKnowledgeClaim(taxClaim, sources, {
+    asOf: new Date('2026-09-25T00:00:00Z'),
+    criticalUse: true,
+  });
+  assert.equal(admission.admissible, false);
+  assert.ok(admission.reasons.includes('CLAIM_NOT_ADMISSIBLE'));
 });
 
 
@@ -229,8 +254,11 @@ test('1402 taxpayer facilitation sources are primary-verified while the current 
   assert.match(article1.edition_or_version, /211331/);
   assert.equal(currentClaim.locators.length, currentClaim.source_ids.length);
   assert.equal(currentClaim.status, 'NEEDS_RESEARCH');
-  assert.ok(currentClaim.source_ids.includes('SRC-IR-TAX-TERMINALS-1398-DISCOVERY'));
-  assert.ok(currentClaim.source_ids.includes('SRC-IR-TAX-SPECULATION-1404-DISCOVERY'));
+  assert.ok(currentClaim.source_ids.includes('SRC-IR-TAX-TERMINALS-1398-QAVANIN'));
+  assert.ok(currentClaim.source_ids.includes('SRC-IR-NATIONAL-DATA-1401-TAX-ARTICLE15-QAVANIN'));
+  assert.ok(currentClaim.source_ids.includes('SRC-IR-TAX-SPECULATION-1404-QAVANIN'));
+  assert.equal(currentClaim.source_ids.includes('SRC-IR-TAX-TERMINALS-1398-DISCOVERY'), false);
+  assert.equal(currentClaim.source_ids.includes('SRC-IR-TAX-SPECULATION-1404-DISCOVERY'), false);
 
   const admission = evaluateKnowledgeClaim(currentClaim, sources, {
     asOf: new Date('2026-09-25T00:00:00Z'),
@@ -241,4 +269,33 @@ test('1402 taxpayer facilitation sources are primary-verified while the current 
 
   const indexed = new Set(index.entries.map(entry => entry.claim_id));
   assert.equal(indexed.has(currentClaim.id), false);
+});
+
+
+test('verification gate blocks an accidental manual VERIFIED upgrade until legal coverage is complete', () => {
+  const current = claims['KCL-IR-TAX-TERMINALS-1398-UNVERIFIED'];
+  assert.equal(current.verification_gate.type, 'LEGAL_AMENDMENT_COVERAGE');
+  assert.equal(current.verification_gate.status, 'INCOMPLETE');
+  assert.ok(current.verification_gate.blocking_reasons.includes('ARTICLE_LEVEL_CURRENT_MAP_PENDING'));
+
+  const prematurelyPromoted = JSON.parse(JSON.stringify(current));
+  prematurelyPromoted.status = 'VERIFIED';
+
+  const blocked = evaluateKnowledgeClaim(prematurelyPromoted, sources, {
+    asOf: new Date('2026-09-25T00:00:00Z'),
+    criticalUse: true,
+  });
+  assert.equal(blocked.admissible, false);
+  assert.equal(blocked.status, 'REQUIRES_VERIFICATION');
+  assert.ok(blocked.reasons.includes('VERIFICATION_GATE_INCOMPLETE:LEGAL_AMENDMENT_COVERAGE'));
+  assert.ok(blocked.reasons.includes('VERIFICATION_GATE_BLOCKER:ARTICLE_LEVEL_CURRENT_MAP_PENDING'));
+
+  const completed = JSON.parse(JSON.stringify(prematurelyPromoted));
+  completed.verification_gate.status = 'COMPLETE';
+  completed.verification_gate.blocking_reasons = [];
+  const admitted = evaluateKnowledgeClaim(completed, sources, {
+    asOf: new Date('2026-09-25T00:00:00Z'),
+    criticalUse: true,
+  });
+  assert.equal(admitted.admissible, true, JSON.stringify(admitted, null, 2));
 });
