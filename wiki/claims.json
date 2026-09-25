@@ -1680,12 +1680,17 @@
       "decision_driving": true,
       "status": "NEEDS_RESEARCH",
       "source_ids": [
-        "SRC-IR-LAW-ECOM-1382-DISCOVERY"
+        "SRC-IR-LAW-ECOM-1382-DISCOVERY",
+        "SRC-IR-LAW-ECOM-1382-QAVANIN-LOCATOR"
       ],
       "locators": [
         {
           "source_id": "SRC-IR-LAW-ECOM-1382-DISCOVERY",
           "locator": "Discovery metadata: enactment 1382-10-17; publication 1382-11-11; Official Gazette 17167. Exact current primary article locator still required."
+        },
+        {
+          "source_id": "SRC-IR-LAW-ECOM-1382-QAVANIN-LOCATOR",
+          "locator": "Official qavanin.ir record IDS=15700719202226051269; base-law enactment 1382-10-17; Official Gazette 17167. Full reproducible current primary-text snapshot and amendment-state verification still required."
         }
       ],
       "authority_requirement": "A",
@@ -1708,7 +1713,7 @@
       "module_ids": [
         "MOD-REG-HIGH"
       ],
-      "limitations": "Not admissible for definitive legal advice until the official publication/current amendment state is snapshotted and article-level locators are verified."
+      "limitations": "Not admissible for definitive legal advice yet. The exact official qavanin.ir registry identity is known, but complete reproducible current primary text, amendment state and article-level locators must be captured before promotion."
     },
     "KCL-IR-TAX-TERMINALS-1398-UNVERIFIED": {
       "id": "KCL-IR-TAX-TERMINALS-1398-UNVERIFIED",
