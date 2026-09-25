@@ -1,0 +1,29 @@
+source_id: SRC-IR-TAX-TERMINALS-CURRENT-QAVANIN-1405
+verified_at: 2026-09-26
+official_registry: سامانه ملی قوانین و مقررات جمهوری اسلامی ایران / معاونت حقوقی ریاست جمهوری
+official_url: https://qavanin.ir/Law/TreeText/?IDS=12936955486234542481
+identity:
+  law: قانون پایانه‌های فروشگاهی و سامانه مؤدیان
+  approved: 1398/07/21
+  registry_version: متن تنقیح‌شده با اصلاحات و الحاقات بعدی
+captured_current_locators:
+  article_10:
+    amendment_marker: اصلاحی 1404/04/08
+    decision_use: Current consolidated text addresses declaration of commercial accounts and payment tools through the taxpayer dashboard.
+  article_12:
+    amendment_marker: اصلاحی 1404/04/08
+    decision_use: Current consolidated text addresses notification/recording when electronic invoice issuance is unavailable because of incident or technical failure.
+  article_13:
+    amendment_marker: اصلاحی 1404/04/08
+    decision_use: Current consolidated text addresses notification when use of a point-of-sale/business operation stops.
+  article_14:
+    amendment_marker: اصلاحی 1404/04/08
+    decision_use: Current consolidated text addresses notification of changes in occupation/activity location, ownership or lease.
+additional_current_evidence:
+  - The consolidated text visibly includes multiple provisions annotated as amended or added on 1404/04/08.
+  - Exact taxpayer applicability can depend on taxpayer classification, thresholds, exemptions and implementing rules.
+admission:
+  source_record_status: VERIFIED
+  decision_claim_scope: Articles 10 and 12-14 only
+limitations:
+  Do not infer every current taxpayer-system obligation from this snapshot. Module output must preserve applicability checks and REQUIRES_VERIFICATION for obligations outside the captured locators.
