@@ -1127,3 +1127,15 @@ knowledge_nodes:
     status: VERIFIED
     source_ids: [SRC-IR-ECOM-REPORT-1403]
     claim_ids: [KCL-IR-ECOM-1403]
+
+  KB-IR-PLATFORM-DIGIKALA-1404:
+    title: "رفتار کاربران دیجی‌کالا — گزارش سال ۱۴۰۴"
+    file: wiki/14-iran-evidence/digikala-1404-platform.md
+    category: 14-iran-evidence
+    phases: [1, 2, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: [KB-DIGITAL-FUNNEL, KB-PLATFORM-MECHANICS]
+    relevance: high
+    status: VERIFIED
+    source_ids: [SRC-IR-DIGIKALA-REPORT-1404-OFFICIAL-POST]
+    claim_ids: [KCL-IR-DIGIKALA-1404-SECONDHAND-SEARCH, KCL-IR-DIGIKALA-1404-DIGITAL-GOLD, KCL-IR-DIGIKALA-1404-USD-ORDER-VALUE]
