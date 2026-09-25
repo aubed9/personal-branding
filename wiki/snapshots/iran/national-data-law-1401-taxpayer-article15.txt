@@ -1,0 +1,22 @@
+# Official-source snapshot — National Data and Information Management Law impact on taxpayer-system law (1401)
+
+Captured: 2026-09-25
+Jurisdiction: Iran
+Source authority: National Laws and Regulations System / Legal Vice Presidency
+
+Official qavanin.ir record
+- Title: قانون مدیریت داده‌ها و اطلاعات ملی
+- Record ID (IDS): 4060880044189512334
+- Approval authority: مجلس شورای اسلامی
+- Approval date: 1401/06/30
+- Guardian Council confirmation stated in official text: 1401/07/20
+- qavanin text: https://qavanin.ir/Law/TreeText/?IDS=4060880044189512334
+
+Verified effect on Shop Terminals law
+Article 12, clause «ث» of the official text states that Article 15 of the Shop Terminals & Taxpayer System Law approved 1398/07/21 is amended and its notes are deleted.
+
+Replacement text recorded by the official source:
+ماده15ـ دستورالعمل نحوه دسترسی به اطلاعات سامانه مؤدیان توسط کارگروه تعامل پذیری دولت الکترونیکی تعیین می شود.
+
+Verification scope
+This snapshot verifies the 1401 amendment relationship and the exact affected target (Article 15). It is one required link in the current consolidated taxpayer-system chain.
