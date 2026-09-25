@@ -16,6 +16,7 @@ const index = json('wiki/generated/retrieval-index.json');
 
 const SOURCE_IDS = [
   'SRC-IR-LAW-ECOM-1382-DISCOVERY',
+  'SRC-IR-LAW-ECOM-1382-QAVANIN-LOCATOR',
   'SRC-IR-TAX-TERMINALS-1398-DISCOVERY',
   'SRC-IR-TRADE-UNION-1382-DISCOVERY',
   'SRC-IR-TRADE-UNION-AMENDMENT-1403-DISCOVERY',
@@ -49,6 +50,29 @@ test('Iran legal discovery records are explicit non-admissible research gaps', (
   assert.equal(amendment1403.verified_at, null);
   assert.equal(amendment1403.repository_location, null);
   assert.equal(amendment1403.checksum, null);
+});
+
+test('official qavanin e-commerce locator is Tier A identity but remains non-admissible without complete primary capture', () => {
+  const source = sources['SRC-IR-LAW-ECOM-1382-QAVANIN-LOCATOR'];
+  const claim = claims['KCL-IR-LAW-ECOM-1382-UNVERIFIED'];
+
+  assert.ok(source);
+  assert.equal(source.authority_tier, 'A');
+  assert.equal(source.status, 'NEEDS_RESEARCH');
+  assert.equal(source.verified_at, null);
+  assert.match(source.url, /qavanin\.ir\/Law\/TreeText\/\?IDS=15700719202226051269/);
+  assert.match(source.checksum, /^git-blob:[0-9a-f]{40}$/);
+  assert.ok(fs.existsSync(path.join(root, source.repository_location)));
+
+  assert.ok(claim.source_ids.includes(source.id));
+  assert.equal(claim.locators.length, claim.source_ids.length);
+
+  const admission = evaluateKnowledgeClaim(claim, sources, {
+    asOf: new Date('2026-09-25T00:00:00Z'),
+    criticalUse: true,
+  });
+  assert.equal(admission.admissible, false);
+  assert.ok(admission.reasons.includes('CLAIM_NOT_ADMISSIBLE'));
 });
 
 test('unverified legal claims are excluded from canonical retrieval index', () => {
