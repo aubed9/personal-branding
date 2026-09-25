@@ -508,6 +508,11 @@ class ValidationSuite:
                 retrieval_errors.append(f"source mismatch {entry.get('retrieval_id')}")
             if claim.get("status") not in admissible:
                 retrieval_errors.append(f"inadmissible claim {entry.get('claim_id')}")
+            gate = claim.get("verification_gate")
+            if gate and gate.get("status") != "COMPLETE":
+                retrieval_errors.append(
+                    f"incomplete verification gate {entry.get('claim_id')}:{gate.get('type', 'UNSPECIFIED')}"
+                )
 
         if retrieval.get("count") != len(entries):
             retrieval_errors.append("retrieval count mismatch")
