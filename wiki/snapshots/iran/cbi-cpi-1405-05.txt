@@ -1,0 +1,8 @@
+Verification note — SRC-IR-CBI-CPI-1405-05
+Verified at: 2026-09-24
+Issuer identity: Central Bank of the Islamic Republic of Iran
+Subject: CPI for urban areas, Mordad 1405
+Observed figures in attributed reproductions: point-to-point 84.4%; annual inflation approximately 65%.
+Origin domain: cbi.ir
+Retrieval limitation: direct bulletin URL/version was not recovered because the origin site timed out. Source and claim therefore remain NEEDS_RESEARCH and are excluded from canonical retrieval.
+Do not treat this note as an independent source.
