@@ -1687,6 +1687,10 @@
         {
           "source_id": "SRC-IR-LAW-ECOM-1382-QAVANIN-LOCATOR",
           "locator": "Official qavanin registry IDS=15700719202226051269; approved 1382-10-17; Official Gazette 17167; latest registry status اصلاحی 1403-03-30. Article-level primary locator still required."
+        },
+        {
+          "source_id": "SRC-IR-LAW-ECOM-1382-DISCOVERY",
+          "locator": "Discovery metadata only: enactment 1382-10-17; publication 1382-11-11; Official Gazette 17167. This secondary discovery record is not admissible for definitive legal obligations."
         }
       ],
       "authority_requirement": "A",
