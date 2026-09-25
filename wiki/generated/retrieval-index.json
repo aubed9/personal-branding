@@ -5,7 +5,7 @@
     "claim_registry": "wiki/claims.json",
     "policy": "Only VERIFIED/CANONICAL claims whose referenced sources are VERIFIED/CANONICAL are indexed."
   },
-  "count": 43,
+  "count": 45,
   "entries": [
     {
       "retrieval_id": "RET-KCL-B2B-DMU",
@@ -774,6 +774,42 @@
       "limitations": "آمار کل شبکه پرداخت شاپرک است؛ اندازه کل تجارت الکترونیکی یا فروش یک کسب‌وکار خاص نیست."
     },
     {
+      "retrieval_id": "RET-KCL-IR-TAX-TERMINALS-1398-UNVERIFIED",
+      "knowledge_node_id": "KB-DOMAIN-TAX-SAAS",
+      "claim_id": "KCL-IR-TAX-TERMINALS-1398-UNVERIFIED",
+      "content": "متن تنقیح‌شده جاری قانون پایانه‌های فروشگاهی و سامانه مؤدیان در سامانه رسمی qavanin اصلاحات ۱۴۰۴/۰۴/۰۸ را منعکس می‌کند؛ در محدوده ثبت‌شده این منبع، ماده ۱۰ به اعلام حساب‌ها و ابزارهای پرداخت تجاری و مواد ۱۲ تا ۱۴ به تکالیف اطلاع‌رسانی درباره اختلال صدور صورتحساب، توقف فعالیت و تغییرات شغل/محل/مالکیت می‌پردازند.",
+      "claim_kind": "LEGAL_REQUIREMENT",
+      "decision_driving": true,
+      "status": "VERIFIED",
+      "source_ids": [
+        "SRC-IR-TAX-TERMINALS-CURRENT-QAVANIN-1405",
+        "SRC-IR-TAX-TERMINALS-EASE-1402-QAVANIN",
+        "SRC-IR-TAX-TERMINALS-EASE-M1-1402-QAVANIN"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "TAX",
+      "max_age_days": 30,
+      "jurisdiction_or_scope": "IRAN",
+      "phases": [
+        1,
+        2,
+        3,
+        5,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-TAX-SAAS-COMPLIANCE-SCOPE",
+        "DN-TAX-SAAS-PROOF",
+        "DN-TAX-SAAS-MESSAGING",
+        "DN-TAX-SAAS-UPDATES"
+      ],
+      "module_ids": [
+        "MOD-DOMAIN-TAX-SAAS",
+        "MOD-REG-HIGH"
+      ],
+      "limitations": "Verified only for the captured current article locators and amendment chain noted above. Exact applicability depends on taxpayer status, thresholds, exemptions and implementing rules; other obligations remain REQUIRES_VERIFICATION until separately sourced."
+    },
+    {
       "retrieval_id": "RET-KCL-IR-TRADE-UNION-AMENDMENT-1392-HISTORICAL",
       "knowledge_node_id": "KB-COMPLIANCE",
       "claim_id": "KCL-IR-TRADE-UNION-AMENDMENT-1392-HISTORICAL",
@@ -801,6 +837,36 @@
         "MOD-REG-HIGH"
       ],
       "limitations": "Historical amendment evidence only; it must not be treated as the current consolidated licensing rule because later amendments exist."
+    },
+    {
+      "retrieval_id": "RET-KCL-IR-TRADE-UNION-LICENSING-UNVERIFIED",
+      "knowledge_node_id": "KB-COMPLIANCE",
+      "claim_id": "KCL-IR-TRADE-UNION-LICENSING-UNVERIFIED",
+      "content": "اصلاحیه ۱۴۰۳ قانون نظام صنفی کشور، ماده ۱۲ را به چارچوب قانون تسهیل صدور مجوزهای کسب‌وکار پیوند می‌دهد و ماده ۲۷ را درباره فعالیت بدون پروانه کسب و فرآیند اخطار/ضمانت اجرا جایگزین می‌کند.",
+      "claim_kind": "LEGAL_REQUIREMENT",
+      "decision_driving": true,
+      "status": "VERIFIED",
+      "source_ids": [
+        "SRC-IR-TRADE-UNION-AMENDMENT-1403-QAVANIN"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "LEGAL",
+      "max_age_days": 30,
+      "jurisdiction_or_scope": "IRAN",
+      "phases": [
+        1,
+        2,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-REG-CONSTRAINTS",
+        "DN-REG-EVIDENCE",
+        "DN-REG-ACTIVATION"
+      ],
+      "module_ids": [
+        "MOD-REG-HIGH"
+      ],
+      "limitations": "Verified for the 1403 amendment's licensing linkage and Article 27 enforcement structure. Do not hard-code the monetary fine because the law provides for inflation adjustment; activity-specific prerequisites and implementing rules require separate current sources."
     },
     {
       "retrieval_id": "RET-KCL-LOCAL-CHANNEL",
@@ -1423,5 +1489,6 @@
       ],
       "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
     }
-  ]
+  ],
+  "updated_at": "2026-09-26"
 }
