@@ -1139,3 +1139,15 @@ knowledge_nodes:
     status: VERIFIED
     source_ids: [SRC-IR-DIGIKALA-REPORT-1404-OFFICIAL-POST]
     claim_ids: [KCL-IR-DIGIKALA-1404-SECONDHAND-SEARCH, KCL-IR-DIGIKALA-1404-DIGITAL-GOLD, KCL-IR-DIGIKALA-1404-USD-ORDER-VALUE]
+
+  KB-IR-PLATFORM-SNAPP-1404:
+    title: "رفتار کاربران اسنپ — گزارش سال ۱۴۰۴"
+    file: wiki/14-iran-evidence/snapp-1404-platform.md
+    category: 14-iran-evidence
+    phases: [1, 2, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: [KB-DIGITAL-FUNNEL, KB-PLATFORM-MECHANICS]
+    relevance: high
+    status: VERIFIED
+    source_ids: [SRC-IR-SNAPP-REPORT-1404-OFFICIAL-COMPANY, SRC-IR-SNAPP-REPORT-1404-URBAN-TRIPS-POST]
+    claim_ids: [KCL-IR-SNAPP-1404-SUPERAPP-VISITS, KCL-IR-SNAPP-1404-RIDE-HOURS, KCL-IR-SNAPP-1404-URBAN-TRIPS]

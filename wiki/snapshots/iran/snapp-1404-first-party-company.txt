@@ -1,0 +1,19 @@
+# Snapp annual report 1404 — first-party company announcement snapshot
+
+Captured: 2026-09-25
+Source owner: Snapp!
+Source type: first-party company announcement
+Observed period: 1404
+Canonical company page: https://www.linkedin.com/company/snapp.ir
+Full-report short link published by Snapp: https://lnkd.in/evmusa9j
+
+Reproducible first-party facts visible in the official Snapp company update:
+- Snapp announced publication of its 1404 annual report.
+- Users made 8.2 billion visits to the Snapp superapp in 1404.
+- Users spent more than 407 million hours in Snapp rides in 1404.
+
+Admission boundary:
+- These observations are SNAPP_PLATFORM scope only. They are not Iran-wide mobility, commerce or consumer-market totals.
+- The full report behind the short link was not reproducibly retrieved in this verification run.
+- Only facts explicitly reproduced on Snapp's official company page are admitted.
+- Metrics available only through media/reposts remain excluded until first-party reproduction is captured.

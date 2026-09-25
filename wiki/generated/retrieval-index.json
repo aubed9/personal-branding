@@ -5,7 +5,7 @@
     "claim_registry": "wiki/claims.json",
     "policy": "Only VERIFIED/CANONICAL claims whose referenced sources are VERIFIED/CANONICAL are indexed."
   },
-  "count": 45,
+  "count": 48,
   "entries": [
     {
       "retrieval_id": "RET-KCL-B2B-DMU",
@@ -772,6 +772,96 @@
         "MOD-CHANNEL-ONLINE"
       ],
       "limitations": "آمار کل شبکه پرداخت شاپرک است؛ اندازه کل تجارت الکترونیکی یا فروش یک کسب‌وکار خاص نیست."
+    },
+    {
+      "retrieval_id": "RET-KCL-IR-SNAPP-1404-RIDE-HOURS",
+      "knowledge_node_id": "KB-IR-PLATFORM-SNAPP-1404",
+      "claim_id": "KCL-IR-SNAPP-1404-RIDE-HOURS",
+      "content": "اسنپ برای سال ۱۴۰۴ بیش از ۴۰۷ میلیون ساعت حضور کاربران در سفرهای اسنپ را گزارش کرده است.",
+      "claim_kind": "MARKET_OBSERVATION",
+      "decision_driving": true,
+      "status": "VERIFIED",
+      "source_ids": [
+        "SRC-IR-SNAPP-REPORT-1404-OFFICIAL-COMPANY"
+      ],
+      "source_authority_floor": "C",
+      "freshness_class": "INDUSTRY_REPORT",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "SNAPP_PLATFORM",
+      "phases": [
+        1,
+        2,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-OFFER-PLATFORM-LOOP",
+        "DN-MKT-LIQUIDITY"
+      ],
+      "module_ids": [
+        "MOD-OFFER-PLATFORM",
+        "MOD-CUSTOMER-TWO-SIDED"
+      ],
+      "limitations": "این شاخص زمان تجمعی اعلام‌شده در سفرهای اسنپ است؛ زمان سفر کل کشور، تعداد سفر، تعداد کاربر یکتا یا سهم بازار را به‌تنهایی اثبات نمی‌کند."
+    },
+    {
+      "retrieval_id": "RET-KCL-IR-SNAPP-1404-SUPERAPP-VISITS",
+      "knowledge_node_id": "KB-IR-PLATFORM-SNAPP-1404",
+      "claim_id": "KCL-IR-SNAPP-1404-SUPERAPP-VISITS",
+      "content": "اسنپ در گزارش سال ۱۴۰۴ از ۸.۲ میلیارد بار مراجعه کاربران به سوپراپلیکیشن اسنپ خبر داده است.",
+      "claim_kind": "MARKET_OBSERVATION",
+      "decision_driving": true,
+      "status": "VERIFIED",
+      "source_ids": [
+        "SRC-IR-SNAPP-REPORT-1404-OFFICIAL-COMPANY"
+      ],
+      "source_authority_floor": "C",
+      "freshness_class": "INDUSTRY_REPORT",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "SNAPP_PLATFORM",
+      "phases": [
+        1,
+        2,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-ONLINE-FUNNEL",
+        "DN-OFFER-PLATFORM-LOOP"
+      ],
+      "module_ids": [
+        "MOD-CHANNEL-ONLINE",
+        "MOD-OFFER-PLATFORM"
+      ],
+      "limitations": "این عدد شدت استفاده از سوپراپ اسنپ را نشان می‌دهد و تعداد کاربران یکتا، اندازه کل بازار دیجیتال ایران یا سهم بازار اسنپ نیست."
+    },
+    {
+      "retrieval_id": "RET-KCL-IR-SNAPP-1404-URBAN-TRIPS",
+      "knowledge_node_id": "KB-IR-PLATFORM-SNAPP-1404",
+      "claim_id": "KCL-IR-SNAPP-1404-URBAN-TRIPS",
+      "content": "اسنپ در یک پست رسمی گزارش سال ۱۴۰۴ از بیش از ۱.۵ میلیارد سفر شهری در این پلتفرم طی سال ۱۴۰۴ خبر داده است.",
+      "claim_kind": "MARKET_OBSERVATION",
+      "decision_driving": true,
+      "status": "VERIFIED",
+      "source_ids": [
+        "SRC-IR-SNAPP-REPORT-1404-URBAN-TRIPS-POST"
+      ],
+      "source_authority_floor": "C",
+      "freshness_class": "INDUSTRY_REPORT",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "SNAPP_PLATFORM",
+      "phases": [
+        1,
+        2,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-TXN-GROWTH",
+        "DN-MKT-LIQUIDITY"
+      ],
+      "module_ids": [
+        "MOD-REV-TRANSACTION",
+        "MOD-CUSTOMER-TWO-SIDED"
+      ],
+      "limitations": "این رقم سفرهای شهری گزارش‌شده در پلتفرم اسنپ است؛ کل سفرهای شهری ایران یا سهم بازار اسنپ را نشان نمی‌دهد."
     },
     {
       "retrieval_id": "RET-KCL-IR-TAX-TERMINALS-1398-UNVERIFIED",
