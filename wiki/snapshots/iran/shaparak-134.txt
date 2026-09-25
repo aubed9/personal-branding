@@ -1,0 +1,11 @@
+Verification note — SRC-IR-SHAPARAK-REPORT-134
+Verified at: 2026-09-24
+Issuer identity: Shaparak
+Official indexed title: ثبت 4.6 میلیارد تراکنش در مردادماه 1405؛ شبکه پرداخت در مدار پایداری
+Official news code: SHP-1788764678581
+Indexed publication: 1405/06/16 11:58
+Observed period: 1405-05
+Verified figures: 4.651 billion transactions; 3,654 hemmat total transaction value.
+Origin URL identity: https://shaparak.ir/fa/news/SHP-1788764678581
+Retrieval limitation: origin page was not directly fetchable by the verification client; the official indexed Shaparak representation preserved title, code, date, and figures.
+Do not treat this note as an independent source.

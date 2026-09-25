@@ -1,0 +1,10 @@
+Verification note — SRC-IR-ECOM-REPORT-1403
+Verified at: 2026-09-24
+Issuer identity: E-Commerce Development Center (Iran)
+Official report title: گزارش تجارت الکترونیکی ایران در سال 1403
+Observed period: 1403
+Official release event: National E-Commerce and Digital Economy Day, 24 Mehr 1404; official site directs users to the e-commerce reports menu.
+Verified headline figures from the released report and issuer statements: transaction value above 5,500 hemmat; approximately 73% year-over-year value growth; more than 306,000 active e-namad businesses.
+Origin domain: ecommerce.gov.ir
+Retrieval limitation: direct report file was not fetchable by the verification client, so table-level figures beyond these headline values are not promoted.
+Do not treat this note as an independent source.
