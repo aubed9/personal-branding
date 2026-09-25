@@ -18,6 +18,7 @@ const SOURCE_IDS = [
   'SRC-IR-LAW-ECOM-1382-DISCOVERY',
   'SRC-IR-LAW-ECOM-1382-QAVANIN-LOCATOR',
   'SRC-IR-TAX-TERMINALS-1398-DISCOVERY',
+  'SRC-IR-TAX-TERMINALS-EASE-1402-DISCOVERY',
   'SRC-IR-TAX-SPECULATION-1404-DISCOVERY',
   'SRC-IR-TRADE-UNION-1382-DISCOVERY',
   'SRC-IR-TRADE-UNION-AMENDMENT-1403-DISCOVERY',
@@ -198,4 +199,31 @@ test('1392 official-gazette amendment is verified historical evidence but does n
   });
   assert.equal(currentAdmission.admissible, false);
   assert.ok(currentAdmission.reasons.includes('CLAIM_NOT_ADMISSIBLE'));
+});
+
+
+test('1402 taxpayer-system facilitation law is tracked as a required but non-admissible amendment link', () => {
+  const source = sources['SRC-IR-TAX-TERMINALS-EASE-1402-DISCOVERY'];
+  const currentClaim = claims['KCL-IR-TAX-TERMINALS-1398-UNVERIFIED'];
+  assert.ok(source);
+  assert.equal(source.status, 'NEEDS_RESEARCH');
+  assert.equal(source.authority_tier, 'C');
+  assert.equal(source.verified_at, null);
+  assert.equal(source.repository_location, null);
+  assert.equal(source.checksum, null);
+  assert.match(source.edition_or_version, /1402-08-23/);
+
+  assert.ok(currentClaim.source_ids.includes(source.id));
+  assert.equal(currentClaim.locators.length, currentClaim.source_ids.length);
+  assert.equal(currentClaim.status, 'NEEDS_RESEARCH');
+
+  const admission = evaluateKnowledgeClaim(currentClaim, sources, {
+    asOf: new Date('2026-09-25T00:00:00Z'),
+    criticalUse: true,
+  });
+  assert.equal(admission.admissible, false);
+  assert.ok(admission.reasons.includes('CLAIM_NOT_ADMISSIBLE'));
+
+  const indexed = new Set(index.entries.map(entry => entry.claim_id));
+  assert.equal(indexed.has(currentClaim.id), false);
 });
