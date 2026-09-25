@@ -32,6 +32,14 @@ def build_index():
         claim = claims[claim_id]
         if claim.get("status") not in ADMISSIBLE:
             continue
+
+        # Explicit claim-level verification/completeness gates are authoritative.
+        # A source-complete claim must still stay out of retrieval until its
+        # declared gate is COMPLETE (e.g. legal amendment coverage).
+        gate = claim.get("verification_gate")
+        if gate and gate.get("status") != "COMPLETE":
+            continue
+
         source_ids = claim.get("source_ids", [])
         source_records = [sources.get(source_id) for source_id in source_ids]
         if not source_ids or any(record is None for record in source_records):
@@ -67,7 +75,7 @@ def build_index():
         "generated_from": {
             "source_registry": "wiki/source-registry.json",
             "claim_registry": "wiki/claims.json",
-            "policy": "Only VERIFIED/CANONICAL claims whose referenced sources are VERIFIED/CANONICAL are indexed.",
+            "policy": "Only VERIFIED/CANONICAL claims whose referenced sources are VERIFIED/CANONICAL and whose explicit verification_gate (if present) is COMPLETE are indexed.",
         },
         "count": len(entries),
         "entries": entries,
