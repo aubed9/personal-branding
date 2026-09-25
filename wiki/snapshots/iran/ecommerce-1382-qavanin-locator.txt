@@ -1,0 +1,26 @@
+# Electronic Commerce Law 1382 — official qavanin.ir locator snapshot
+
+Captured: 2026-09-25
+Jurisdiction: Iran
+Document: قانون تجارت الکترونیکی
+Enactment date: 1382-10-17
+Guardian Council confirmation: 1382-10-24
+Promulgation: 1382-11-05
+Official Gazette publication: 1382-11-11
+Official Gazette issue: 17167
+
+Official national legislation registry locator:
+https://qavanin.ir/Law/TreeText/?IDS=15700719202226051269
+
+Registry identity:
+- qavanin.ir is the national laws/regulations portal operated under the Presidential Legal Affairs legislation codification/publication function.
+- Exact record identifier recovered: 15700719202226051269.
+
+Independent reproduction used only to cross-check the base-law text:
+https://natlex.ilo.org/dyn/natlex2/natlex2/files/download/91708/IRN91708.pdf
+
+IMPORTANT ADMISSION BOUNDARY:
+This file records the exact official registry identity and corroborated enactment/publication metadata.
+The qavanin.ir record could not be reproducibly captured as a complete primary-text snapshot in this run.
+Therefore this locator MUST remain NEEDS_RESEARCH and MUST NOT, by itself, promote a decision-driving legal claim to VERIFIED/CANONICAL.
+Before promotion, capture the complete official current text/amendment state, exact article locators, verified_at, and a reproducible repository snapshot/checksum.
