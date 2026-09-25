@@ -147,23 +147,23 @@ test('regulated Iran retrieval cannot surface unverified legal discovery claims'
   for (const id of CLAIM_IDS) assert.equal(ids.has(id), false);
 });
 
-test('legal promotion requires exact primary-source fields before status can be changed safely', () => {
+test('current legal claims stay blocked until every required source in their chain is primary-ready', () => {
   for (const id of CLAIM_IDS) {
     const claim = claims[id];
     assert.equal(claim.locators.length, claim.source_ids.length);
-    for (const sourceId of claim.source_ids) {
+    const readiness = claim.source_ids.map(sourceId => {
       const source = sources[sourceId];
       assert.ok(source);
-      // A record is intentionally incomplete until these are present.
-      const primaryReady = Boolean(
+      return Boolean(
         source.verified_at &&
         source.checksum &&
         source.repository_location &&
         source.status === 'VERIFIED' &&
         source.authority_tier === 'A'
       );
-      assert.equal(primaryReady, false, `${sourceId} was accidentally made primary-ready`);
-    }
+    });
+    assert.ok(readiness.some(ready => !ready), `${id} must retain at least one unresolved required source while NEEDS_RESEARCH`);
+    assert.equal(claim.status, 'NEEDS_RESEARCH');
   }
 });
 
@@ -202,20 +202,35 @@ test('1392 official-gazette amendment is verified historical evidence but does n
 });
 
 
-test('1402 taxpayer-system facilitation law is tracked as a required but non-admissible amendment link', () => {
-  const source = sources['SRC-IR-TAX-TERMINALS-EASE-1402-DISCOVERY'];
+test('1402 taxpayer facilitation sources are primary-verified while the current tax-system claim remains blocked', () => {
+  const discovery = sources['SRC-IR-TAX-TERMINALS-EASE-1402-DISCOVERY'];
+  const base = sources['SRC-IR-TAX-TERMINALS-EASE-1402-QAVANIN'];
+  const article1 = sources['SRC-IR-TAX-TERMINALS-EASE-M1-1402-QAVANIN'];
   const currentClaim = claims['KCL-IR-TAX-TERMINALS-1398-UNVERIFIED'];
-  assert.ok(source);
-  assert.equal(source.status, 'NEEDS_RESEARCH');
-  assert.equal(source.authority_tier, 'C');
-  assert.equal(source.verified_at, null);
-  assert.equal(source.repository_location, null);
-  assert.equal(source.checksum, null);
-  assert.match(source.edition_or_version, /1402-08-23/);
 
-  assert.ok(currentClaim.source_ids.includes(source.id));
+  assert.ok(discovery);
+  assert.equal(discovery.status, 'NEEDS_RESEARCH');
+  assert.equal(discovery.authority_tier, 'C');
+  assert.equal(currentClaim.source_ids.includes(discovery.id), false);
+
+  for (const source of [base, article1]) {
+    assert.ok(source);
+    assert.equal(source.status, 'VERIFIED');
+    assert.equal(source.authority_tier, 'A');
+    assert.equal(source.verified_at, '2026-09-25');
+    assert.match(source.checksum, /^git-blob:[0-9a-f]{40}$/);
+    assert.ok(fs.existsSync(path.join(root, source.repository_location)));
+    assert.ok(currentClaim.source_ids.includes(source.id));
+  }
+
+  assert.match(base.edition_or_version, /22942/);
+  assert.match(base.edition_or_version, /177609/);
+  assert.match(article1.edition_or_version, /22980/);
+  assert.match(article1.edition_or_version, /211331/);
   assert.equal(currentClaim.locators.length, currentClaim.source_ids.length);
   assert.equal(currentClaim.status, 'NEEDS_RESEARCH');
+  assert.ok(currentClaim.source_ids.includes('SRC-IR-TAX-TERMINALS-1398-DISCOVERY'));
+  assert.ok(currentClaim.source_ids.includes('SRC-IR-TAX-SPECULATION-1404-DISCOVERY'));
 
   const admission = evaluateKnowledgeClaim(currentClaim, sources, {
     asOf: new Date('2026-09-25T00:00:00Z'),

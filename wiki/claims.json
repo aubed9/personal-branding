@@ -1718,13 +1718,14 @@
     "KCL-IR-TAX-TERMINALS-1398-UNVERIFIED": {
       "id": "KCL-IR-TAX-TERMINALS-1398-UNVERIFIED",
       "knowledge_node_id": "KB-DOMAIN-TAX-SAAS",
-      "statement": "Iran's Shop Terminals and Taxpayer System Law was enacted in 1398 and materially amended in 1402 and 1404, but the currently applicable consolidated primary text has not yet been verified in the canonical knowledge plane.",
+      "statement": "Iran's Shop Terminals and Taxpayer System Law was enacted in 1398 and materially amended in 1402 and 1404. The 1402 facilitation-law identity and its subsequent Article 1 replacement are now verified from the official qavanin registry, but the currently applicable consolidated 1398→1404 primary chain is not yet fully verified.",
       "claim_kind": "LEGAL_REQUIREMENT",
       "decision_driving": true,
       "status": "NEEDS_RESEARCH",
       "source_ids": [
         "SRC-IR-TAX-TERMINALS-1398-DISCOVERY",
-        "SRC-IR-TAX-TERMINALS-EASE-1402-DISCOVERY",
+        "SRC-IR-TAX-TERMINALS-EASE-1402-QAVANIN",
+        "SRC-IR-TAX-TERMINALS-EASE-M1-1402-QAVANIN",
         "SRC-IR-TAX-SPECULATION-1404-DISCOVERY"
       ],
       "locators": [
@@ -1733,8 +1734,12 @@
           "locator": "Discovery metadata: enactment 1398-07-21; publication 1398-08-16; Official Gazette 21741; secondary consolidated text indicates later amendments including 1404."
         },
         {
-          "source_id": "SRC-IR-TAX-TERMINALS-EASE-1402-DISCOVERY",
-          "locator": "Discovery metadata: facilitation law approved 1402-08-23; secondary consolidated reproductions show amendments to taxpayer-system provisions including articles 2, 6, 14 مکرر, 22 and 26. Exact Official Gazette identity, primary text, article-level amendment mapping and effective dates still required."
+          "source_id": "SRC-IR-TAX-TERMINALS-EASE-1402-QAVANIN",
+          "locator": "Official qavanin IDS 4822349448318190655; approved 1402-08-23; promulgation 177609 dated 1402-09-29; Official Gazette 22942 dated 1402-10-04; effective 1402-10-20. Repository snapshot and git-blob checksum recorded."
+        },
+        {
+          "source_id": "SRC-IR-TAX-TERMINALS-EASE-M1-1402-QAVANIN",
+          "locator": "Official qavanin IDS 17935142558800059836; Article 1 replacement approved 1402-10-18; Guardian Council confirmation 1402-11-14; promulgation 211331 dated 1402-11-16; Official Gazette 22980 dated 1402-11-21; effective 1402-12-07. Repository snapshot and git-blob checksum recorded."
         },
         {
           "source_id": "SRC-IR-TAX-SPECULATION-1404-DISCOVERY",
@@ -1762,7 +1767,7 @@
         "MOD-DOMAIN-TAX-SAAS",
         "MOD-REG-HIGH"
       ],
-      "limitations": "Not admissible for definitive tax-system obligations. The 1398 base law plus material 1402 and 1404 amendments are identified, but exact primary publications, amendment-to-article mapping, effective dates and current consolidated text must be captured and verified."
+      "limitations": "Not admissible for definitive current tax-system obligations. The 1402 facilitation law and its 1402-10-18 Article 1 replacement are primary-verified, but the 1398 base law and material 1404 amendment chain/current consolidated article state still require exact primary capture and verification."
     },
     "KCL-IR-TRADE-UNION-LICENSING-UNVERIFIED": {
       "id": "KCL-IR-TRADE-UNION-LICENSING-UNVERIFIED",
