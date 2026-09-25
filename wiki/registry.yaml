@@ -738,7 +738,7 @@ knowledge_nodes:
     relevance: mandatory
     status: CANONICAL
     source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
-    claim_ids: [KCL-COMPLIANCE]
+    claim_ids: [KCL-COMPLIANCE, KCL-IR-LAW-ECOM-1382-UNVERIFIED, KCL-IR-TRADE-UNION-LICENSING-UNVERIFIED, KCL-IR-ENAMAD-CURRENT-RULES-UNVERIFIED]
   KB-DIGITAL-FUNNEL:
     title: "Decision Module knowledge contract: KB-DIGITAL-FUNNEL"
     file: wiki/13-decision-modules/digital-funnel.md
@@ -1024,7 +1024,7 @@ knowledge_nodes:
     relevance: mandatory
     status: CANONICAL
     source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
-    claim_ids: [KCL-DOMAIN-TAX-SAAS]
+    claim_ids: [KCL-DOMAIN-TAX-SAAS, KCL-IR-TAX-TERMINALS-1398-UNVERIFIED]
   KB-DOMAIN-SAAS-GENERAL:
     title: "General SaaS adoption domain decision contract"
     file: wiki/13-decision-modules/domain-saas-general.md

@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updated_at": "2026-09-24",
+  "updated_at": "2026-09-25",
   "claims": {
     "KCL-B2B-DMU": {
       "id": "KCL-B2B-DMU",
@@ -1671,6 +1671,153 @@
         "MOD-CUSTOMER-TWO-SIDED"
       ],
       "limitations": "گزارش سالانه و کلان است؛ برای CAC/CPC روز، قیمت‌گذاری یک صنعت یا اندازه بازار یک زیرگروه باید منبع تخصصی‌تر استفاده شود."
+    },
+    "KCL-IR-LAW-ECOM-1382-UNVERIFIED": {
+      "id": "KCL-IR-LAW-ECOM-1382-UNVERIFIED",
+      "knowledge_node_id": "KB-COMPLIANCE",
+      "statement": "Iran's Electronic Commerce Law was enacted in 1382 and governs electronic transactions, but the current primary text/version has not yet been reproduced inside the canonical knowledge plane.",
+      "claim_kind": "LEGAL_REQUIREMENT",
+      "decision_driving": true,
+      "status": "NEEDS_RESEARCH",
+      "source_ids": [
+        "SRC-IR-LAW-ECOM-1382-DISCOVERY"
+      ],
+      "locators": [
+        {
+          "source_id": "SRC-IR-LAW-ECOM-1382-DISCOVERY",
+          "locator": "Discovery metadata: enactment 1382-10-17; publication 1382-11-11; Official Gazette 17167. Exact current primary article locator still required."
+        }
+      ],
+      "authority_requirement": "A",
+      "freshness_class": "LEGAL",
+      "max_age_days": 30,
+      "jurisdiction_or_scope": "IRAN",
+      "phases": [
+        1,
+        2,
+        3,
+        5,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-REG-CONSTRAINTS",
+        "DN-REG-EVIDENCE",
+        "DN-REG-MESSAGING",
+        "DN-REG-ACTIVATION"
+      ],
+      "module_ids": [
+        "MOD-REG-HIGH"
+      ],
+      "limitations": "Not admissible for definitive legal advice until the official publication/current amendment state is snapshotted and article-level locators are verified."
+    },
+    "KCL-IR-TAX-TERMINALS-1398-UNVERIFIED": {
+      "id": "KCL-IR-TAX-TERMINALS-1398-UNVERIFIED",
+      "knowledge_node_id": "KB-DOMAIN-TAX-SAAS",
+      "statement": "Iran's Shop Terminals and Taxpayer System Law was enacted in 1398 and has later amendments, but the currently applicable consolidated primary text has not yet been verified in the canonical knowledge plane.",
+      "claim_kind": "LEGAL_REQUIREMENT",
+      "decision_driving": true,
+      "status": "NEEDS_RESEARCH",
+      "source_ids": [
+        "SRC-IR-TAX-TERMINALS-1398-DISCOVERY"
+      ],
+      "locators": [
+        {
+          "source_id": "SRC-IR-TAX-TERMINALS-1398-DISCOVERY",
+          "locator": "Discovery metadata: enactment 1398-07-21; publication 1398-08-16; Official Gazette 21741; secondary consolidated text indicates later amendments including 1404."
+        }
+      ],
+      "authority_requirement": "A",
+      "freshness_class": "TAX",
+      "max_age_days": 30,
+      "jurisdiction_or_scope": "IRAN",
+      "phases": [
+        1,
+        2,
+        3,
+        5,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-TAX-SAAS-COMPLIANCE-SCOPE",
+        "DN-TAX-SAAS-PROOF",
+        "DN-TAX-SAAS-MESSAGING",
+        "DN-TAX-SAAS-UPDATES"
+      ],
+      "module_ids": [
+        "MOD-DOMAIN-TAX-SAAS",
+        "MOD-REG-HIGH"
+      ],
+      "limitations": "Not admissible for definitive tax-system obligations until primary amendment chain and current article text are verified."
+    },
+    "KCL-IR-TRADE-UNION-LICENSING-UNVERIFIED": {
+      "id": "KCL-IR-TRADE-UNION-LICENSING-UNVERIFIED",
+      "knowledge_node_id": "KB-COMPLIANCE",
+      "statement": "Iran's Trade Union System Law contains guild/business licensing obligations and has been materially amended; current obligations must be verified against primary consolidated sources before use.",
+      "claim_kind": "LEGAL_REQUIREMENT",
+      "decision_driving": true,
+      "status": "NEEDS_RESEARCH",
+      "source_ids": [
+        "SRC-IR-TRADE-UNION-1382-DISCOVERY"
+      ],
+      "locators": [
+        {
+          "source_id": "SRC-IR-TRADE-UNION-1382-DISCOVERY",
+          "locator": "Discovery metadata: enactment 1382-12-24; publication 1383-01-29; Official Gazette 17221; secondary text indicates later amendments including 1392 and 1403."
+        }
+      ],
+      "authority_requirement": "A",
+      "freshness_class": "LEGAL",
+      "max_age_days": 30,
+      "jurisdiction_or_scope": "IRAN",
+      "phases": [
+        1,
+        2,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-REG-CONSTRAINTS",
+        "DN-REG-EVIDENCE",
+        "DN-REG-ACTIVATION"
+      ],
+      "module_ids": [
+        "MOD-REG-HIGH"
+      ],
+      "limitations": "Licensing/guild conclusions remain REQUIRES_VERIFICATION until exact current primary articles and amendment status are captured."
+    },
+    "KCL-IR-ENAMAD-CURRENT-RULES-UNVERIFIED": {
+      "id": "KCL-IR-ENAMAD-CURRENT-RULES-UNVERIFIED",
+      "knowledge_node_id": "KB-COMPLIANCE",
+      "statement": "Enamad/e-commerce licensing requirements are maintained by the official e-commerce authority, but an exact current rule document/version has not yet been captured for canonical decision use.",
+      "claim_kind": "LEGAL_REQUIREMENT",
+      "decision_driving": true,
+      "status": "NEEDS_RESEARCH",
+      "source_ids": [
+        "SRC-IR-ENAMAD-RULES-FAMILY"
+      ],
+      "locators": [
+        {
+          "source_id": "SRC-IR-ENAMAD-RULES-FAMILY",
+          "locator": "Official family entry point https://enamad.ir/; exact current rule page/version/effective date still required."
+        }
+      ],
+      "authority_requirement": "A",
+      "freshness_class": "REGULATORY",
+      "max_age_days": 30,
+      "jurisdiction_or_scope": "IRAN",
+      "phases": [
+        1,
+        2,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-REG-CONSTRAINTS",
+        "DN-REG-EVIDENCE",
+        "DN-REG-ACTIVATION"
+      ],
+      "module_ids": [
+        "MOD-REG-HIGH"
+      ],
+      "limitations": "Official family pointer is insufficient for a definitive eligibility/permit requirement; exact current source and locator are required."
     }
   }
 }
