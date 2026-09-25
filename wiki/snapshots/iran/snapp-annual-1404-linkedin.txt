@@ -1,0 +1,14 @@
+Source snapshot — Snapp official LinkedIn annual-report post
+Captured: 2026-09-25
+Source URL: https://www.linkedin.com/posts/snapp.ir_%DA%AF%D8%B2%D8%A7%D8%B1%D8%B4-%D8%B3%D8%A7%D9%84-%DB%B1%DB%B4%DB%B0%DB%B4-%DA%AF%D8%B1%D9%88%D9%87-%D8%A7%D8%B3%D9%86%D9%BE-activity-7487481372211867648-eKvn
+Observed report period: 1404
+Source owner: Snapp!
+
+Verified statements preserved for canonical use:
+- Snapp announced its annual report for 1404.
+- The official post stated that users made 8.2 billion visits to the super-app during the reported year.
+- The official post stated that total time spent in Snapp rides exceeded 407 million hours.
+
+Scope and limitations:
+- These figures describe Snapp’s own platform/service usage, not the total Iranian mobility or digital-platform market.
+- The shortened link to the complete report was not accessible to the verification client. Only statements directly visible in the official post are admissible in this batch.
