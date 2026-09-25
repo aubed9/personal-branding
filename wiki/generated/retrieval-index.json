@@ -5,7 +5,7 @@
     "claim_registry": "wiki/claims.json",
     "policy": "Only VERIFIED/CANONICAL claims whose referenced sources are VERIFIED/CANONICAL are indexed."
   },
-  "count": 39,
+  "count": 41,
   "entries": [
     {
       "retrieval_id": "RET-KCL-B2B-DMU",
@@ -589,6 +589,36 @@
       "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
     },
     {
+      "retrieval_id": "RET-KCL-IR-DIGIKALA-SECONDHAND-SEARCH-1404",
+      "knowledge_node_id": "KB-IR-PLATFORM-DIGIKALA-1404",
+      "claim_id": "KCL-IR-DIGIKALA-SECONDHAND-SEARCH-1404",
+      "content": "دیجی‌کالا در اعلام رسمی گزارش سال ۱۴۰۴ گفته است جست‌وجوی عبارت «دست دوم» در پلتفرم در سال ۱۴۰۴ نسبت به سال قبل ۵۱٪ رشد کرده است.",
+      "claim_kind": "PLATFORM_OBSERVATION",
+      "decision_driving": true,
+      "status": "VERIFIED",
+      "source_ids": [
+        "SRC-IR-DIGIKALA-REPORT-1404-LINKEDIN"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INDUSTRY_REPORT",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "IRAN_PLATFORM_DIGIKALA",
+      "phases": [
+        2,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-B2C-PURCHASE-TRIGGER",
+        "DN-ONLINE-ACQUISITION"
+      ],
+      "module_ids": [
+        "MOD-CUSTOMER-B2C",
+        "MOD-CHANNEL-ONLINE",
+        "MOD-OFFER-PHYSICAL"
+      ],
+      "limitations": "مشاهده فقط مربوط به رفتار جست‌وجو در دیجی‌کالا است؛ بیانگر سهم بازار، کل تقاضای ایران یا رفتار همه دسته‌های کالایی نیست. برای تصمیم یک صنعت خاص باید با داده همان صنعت و شواهد مستقیم مشتری ترکیب شود."
+    },
+    {
       "retrieval_id": "RET-KCL-IR-ECOM-1403",
       "knowledge_node_id": "KB-IR-ECOM-REPORT-001",
       "claim_id": "KCL-IR-ECOM-1403",
@@ -681,6 +711,35 @@
         "MOD-CHANNEL-ONLINE"
       ],
       "limitations": "آمار کل شبکه پرداخت شاپرک است؛ اندازه کل تجارت الکترونیکی یا فروش یک کسب‌وکار خاص نیست."
+    },
+    {
+      "retrieval_id": "RET-KCL-IR-SNAPP-SUPERAPP-VISITS-1404",
+      "knowledge_node_id": "KB-IR-PLATFORM-SNAPP-1404",
+      "claim_id": "KCL-IR-SNAPP-SUPERAPP-VISITS-1404",
+      "content": "اسنپ در پست رسمی گزارش سال ۱۴۰۴ خود اعلام کرده است کاربران در طول سال ۸.۲ میلیارد بار به سوپراپ مراجعه کرده‌اند.",
+      "claim_kind": "PLATFORM_OBSERVATION",
+      "decision_driving": true,
+      "status": "VERIFIED",
+      "source_ids": [
+        "SRC-IR-SNAPP-REPORT-1404-LINKEDIN"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INDUSTRY_REPORT",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "IRAN_PLATFORM_SNAPP",
+      "phases": [
+        2,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-OFFER-PLATFORM-LOOP",
+        "DN-ONLINE-FUNNEL"
+      ],
+      "module_ids": [
+        "MOD-OFFER-PLATFORM",
+        "MOD-CHANNEL-ONLINE"
+      ],
+      "limitations": "این عدد metric استفاده از پلتفرم اسنپ است، نه تعداد کاربر یکتا، سهم بازار یا اندازه کل بازار دیجیتال/حمل‌ونقل ایران."
     },
     {
       "retrieval_id": "RET-KCL-LOCAL-CHANNEL",
