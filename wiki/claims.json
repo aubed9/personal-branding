@@ -1772,7 +1772,25 @@
         "MOD-DOMAIN-TAX-SAAS",
         "MOD-REG-HIGH"
       ],
-      "limitations": "Primary source identity for the known 1398→1401→1402→1404 chain is verified. This decision-driving claim intentionally remains NEEDS_RESEARCH because source verification alone is not equivalent to a complete article-level current-obligation map; no definitive obligation should be emitted until that mapping and claim decomposition are complete."
+      "limitations": "Primary source identity for the known 1398→1401→1402→1404 chain is verified. This decision-driving claim intentionally remains NEEDS_RESEARCH because source verification alone is not equivalent to a complete article-level current-obligation map; no definitive obligation should be emitted until that mapping and claim decomposition are complete.",
+      "verification_gate": {
+        "type": "LEGAL_AMENDMENT_COVERAGE",
+        "status": "INCOMPLETE",
+        "completed_requirements": [
+          "PRIMARY_SOURCE_CHAIN_IDENTITIES_VERIFIED",
+          "KNOWN_AFFECTING_LAWS_LINKED"
+        ],
+        "required_requirements": [
+          "PRIMARY_SOURCE_CHAIN_IDENTITIES_VERIFIED",
+          "KNOWN_AFFECTING_LAWS_LINKED",
+          "ARTICLE_LEVEL_CURRENT_MAP_COMPLETE",
+          "DECISION_DRIVING_OBLIGATIONS_DECOMPOSED"
+        ],
+        "blocking_reasons": [
+          "ARTICLE_LEVEL_CURRENT_MAP_PENDING",
+          "DECISION_CLAIM_DECOMPOSITION_PENDING"
+        ]
+      }
     },
     "KCL-IR-TRADE-UNION-LICENSING-UNVERIFIED": {
       "id": "KCL-IR-TRADE-UNION-LICENSING-UNVERIFIED",
