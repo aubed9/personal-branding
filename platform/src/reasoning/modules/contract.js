@@ -22,6 +22,7 @@ export function defineDecisionModule(definition) {
     values: uniq(definition.values),
     phases: uniq(definition.phases).map(Number).sort((a, b) => a - b),
     activation: definition.activation || null,
+    contextDimensions: definition.contextDimensions || ['AXIS'],
     prerequisites: definition.prerequisites || [`AXIS:${definition.axis}`],
     decisionNodes: definition.decisionNodes || [],
     evidenceRequirements: definition.evidenceRequirements || [],
@@ -32,11 +33,13 @@ export function defineDecisionModule(definition) {
     gates: definition.gates || [],
     knowledgeDependencies: definition.knowledgeDependencies || [],
     sourceDependencies: definition.sourceDependencies || [],
-    invalidationEdges: definition.invalidationEdges || (definition.decisionNodes || []).map(node => ({
-      type: 'INVALIDATES_ON_AXIS_CHANGE',
-      from: `AXIS:${definition.axis}`,
-      to: node.id,
-    })),
+    invalidationEdges: definition.invalidationEdges || (definition.decisionNodes || []).flatMap(node =>
+      (definition.contextDimensions || ['AXIS']).map(dimension => ({
+        type: 'INVALIDATES_ON_CONTEXT_CHANGE',
+        from: dimension === 'AXIS' ? `AXIS:${definition.axis}` : dimension,
+        to: node.id,
+      }))
+    ),
     priority: Number(definition.priority || 100),
   };
   Object.freeze(mod.values);
@@ -51,6 +54,11 @@ export function validateDecisionModule(mod) {
   if (!Array.isArray(mod?.values) || mod.values.length === 0) errors.push('module values are required');
   else for (const value of mod.values) if (!CONTEXT_AXIS_VALUES[mod.axis]?.includes(value)) errors.push(`invalid activation value ${value} for ${mod.axis}`);
   if (!Array.isArray(mod?.phases) || mod.phases.some(p => !Number.isInteger(p) || p < 1 || p > 8)) errors.push('module phases must be 1..8');
+  if (!Array.isArray(mod?.contextDimensions) || mod.contextDimensions.length === 0) errors.push('contextDimensions must be a non-empty array');
+  else {
+    const allowedDimensions = new Set(['AXIS', 'BUSINESS_TYPE', 'INDUSTRY', 'ARCHETYPE']);
+    for (const dimension of mod.contextDimensions) if (!allowedDimensions.has(dimension)) errors.push(`invalid context dimension: ${dimension}`);
+  }
   if (!Array.isArray(mod?.prerequisites)) errors.push('prerequisites must be an array');
   if (!Array.isArray(mod?.decisionNodes)) errors.push('decisionNodes must be an array');
   if (!Array.isArray(mod?.evidenceRequirements)) errors.push('evidenceRequirements must be an array');

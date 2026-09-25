@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE_PATH = ROOT / "wiki" / "source-registry.json"
 CLAIM_PATH = ROOT / "wiki" / "claims.json"
 OUTPUT_PATH = ROOT / "wiki" / "generated" / "retrieval-index.json"
+PARITY_PATH = ROOT / "wiki" / "migration" / "retrieval-parity-report.json"
 
 ADMISSIBLE = {"VERIFIED", "CANONICAL"}
 AUTHORITY_RANK = {"A": 1, "B": 2, "C": 3, "D": 4}
@@ -77,6 +78,18 @@ def main():
     output = build_index()
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_PATH.write_text(json.dumps(output, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    # Keep migration parity metadata derived from the actual generated index.
+    # Legacy inventory counts remain migration facts; only canonical retrieval count
+    # changes as verified canonical claims are added.
+    if PARITY_PATH.exists():
+        parity = load_json(PARITY_PATH)
+        parity["canonical_retrieval_entries"] = output["count"]
+        PARITY_PATH.write_text(
+            json.dumps(parity, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+
     print(f"Generated {output['count']} canonical retrieval entries -> {OUTPUT_PATH}")
 
 

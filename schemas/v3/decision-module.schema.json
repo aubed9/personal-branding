@@ -10,6 +10,7 @@
     "axis",
     "values",
     "phases",
+    "contextDimensions",
     "prerequisites",
     "decisionNodes",
     "evidenceRequirements",
@@ -160,7 +161,7 @@
         ],
         "properties": {
           "type": {
-            "const": "INVALIDATES_ON_AXIS_CHANGE"
+            "const": "INVALIDATES_ON_CONTEXT_CHANGE"
           },
           "from": {
             "type": "string"
@@ -173,6 +174,20 @@
     },
     "priority": {
       "type": "number"
+    },
+    "contextDimensions": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": [
+          "AXIS",
+          "BUSINESS_TYPE",
+          "INDUSTRY",
+          "ARCHETYPE"
+        ]
+      }
     }
   }
 }

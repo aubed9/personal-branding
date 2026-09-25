@@ -992,3 +992,91 @@ knowledge_nodes:
     status: CANONICAL
     source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
     claim_ids: [KCL-VALIDATION]
+  KB-DOMAIN-CAFE:
+    title: "Cafe / specialty coffee domain decision contract"
+    file: wiki/13-decision-modules/domain-cafe.md
+    category: 13-decision-modules
+    phases: [1, 2, 3, 5, 7, 8]
+    business_types: [DOMAIN_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-DOMAIN-CAFE]
+  KB-DOMAIN-LOCAL-RETAIL:
+    title: "Local physical retail domain decision contract"
+    file: wiki/13-decision-modules/domain-local-retail.md
+    category: 13-decision-modules
+    phases: [1, 2, 3, 7, 8]
+    business_types: [DOMAIN_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-DOMAIN-LOCAL-RETAIL]
+  KB-DOMAIN-TAX-SAAS:
+    title: "Iran tax/accounting SaaS domain decision contract"
+    file: wiki/13-decision-modules/domain-tax-saas.md
+    category: 13-decision-modules
+    phases: [1, 2, 3, 5, 8]
+    business_types: [DOMAIN_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-DOMAIN-TAX-SAAS]
+  KB-DOMAIN-SAAS-GENERAL:
+    title: "General SaaS adoption domain decision contract"
+    file: wiki/13-decision-modules/domain-saas-general.md
+    category: 13-decision-modules
+    phases: [1, 2, 3, 5, 8]
+    business_types: [DOMAIN_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-DOMAIN-SAAS-GENERAL]
+  KB-DOMAIN-MEDICAL:
+    title: "Medical / dental clinic domain decision contract"
+    file: wiki/13-decision-modules/domain-medical.md
+    category: 13-decision-modules
+    phases: [1, 2, 3, 5, 7, 8]
+    business_types: [DOMAIN_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-DOMAIN-MEDICAL]
+  KB-DOMAIN-BEAUTY:
+    title: "Beauty / salon domain decision contract"
+    file: wiki/13-decision-modules/domain-beauty.md
+    category: 13-decision-modules
+    phases: [1, 2, 3, 5, 7, 8]
+    business_types: [DOMAIN_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-DOMAIN-BEAUTY]
+  KB-DOMAIN-MACHINING:
+    title: "Machining / tooling domain decision contract"
+    file: wiki/13-decision-modules/domain-machining.md
+    category: 13-decision-modules
+    phases: [1, 2, 3, 5, 7, 8]
+    business_types: [DOMAIN_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-DOMAIN-MACHINING]
+  KB-DOMAIN-MANUFACTURING:
+    title: "General manufacturing domain decision contract"
+    file: wiki/13-decision-modules/domain-manufacturing.md
+    category: 13-decision-modules
+    phases: [1, 2, 3, 5, 7, 8]
+    business_types: [DOMAIN_DRIVEN]
+    dependencies: []
+    relevance: mandatory
+    status: CANONICAL
+    source_ids: [SRC-INT-CONTEXT-CONTRACT, SRC-INT-ARCH-V3]
+    claim_ids: [KCL-DOMAIN-MANUFACTURING]
