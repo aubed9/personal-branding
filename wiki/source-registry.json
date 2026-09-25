@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updated_at": "2026-09-24",
+  "updated_at": "2026-09-25",
   "source_count_policy": "Counts are derived from the sources object; Knowledge Node count is never a source count.",
   "freshness_defaults_days": {
     "VOLATILE_PRICE": 7,
@@ -1165,6 +1165,54 @@
       "status": "VERIFIED",
       "checksum": "git-blob:33aeb425af47b6a39770cc95fd71c2653886ab71",
       "limitations": "The official site identifies the report and report-download area, but the report file was not directly fetchable by the verification client. Only headline figures repeatedly tied to the official release are promoted; table-level statistics require direct report locators."
+    },
+    "SRC-IR-DIGIKALA-REPORT-1404-LINKEDIN": {
+      "id": "SRC-IR-DIGIKALA-REPORT-1404-LINKEDIN",
+      "source_type": "FIRST_PARTY_PLATFORM_ANNOUNCEMENT",
+      "title": "گزارش سال ۱۴۰۴ دیجی‌کالا — اعلام رسمی شرکت",
+      "author_or_institution": "Digikala",
+      "issuing_authority": "Digikala",
+      "published_at": null,
+      "effective_from": null,
+      "effective_until": null,
+      "observed_period": "1404",
+      "edition_or_version": "Annual report 1404 official LinkedIn announcement",
+      "url": "https://www.linkedin.com/company/digikala",
+      "repository_location": "wiki/snapshots/iran/digikala-annual-1404-linkedin.txt",
+      "accessed_at": "2026-09-25",
+      "verified_at": "2026-09-25",
+      "jurisdiction_or_scope": "IRAN_PLATFORM_DIGIKALA",
+      "language": "fa",
+      "authority_tier": "A",
+      "freshness_class": "INDUSTRY_REPORT",
+      "max_age_days": 365,
+      "status": "VERIFIED",
+      "checksum": "git-blob:e30117a40ee57d7c8bfeb5d40c5732c39fe59546",
+      "limitations": "First-party mutable company-feed snapshot. Only statements directly visible in the captured Digikala update are admissible; the shortened full-report landing was not reproducibly accessible. Platform observations must not be generalized to the whole Iranian retail market."
+    },
+    "SRC-IR-SNAPP-REPORT-1404-LINKEDIN": {
+      "id": "SRC-IR-SNAPP-REPORT-1404-LINKEDIN",
+      "source_type": "FIRST_PARTY_PLATFORM_ANNOUNCEMENT",
+      "title": "گزارش سال ۱۴۰۴ گروه اسنپ — پست رسمی",
+      "author_or_institution": "Snapp!",
+      "issuing_authority": "Snapp!",
+      "published_at": null,
+      "effective_from": null,
+      "effective_until": null,
+      "observed_period": "1404",
+      "edition_or_version": "Annual report 1404 official LinkedIn post",
+      "url": "https://www.linkedin.com/posts/snapp.ir_%DA%AF%D8%B2%D8%A7%D8%B1%D8%B4-%D8%B3%D8%A7%D9%84-%DB%B1%DB%B4%DB%B0%DB%B4-%DA%AF%D8%B1%D9%88%D9%87-%D8%A7%D8%B3%D9%86%D9%BE-activity-7487481372211867648-eKvn",
+      "repository_location": "wiki/snapshots/iran/snapp-annual-1404-linkedin.txt",
+      "accessed_at": "2026-09-25",
+      "verified_at": "2026-09-25",
+      "jurisdiction_or_scope": "IRAN_PLATFORM_SNAPP",
+      "language": "fa",
+      "authority_tier": "A",
+      "freshness_class": "INDUSTRY_REPORT",
+      "max_age_days": 365,
+      "status": "VERIFIED",
+      "checksum": "git-blob:0a532ca671a853eb942d30e3be83e5b09dd90391",
+      "limitations": "First-party platform announcement. Only metrics directly visible in the captured Snapp post are admissible; the shortened full-report destination was not reproducibly accessible. Figures describe Snapp usage, not the whole Iranian mobility or platform market."
     }
   }
 }
