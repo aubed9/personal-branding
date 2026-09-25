@@ -1127,3 +1127,26 @@ knowledge_nodes:
     status: VERIFIED
     source_ids: [SRC-IR-ECOM-REPORT-1403]
     claim_ids: [KCL-IR-ECOM-1403]
+KB-IR-PLATFORM-DIGIKALA-1404:
+    title: "رفتار جست‌وجوی کاربران دیجی‌کالا — گزارش سال ۱۴۰۴"
+    file: wiki/14-iran-evidence/digikala-annual-1404.md
+    category: 14-iran-evidence
+    phases: [2, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: [KB-DIGITAL-FUNNEL, KB-B2C-BEHAVIOR]
+    relevance: high
+    status: VERIFIED
+    source_ids: [SRC-IR-DIGIKALA-REPORT-1404-LINKEDIN]
+    claim_ids: [KCL-IR-DIGIKALA-SECONDHAND-SEARCH-1404]
+
+  KB-IR-PLATFORM-SNAPP-1404:
+    title: "مقیاس مراجعه کاربران به سوپراپ اسنپ — گزارش سال ۱۴۰۴"
+    file: wiki/14-iran-evidence/snapp-annual-1404.md
+    category: 14-iran-evidence
+    phases: [2, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: [KB-PLATFORM-MECHANICS, KB-DIGITAL-FUNNEL]
+    relevance: high
+    status: VERIFIED
+    source_ids: [SRC-IR-SNAPP-REPORT-1404-LINKEDIN]
+    claim_ids: [KCL-IR-SNAPP-SUPERAPP-VISITS-1404]
