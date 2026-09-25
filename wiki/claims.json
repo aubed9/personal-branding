@@ -1718,17 +1718,22 @@
     "KCL-IR-TAX-TERMINALS-1398-UNVERIFIED": {
       "id": "KCL-IR-TAX-TERMINALS-1398-UNVERIFIED",
       "knowledge_node_id": "KB-DOMAIN-TAX-SAAS",
-      "statement": "Iran's Shop Terminals and Taxpayer System Law was enacted in 1398 and has later amendments, but the currently applicable consolidated primary text has not yet been verified in the canonical knowledge plane.",
+      "statement": "Iran's Shop Terminals and Taxpayer System Law was enacted in 1398 and has material later amendments, including 1404 changes, but the currently applicable consolidated primary text has not yet been verified in the canonical knowledge plane.",
       "claim_kind": "LEGAL_REQUIREMENT",
       "decision_driving": true,
       "status": "NEEDS_RESEARCH",
       "source_ids": [
-        "SRC-IR-TAX-TERMINALS-1398-DISCOVERY"
+        "SRC-IR-TAX-TERMINALS-1398-DISCOVERY",
+        "SRC-IR-TAX-SPECULATION-1404-DISCOVERY"
       ],
       "locators": [
         {
           "source_id": "SRC-IR-TAX-TERMINALS-1398-DISCOVERY",
           "locator": "Discovery metadata: enactment 1398-07-21; publication 1398-08-16; Official Gazette 21741; secondary consolidated text indicates later amendments including 1404."
+        },
+        {
+          "source_id": "SRC-IR-TAX-SPECULATION-1404-DISCOVERY",
+          "locator": "Discovery metadata: Law on Taxation of Speculation and Profiteering approved 1404-04-08; Guardian Council confirmation 1404-04-31; presidential promulgation 80519 dated 1404-05-25; secondary consolidated texts show material amendments to the 1398 taxpayer-system law. Exact primary amendment text/current consolidation still required."
         }
       ],
       "authority_requirement": "A",
@@ -1752,7 +1757,7 @@
         "MOD-DOMAIN-TAX-SAAS",
         "MOD-REG-HIGH"
       ],
-      "limitations": "Not admissible for definitive tax-system obligations until primary amendment chain and current article text are verified."
+      "limitations": "Not admissible for definitive tax-system obligations. The 1398 base law and a material 1404 amendment are identified, but the exact primary amendment chain, effective dates and current article text must be captured and verified."
     },
     "KCL-IR-TRADE-UNION-LICENSING-UNVERIFIED": {
       "id": "KCL-IR-TRADE-UNION-LICENSING-UNVERIFIED",
