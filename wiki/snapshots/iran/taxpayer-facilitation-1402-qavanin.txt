@@ -1,0 +1,26 @@
+# Official-source snapshot — 1402 Taxpayer Facilitation Law
+
+Captured: 2026-09-25
+Jurisdiction: Iran
+Source authority: National Laws and Regulations System / Legal Vice Presidency
+
+Official qavanin.ir record
+- Title: قانون تسهیل تکالیف مؤدیان جهت اجرای «قانون پایانه های فروشگاهی و سامانه مؤدیان»
+- Record ID (IDS): 4822349448318190655
+- Approval authority: مجلس شورای اسلامی
+- Approval date: 1402/08/23
+- Promulgation number: 177609
+- Promulgating authority: رئیس جمهور
+- Promulgation date: 1402/09/29
+- Official Gazette number: 22942
+- Official Gazette date: 1402/10/04
+- Effective date: 1402/10/20
+- qavanin attribute: https://qavanin.ir/Law/Attribute/?IDS=4822349448318190655
+- qavanin text: https://qavanin.ir/Law/TreeText/?IDS=4822349448318190655
+
+Official Dotic notice
+- Dotic recorded that the law approved on 1402/08/23 was promulgated by the President under letter 177609 dated 1402/09/29.
+- https://dotic.ir/news/15610/
+
+Verification scope
+This snapshot verifies the official identity, approval, promulgation, Official Gazette identity and effective date of the 1402 facilitation law. It does not by itself prove the complete current consolidated taxpayer-system obligations because later amendments exist, including the 1402/10/18 replacement of Article 1 and later 1404 amendments.
