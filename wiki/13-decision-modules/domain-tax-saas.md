@@ -6,8 +6,8 @@ version: "1.0.0"
 status: "CANONICAL"
 related_phases: [1, 2, 3, 5, 8]
 related_business_types: ['DOMAIN_DRIVEN']
-source_ids: ['SRC-INT-CONTEXT-CONTRACT', 'SRC-INT-ARCH-V3']
-last_updated: "2026-09-23"
+source_ids: ['SRC-INT-CONTEXT-CONTRACT', 'SRC-INT-ARCH-V3', 'SRC-IR-TAX-TERMINALS-CURRENT-ARTICLES-QAVANIN']
+last_updated: "2026-09-25"
 ---
 
 # هدف
@@ -56,3 +56,13 @@ last_updated: "2026-09-23"
 
 - `SRC-INT-CONTEXT-CONTRACT`
 - `SRC-INT-ARCH-V3`
+
+
+# External Knowledge Claims قابل استفاده
+
+این node می‌تواند claimهای خارجی زیر را فقط از مسیر canonical retrieval مصرف کند:
+
+- `KCL-IR-TAX-ARTICLE2-CURRENT-POS-INVOICING` — تکلیف جاری ماده ۲ درباره پایانه فروشگاهی برای خرده‌فروشی/واحد صنفیِ مستقیم با مصرف‌کننده نهایی و صدور صورتحساب از سامانه مؤدیان برای سایر مؤدیان.
+- `KCL-IR-TAX-ARTICLE10-CURRENT-COMMERCIAL-ACCOUNTS` — تکلیف جاری ماده ۱۰ درباره اعلام حساب تجاری و شناسه یکتای کارتخوان/درگاه پرداخت مورد استفاده فعالیت شغلی.
+
+claim چتری `KCL-IR-TAX-TERMINALS-1398-UNVERIFIED` همچنان `NEEDS_RESEARCH` است و تا تکمیل `LEGAL_AMENDMENT_COVERAGE` نباید به‌عنوان الزام جاریِ کلی استفاده شود.
