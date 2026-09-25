@@ -299,3 +299,64 @@ test('verification gate blocks an accidental manual VERIFIED upgrade until legal
   });
   assert.equal(admitted.admissible, true, JSON.stringify(admitted, null, 2));
 });
+
+
+test('selected current taxpayer obligations are verified and retrievable without promoting the umbrella claim', () => {
+  const article2 = claims['KCL-IR-TAX-ARTICLE2-CURRENT-POS-INVOICING'];
+  const article10 = claims['KCL-IR-TAX-ARTICLE10-CURRENT-COMMERCIAL-ACCOUNTS'];
+  const umbrella = claims['KCL-IR-TAX-TERMINALS-1398-UNVERIFIED'];
+  const source = sources['SRC-IR-TAX-TERMINALS-CURRENT-ARTICLES-QAVANIN'];
+
+  assert.ok(source);
+  assert.equal(source.status, 'VERIFIED');
+  assert.equal(source.authority_tier, 'A');
+  assert.equal(source.verified_at, '2026-09-25');
+  assert.match(source.checksum, /^git-blob:[0-9a-f]{40}$/);
+  assert.ok(fs.existsSync(path.join(root, source.repository_location)));
+
+  for (const claim of [article2, article10]) {
+    assert.ok(claim);
+    assert.equal(claim.status, 'VERIFIED');
+    assert.equal(claim.claim_kind, 'LEGAL_REQUIREMENT');
+    assert.equal(claim.decision_driving, true);
+    const admission = evaluateKnowledgeClaim(claim, sources, {
+      asOf: new Date('2026-09-25T00:00:00Z'),
+      criticalUse: true,
+    });
+    assert.equal(admission.admissible, true, JSON.stringify(admission, null, 2));
+    assert.ok(index.entries.some(entry => entry.claim_id === claim.id));
+  }
+
+  const article2Results = retrieveCanonicalKnowledge(
+    'خرده فروشی پایانه فروشگاهی صورتحساب سامانه مؤدیان',
+    index.entries, claims, sources,
+    {
+      phase: 2,
+      moduleIds: ['MOD-DOMAIN-TAX-SAAS', 'MOD-REG-HIGH'],
+      jurisdiction: 'IRAN',
+      criticalUse: true,
+      asOf: new Date('2026-09-25T00:00:00Z'),
+      topK: 20,
+    }
+  );
+  assert.ok(article2Results.some(result => result.entry.claim_id === article2.id));
+
+  const article10Results = retrieveCanonicalKnowledge(
+    'حساب تجاری کارتخوان درگاه پرداخت',
+    index.entries, claims, sources,
+    {
+      phase: 2,
+      moduleIds: ['MOD-DOMAIN-TAX-SAAS', 'MOD-REG-HIGH'],
+      jurisdiction: 'IRAN',
+      criticalUse: true,
+      asOf: new Date('2026-09-25T00:00:00Z'),
+      topK: 20,
+    }
+  );
+  assert.ok(article10Results.some(result => result.entry.claim_id === article10.id));
+
+  assert.equal(umbrella.status, 'NEEDS_RESEARCH');
+  assert.equal(index.entries.some(entry => entry.claim_id === umbrella.id), false);
+  assert.ok(umbrella.verification_gate.completed_requirements.includes('SELECTED_CURRENT_ARTICLE_CLAIMS_DECOMPOSED'));
+  assert.equal(umbrella.verification_gate.status, 'INCOMPLETE');
+});
