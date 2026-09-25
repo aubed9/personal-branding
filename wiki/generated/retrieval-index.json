@@ -784,7 +784,7 @@
       "source_ids": [
         "SRC-IR-SNAPP-REPORT-1404-OFFICIAL-COMPANY"
       ],
-      "source_authority_floor": "A_TO_C",
+      "source_authority_floor": "C",
       "freshness_class": "INDUSTRY_REPORT",
       "max_age_days": 365,
       "jurisdiction_or_scope": "SNAPP_PLATFORM",
@@ -814,7 +814,7 @@
       "source_ids": [
         "SRC-IR-SNAPP-REPORT-1404-OFFICIAL-COMPANY"
       ],
-      "source_authority_floor": "A_TO_C",
+      "source_authority_floor": "C",
       "freshness_class": "INDUSTRY_REPORT",
       "max_age_days": 365,
       "jurisdiction_or_scope": "SNAPP_PLATFORM",
@@ -844,7 +844,7 @@
       "source_ids": [
         "SRC-IR-SNAPP-REPORT-1404-URBAN-TRIPS-POST"
       ],
-      "source_authority_floor": "A_TO_C",
+      "source_authority_floor": "C",
       "freshness_class": "INDUSTRY_REPORT",
       "max_age_days": 365,
       "jurisdiction_or_scope": "SNAPP_PLATFORM",
