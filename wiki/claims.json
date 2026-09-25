@@ -1718,18 +1718,23 @@
     "KCL-IR-TAX-TERMINALS-1398-UNVERIFIED": {
       "id": "KCL-IR-TAX-TERMINALS-1398-UNVERIFIED",
       "knowledge_node_id": "KB-DOMAIN-TAX-SAAS",
-      "statement": "Iran's Shop Terminals and Taxpayer System Law was enacted in 1398 and has material later amendments, including 1404 changes, but the currently applicable consolidated primary text has not yet been verified in the canonical knowledge plane.",
+      "statement": "Iran's Shop Terminals and Taxpayer System Law was enacted in 1398 and materially amended in 1402 and 1404, but the currently applicable consolidated primary text has not yet been verified in the canonical knowledge plane.",
       "claim_kind": "LEGAL_REQUIREMENT",
       "decision_driving": true,
       "status": "NEEDS_RESEARCH",
       "source_ids": [
         "SRC-IR-TAX-TERMINALS-1398-DISCOVERY",
+        "SRC-IR-TAX-TERMINALS-EASE-1402-DISCOVERY",
         "SRC-IR-TAX-SPECULATION-1404-DISCOVERY"
       ],
       "locators": [
         {
           "source_id": "SRC-IR-TAX-TERMINALS-1398-DISCOVERY",
           "locator": "Discovery metadata: enactment 1398-07-21; publication 1398-08-16; Official Gazette 21741; secondary consolidated text indicates later amendments including 1404."
+        },
+        {
+          "source_id": "SRC-IR-TAX-TERMINALS-EASE-1402-DISCOVERY",
+          "locator": "Discovery metadata: facilitation law approved 1402-08-23; secondary consolidated reproductions show amendments to taxpayer-system provisions including articles 2, 6, 14 مکرر, 22 and 26. Exact Official Gazette identity, primary text, article-level amendment mapping and effective dates still required."
         },
         {
           "source_id": "SRC-IR-TAX-SPECULATION-1404-DISCOVERY",
@@ -1757,7 +1762,7 @@
         "MOD-DOMAIN-TAX-SAAS",
         "MOD-REG-HIGH"
       ],
-      "limitations": "Not admissible for definitive tax-system obligations. The 1398 base law and a material 1404 amendment are identified, but the exact primary amendment chain, effective dates and current article text must be captured and verified."
+      "limitations": "Not admissible for definitive tax-system obligations. The 1398 base law plus material 1402 and 1404 amendments are identified, but exact primary publications, amendment-to-article mapping, effective dates and current consolidated text must be captured and verified."
     },
     "KCL-IR-TRADE-UNION-LICENSING-UNVERIFIED": {
       "id": "KCL-IR-TRADE-UNION-LICENSING-UNVERIFIED",
