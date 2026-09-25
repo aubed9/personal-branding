@@ -1,0 +1,27 @@
+# Official-source snapshot — 1402/10/18 amendment to Article 1 of the Taxpayer Facilitation Law
+
+Captured: 2026-09-25
+Jurisdiction: Iran
+Source authority: National Laws and Regulations System / Legal Vice Presidency
+
+Official qavanin.ir record
+- Title: قانون اصلاح ماده (1) قانون تسهیل تکالیف مؤدیان جهت اجرای قانون پایانه های فروشگاهی و سامانه مؤدیان
+- Record ID (IDS): 17935142558800059836
+- Approval authority: مجلس شورای اسلامی
+- Approval date: 1402/10/18
+- Guardian Council confirmation: 1402/11/14
+- Promulgation number: 211331
+- Promulgating authority: رئیس جمهور
+- Promulgation date: 1402/11/16
+- Official Gazette number: 22980
+- Official Gazette date: 1402/11/21
+- Effective date: 1402/12/07
+- qavanin attribute: https://qavanin.ir/Law/Attribute/?IDS=17935142558800059836
+- qavanin text: https://qavanin.ir/Law/TreeText/?IDS=17935142558800059836
+
+Verified operative text
+ماده واحده - متن ذیل جایگزین ماده (1) قانون تسهیل تکالیف مؤدیان جهت اجرای قانون پایانه های فروشگاهی و سامانه مؤدیان مصوب 1402/8/23 می شود:
+ماده 1 - از تاریخ 1402/10/1 کلیه مؤدیان اعم از حقیقی و حقوقی ملزم به صدور صورتحساب الکترونیکی موضوع قانون پایانه های فروشگاهی و سامانه مؤدیان مصوب 1398/7/21 با اصلاحات و الحاقات بعدی هستند.
+
+Verification scope
+This snapshot verifies the Article 1 replacement and its official publication metadata. It must not be used alone as proof of every currently applicable taxpayer-system obligation because the wider 1398 law and later amendment chain still require current consolidated verification.
