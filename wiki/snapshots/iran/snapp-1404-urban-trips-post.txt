@@ -1,0 +1,18 @@
+# Snapp annual report 1404 — official urban-trips post snapshot
+
+Captured: 2026-09-25
+Source owner: Snapp!
+Source type: first-party company post
+Observed period: 1404
+Exact post:
+https://www.linkedin.com/posts/snapp.ir_%D8%A7%D8%B3%D9%86%D9%BE-%DA%AF%D8%B2%D8%A7%D8%B1%D8%B4%D8%B3%D8%A7%D9%84-activity-7486751285828960256-Je8Z
+Full-report short link published by Snapp: https://lnkd.in/e-qDNK_Q
+
+Reproducible first-party fact visible in the official Snapp post:
+- Snapp reported more than 1.5 billion urban trips during 1404.
+- The same post states that the year involved more than 8,500 colleagues and millions of users; these contextual statements are not promoted as separate decision-driving claims in this batch.
+
+Admission boundary:
+- The >1.5 billion trips figure is SNAPP_PLATFORM scope only.
+- It must not be interpreted as the total number of urban trips in Iran or as Snapp market share.
+- The full annual report was not reproducibly retrieved in this verification run.
