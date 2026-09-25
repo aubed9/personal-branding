@@ -1,3 +1,16 @@
+---
+id: KB-IR-PLATFORM-DIGIKALA-1404
+title: "رفتار کاربران دیجی‌کالا — گزارش سال ۱۴۰۴"
+category: "14-iran-evidence"
+version: "1.0.0"
+status: "VERIFIED"
+related_phases: [1, 2, 8]
+related_business_types: ['CONTEXT_DRIVEN']
+source_ids: ['SRC-IR-DIGIKALA-REPORT-1404-OFFICIAL-POST']
+claim_ids: ['KCL-IR-DIGIKALA-1404-SECONDHAND-SEARCH', 'KCL-IR-DIGIKALA-1404-DIGITAL-GOLD', 'KCL-IR-DIGIKALA-1404-USD-ORDER-VALUE']
+last_updated: "2026-09-25"
+---
+
 # گزارش سال ۱۴۰۴ دیجی‌کالا — شواهد پلتفرمی
 
 ## دامنه استفاده
