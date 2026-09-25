@@ -18,6 +18,7 @@ const SOURCE_IDS = [
   'SRC-IR-LAW-ECOM-1382-DISCOVERY',
   'SRC-IR-LAW-ECOM-1382-QAVANIN-LOCATOR',
   'SRC-IR-TAX-TERMINALS-1398-DISCOVERY',
+  'SRC-IR-TAX-SPECULATION-1404-DISCOVERY',
   'SRC-IR-TRADE-UNION-1382-DISCOVERY',
   'SRC-IR-TRADE-UNION-AMENDMENT-1403-DISCOVERY',
   'SRC-IR-ENAMAD-RULES-FAMILY',
@@ -85,6 +86,32 @@ test('unverified legal claims are excluded from canonical retrieval index', () =
     assert.equal(claims[id].authority_requirement, 'A');
     assert.equal(indexed.has(id), false, `${id} must not enter generated retrieval before primary verification`);
   }
+});
+
+test('1404 tax amendment discovery keeps the 1398 taxpayer-system claim blocked until the primary chain is complete', () => {
+  const amendment = sources['SRC-IR-TAX-SPECULATION-1404-DISCOVERY'];
+  const claim = claims['KCL-IR-TAX-TERMINALS-1398-UNVERIFIED'];
+
+  assert.ok(amendment);
+  assert.equal(amendment.status, 'NEEDS_RESEARCH');
+  assert.equal(amendment.authority_tier, 'C');
+  assert.equal(amendment.verified_at, null);
+  assert.equal(amendment.repository_location, null);
+  assert.equal(amendment.checksum, null);
+  assert.ok(amendment.edition_or_version.includes('80519'));
+
+  assert.ok(claim.source_ids.includes(amendment.id));
+  assert.equal(claim.locators.length, claim.source_ids.length);
+
+  const indexed = new Set(index.entries.map(entry => entry.claim_id));
+  assert.equal(indexed.has(claim.id), false);
+
+  const admission = evaluateKnowledgeClaim(claim, sources, {
+    asOf: new Date('2026-09-25T00:00:00Z'),
+    criticalUse: true,
+  });
+  assert.equal(admission.admissible, false);
+  assert.ok(admission.reasons.includes('CLAIM_NOT_ADMISSIBLE'));
 });
 
 test('critical-use legal evaluation remains REQUIRES_VERIFICATION', () => {
