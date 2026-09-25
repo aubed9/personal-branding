@@ -1309,6 +1309,30 @@
       "status": "NEEDS_RESEARCH",
       "checksum": null,
       "limitations": "Discovery-only record. Multiple secondary/consolidated sources consistently identify the 1403 amendment and its promulgation metadata, but no reproducible repository snapshot of the exact Official Gazette/other primary publication has yet been captured. This record must not unlock current licensing/guild recommendations or be promoted to VERIFIED/CANONICAL until the primary publication, exact locator, amendment chain and checksum are recorded."
+    },
+    "SRC-IR-LAW-ECOM-1382-QAVANIN-LOCATOR": {
+      "id": "SRC-IR-LAW-ECOM-1382-QAVANIN-LOCATOR",
+      "source_type": "OFFICIAL_LEGISLATION_REGISTRY_LOCATOR",
+      "title": "قانون تجارت الکترونیکی — official qavanin.ir registry record",
+      "author_or_institution": "مجلس شورای اسلامی",
+      "issuing_authority": "معاونت حقوقی ریاست جمهوری / سامانه ملی قوانین و مقررات",
+      "published_at": "1382-11-11",
+      "effective_from": null,
+      "effective_until": null,
+      "observed_period": null,
+      "edition_or_version": "مصوب 1382-10-17؛ شناسه qavanin.ir = 15700719202226051269؛ روزنامه رسمی 17167",
+      "url": "https://qavanin.ir/Law/TreeText/?IDS=15700719202226051269",
+      "repository_location": "wiki/snapshots/iran/ecommerce-1382-qavanin-locator.txt",
+      "accessed_at": "2026-09-25",
+      "verified_at": null,
+      "jurisdiction_or_scope": "IRAN",
+      "language": "fa",
+      "authority_tier": "A",
+      "freshness_class": "LEGAL",
+      "max_age_days": 30,
+      "status": "NEEDS_RESEARCH",
+      "checksum": "git-blob:4e6ca37051247d611c7d8dddc11262c1bd119a1e",
+      "limitations": "Exact official registry identity is captured, but the complete qavanin.ir primary text/current amendment state was not reproducibly snapshotted in this run. Tier-A identity alone is insufficient for legal admission: keep NEEDS_RESEARCH until complete primary text, amendment state, article locators and verified_at are captured."
     }
   }
 }
