@@ -1261,6 +1261,30 @@
       "status": "NEEDS_RESEARCH",
       "checksum": null,
       "limitations": "Official-family pointer only. The exact current rule/requirement page, version/effective date and locator were not recovered in a reproducible form. Critical e-commerce licensing recommendations must remain REQUIRES_VERIFICATION."
+    },
+    "SRC-IR-TRADE-UNION-AMENDMENT-1392-GAZETTE": {
+      "id": "SRC-IR-TRADE-UNION-AMENDMENT-1392-GAZETTE",
+      "source_type": "OFFICIAL_GAZETTE_REPRODUCTION",
+      "title": "قانون اصلاح قانون نظام صنفی کشور — روزنامه رسمی شماره 19988",
+      "author_or_institution": "مجلس شورای اسلامی",
+      "issuing_authority": "روزنامه رسمی جمهوری اسلامی ایران",
+      "published_at": "1392-07-23",
+      "effective_from": null,
+      "effective_until": null,
+      "observed_period": null,
+      "edition_or_version": "Official Gazette 19988 / special issue 624 / amendment approved 1392-06-12",
+      "url": "https://natlex.ilo.org/dyn/natlex2/natlex2/files/download/103149/IRN-2013-L-103149.pdf",
+      "repository_location": "wiki/snapshots/iran/trade-union-amendment-1392-official-gazette.txt",
+      "accessed_at": "2026-09-25",
+      "verified_at": "2026-09-25",
+      "jurisdiction_or_scope": "IRAN",
+      "language": "fa",
+      "authority_tier": "A",
+      "freshness_class": "LEGAL",
+      "max_age_days": 30,
+      "status": "VERIFIED",
+      "checksum": "git-blob:3b6dadffb765e98869bb53cb65f9402fba435b3b",
+      "limitations": "Verified historical amendment publication only. This source does not prove the current consolidated law because later amendments exist, including 1403 changes. Current licensing/guild recommendations still require the later primary amendment chain."
     }
   }
 }

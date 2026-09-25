@@ -3,7 +3,7 @@
   "generated_at": "2026-09-24",
   "legacy_rag_chunks": 74,
   "legacy_wiki_files": 12,
-  "canonical_retrieval_entries": 39,
+  "canonical_retrieval_entries": 40,
   "legacy_chunks_accounted_for": 74,
   "silently_dropped_legacy_chunks": 0,
   "directly_mapped_legacy_chunks": 0,

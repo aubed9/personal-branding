@@ -5,7 +5,7 @@
     "claim_registry": "wiki/claims.json",
     "policy": "Only VERIFIED/CANONICAL claims whose referenced sources are VERIFIED/CANONICAL are indexed."
   },
-  "count": 39,
+  "count": 40,
   "entries": [
     {
       "retrieval_id": "RET-KCL-B2B-DMU",
@@ -681,6 +681,35 @@
         "MOD-CHANNEL-ONLINE"
       ],
       "limitations": "آمار کل شبکه پرداخت شاپرک است؛ اندازه کل تجارت الکترونیکی یا فروش یک کسب‌وکار خاص نیست."
+    },
+    {
+      "retrieval_id": "RET-KCL-IR-TRADE-UNION-AMENDMENT-1392-HISTORICAL",
+      "knowledge_node_id": "KB-COMPLIANCE",
+      "claim_id": "KCL-IR-TRADE-UNION-AMENDMENT-1392-HISTORICAL",
+      "content": "The 1392 amendment to Iran's Trade Union System Law was published in Official Gazette issue 19988 and amended multiple provisions of the 1382 law.",
+      "claim_kind": "BACKGROUND",
+      "decision_driving": false,
+      "status": "VERIFIED",
+      "source_ids": [
+        "SRC-IR-TRADE-UNION-AMENDMENT-1392-GAZETTE"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "LEGAL",
+      "max_age_days": 30,
+      "jurisdiction_or_scope": "IRAN",
+      "phases": [
+        1,
+        2,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-REG-CONSTRAINTS",
+        "DN-REG-EVIDENCE"
+      ],
+      "module_ids": [
+        "MOD-REG-HIGH"
+      ],
+      "limitations": "Historical amendment evidence only; it must not be treated as the current consolidated licensing rule because later amendments exist."
     },
     {
       "retrieval_id": "RET-KCL-LOCAL-CHANNEL",

@@ -1,0 +1,27 @@
+# Official Gazette reproduction metadata — Trade Union System Law amendment (1392)
+
+Verification date: 2026-09-25
+
+Document title:
+قانون اصلاح قانون نظام صنفی کشور
+
+Document identity visible in the reproduced Official Gazette PDF:
+- Publisher/origin shown in document: روزنامه رسمی جمهوری اسلامی ایران
+- Legislative authority: مجلس شورای اسلامی
+- Official Gazette issue number: 19988
+- Special issue number: 624
+- Publication date shown: 1392/07/23
+- Law approval date: 1392/06/12
+- Guardian Council approval date: 1392/06/20
+- Parliamentary promulgation letter: 28449/59 dated 1392/06/30
+- Presidential implementation letter: 123942 dated 1392/07/08
+- Original Official Gazette print URL embedded in the reproduced PDF:
+  http://www.rooznamehrasmi.ir/laws/PrintLaw.aspx?Code=1321
+- Reproduction URL used for verification:
+  https://natlex.ilo.org/dyn/natlex2/natlex2/files/download/103149/IRN-2013-L-103149.pdf
+
+Verification scope:
+This snapshot verifies the identity and existence of the 1392 amendment publication and its amendment text as reproduced from the Official Gazette. It does NOT establish that the 1392 text is the current consolidated Trade Union System Law, because later amendments exist, including amendments enacted in 1403. Current licensing/guild recommendations therefore remain REQUIRES_VERIFICATION until the later primary amendment chain is captured and reconciled.
+
+Primary-use locator:
+Official Gazette issue 19988, special issue 624, pages 1–10; "قانون اصلاح قانون نظام صنفی کشور".

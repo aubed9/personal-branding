@@ -1818,6 +1818,40 @@
         "MOD-REG-HIGH"
       ],
       "limitations": "Official family pointer is insufficient for a definitive eligibility/permit requirement; exact current source and locator are required."
+    },
+    "KCL-IR-TRADE-UNION-AMENDMENT-1392-HISTORICAL": {
+      "id": "KCL-IR-TRADE-UNION-AMENDMENT-1392-HISTORICAL",
+      "knowledge_node_id": "KB-COMPLIANCE",
+      "statement": "The 1392 amendment to Iran's Trade Union System Law was published in Official Gazette issue 19988 and amended multiple provisions of the 1382 law.",
+      "claim_kind": "BACKGROUND",
+      "decision_driving": false,
+      "status": "VERIFIED",
+      "source_ids": [
+        "SRC-IR-TRADE-UNION-AMENDMENT-1392-GAZETTE"
+      ],
+      "locators": [
+        {
+          "source_id": "SRC-IR-TRADE-UNION-AMENDMENT-1392-GAZETTE",
+          "locator": "Official Gazette issue 19988, special issue 624, pages 1–10; law title «قانون اصلاح قانون نظام صنفی کشور»; approved 1392-06-12."
+        }
+      ],
+      "authority_requirement": "A",
+      "freshness_class": "LEGAL",
+      "max_age_days": 30,
+      "jurisdiction_or_scope": "IRAN",
+      "phases": [
+        1,
+        2,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-REG-CONSTRAINTS",
+        "DN-REG-EVIDENCE"
+      ],
+      "module_ids": [
+        "MOD-REG-HIGH"
+      ],
+      "limitations": "Historical amendment evidence only; it must not be treated as the current consolidated licensing rule because later amendments exist."
     }
   }
 }

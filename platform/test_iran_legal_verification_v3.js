@@ -106,3 +106,30 @@ test('legal promotion requires exact primary-source fields before status can be 
     }
   }
 });
+
+
+test('1392 official-gazette amendment is verified historical evidence but does not unlock current licensing claims', () => {
+  const historicalSource = sources['SRC-IR-TRADE-UNION-AMENDMENT-1392-GAZETTE'];
+  const historicalClaim = claims['KCL-IR-TRADE-UNION-AMENDMENT-1392-HISTORICAL'];
+  const currentClaim = claims['KCL-IR-TRADE-UNION-LICENSING-UNVERIFIED'];
+
+  assert.ok(historicalSource);
+  assert.equal(historicalSource.status, 'VERIFIED');
+  assert.equal(historicalSource.authority_tier, 'A');
+  assert.equal(historicalSource.verified_at, '2026-09-25');
+  assert.match(historicalSource.checksum, /^git-blob:[0-9a-f]{40}$/);
+  assert.ok(fs.existsSync(path.join(root, historicalSource.repository_location)));
+
+  assert.ok(historicalClaim);
+  assert.equal(historicalClaim.status, 'VERIFIED');
+  assert.equal(historicalClaim.decision_driving, false);
+  assert.ok(index.entries.some(entry => entry.claim_id === historicalClaim.id));
+
+  assert.equal(currentClaim.status, 'NEEDS_RESEARCH');
+  const currentAdmission = evaluateKnowledgeClaim(currentClaim, sources, {
+    asOf: new Date('2026-09-25T00:00:00Z'),
+    criticalUse: true,
+  });
+  assert.equal(currentAdmission.admissible, false);
+  assert.ok(currentAdmission.reasons.includes('CLAIM_NOT_ADMISSIBLE'));
+});
