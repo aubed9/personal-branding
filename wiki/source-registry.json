@@ -1381,6 +1381,30 @@
       "status": "VERIFIED",
       "checksum": "git-blob:1bff3c171324e12588291995daac72119943c4ad",
       "limitations": "First-party Digikala platform evidence only. The full annual-report landing behind the LinkedIn short link was not reproducibly retrieved in this run. Admit only metrics explicitly present in Digikala's own company announcement; never interpret them as Iran-wide retail or consumer-market totals."
+    },
+    "SRC-IR-TAX-TERMINALS-EASE-1402-DISCOVERY": {
+      "id": "SRC-IR-TAX-TERMINALS-EASE-1402-DISCOVERY",
+      "source_type": "LEGAL_DISCOVERY_RECORD",
+      "title": "قانون تسهیل تکالیف مؤدیان جهت اجرای قانون پایانه‌های فروشگاهی و سامانه مؤدیان — discovery record",
+      "author_or_institution": "مجلس شورای اسلامی",
+      "issuing_authority": "مجلس شورای اسلامی / سازمان امور مالیاتی کشور",
+      "published_at": null,
+      "effective_from": null,
+      "effective_until": null,
+      "observed_period": null,
+      "edition_or_version": "مصوب 1402-08-23؛ materially amends multiple provisions of the 1398 Shop Terminals & Taxpayer System Law; exact Official Gazette identity and primary snapshot still required",
+      "url": "https://www.irancodify.com/b/%D9%82%D8%A7%D9%86%D9%88%D9%86_%D9%BE%D8%A7%DB%8C%D8%A7%D9%86%D9%87_%D9%87%D8%A7%DB%8C_%D9%81%D8%B1%D9%88%D8%B4%DA%AF%D8%A7%D9%87%DB%8C_%D9%88_%D8%B3%D8%A7%D9%85%D8%A7%D9%86%D9%87_%D9%85%D8%A4%D8%AF%DB%8C%D8%A7%D9%86_%D9%85%D8%B5%D9%88%D8%A8_1398-07-21",
+      "repository_location": null,
+      "accessed_at": "2026-09-25",
+      "verified_at": null,
+      "jurisdiction_or_scope": "IRAN",
+      "language": "fa",
+      "authority_tier": "C",
+      "freshness_class": "TAX",
+      "max_age_days": 30,
+      "status": "NEEDS_RESEARCH",
+      "checksum": null,
+      "limitations": "Discovery-only record. Secondary consolidated reproductions consistently show that the 1402-08-23 facilitation law amends multiple taxpayer-system provisions, but the exact primary publication, Official Gazette identity, article-level locators, effective dates and checksum are not yet captured. It must not unlock definitive tax obligations."
     }
   }
 }
