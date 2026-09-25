@@ -1127,7 +1127,7 @@ knowledge_nodes:
     status: VERIFIED
     source_ids: [SRC-IR-ECOM-REPORT-1403]
     claim_ids: [KCL-IR-ECOM-1403]
-KB-IR-PLATFORM-DIGIKALA-1404:
+  KB-IR-PLATFORM-DIGIKALA-1404:
     title: "رفتار جست‌وجوی کاربران دیجی‌کالا — گزارش سال ۱۴۰۴"
     file: wiki/14-iran-evidence/digikala-annual-1404.md
     category: 14-iran-evidence
