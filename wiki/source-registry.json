@@ -1333,6 +1333,30 @@
       "status": "NEEDS_RESEARCH",
       "checksum": "git-blob:4e6ca37051247d611c7d8dddc11262c1bd119a1e",
       "limitations": "Exact official registry identity is captured, but the complete qavanin.ir primary text/current amendment state was not reproducibly snapshotted in this run. Tier-A identity alone is insufficient for legal admission: keep NEEDS_RESEARCH until complete primary text, amendment state, article locators and verified_at are captured."
+    },
+    "SRC-IR-TAX-SPECULATION-1404-DISCOVERY": {
+      "id": "SRC-IR-TAX-SPECULATION-1404-DISCOVERY",
+      "source_type": "LEGAL_DISCOVERY_RECORD",
+      "title": "قانون مالیات بر سوداگری و سفته‌بازی — discovery record for 1404 amendments affecting taxpayer-system law",
+      "author_or_institution": "مجلس شورای اسلامی",
+      "issuing_authority": "مجلس شورای اسلامی / ریاست جمهوری",
+      "published_at": "1404-05-25",
+      "effective_from": null,
+      "effective_until": null,
+      "observed_period": null,
+      "edition_or_version": "مصوب 1404-04-08؛ تأیید شورای نگهبان 1404-04-31؛ ابلاغ ریاست جمهوری شماره 80519 مورخ 1404-05-25",
+      "url": "https://taxiniran.com/%D9%82%D8%A7%D9%86%D9%88%D9%86-%D9%85%D8%A7%D9%84%DB%8C%D8%A7%D8%AA-%D8%A8%D8%B1-%D8%B3%D9%88%D8%AF%D8%A7%DA%AF%D8%B1%DB%8C-%D9%88-%D8%B3%D9%81%D8%AA%D9%87-%D8%A8%D8%A7%D8%B2%DB%8C/",
+      "repository_location": null,
+      "accessed_at": "2026-09-25",
+      "verified_at": null,
+      "jurisdiction_or_scope": "IRAN",
+      "language": "fa",
+      "authority_tier": "C",
+      "freshness_class": "TAX",
+      "max_age_days": 30,
+      "status": "NEEDS_RESEARCH",
+      "checksum": null,
+      "limitations": "Discovery-only amendment record. Secondary/current consolidated reproductions indicate this 1404 law materially amends the Shop Terminals and Taxpayer System Law, including Article 1 and additional provisions. Exact primary publication, effective-date chain, affected-article locators and consolidated current text must be captured before definitive tax obligations are generated."
     }
   }
 }
