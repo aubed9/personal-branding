@@ -316,6 +316,8 @@ test('legacy Wiki migration inventory accounts for every legacy authored markdow
 
 
 test('verified foundational publisher editions remain bibliographic evidence until claim-level locators exist', () => {
+  const sources = json('wiki/source-registry.json').sources;
+  const index = json('wiki/generated/retrieval-index.json');
   for (const id of ['SRC-FOUNDATION-03', 'SRC-FOUNDATION-15']) {
     const source = sources[id];
     assert.ok(source, id);
