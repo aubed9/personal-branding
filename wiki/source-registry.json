@@ -1525,6 +1525,30 @@
       "status": "VERIFIED",
       "checksum": "git-blob:84a6afa49f5026d38cfccaade3578cf682e27670",
       "limitations": "Verifies official identity/publication metadata and the official amendment relationship to the 1398 law. A complete article-by-article canonical current-law map is still required before specific obligations are promoted."
+    },
+    "SRC-IR-TAX-TERMINALS-CURRENT-ARTICLES-QAVANIN": {
+      "id": "SRC-IR-TAX-TERMINALS-CURRENT-ARTICLES-QAVANIN",
+      "source_type": "OFFICIAL_CONSOLIDATED_LEGAL_TEXT",
+      "title": "قانون پایانه‌های فروشگاهی و سامانه مؤدیان — selected current consolidated obligations",
+      "author_or_institution": "مجلس شورای اسلامی",
+      "issuing_authority": "سامانه ملی قوانین و مقررات جمهوری اسلامی ایران / معاونت حقوقی ریاست جمهوری",
+      "published_at": null,
+      "effective_from": null,
+      "effective_until": null,
+      "observed_period": "CURRENT_CONSOLIDATED_AS_OF_2026-09-25",
+      "edition_or_version": "qavanin IDS 12936955486234542481; selected current Articles 2, 10 and 15 with later amendments",
+      "url": "https://qavanin.ir/Law/TreeText/?IDS=12936955486234542481",
+      "repository_location": "wiki/snapshots/iran/taxpayer-current-obligations-selected-articles-1404-qavanin.txt",
+      "accessed_at": "2026-09-25",
+      "verified_at": "2026-09-25",
+      "jurisdiction_or_scope": "IRAN",
+      "language": "fa",
+      "authority_tier": "A",
+      "freshness_class": "TAX",
+      "max_age_days": 30,
+      "status": "VERIFIED",
+      "checksum": "git-blob:66585d55567987c2b59793e0eb6b064e26276c80",
+      "limitations": "Supports only the selected current Article 2, Article 10 and Article 15 meanings recorded in the repository snapshot. It is not a substitute for a full current-law map, implementation circulars, exemptions, penalties, thresholds or sector-specific rules."
     }
   }
 }
