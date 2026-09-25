@@ -18,6 +18,7 @@ const SOURCE_IDS = [
   'SRC-IR-LAW-ECOM-1382-DISCOVERY',
   'SRC-IR-TAX-TERMINALS-1398-DISCOVERY',
   'SRC-IR-TRADE-UNION-1382-DISCOVERY',
+  'SRC-IR-TRADE-UNION-AMENDMENT-1403-DISCOVERY',
   'SRC-IR-ENAMAD-RULES-FAMILY',
 ];
 
@@ -41,6 +42,13 @@ test('Iran legal discovery records are explicit non-admissible research gaps', (
   assert.equal(sources['SRC-IR-LAW-ECOM-1382-DISCOVERY'].edition_or_version.includes('17167'), true);
   assert.equal(sources['SRC-IR-TAX-TERMINALS-1398-DISCOVERY'].edition_or_version.includes('21741'), true);
   assert.equal(sources['SRC-IR-TRADE-UNION-1382-DISCOVERY'].edition_or_version.includes('17221'), true);
+  const amendment1403 = sources['SRC-IR-TRADE-UNION-AMENDMENT-1403-DISCOVERY'];
+  assert.equal(amendment1403.edition_or_version.includes('271/27838'), true);
+  assert.equal(amendment1403.edition_or_version.includes('80114'), true);
+  assert.equal(amendment1403.status, 'NEEDS_RESEARCH');
+  assert.equal(amendment1403.verified_at, null);
+  assert.equal(amendment1403.repository_location, null);
+  assert.equal(amendment1403.checksum, null);
 });
 
 test('unverified legal claims are excluded from canonical retrieval index', () => {
@@ -126,6 +134,13 @@ test('1392 official-gazette amendment is verified historical evidence but does n
   assert.ok(index.entries.some(entry => entry.claim_id === historicalClaim.id));
 
   assert.equal(currentClaim.status, 'NEEDS_RESEARCH');
+  assert.ok(currentClaim.source_ids.includes('SRC-IR-TRADE-UNION-AMENDMENT-1403-DISCOVERY'));
+  assert.equal(currentClaim.locators.length, currentClaim.source_ids.length);
+  const amendment1403 = sources['SRC-IR-TRADE-UNION-AMENDMENT-1403-DISCOVERY'];
+  assert.equal(amendment1403.status, 'NEEDS_RESEARCH');
+  assert.equal(amendment1403.authority_tier, 'C');
+  assert.equal(amendment1403.repository_location, null);
+  assert.equal(amendment1403.checksum, null);
   const currentAdmission = evaluateKnowledgeClaim(currentClaim, sources, {
     asOf: new Date('2026-09-25T00:00:00Z'),
     criticalUse: true,
