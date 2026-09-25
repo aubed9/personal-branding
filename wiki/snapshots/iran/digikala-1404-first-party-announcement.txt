@@ -1,0 +1,21 @@
+# Digikala annual report 1404 — first-party company announcement snapshot
+
+Captured: 2026-09-25
+Source owner: Digikala
+Source type: first-party company announcement
+Observed period: 1404
+Canonical company page: https://www.linkedin.com/company/digikala/
+Report landing short link published by Digikala: https://lnkd.in/gtSBhJUn
+
+Reproducible first-party facts visible in the official Digikala company update:
+- Digikala announced publication of its 1404 annual report.
+- Search activity for the term «دست دوم» on Digikala increased 51% in 1404 versus the prior year.
+- Purchases of digital gold on Digikala increased 12x in 1404.
+- Digikala states that average order value measured in US dollars has not returned to its pre-1397 level.
+- The announcement says the report covers behavior of millions of users on the Digikala platform and provides an AI assistant on the report landing page.
+
+Admission boundary:
+- These observations are DIGIKALA_PLATFORM scope only. They are not Iran-wide market totals.
+- The report landing behind the LinkedIn short link was not reproducibly retrieved in this verification run.
+- Only facts explicitly present on Digikala's own company announcement are admitted.
+- Figures found only in media/reposts are excluded until reproduced from the report or another first-party Digikala page.

@@ -127,3 +127,88 @@ test('all promoted external claims retain exact locators and explicit applicabil
     assert.ok(claim.limitations.length > 20);
   }
 });
+
+test('Digikala 1404 first-party metrics are verified but strictly platform-scoped', () => {
+  const source = sources['SRC-IR-DIGIKALA-REPORT-1404-OFFICIAL-POST'];
+  const ids = [
+    'KCL-IR-DIGIKALA-1404-SECONDHAND-SEARCH',
+    'KCL-IR-DIGIKALA-1404-DIGITAL-GOLD',
+    'KCL-IR-DIGIKALA-1404-USD-ORDER-VALUE',
+  ];
+
+  assert.ok(source);
+  assert.equal(source.status, 'VERIFIED');
+  assert.equal(source.authority_tier, 'C');
+  assert.equal(source.verified_at, '2026-09-25');
+  assert.equal(source.jurisdiction_or_scope, 'DIGIKALA_PLATFORM');
+  assert.match(source.checksum || '', /^git-blob:[0-9a-f]{40}$/);
+  assert.ok(fs.existsSync(path.join(root, source.repository_location)));
+
+  const indexed = new Set(index.entries.map(entry => entry.claim_id));
+  for (const id of ids) {
+    const claim = claims[id];
+    assert.ok(claim, id);
+    assert.equal(claim.status, 'VERIFIED');
+    assert.equal(claim.decision_driving, true);
+    assert.equal(claim.authority_requirement, 'A_TO_C');
+    assert.equal(claim.jurisdiction_or_scope, 'DIGIKALA_PLATFORM');
+    assert.equal(claim.source_ids.length, 1);
+    assert.equal(claim.locators.length, 1);
+    assert.ok(claim.limitations.length > 50);
+    assert.ok(indexed.has(id), `${id} missing from canonical retrieval`);
+
+    const admission = evaluateKnowledgeClaim(claim, sources, {
+      asOf: new Date('2026-09-25T00:00:00Z'),
+    });
+    assert.equal(admission.admissible, true, JSON.stringify(admission, null, 2));
+  }
+});
+
+test('Digikala platform evidence is retrievable in platform scope and excluded from generic Iran retrieval', () => {
+  const platformResults = retrieveCanonicalKnowledge(
+    'جستجوی دست دوم خرید طلای دیجیتال ارزش دلاری سفارش',
+    index.entries,
+    claims,
+    sources,
+    {
+      phase: 2,
+      moduleIds: ['MOD-CHANNEL-ONLINE'],
+      jurisdiction: 'DIGIKALA_PLATFORM',
+      asOf: new Date('2026-09-25T00:00:00Z'),
+      topK: 20,
+    }
+  );
+  const platformIds = new Set(platformResults.map(result => result.entry.claim_id));
+  assert.ok(platformIds.has('KCL-IR-DIGIKALA-1404-SECONDHAND-SEARCH'));
+  assert.ok(platformIds.has('KCL-IR-DIGIKALA-1404-DIGITAL-GOLD'));
+  assert.ok(platformIds.has('KCL-IR-DIGIKALA-1404-USD-ORDER-VALUE'));
+
+  const iranResults = retrieveCanonicalKnowledge(
+    'جستجوی دست دوم خرید طلای دیجیتال ارزش دلاری سفارش',
+    index.entries,
+    claims,
+    sources,
+    {
+      phase: 2,
+      moduleIds: ['MOD-CHANNEL-ONLINE'],
+      jurisdiction: 'IRAN',
+      asOf: new Date('2026-09-25T00:00:00Z'),
+      topK: 50,
+    }
+  );
+  const iranIds = new Set(iranResults.map(result => result.entry.claim_id));
+  assert.equal(iranIds.has('KCL-IR-DIGIKALA-1404-SECONDHAND-SEARCH'), false);
+  assert.equal(iranIds.has('KCL-IR-DIGIKALA-1404-DIGITAL-GOLD'), false);
+  assert.equal(iranIds.has('KCL-IR-DIGIKALA-1404-USD-ORDER-VALUE'), false);
+});
+
+test('Digikala 1404 admission contains only metrics reproduced on the first-party company announcement', () => {
+  const sourceId = 'SRC-IR-DIGIKALA-REPORT-1404-OFFICIAL-POST';
+  const admitted = Object.values(claims).filter(claim => claim.source_ids?.includes(sourceId));
+  assert.equal(admitted.length, 3);
+  assert.ok(admitted.some(claim => /۵۱٪/.test(claim.statement)));
+  assert.ok(admitted.some(claim => /۱۲ برابر/.test(claim.statement)));
+  assert.ok(admitted.some(claim => /ارزش دلاری/.test(claim.statement)));
+  assert.ok(admitted.every(claim => claim.jurisdiction_or_scope === 'DIGIKALA_PLATFORM'));
+});
+

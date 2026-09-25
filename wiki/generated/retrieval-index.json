@@ -5,7 +5,7 @@
     "claim_registry": "wiki/claims.json",
     "policy": "Only VERIFIED/CANONICAL claims whose referenced sources are VERIFIED/CANONICAL are indexed."
   },
-  "count": 40,
+  "count": 43,
   "entries": [
     {
       "retrieval_id": "RET-KCL-B2B-DMU",
@@ -587,6 +587,97 @@
         "MOD-FOUNDER-PUBLIC"
       ],
       "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
+    },
+    {
+      "retrieval_id": "RET-KCL-IR-DIGIKALA-1404-DIGITAL-GOLD",
+      "knowledge_node_id": "KB-IR-PLATFORM-DIGIKALA-1404",
+      "claim_id": "KCL-IR-DIGIKALA-1404-DIGITAL-GOLD",
+      "content": "دیجی‌کالا در اعلام رسمی گزارش سال ۱۴۰۴ گفته است خرید طلای دیجیتال روی پلتفرم آن در سال ۱۴۰۴، ۱۲ برابر شده است.",
+      "claim_kind": "MARKET_OBSERVATION",
+      "decision_driving": true,
+      "status": "VERIFIED",
+      "source_ids": [
+        "SRC-IR-DIGIKALA-REPORT-1404-OFFICIAL-POST"
+      ],
+      "source_authority_floor": "C",
+      "freshness_class": "INDUSTRY_REPORT",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "DIGIKALA_PLATFORM",
+      "phases": [
+        1,
+        2,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-OFFER-DIGITAL-ADOPTION",
+        "DN-OFFER-PLATFORM-LOOP"
+      ],
+      "module_ids": [
+        "MOD-CHANNEL-ONLINE",
+        "MOD-OFFER-DIGITAL",
+        "MOD-OFFER-PLATFORM"
+      ],
+      "limitations": "رشد اعلام‌شده مربوط به خرید طلای دیجیتال داخل اکوسیستم دیجی‌کالا است و نباید به کل بازار طلا، سرمایه‌گذاری یا تجارت الکترونیکی ایران تعمیم داده شود."
+    },
+    {
+      "retrieval_id": "RET-KCL-IR-DIGIKALA-1404-SECONDHAND-SEARCH",
+      "knowledge_node_id": "KB-IR-PLATFORM-DIGIKALA-1404",
+      "claim_id": "KCL-IR-DIGIKALA-1404-SECONDHAND-SEARCH",
+      "content": "در پلتفرم دیجی‌کالا، جست‌وجوی عبارت «دست دوم» در سال ۱۴۰۴ نسبت به سال قبل ۵۱٪ افزایش یافته است.",
+      "claim_kind": "MARKET_OBSERVATION",
+      "decision_driving": true,
+      "status": "VERIFIED",
+      "source_ids": [
+        "SRC-IR-DIGIKALA-REPORT-1404-OFFICIAL-POST"
+      ],
+      "source_authority_floor": "C",
+      "freshness_class": "INDUSTRY_REPORT",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "DIGIKALA_PLATFORM",
+      "phases": [
+        1,
+        2,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-ONLINE-FUNNEL",
+        "DN-OFFER-PLATFORM-LOOP"
+      ],
+      "module_ids": [
+        "MOD-CHANNEL-ONLINE",
+        "MOD-OFFER-PLATFORM"
+      ],
+      "limitations": "این شاخص فقط رفتار جست‌وجوی کاربران دیجی‌کالا را نشان می‌دهد؛ سهم بازار، تقاضای کل ایران، فروش کالای دست‌دوم در کل کشور یا رشد یک کسب‌وکار خاص نیست."
+    },
+    {
+      "retrieval_id": "RET-KCL-IR-DIGIKALA-1404-USD-ORDER-VALUE",
+      "knowledge_node_id": "KB-IR-PLATFORM-DIGIKALA-1404",
+      "claim_id": "KCL-IR-DIGIKALA-1404-USD-ORDER-VALUE",
+      "content": "دیجی‌کالا در گزارش سال ۱۴۰۴ اعلام کرده است میانگین ارزش دلاری هر سفارش روی پلتفرم از سال ۱۳۹۷ تاکنون به سطح پیش از آن سال بازنگشته است.",
+      "claim_kind": "MARKET_OBSERVATION",
+      "decision_driving": true,
+      "status": "VERIFIED",
+      "source_ids": [
+        "SRC-IR-DIGIKALA-REPORT-1404-OFFICIAL-POST"
+      ],
+      "source_authority_floor": "C",
+      "freshness_class": "INDUSTRY_REPORT",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "DIGIKALA_PLATFORM",
+      "phases": [
+        1,
+        2,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-TXN-UNIT-ECONOMICS",
+        "DN-ONLINE-FUNNEL"
+      ],
+      "module_ids": [
+        "MOD-REV-TRANSACTION",
+        "MOD-CHANNEL-ONLINE"
+      ],
+      "limitations": "این یک روند ارزش سفارش در پلتفرم دیجی‌کالا است، بدون رقم مطلق در پست رسمی؛ شاخص درآمد واقعی، قدرت خرید کل کشور یا اندازه بازار ایران محسوب نمی‌شود."
     },
     {
       "retrieval_id": "RET-KCL-IR-ECOM-1403",

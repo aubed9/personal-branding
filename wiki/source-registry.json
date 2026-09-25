@@ -1357,6 +1357,30 @@
       "status": "NEEDS_RESEARCH",
       "checksum": null,
       "limitations": "Discovery-only amendment record. Secondary/current consolidated reproductions indicate this 1404 law materially amends the Shop Terminals and Taxpayer System Law, including Article 1 and additional provisions. Exact primary publication, effective-date chain, affected-article locators and consolidated current text must be captured before definitive tax obligations are generated."
+    },
+    "SRC-IR-DIGIKALA-REPORT-1404-OFFICIAL-POST": {
+      "id": "SRC-IR-DIGIKALA-REPORT-1404-OFFICIAL-POST",
+      "source_type": "PLATFORM_FIRST_PARTY_ANNOUNCEMENT",
+      "title": "گزارش سال ۱۴۰۴ دیجی‌کالا — اعلام رسمی انتشار و شاخص‌های منتخب",
+      "author_or_institution": "Digikala",
+      "issuing_authority": "Digikala",
+      "published_at": null,
+      "effective_from": null,
+      "effective_until": null,
+      "observed_period": "1404",
+      "edition_or_version": "1404 annual report official company announcement",
+      "url": "https://www.linkedin.com/company/digikala/",
+      "repository_location": "wiki/snapshots/iran/digikala-1404-first-party-announcement.txt",
+      "accessed_at": "2026-09-25",
+      "verified_at": "2026-09-25",
+      "jurisdiction_or_scope": "DIGIKALA_PLATFORM",
+      "language": "fa",
+      "authority_tier": "C",
+      "freshness_class": "INDUSTRY_REPORT",
+      "max_age_days": 365,
+      "status": "VERIFIED",
+      "checksum": "git-blob:1bff3c171324e12588291995daac72119943c4ad",
+      "limitations": "First-party Digikala platform evidence only. The full annual-report landing behind the LinkedIn short link was not reproducibly retrieved in this run. Admit only metrics explicitly present in Digikala's own company announcement; never interpret them as Iran-wide retail or consumer-market totals."
     }
   }
 }
