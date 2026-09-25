@@ -1,0 +1,25 @@
+source_id: SRC-IR-TRADE-UNION-AMENDMENT-1403-QAVANIN
+verified_at: 2026-09-26
+official_registry: سامانه ملی قوانین و مقررات جمهوری اسلامی ایران / معاونت حقوقی ریاست جمهوری
+metadata_url: https://qavanin.ir/Law/Attribute/?IDS=11646297386230802736
+text_url: https://qavanin.ir/Law/TreeText/?IDS=11646297386230802736
+official_identity:
+  title: قانون اصلاح قانون نظام صنفی کشور
+  approved: 1403/05/02
+  promulgation_no: 80114
+  promulgated_at: 1403/05/24
+  official_gazette_no: 23127
+  official_gazette_at: 1403/05/29
+  effective_at: 1403/06/14
+captured_locators:
+  article_1:
+    changes:
+      - Article 12 of the Trade Union System Law is amended to tie obtaining a business license to the Ease of Business Licensing framework.
+      - Article 27 is replaced with the current sanction process for operating without a permanent or temporary business license.
+  article_27:
+    decision_use: Operating without the required business license triggers the statutory notice/sanction process; the monetary amount is inflation-adjusted and must not be hard-coded without a current value source.
+admission:
+  source_record_status: VERIFIED
+  decision_claim_scope: licensing requirement and Article 27 enforcement structure
+limitations:
+  This source verifies the 1403 amendment itself. Other licensing prerequisites can still depend on the base law, implementing regulations, activity type and current licensing-system rules.
