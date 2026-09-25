@@ -3,9 +3,9 @@
   "generated_from": {
     "source_registry": "wiki/source-registry.json",
     "claim_registry": "wiki/claims.json",
-    "policy": "Only VERIFIED/CANONICAL claims whose referenced sources are VERIFIED/CANONICAL are indexed."
+    "policy": "Only VERIFIED/CANONICAL claims whose referenced sources are VERIFIED/CANONICAL and whose explicit verification_gate (if present) is COMPLETE are indexed."
   },
-  "count": 43,
+  "count": 45,
   "entries": [
     {
       "retrieval_id": "RET-KCL-B2B-DMU",
@@ -772,6 +772,72 @@
         "MOD-CHANNEL-ONLINE"
       ],
       "limitations": "آمار کل شبکه پرداخت شاپرک است؛ اندازه کل تجارت الکترونیکی یا فروش یک کسب‌وکار خاص نیست."
+    },
+    {
+      "retrieval_id": "RET-KCL-IR-TAX-ARTICLE10-CURRENT-COMMERCIAL-ACCOUNTS",
+      "knowledge_node_id": "KB-DOMAIN-TAX-SAAS",
+      "claim_id": "KCL-IR-TAX-ARTICLE10-CURRENT-COMMERCIAL-ACCOUNTS",
+      "content": "طبق متن جاری ماده ۱۰ قانون پایانه‌های فروشگاهی و سامانه مؤدیان، اشخاص تجاری باید حساب یا حساب‌های مورد استفاده به‌عنوان حساب تجاری و شناسه یکتای دستگاه‌های کارتخوان یا درگاه‌های پرداخت الکترونیکی مورد استفاده برای فعالیت شغلی خود را به سازمان امور مالیاتی اعلام کنند.",
+      "claim_kind": "LEGAL_REQUIREMENT",
+      "decision_driving": true,
+      "status": "VERIFIED",
+      "source_ids": [
+        "SRC-IR-TAX-TERMINALS-CURRENT-ARTICLES-QAVANIN"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "TAX",
+      "max_age_days": 30,
+      "jurisdiction_or_scope": "IRAN",
+      "phases": [
+        1,
+        2,
+        3,
+        5,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-TAX-SAAS-COMPLIANCE-SCOPE",
+        "DN-TAX-SAAS-PROOF",
+        "DN-TAX-SAAS-UPDATES"
+      ],
+      "module_ids": [
+        "MOD-DOMAIN-TAX-SAAS",
+        "MOD-REG-HIGH"
+      ],
+      "limitations": "This claim is limited to the current declaration obligation stated in Article 10. It does not assert threshold tests, noncommercial-account presumptions, penalties, or other downstream tax consequences beyond this locator."
+    },
+    {
+      "retrieval_id": "RET-KCL-IR-TAX-ARTICLE2-CURRENT-POS-INVOICING",
+      "knowledge_node_id": "KB-DOMAIN-TAX-SAAS",
+      "claim_id": "KCL-IR-TAX-ARTICLE2-CURRENT-POS-INVOICING",
+      "content": "طبق متن جاری ماده ۲ قانون پایانه‌های فروشگاهی و سامانه مؤدیان، خرده‌فروشی‌ها و واحدهای صنفی که مستقیماً با مصرف‌کننده نهایی ارتباط دارند علاوه بر عضویت در سامانه مؤدیان ملزم به استفاده از پایانه فروشگاهی‌اند؛ مؤدیانی که مستقیماً با مصرف‌کننده نهایی ارتباط ندارند الزام به استفاده از پایانه فروشگاهی ندارند، اما باید صورتحساب‌های خود را طبق ترتیبات سازمان از طریق سامانه مؤدیان صادر کنند.",
+      "claim_kind": "LEGAL_REQUIREMENT",
+      "decision_driving": true,
+      "status": "VERIFIED",
+      "source_ids": [
+        "SRC-IR-TAX-TERMINALS-CURRENT-ARTICLES-QAVANIN"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "TAX",
+      "max_age_days": 30,
+      "jurisdiction_or_scope": "IRAN",
+      "phases": [
+        1,
+        2,
+        3,
+        5,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-TAX-SAAS-COMPLIANCE-SCOPE",
+        "DN-TAX-SAAS-PROOF",
+        "DN-TAX-SAAS-UPDATES"
+      ],
+      "module_ids": [
+        "MOD-DOMAIN-TAX-SAAS",
+        "MOD-REG-HIGH"
+      ],
+      "limitations": "Current-article claim verified as of 2026-09-25. It does not determine whether a specific taxpayer falls within an exemption, special implementation rule or sector-specific regime; those require separate current evidence."
     },
     {
       "retrieval_id": "RET-KCL-IR-TRADE-UNION-AMENDMENT-1392-HISTORICAL",
