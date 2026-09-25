@@ -1,0 +1,15 @@
+Source snapshot — Digikala official LinkedIn company update
+Captured: 2026-09-25
+Source URL: https://www.linkedin.com/company/digikala
+Observed report period: 1404
+Source owner: Digikala
+
+Verified statements preserved for canonical use:
+- Digikala announced publication of its annual report for 1404.
+- In the official company update, Digikala stated that searches for the Persian term meaning “second-hand” increased 51% in 1404 compared with the prior year.
+- The same update stated that purchases of digital gold increased twelve-fold; this metric is retained in the snapshot for provenance but is not promoted in this batch because the report landing/page could not be directly reproduced.
+
+Scope and limitations:
+- These are Digikala-platform observations, not Iran-wide market totals.
+- The company feed is mutable; this repository snapshot is the reproducible identity used for verification.
+- The shortened link to the complete report landing was not accessible to the verification client. No additional report metric may be inferred from secondary coverage.
