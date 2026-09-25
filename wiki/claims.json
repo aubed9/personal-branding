@@ -1778,7 +1778,8 @@
         "status": "INCOMPLETE",
         "completed_requirements": [
           "PRIMARY_SOURCE_CHAIN_IDENTITIES_VERIFIED",
-          "KNOWN_AFFECTING_LAWS_LINKED"
+          "KNOWN_AFFECTING_LAWS_LINKED",
+          "SELECTED_CURRENT_ARTICLE_CLAIMS_DECOMPOSED"
         ],
         "required_requirements": [
           "PRIMARY_SOURCE_CHAIN_IDENTITIES_VERIFIED",
@@ -1788,7 +1789,7 @@
         ],
         "blocking_reasons": [
           "ARTICLE_LEVEL_CURRENT_MAP_PENDING",
-          "DECISION_CLAIM_DECOMPOSITION_PENDING"
+          "REMAINING_DECISION_CLAIM_DECOMPOSITION_PENDING"
         ]
       }
     },
@@ -2006,6 +2007,82 @@
         "MOD-CHANNEL-ONLINE"
       ],
       "limitations": "این یک روند ارزش سفارش در پلتفرم دیجی‌کالا است، بدون رقم مطلق در پست رسمی؛ شاخص درآمد واقعی، قدرت خرید کل کشور یا اندازه بازار ایران محسوب نمی‌شود."
+    },
+    "KCL-IR-TAX-ARTICLE2-CURRENT-POS-INVOICING": {
+      "id": "KCL-IR-TAX-ARTICLE2-CURRENT-POS-INVOICING",
+      "knowledge_node_id": "KB-DOMAIN-TAX-SAAS",
+      "statement": "طبق متن جاری ماده ۲ قانون پایانه‌های فروشگاهی و سامانه مؤدیان، خرده‌فروشی‌ها و واحدهای صنفی که مستقیماً با مصرف‌کننده نهایی ارتباط دارند علاوه بر عضویت در سامانه مؤدیان ملزم به استفاده از پایانه فروشگاهی‌اند؛ مؤدیانی که مستقیماً با مصرف‌کننده نهایی ارتباط ندارند الزام به استفاده از پایانه فروشگاهی ندارند، اما باید صورتحساب‌های خود را طبق ترتیبات سازمان از طریق سامانه مؤدیان صادر کنند.",
+      "claim_kind": "LEGAL_REQUIREMENT",
+      "decision_driving": true,
+      "status": "VERIFIED",
+      "source_ids": [
+        "SRC-IR-TAX-TERMINALS-CURRENT-ARTICLES-QAVANIN"
+      ],
+      "locators": [
+        {
+          "source_id": "SRC-IR-TAX-TERMINALS-CURRENT-ARTICLES-QAVANIN",
+          "locator": "Current consolidated Article 2, amended 1404-04-08; qavanin IDS 12936955486234542481."
+        }
+      ],
+      "authority_requirement": "A",
+      "freshness_class": "TAX",
+      "max_age_days": 30,
+      "jurisdiction_or_scope": "IRAN",
+      "phases": [
+        1,
+        2,
+        3,
+        5,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-TAX-SAAS-COMPLIANCE-SCOPE",
+        "DN-TAX-SAAS-PROOF",
+        "DN-TAX-SAAS-UPDATES"
+      ],
+      "module_ids": [
+        "MOD-DOMAIN-TAX-SAAS",
+        "MOD-REG-HIGH"
+      ],
+      "limitations": "Current-article claim verified as of 2026-09-25. It does not determine whether a specific taxpayer falls within an exemption, special implementation rule or sector-specific regime; those require separate current evidence."
+    },
+    "KCL-IR-TAX-ARTICLE10-CURRENT-COMMERCIAL-ACCOUNTS": {
+      "id": "KCL-IR-TAX-ARTICLE10-CURRENT-COMMERCIAL-ACCOUNTS",
+      "knowledge_node_id": "KB-DOMAIN-TAX-SAAS",
+      "statement": "طبق متن جاری ماده ۱۰ قانون پایانه‌های فروشگاهی و سامانه مؤدیان، اشخاص تجاری باید حساب یا حساب‌های مورد استفاده به‌عنوان حساب تجاری و شناسه یکتای دستگاه‌های کارتخوان یا درگاه‌های پرداخت الکترونیکی مورد استفاده برای فعالیت شغلی خود را به سازمان امور مالیاتی اعلام کنند.",
+      "claim_kind": "LEGAL_REQUIREMENT",
+      "decision_driving": true,
+      "status": "VERIFIED",
+      "source_ids": [
+        "SRC-IR-TAX-TERMINALS-CURRENT-ARTICLES-QAVANIN"
+      ],
+      "locators": [
+        {
+          "source_id": "SRC-IR-TAX-TERMINALS-CURRENT-ARTICLES-QAVANIN",
+          "locator": "Current consolidated Article 10, amended 1404-04-08; qavanin IDS 12936955486234542481."
+        }
+      ],
+      "authority_requirement": "A",
+      "freshness_class": "TAX",
+      "max_age_days": 30,
+      "jurisdiction_or_scope": "IRAN",
+      "phases": [
+        1,
+        2,
+        3,
+        5,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-TAX-SAAS-COMPLIANCE-SCOPE",
+        "DN-TAX-SAAS-PROOF",
+        "DN-TAX-SAAS-UPDATES"
+      ],
+      "module_ids": [
+        "MOD-DOMAIN-TAX-SAAS",
+        "MOD-REG-HIGH"
+      ],
+      "limitations": "This claim is limited to the current declaration obligation stated in Article 10. It does not assert threshold tests, noncommercial-account presumptions, penalties, or other downstream tax consequences beyond this locator."
     }
   }
 }
