@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updated_at": "2026-09-25",
+  "updated_at": "2026-09-26",
   "claims": {
     "KCL-B2B-DMU": {
       "id": "KCL-B2B-DMU",
@@ -1680,17 +1680,17 @@
       "decision_driving": true,
       "status": "NEEDS_RESEARCH",
       "source_ids": [
-        "SRC-IR-LAW-ECOM-1382-DISCOVERY",
-        "SRC-IR-LAW-ECOM-1382-QAVANIN-LOCATOR"
+        "SRC-IR-LAW-ECOM-1382-QAVANIN-LOCATOR",
+        "SRC-IR-LAW-ECOM-1382-DISCOVERY"
       ],
       "locators": [
         {
-          "source_id": "SRC-IR-LAW-ECOM-1382-DISCOVERY",
-          "locator": "Discovery metadata: enactment 1382-10-17; publication 1382-11-11; Official Gazette 17167. Exact current primary article locator still required."
+          "source_id": "SRC-IR-LAW-ECOM-1382-QAVANIN-LOCATOR",
+          "locator": "Official qavanin registry IDS=15700719202226051269; approved 1382-10-17; Official Gazette 17167; latest registry status اصلاحی 1403-03-30. Article-level primary locator still required."
         },
         {
-          "source_id": "SRC-IR-LAW-ECOM-1382-QAVANIN-LOCATOR",
-          "locator": "Official qavanin.ir record IDS=15700719202226051269; base-law enactment 1382-10-17; Official Gazette 17167. Full reproducible current primary-text snapshot and amendment-state verification still required."
+          "source_id": "SRC-IR-LAW-ECOM-1382-DISCOVERY",
+          "locator": "Discovery metadata only: enactment 1382-10-17; publication 1382-11-11; Official Gazette 17167. This secondary discovery record is not admissible for definitive legal obligations."
         }
       ],
       "authority_requirement": "A",
@@ -1713,37 +1713,32 @@
       "module_ids": [
         "MOD-REG-HIGH"
       ],
-      "limitations": "Not admissible for definitive legal advice yet. The exact official qavanin.ir registry identity is known, but complete reproducible current primary text, amendment state and article-level locators must be captured before promotion."
+      "limitations": "Source identity/current registry status is verified, but article-level primary text is still not reproducibly captured. Keep NEEDS_RESEARCH and REQUIRES_VERIFICATION for any definitive obligation."
     },
     "KCL-IR-TAX-TERMINALS-1398-UNVERIFIED": {
       "id": "KCL-IR-TAX-TERMINALS-1398-UNVERIFIED",
       "knowledge_node_id": "KB-DOMAIN-TAX-SAAS",
-      "statement": "Iran's Shop Terminals and Taxpayer System Law was enacted in 1398 and materially amended in 1402 and 1404. The 1402 facilitation-law identity and its subsequent Article 1 replacement are now verified from the official qavanin registry, but the currently applicable consolidated 1398→1404 primary chain is not yet fully verified.",
+      "statement": "متن تنقیح‌شده جاری قانون پایانه‌های فروشگاهی و سامانه مؤدیان در سامانه رسمی qavanin اصلاحات ۱۴۰۴/۰۴/۰۸ را منعکس می‌کند؛ در محدوده ثبت‌شده این منبع، ماده ۱۰ به اعلام حساب‌ها و ابزارهای پرداخت تجاری و مواد ۱۲ تا ۱۴ به تکالیف اطلاع‌رسانی درباره اختلال صدور صورتحساب، توقف فعالیت و تغییرات شغل/محل/مالکیت می‌پردازند.",
       "claim_kind": "LEGAL_REQUIREMENT",
       "decision_driving": true,
-      "status": "NEEDS_RESEARCH",
+      "status": "VERIFIED",
       "source_ids": [
-        "SRC-IR-TAX-TERMINALS-1398-DISCOVERY",
+        "SRC-IR-TAX-TERMINALS-CURRENT-QAVANIN-1405",
         "SRC-IR-TAX-TERMINALS-EASE-1402-QAVANIN",
-        "SRC-IR-TAX-TERMINALS-EASE-M1-1402-QAVANIN",
-        "SRC-IR-TAX-SPECULATION-1404-DISCOVERY"
+        "SRC-IR-TAX-TERMINALS-EASE-M1-1402-QAVANIN"
       ],
       "locators": [
         {
-          "source_id": "SRC-IR-TAX-TERMINALS-1398-DISCOVERY",
-          "locator": "Discovery metadata: enactment 1398-07-21; publication 1398-08-16; Official Gazette 21741; secondary consolidated text indicates later amendments including 1404."
+          "source_id": "SRC-IR-TAX-TERMINALS-CURRENT-QAVANIN-1405",
+          "locator": "qavanin IDS 12936955486234542481 — current consolidated Articles 10, 12, 13 and 14; visible amendment markers 1404-04-08."
         },
         {
           "source_id": "SRC-IR-TAX-TERMINALS-EASE-1402-QAVANIN",
-          "locator": "Official qavanin IDS 4822349448318190655; approved 1402-08-23; promulgation 177609 dated 1402-09-29; Official Gazette 22942 dated 1402-10-04; effective 1402-10-20. Repository snapshot and git-blob checksum recorded."
+          "locator": "Official qavanin IDS 4822349448318190655; facilitation law identity/effective date."
         },
         {
           "source_id": "SRC-IR-TAX-TERMINALS-EASE-M1-1402-QAVANIN",
-          "locator": "Official qavanin IDS 17935142558800059836; Article 1 replacement approved 1402-10-18; Guardian Council confirmation 1402-11-14; promulgation 211331 dated 1402-11-16; Official Gazette 22980 dated 1402-11-21; effective 1402-12-07. Repository snapshot and git-blob checksum recorded."
-        },
-        {
-          "source_id": "SRC-IR-TAX-SPECULATION-1404-DISCOVERY",
-          "locator": "Discovery metadata: Law on Taxation of Speculation and Profiteering approved 1404-04-08; Guardian Council confirmation 1404-04-31; presidential promulgation 80519 dated 1404-05-25; secondary consolidated texts show material amendments to the 1398 taxpayer-system law. Exact primary amendment text/current consolidation still required."
+          "locator": "Official qavanin IDS 17935142558800059836; Article 1 replacement approved 1402-10-18."
         }
       ],
       "authority_requirement": "A",
@@ -1767,27 +1762,22 @@
         "MOD-DOMAIN-TAX-SAAS",
         "MOD-REG-HIGH"
       ],
-      "limitations": "Not admissible for definitive current tax-system obligations. The 1402 facilitation law and its 1402-10-18 Article 1 replacement are primary-verified, but the 1398 base law and material 1404 amendment chain/current consolidated article state still require exact primary capture and verification."
+      "limitations": "Verified only for the captured current article locators and amendment chain noted above. Exact applicability depends on taxpayer status, thresholds, exemptions and implementing rules; other obligations remain REQUIRES_VERIFICATION until separately sourced."
     },
     "KCL-IR-TRADE-UNION-LICENSING-UNVERIFIED": {
       "id": "KCL-IR-TRADE-UNION-LICENSING-UNVERIFIED",
       "knowledge_node_id": "KB-COMPLIANCE",
-      "statement": "Iran's Trade Union System Law contains guild/business licensing obligations and has been materially amended; current obligations must be verified against primary consolidated sources before use.",
+      "statement": "اصلاحیه ۱۴۰۳ قانون نظام صنفی کشور، ماده ۱۲ را به چارچوب قانون تسهیل صدور مجوزهای کسب‌وکار پیوند می‌دهد و ماده ۲۷ را درباره فعالیت بدون پروانه کسب و فرآیند اخطار/ضمانت اجرا جایگزین می‌کند.",
       "claim_kind": "LEGAL_REQUIREMENT",
       "decision_driving": true,
-      "status": "NEEDS_RESEARCH",
+      "status": "VERIFIED",
       "source_ids": [
-        "SRC-IR-TRADE-UNION-1382-DISCOVERY",
-        "SRC-IR-TRADE-UNION-AMENDMENT-1403-DISCOVERY"
+        "SRC-IR-TRADE-UNION-AMENDMENT-1403-QAVANIN"
       ],
       "locators": [
         {
-          "source_id": "SRC-IR-TRADE-UNION-1382-DISCOVERY",
-          "locator": "Discovery metadata: enactment 1382-12-24; publication 1383-01-29; Official Gazette 17221; secondary text indicates later amendments including 1392 and 1403."
-        },
-        {
-          "source_id": "SRC-IR-TRADE-UNION-AMENDMENT-1403-DISCOVERY",
-          "locator": "Discovery metadata: amendment approved 1403-05-02; Guardian Council confirmation 1403-05-17; Majlis letter 271/27838 dated 1403-05-21; presidential promulgation 80114 dated 1403-05-24; reported publication 1403-05-29. Exact primary publication snapshot still required."
+          "source_id": "SRC-IR-TRADE-UNION-AMENDMENT-1403-QAVANIN",
+          "locator": "qavanin IDS 11646297386230802736 — Article 1 amending Article 12 and replacing Article 27; approved 1403-05-02; effective 1403-06-14."
         }
       ],
       "authority_requirement": "A",
@@ -1807,7 +1797,7 @@
       "module_ids": [
         "MOD-REG-HIGH"
       ],
-      "limitations": "Current licensing/guild conclusions remain REQUIRES_VERIFICATION until the exact 1403 primary publication, article locators, consolidated amendment chain and freshness are captured; discovery metadata alone is not admissible."
+      "limitations": "Verified for the 1403 amendment's licensing linkage and Article 27 enforcement structure. Do not hard-code the monetary fine because the law provides for inflation adjustment; activity-specific prerequisites and implementing rules require separate current sources."
     },
     "KCL-IR-ENAMAD-CURRENT-RULES-UNVERIFIED": {
       "id": "KCL-IR-ENAMAD-CURRENT-RULES-UNVERIFIED",

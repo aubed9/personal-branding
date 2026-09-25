@@ -1,13 +1,13 @@
 {
   "version": "1.0.0",
-  "generated_at": "2026-09-25",
+  "generated_at": "2026-09-26",
   "legacy_rag_chunks": 74,
   "legacy_wiki_files": 12,
-  "canonical_retrieval_entries": 43,
+  "canonical_retrieval_entries": 45,
   "legacy_chunks_accounted_for": 74,
   "silently_dropped_legacy_chunks": 0,
   "directly_mapped_legacy_chunks": 0,
   "needs_research_legacy_chunks": 74,
   "retrieval_parity_status": "STRICTER_CANONICAL_COVERAGE_WITH_EXPLICIT_RESEARCH_GAPS",
-  "note": "Canonical retrieval includes verified Iran macro/payment/e-commerce evidence, a verified historical legal amendment, and platform-scoped Digikala 1404 first-party observations plus internal/domain contracts. Platform observations are isolated under DIGIKALA_PLATFORM and are not eligible for generic IRAN retrieval. Unresolved legal and legacy sources remain NEEDS_RESEARCH."
+  "note": "Canonical retrieval now includes verified Iran macro/payment/e-commerce evidence, platform-scoped Digikala observations, verified current taxpayer-system and 1403 trade-union claims, verified historical legal evidence, plus internal/domain contracts. Electronic Commerce article-level obligations, Enamad current rules, and unresolved legacy sources remain NEEDS_RESEARCH. All 74 legacy RAG chunks remain explicitly accounted for with zero silent loss."
 }

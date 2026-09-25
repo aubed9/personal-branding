@@ -1,0 +1,22 @@
+source_id: SRC-IR-LAW-ECOM-1382-QAVANIN-LOCATOR
+verified_at: 2026-09-26
+official_registry: سامانه ملی قوانین و مقررات جمهوری اسلامی ایران / معاونت حقوقی ریاست جمهوری
+official_url: https://qavanin.ir/Law/Attribute/?IDS=15700719202226051269
+tree_url: https://qavanin.ir/Law/TreeText/?IDS=15700719202226051269
+registry_identity:
+  law: قانون تجارت الکترونیکی
+  approved: 1382/10/17
+  promulgation_no: 61694
+  official_gazette_no: 17167
+  promulgated_at: 1382/11/05
+  official_gazette_at: 1382/11/11
+  effective_at: 1382/11/27
+  latest_status_reported_by_registry: اصلاحی 1403/03/30
+verification_scope:
+  - Official identity, Gazette number, enactment/promulgation/effective dates and current registry status are reproducibly verified.
+  - The TreeText endpoint is still not reproducibly exposing the article text to the verification client.
+admission:
+  source_record_status: VERIFIED
+  decision_driving_article_claims: NEEDS_RESEARCH
+limitations:
+  Specific legal obligations must not be generated from this source identity alone. Article-level primary text and amendment locators remain required before a definitive recommendation.
