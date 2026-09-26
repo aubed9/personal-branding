@@ -1,7 +1,7 @@
 // DIGITAL MARKET — Dynamic Chained Question Engine
 // Implements mathematical question composition:
 // ActiveQuestions = Base + Industry Module + Customer Model Overlay + Channel Overlay + Revenue Overlay + Maturity Overlay + Founder Role Overlay - Irrelevant - Answered
-// Grounded in the 165-Source Knowledge Base & Iranian Market Canonical Works
+// Grounded in the canonical Source Registry and provenance-governed knowledge plane
 
 import { INITIAL_QUESTIONS } from "../data/phase1Templates.js";
 import { getAdaptivePhase2Questions, PHASE2_QUESTIONS } from "../data/phase2Templates.js";
@@ -14,7 +14,7 @@ import { isAutomotiveService } from '../data/businessDomain.js';
 export const DYNAMIC_QUESTION_FORMULA = 
   "ActiveQuestions = Base + Industry Module + Customer Model Overlay + Channel Overlay + Revenue Overlay + Maturity Overlay + Founder Role Overlay - Irrelevant - Answered";
 
-// Canonical references registry for question guidance (165-source knowledge base)
+// Canonical references registry for question guidance; source counts are registry-derived, never hard-coded
 export const QUESTION_KNOWLEDGE_BASE = {
   // Phase 1
   step0_stage: {
@@ -853,7 +853,7 @@ export function composeChainedQuestions(
     // Inject canonical knowledge guidance
     const guidance = QUESTION_KNOWLEDGE_BASE[question.id] || {
       nodeId: `KB-P${p}-001`,
-      canonicalSource: "پایگاه دانش ۱۶۵ منبعی و فریم‌ورک‌های تصمیم‌گیری بازاریابی دیجیتال مارکت",
+      canonicalSource: "رجیستری دانش معتبر و فریم‌ورک‌های تصمیم‌گیری پذیرفته‌شده در DIGITAL MARKET",
       framework: "نردبان شواهد علمی و استراتژی یکپارچه برندسازی",
       decisionChainLink: `فاز ${p}: حلقه تصمیم‌گیری اختصاصی`,
       insight: "تمام خروجی‌ها بر مبنای داده‌های اعتبارسنجی‌شده و منطبق با بافتار صنف طراحی می‌شوند."

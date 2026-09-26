@@ -8,7 +8,7 @@ Data flow:
 3. **Dynamic Chained Question Engine**: Synthesizes questions via `Base + Industry Module + Overlays - Irrelevant - Answered`, with an immediate Open-Ended Diagnostic Probe (`step0_diagnostic_probing`) capturing founder vision.
 4. **Unknown-Aware Hypothesis Registry**: Unmeasured or unknown user answers are recorded as formal hypotheses with action items rather than forced fake numbers.
 5. **Phase Orchestration & Deliverable Generation**: 8-phase workflow projects canonical claims and uses the registry-backed knowledge layer; source counts and admissibility are derived from the canonical Source Registry.
-6. **753 Simulation & Quality Audit Harness**: Autonomous simulation across all 753 business types with 4-metric quality audit (target score >= 96%).
+6. **753 Simulation Compatibility Harness**: Autonomous simulation across all 753 business types as broad compatibility coverage. Strategic/reasoning quality is evaluated separately by the causal Reasoning v3 acceptance harness.
 
 ## Feature Inventory
 | # | Feature | Description | Milestone | Source |
@@ -25,9 +25,9 @@ Data flow:
 | 10 | 15-Axis & Unknown-Aware Deliverable Generator | Upgraded 5-layer deliverable generator displaying 15 axes, `BT-XXXX` code, founder vision, and hypothesis tracking in Layer 4/5. | M3 | Survey R3/R4 |
 | 11 | Canonical Source Registry & Wiki Integration | Grounds decision-driving knowledge in Source Records + claim-level provenance. Counts are derived from the registry, not hard-coded. | M3 | Survey R4 |
 | 12 | 753-Business Autonomous Simulation Pipeline | Automated end-to-end simulation script (`simulate_753_businesses.js`) executing Phases 0–8 + Master Book across all 753 business types. | M4 | Survey R5 |
-| 13 | 4-Metric Quality Audit Engine | Rigorous audit scoring (Practical Problem-Solving, Context Relevance & Zero Jargon, Zero Hallucination/Drift, Exit Gates & Document Integrity) with composite score >= 96%. | M4 | Survey R5 |
+| 13 | 753 Compatibility Audit | Broad cross-taxonomy compatibility checks across all 753 business types. This suite is not a strategic-quality score; causal quality is enforced by Reasoning v3 hard invariants and matched-pair acceptance tests. | M4 | Wayfinder #3 / Epic #14 |
 | 14 | Deliverable Ledger & Audit Book | Production of `deliverables/753_BUSINESS_SIMULATIONS.md` with complete simulation logs, industry summaries, and quality metrics. | M4 | Survey R5 |
-| 15 | Zero-Regression Test Suite & Build Verification | Pass 100% of `npm test` (117/117), `test_adversarial_challenger.js` (185/185), `scripts/validate_system.py` (32/32), and production Vite build. | M5 | Survey Acceptance |
+| 15 | Zero-Regression Test Suite & Build Verification | Pass the current complete `npm test`, adversarial, integration, E2E, validation, build, and 753 compatibility suites without relying on stale hard-coded assertion counts. | M5 | Wayfinder #3 / Epic #14 |
 
 ## Milestones
 | # | Name | Scope | Dependencies | Status |
@@ -35,8 +35,8 @@ Data flow:
 | 1 | Universal 753-Business Taxonomy & 15-Axis Router Architecture | Implement `businessTaxonomy753.js`, `business-type-registry.schema.json`, deploy `digital-market-universal-business-classification-8-stage-router` across 4 skill environments, update `businessContextRouter.js` with 15 axes and backward-compatible aliases. | None | DONE |
 | 2 | Dynamic Chained Questioning & Open-Ended Diagnostic Probing | Implement `dynamicQuestionEngine.js`, integrate `step0_diagnostic_probing` in `phase1Templates.js` and `orchestratorEngine.js`, compose questions via `Base + Industry + Overlays - Irrelevant - Answered`. | M1 | DONE |
 | 3 | Freeform Input Engine, Semantic Parsing & Unknown-Aware System | Implement `semanticParser.js`, multi-pattern unknown detection, multi-slot entity extraction, update `deliverableGenerator.js` with 15 axes and unknown hypothesis tags, update Chat UI quick options. | M2 | DONE |
-| 4 | 753-Business Autonomous Simulation & 4-Metric Quality Audit | Implement `simulate_753_businesses.js`, execute batch simulation of all 753 types, evaluate 4 quality metrics (target score >= 96%), emit `deliverables/753_BUSINESS_SIMULATIONS.md`, add npm test:753 script. | M3 | DONE |
-| 5 | E2E Harmonization, Zero Regression & Final Victory Audit | Run full regression suite (`npm test`, `test_adversarial_challenger.js`, `scripts/validate_system.py`, `npm run build`, `npm run test:753`), verify 0 jargon leakage, confirm 100% pass and lock all gates. | M4 | IN_PROGRESS (Final Gate Reviewers, Challengers, Auditor) |
+| 4 | 753-Business Autonomous Compatibility Simulation | Implement `simulate_753_businesses.js`, execute batch simulation of all 753 types, emit `deliverables/753_BUSINESS_SIMULATIONS.md`, and keep `npm run test:753` as compatibility coverage separate from strategic-quality evaluation. | M3 | DONE |
+| 5 | E2E Harmonization, Zero Regression & Reasoning v3 Rollout | Run the complete regression/build/compatibility suites plus Reasoning v3 causal acceptance, migration, invalidation, provenance, and rollout gates. | M4 | DONE — implemented through Epic #14 and merged rollout |
 
 ## Interface Contracts
 
