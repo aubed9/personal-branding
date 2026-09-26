@@ -182,6 +182,38 @@ test('dynamic question fallback never fabricates Knowledge Node identifiers', ()
   assert.ok(engine.includes('nodeId: null'));
 });
 
+test('every explicit dynamic-question Knowledge Node resolves in the canonical Wiki registry', () => {
+  const nodes = registryNodeIds();
+  const engine = read('platform/src/services/dynamicQuestionEngine.js');
+  const questionRefs = new Set(
+    [...engine.matchAll(/nodeId:\s*["'`](KB-[A-Z0-9-]+)["'`]/g)].map(match => match[1])
+  );
+  const missing = [...questionRefs].filter(id => !nodes.has(id)).sort();
+  assert.ok(questionRefs.size > 0);
+  assert.deepEqual(missing, []);
+});
+
+test('Phase 7 deliverable Knowledge Node references resolve to canonical visual-identity nodes', () => {
+  const nodes = registryNodeIds();
+  const deliverable = read('deliverables/Phase7_VisualIdentity.md');
+  const refs = new Set([...deliverable.matchAll(/KB-[A-Z0-9-]+/g)].map(match => match[0]));
+  assert.ok(refs.has('KB-VIS-DSYS-001'));
+  assert.ok(refs.has('KB-VIS-LOGO-001'));
+  assert.ok(refs.has('KB-VIS-COLOR-001'));
+  assert.deepEqual([...refs].filter(id => !nodes.has(id)).sort(), []);
+});
+
+test('Phase 7 visual nodes are backed by a canonical internal source and keep external facts out of scope', () => {
+  const sources = json('wiki/source-registry.json').sources;
+  const source = sources['SRC-INT-PHASE7-VISUAL-CONTRACT'];
+  assert.ok(source);
+  assert.equal(source.status, 'CANONICAL');
+  assert.equal(source.authority_tier, 'A');
+  assert.equal(source.jurisdiction_or_scope, 'PRODUCT_INTERNAL');
+  assert.equal(source.repository_location, 'skills/digital-market-phase7-visual-identity-design-system/SKILL.md');
+  assert.match(source.limitations, /external.*require.*Source\/Claim/i);
+});
+
 test('legacy article lifecycle is safely downgraded unless registry explicitly promotes it', () => {
   const registry = read('wiki/registry.yaml');
   assert.ok(registry.includes('default_status: NEEDS_RESEARCH'));
