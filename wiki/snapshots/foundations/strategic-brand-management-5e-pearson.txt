@@ -1,0 +1,26 @@
+# Strategic Brand Management, 5th Edition — publisher verification snapshot
+
+Captured: 2026-09-26
+Publisher: Pearson
+Authors: Kevin Lane Keller; Vanitha Swaminathan
+Title: Strategic Brand Management: Building, Measuring, and Managing Brand Equity
+Edition: 5th edition
+Published by Pearson: 15 September 2020
+Copyright: 2021
+ISBN-13: 9780135641316
+Publisher URL:
+https://www.pearson.com/en-us/subject-catalog/p/undefined/P200000005947/9780135641316
+
+Publisher table-of-contents locators:
+- Chapter 2: Customer-Based Brand Equity and Brand Positioning
+- Chapter 3: Brand Resonance and Brand Value Chain
+- Chapter 7: Branding in the Digital Era
+- Chapter 9: Developing a Brand Equity Measurement and Management System
+- Chapter 12: Designing and Implementing Brand Architecture Strategies
+- Chapter 13: Introducing and Naming New Products and Brand Extensions
+- Chapter 15: Managing Brands Over Geographic Boundaries and Market Segments
+
+Admission boundary:
+- This snapshot verifies edition, authorship, ISBN, publication identity and chapter-level locators from Pearson.
+- It does not reproduce textbook content.
+- Any detailed decision-driving proposition from these chapters still requires a precise chapter/page/section locator supported by the verified edition.

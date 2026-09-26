@@ -1,0 +1,21 @@
+# Diffusion of Innovations, 5th Edition — publisher verification snapshot
+
+Captured: 2026-09-26
+Publisher: Simon & Schuster
+Author: Everett M. Rogers
+Edition: 5th Edition
+Format verified on publisher page: 5th Edition Trade Paperback / eBook
+ISBN-13: 9780743222099
+Publisher URL:
+https://www.simonandschuster.com/books/Diffusion-of-Innovations-5th-Edition/Everett-M-Rogers/9780743222099
+
+Publisher-page locator:
+- Product title: "Diffusion of Innovations, 5th Edition"
+- Author: Everett M. Rogers
+- About-the-book section describes the diffusion process as spread of new ideas through communication channels over time.
+- Publisher page identifies this as the fifth edition.
+
+Admission boundary:
+- This snapshot verifies bibliographic identity and edition from the official publisher page.
+- It does not reproduce the full book.
+- Decision-driving conceptual claims still require a precise chapter/page locator from the verified edition before use.
