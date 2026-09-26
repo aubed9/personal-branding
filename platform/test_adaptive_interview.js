@@ -262,6 +262,28 @@ test('prompt includes question-and-answer pairs, uncertainties and exact target'
   assert.ok(prompt.includes('targetQuestionId')); assert.ok(prompt.includes(turn.questionId));
   assert.ok(prompt.includes('هنوز') || prompt.includes('مجهول'));
 });
+test('AI grounding uses only target-question canonical method metadata, not legacy wiki playbooks', () => {
+  const prompt = buildKnowledgeGroundingPrompt({
+    phaseNum: 7,
+    targetQuestion: {
+      id: 'p7_color_palette',
+      knowledgeGuidance: {
+        nodeId: 'KB-VIS-COLOR-001',
+        framework: 'معماری پالت و توکن‌های رنگ',
+        decisionChainLink: 'فاز ۷: تصمیم هویت بصری',
+        canonicalSource: 'LEGACY-SHOULD-NOT-ENTER-PROMPT',
+        insight: 'LEGACY-INSIGHT-SHOULD-NOT-ENTER-PROMPT',
+      },
+    },
+  });
+  assert.ok(prompt.includes('KB-VIS-COLOR-001'));
+  assert.ok(prompt.includes('معماری پالت و توکن‌های رنگ'));
+  assert.equal(prompt.includes('LEGACY-SHOULD-NOT-ENTER-PROMPT'), false);
+  assert.equal(prompt.includes('LEGACY-INSIGHT-SHOULD-NOT-ENTER-PROMPT'), false);
+  assert.equal(prompt.includes('canonical-foundations'), false);
+  assert.equal(prompt.includes('تورم مزمن ۳۰ تا ۴۰'), false);
+  assert.ok(prompt.includes('Source/Claim'));
+});
 test('API request permits complete JSON and forwards signal; truncated output fails safely', async () => {
   const original = globalThis.fetch;
   let payload;
