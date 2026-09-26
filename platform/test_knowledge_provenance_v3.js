@@ -164,6 +164,15 @@ test('legacy runtime cannot use manually-authored rag_chunks.json as a knowledge
   assert.ok(wikiEngine.includes('wiki'));
 });
 
+test('AI Brain cannot use legacy wikiKnowledge.js as an authored decision-support plane', () => {
+  const aiBrain = read('platform/src/services/geminiService.js');
+  assert.equal(aiBrain.includes('WIKI_PLAYBOOKS'), false);
+  assert.equal(aiBrain.includes('../data/wikiKnowledge'), false);
+  assert.equal(aiBrain.includes('PHASE_PLAYBOOK_MAP'), false);
+  assert.ok(aiBrain.includes('buildQuestionMethodGuidance'));
+  assert.ok(aiBrain.includes('Source/Claim'));
+});
+
 test('source-count claims are registry-derived, not hard-coded 165-source marketing claims', () => {
   const project = read('PROJECT.md');
   const skill = read('skills/llm-wiki/SKILL.md');
