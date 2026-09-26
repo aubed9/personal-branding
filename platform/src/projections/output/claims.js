@@ -10,6 +10,12 @@ import {
 } from '../../reasoning/contracts.js';
 import { ENTITY_STATUS, NODE_TYPES } from '../../reasoning/graph/index.js';
 import { DECISION_MODULES_BY_ID, getPhaseModuleProjection } from '../../reasoning/modules/index.js';
+import { retrieveCanonicalKnowledge } from '../../knowledge/index.js';
+import {
+  CANONICAL_EXTERNAL_KNOWLEDGE_CLAIMS,
+  CANONICAL_EXTERNAL_RETRIEVAL_ENTRIES,
+  CANONICAL_EXTERNAL_SOURCE_REGISTRY,
+} from '../../knowledge/canonicalExternalKnowledge.generated.js';
 
 const ANSWER_KIND_TO_CLAIM = Object.freeze({
   FACT: CLAIM_TYPES.USER_FACT,
@@ -32,6 +38,120 @@ const GRAPH_TO_CLAIM_STATUS = Object.freeze({
 });
 
 const uniq = values => [...new Set((values || []).filter(Boolean))];
+
+function resolveKnowledgeJurisdiction(phaseData, businessContext, metadata) {
+  const explicit = metadata.knowledgeJurisdiction
+    || businessContext?.knowledgeJurisdiction
+    || businessContext?.jurisdictionOrScope
+    || null;
+  if (typeof explicit === 'string' && explicit.trim()) return explicit.trim().toUpperCase();
+
+  const currentAnswers = activeAnswers(metadata.answerRecords || []);
+  const geographyAnswer = currentAnswers.find(answer => answer.questionId === 'step0_geography');
+  if (geographyAnswer?.optionValue === 'nationwide_iran') return 'IRAN';
+  if (geographyAnswer?.optionValue === 'international') return 'GENERAL';
+
+  const text = [
+    geographyAnswer?.text,
+    phaseData?.[1]?.geography,
+    businessContext?.geography,
+    businessContext?.geographicScope,
+  ].filter(Boolean).join(' ');
+  if (/ایران|\biran\b/i.test(text)) return 'IRAN';
+
+  // NATIONAL/LOCAL alone are not enough to infer a country.
+  return 'GENERAL';
+}
+
+function resolveKnowledgeAsOf(metadata) {
+  if (!metadata.knowledgeAsOf) return new Date();
+  const value = metadata.knowledgeAsOf instanceof Date
+    ? metadata.knowledgeAsOf
+    : new Date(metadata.knowledgeAsOf);
+  return Number.isNaN(value.getTime()) ? new Date() : value;
+}
+
+function buildExternalKnowledgeClaims({
+  phaseData,
+  businessContext,
+  moduleProjections,
+  metadata,
+}) {
+  if (!businessContext) return [];
+
+  const jurisdiction = resolveKnowledgeJurisdiction(phaseData, businessContext, metadata);
+  const asOf = resolveKnowledgeAsOf(metadata);
+  const aggregated = new Map();
+
+  for (let phase = 1; phase <= 8; phase++) {
+    const projection = moduleProjections[phase];
+    const moduleIds = projection?.moduleIds || [];
+    if (!moduleIds.length) continue;
+
+    const results = retrieveCanonicalKnowledge(
+      '',
+      CANONICAL_EXTERNAL_RETRIEVAL_ENTRIES,
+      CANONICAL_EXTERNAL_KNOWLEDGE_CLAIMS,
+      CANONICAL_EXTERNAL_SOURCE_REGISTRY,
+      {
+        phase,
+        moduleIds,
+        jurisdiction,
+        criticalUse: true,
+        asOf,
+        topK: 20,
+      }
+    );
+
+    for (const result of results) {
+      const entry = result.entry;
+      if (!entry?.decision_driving || entry.claim_kind === 'INTERNAL_NORMATIVE') continue;
+      const matchingModules = (entry.module_ids || []).filter(id => moduleIds.includes(id));
+      const current = aggregated.get(entry.claim_id) || {
+        entry,
+        admission: result.admission,
+        phases: new Set(),
+        moduleIds: new Set(),
+      };
+      current.phases.add(phase);
+      for (const moduleId of matchingModules) current.moduleIds.add(moduleId);
+      aggregated.set(entry.claim_id, current);
+    }
+  }
+
+  return [...aggregated.values()]
+    .sort((a, b) => a.entry.claim_id.localeCompare(b.entry.claim_id))
+    .map(({ entry, admission, phases, moduleIds }) => validateOrThrow(createCanonicalClaim({
+      stableKey: { kind: 'EXTERNAL_KNOWLEDGE', sourceClaimId: entry.claim_id },
+      claimType: CLAIM_TYPES.EXTERNAL_FACT,
+      statement: entry.content,
+      status: CLAIM_STATUS.CONFIRMED,
+      phase: null,
+      moduleId: null,
+      dependencyIds: [...moduleIds].sort().map(id => `MODULE:${id}`),
+      evidenceIds: [],
+      sourceClaimIds: [entry.claim_id],
+      sourceIds: entry.source_ids || [],
+      confidence: null,
+      verificationState: 'ADMISSIBLE_CANONICAL_EXTERNAL',
+      createdRevision: Number(metadata.revision) || 0,
+      lastValidatedRevision: Number(metadata.revision) || 0,
+      metadata: {
+        affectedPhases: [...phases].sort((a, b) => a - b),
+        matchedModuleIds: [...moduleIds].sort(),
+        knowledgeNodeId: entry.knowledge_node_id,
+        externalClaimKind: entry.claim_kind,
+        jurisdictionOrScope: entry.jurisdiction_or_scope,
+        limitations: entry.limitations || '',
+        admissionStatus: admission.status,
+        sourceFreshness: admission.sources.map(item => ({
+          sourceId: item.sourceId,
+          state: item.freshness.state,
+          reason: item.freshness.reason,
+        })),
+      },
+    })));
+}
 
 export function buildEvidenceRows(phaseData = {}, answerRecords = []) {
   const current = activeAnswers(answerRecords.length ? answerRecords : migrateAnswerRecords(phaseData));
@@ -380,6 +500,12 @@ export function buildCanonicalOutputClaims({
     claims.push(...module.inferenceClaims, ...module.riskClaims);
     claims.push(...buildProposalClaims(phase, rows, calculation, businessContext, metadata, answerClaimsByEvidenceId));
   }
+  claims.push(...buildExternalKnowledgeClaims({
+    phaseData,
+    businessContext,
+    moduleProjections,
+    metadata,
+  }));
   claims.push(...buildContradictionClaims(contradictions, rows, metadata));
 
   const ledger = buildLedger(claims);
@@ -400,5 +526,12 @@ export function claimsForPhase(model, phase) {
 
 export function claimPresentation(claim) {
   const evidence = claim.evidenceIds?.length ? ` [evidence: ${claim.evidenceIds.join(', ')}]` : '';
+  if (claim.claimType === CLAIM_TYPES.EXTERNAL_FACT) {
+    const sourceClaims = claim.sourceClaimIds?.length ? ` [source-claim: ${claim.sourceClaimIds.join(', ')}]` : '';
+    const sources = claim.sourceIds?.length ? ` [sources: ${claim.sourceIds.join(', ')}]` : '';
+    const scope = claim.metadata?.jurisdictionOrScope ? ` [scope: ${claim.metadata.jurisdictionOrScope}]` : '';
+    const limitations = claim.metadata?.limitations ? ` [limitations: ${claim.metadata.limitations}]` : '';
+    return `[${claim.claimType}/${claim.status}] ${claim.statement} [${claim.claimId}]${sourceClaims}${sources}${scope}${limitations}`;
+  }
   return `[${claim.claimType}/${claim.status}] ${claim.statement} [${claim.claimId}]${evidence}`;
 }
