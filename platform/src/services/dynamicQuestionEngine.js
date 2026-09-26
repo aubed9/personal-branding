@@ -853,7 +853,7 @@ export function composeChainedQuestions(
     // Inject canonical knowledge guidance
     const guidance = QUESTION_KNOWLEDGE_BASE[question.id] || {
       nodeId: `KB-P${p}-001`,
-      canonicalSource: "پایگاه دانش ۱۶۵ منبعی و فریم‌ورک‌های تصمیم‌گیری بازاریابی دیجیتال مارکت",
+      canonicalSource: "رجیستری دانش معتبر و فریم‌ورک‌های تصمیم‌گیری پذیرفته‌شده در DIGITAL MARKET",
       framework: "نردبان شواهد علمی و استراتژی یکپارچه برندسازی",
       decisionChainLink: `فاز ${p}: حلقه تصمیم‌گیری اختصاصی`,
       insight: "تمام خروجی‌ها بر مبنای داده‌های اعتبارسنجی‌شده و منطبق با بافتار صنف طراحی می‌شوند."
