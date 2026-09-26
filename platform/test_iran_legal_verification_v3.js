@@ -40,30 +40,33 @@ test('discovery-only Iran legal sources remain explicit non-admissible research 
   }
 });
 
-test('official e-commerce law identity is verified but article-level decision claim remains blocked', () => {
+test('current e-commerce consumer/distance-contract duties are article-scoped and admissible', () => {
   const source = sources['SRC-IR-LAW-ECOM-1382-QAVANIN-LOCATOR'];
   const claim = claims[ECOM_CLAIM];
 
   assert.ok(source);
   assert.equal(source.authority_tier, 'A');
   assert.equal(source.status, 'VERIFIED');
-  assert.equal(source.verified_at, '2026-09-26');
-  assert.match(source.url, /qavanin\.ir\/Law\/Attribute\/\?IDS=15700719202226051269/);
+  assert.equal(source.verified_at, '2026-09-27');
+  assert.match(source.url, /qavanin\.ir\/Law\/TreeText\/\?IDS=15700719202226051269/);
   assert.match(source.checksum, /^git-blob:[0-9a-f]{40}$/);
   assert.ok(fs.existsSync(path.join(root, source.repository_location)));
   assert.match(source.edition_or_version, /1403-03-30/);
 
-  assert.ok(claim.source_ids.includes(source.id));
-  assert.equal(claim.status, 'NEEDS_RESEARCH');
+  assert.deepEqual(claim.source_ids, [source.id]);
+  assert.equal(claim.status, 'VERIFIED');
   assert.equal(claim.decision_driving, true);
+  assert.equal(claim.locators.length, 1);
+  assert.match(claim.locators[0].locator, /Articles 33–35/);
+  assert.match(claim.locators[0].locator, /Articles 37–39/);
+  assert.match(claim.locators[0].locator, /Articles 50–55/);
 
   const admission = evaluateKnowledgeClaim(claim, sources, {
-    asOf: new Date('2026-09-26T00:00:00Z'),
+    asOf: new Date('2026-09-27T00:00:00Z'),
     criticalUse: true,
   });
-  assert.equal(admission.admissible, false);
-  assert.ok(admission.reasons.includes('CLAIM_NOT_ADMISSIBLE'));
-  assert.equal(index.entries.some(entry => entry.claim_id === claim.id), false);
+  assert.equal(admission.admissible, true);
+  assert.equal(index.entries.some(entry => entry.claim_id === claim.id), true);
 });
 
 test('current taxpayer-system claim is primary-verified and admitted only within its captured locator scope', () => {
@@ -156,7 +159,7 @@ test('verified legal claims become stale after the 30-day critical-use window', 
   }
 });
 
-test('regulated Iran retrieval can surface verified legal claims but not unresolved e-commerce/Enamad claims', () => {
+test('regulated Iran retrieval surfaces scoped tax/guild claims but not unrelated e-commerce or Enamad claims', () => {
   const results = retrieveCanonicalKnowledge(
     'مجوز پروانه کسب سامانه مؤدیان مالیات قانون کسب و کار ایران',
     index.entries,
@@ -175,7 +178,7 @@ test('regulated Iran retrieval can surface verified legal claims but not unresol
 
   assert.ok(ids.has(TAX_CLAIM), 'verified taxpayer claim should be retrievable');
   assert.ok(ids.has(GUILD_CLAIM), 'verified guild licensing claim should be retrievable');
-  assert.equal(ids.has(ECOM_CLAIM), false);
+  assert.equal(ids.has(ECOM_CLAIM), false, 'consumer distance-contract claim needs B2C/online applicability, not merely regulated context');
   assert.equal(ids.has(ENAMAD_CLAIM), false);
 });
 

@@ -5,7 +5,7 @@
     "claim_registry": "wiki/claims.json",
     "policy": "Only VERIFIED/CANONICAL claims whose referenced sources are VERIFIED/CANONICAL are indexed."
   },
-  "count": 48,
+  "count": 49,
   "entries": [
     {
       "retrieval_id": "RET-KCL-B2B-DMU",
@@ -712,6 +712,41 @@
         "MOD-CUSTOMER-TWO-SIDED"
       ],
       "limitations": "گزارش سالانه و کلان است؛ برای CAC/CPC روز، قیمت‌گذاری یک صنعت یا اندازه بازار یک زیرگروه باید منبع تخصصی‌تر استفاده شود."
+    },
+    {
+      "retrieval_id": "RET-KCL-IR-LAW-ECOM-1382-UNVERIFIED",
+      "knowledge_node_id": "KB-COMPLIANCE",
+      "claim_id": "KCL-IR-LAW-ECOM-1382-UNVERIFIED",
+      "content": "در متن تنقیح‌شده جاری قانون تجارت الکترونیکی، برای معاملات از راه دور با مصرف‌کننده، مواد ۳۳ تا ۳۵ بر ارائه و تأیید اطلاعات مؤثر پیش از خرید، مواد ۳۷ تا ۳۹ بر چارچوب حق انصراف/استرداد و عدم امکان تأمین، و مواد ۵۰ تا ۵۵ بر شفافیت و عدم فریب در تبلیغات و هویت عرضه‌کننده تأکید دارند.",
+      "claim_kind": "LEGAL_REQUIREMENT",
+      "decision_driving": true,
+      "status": "VERIFIED",
+      "source_ids": [
+        "SRC-IR-LAW-ECOM-1382-QAVANIN-LOCATOR"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "LEGAL",
+      "max_age_days": 30,
+      "jurisdiction_or_scope": "IRAN",
+      "phases": [
+        1,
+        2,
+        3,
+        5,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-REG-CONSTRAINTS",
+        "DN-REG-EVIDENCE",
+        "DN-REG-MESSAGING",
+        "DN-REG-ACTIVATION",
+        "DN-ONLINE-FUNNEL"
+      ],
+      "module_ids": [
+        "MOD-CUSTOMER-B2C",
+        "MOD-CHANNEL-ONLINE"
+      ],
+      "limitations": "Verified only for the listed article scopes and only where the law's definitions/applicability fit the transaction. Article-specific exceptions, implementing regulations, regulated-product rules and current Enamad/licensing requirements remain separate verification tasks."
     },
     {
       "retrieval_id": "RET-KCL-IR-SCI-CPI-1405-05",
@@ -1580,5 +1615,6 @@
       "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
     }
   ],
-  "updated_at": "2026-09-26"
+  "updated_at": "2026-09-26",
+  "generated_at": "2026-09-27"
 }

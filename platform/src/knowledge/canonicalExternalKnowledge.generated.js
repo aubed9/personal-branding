@@ -136,6 +136,41 @@ export const CANONICAL_EXTERNAL_RETRIEVAL_ENTRIES = Object.freeze([
     "limitations": "گزارش سالانه و کلان است؛ برای CAC/CPC روز، قیمت‌گذاری یک صنعت یا اندازه بازار یک زیرگروه باید منبع تخصصی‌تر استفاده شود."
   },
   {
+    "retrieval_id": "RET-KCL-IR-LAW-ECOM-1382-UNVERIFIED",
+    "knowledge_node_id": "KB-COMPLIANCE",
+    "claim_id": "KCL-IR-LAW-ECOM-1382-UNVERIFIED",
+    "content": "در متن تنقیح‌شده جاری قانون تجارت الکترونیکی، برای معاملات از راه دور با مصرف‌کننده، مواد ۳۳ تا ۳۵ بر ارائه و تأیید اطلاعات مؤثر پیش از خرید، مواد ۳۷ تا ۳۹ بر چارچوب حق انصراف/استرداد و عدم امکان تأمین، و مواد ۵۰ تا ۵۵ بر شفافیت و عدم فریب در تبلیغات و هویت عرضه‌کننده تأکید دارند.",
+    "claim_kind": "LEGAL_REQUIREMENT",
+    "decision_driving": true,
+    "status": "VERIFIED",
+    "source_ids": [
+      "SRC-IR-LAW-ECOM-1382-QAVANIN-LOCATOR"
+    ],
+    "source_authority_floor": "A",
+    "freshness_class": "LEGAL",
+    "max_age_days": 30,
+    "jurisdiction_or_scope": "IRAN",
+    "phases": [
+      1,
+      2,
+      3,
+      5,
+      8
+    ],
+    "decision_node_ids": [
+      "DN-REG-CONSTRAINTS",
+      "DN-REG-EVIDENCE",
+      "DN-REG-MESSAGING",
+      "DN-REG-ACTIVATION",
+      "DN-ONLINE-FUNNEL"
+    ],
+    "module_ids": [
+      "MOD-CUSTOMER-B2C",
+      "MOD-CHANNEL-ONLINE"
+    ],
+    "limitations": "Verified only for the listed article scopes and only where the law's definitions/applicability fit the transaction. Article-specific exceptions, implementing regulations, regulated-product rules and current Enamad/licensing requirements remain separate verification tasks."
+  },
+  {
     "retrieval_id": "RET-KCL-IR-SCI-CPI-1405-05",
     "knowledge_node_id": "KB-IR-MACRO-SCI-CPI-001",
     "claim_id": "KCL-IR-SCI-CPI-1405-05",
@@ -498,6 +533,52 @@ export const CANONICAL_EXTERNAL_KNOWLEDGE_CLAIMS = Object.freeze({
     ],
     "limitations": "گزارش سالانه و کلان است؛ برای CAC/CPC روز، قیمت‌گذاری یک صنعت یا اندازه بازار یک زیرگروه باید منبع تخصصی‌تر استفاده شود."
   },
+  "KCL-IR-LAW-ECOM-1382-UNVERIFIED": {
+    "id": "KCL-IR-LAW-ECOM-1382-UNVERIFIED",
+    "knowledge_node_id": "KB-COMPLIANCE",
+    "statement": "در متن تنقیح‌شده جاری قانون تجارت الکترونیکی، برای معاملات از راه دور با مصرف‌کننده، مواد ۳۳ تا ۳۵ بر ارائه و تأیید اطلاعات مؤثر پیش از خرید، مواد ۳۷ تا ۳۹ بر چارچوب حق انصراف/استرداد و عدم امکان تأمین، و مواد ۵۰ تا ۵۵ بر شفافیت و عدم فریب در تبلیغات و هویت عرضه‌کننده تأکید دارند.",
+    "claim_kind": "LEGAL_REQUIREMENT",
+    "decision_driving": true,
+    "status": "VERIFIED",
+    "source_ids": [
+      "SRC-IR-LAW-ECOM-1382-QAVANIN-LOCATOR"
+    ],
+    "locators": [
+      {
+        "source_id": "SRC-IR-LAW-ECOM-1382-QAVANIN-LOCATOR",
+        "locator": "Official qavanin consolidated text IDS=15700719202226051269 — Article 2 definitions; Articles 33–35 pre-contract/confirmation duties; Articles 37–39 withdrawal/refund framework; Articles 50–55 advertising transparency. Registry status: اصلاحی 1403-03-30; verified 2026-09-27."
+      }
+    ],
+    "authority_requirement": "A",
+    "freshness_class": "LEGAL",
+    "max_age_days": 30,
+    "jurisdiction_or_scope": "IRAN",
+    "phases": [
+      1,
+      2,
+      3,
+      5,
+      8
+    ],
+    "decision_node_ids": [
+      "DN-REG-CONSTRAINTS",
+      "DN-REG-EVIDENCE",
+      "DN-REG-MESSAGING",
+      "DN-REG-ACTIVATION",
+      "DN-ONLINE-FUNNEL"
+    ],
+    "module_ids": [
+      "MOD-CUSTOMER-B2C",
+      "MOD-CHANNEL-ONLINE"
+    ],
+    "limitations": "Verified only for the listed article scopes and only where the law's definitions/applicability fit the transaction. Article-specific exceptions, implementing regulations, regulated-product rules and current Enamad/licensing requirements remain separate verification tasks.",
+    "applicability": {
+      "required_module_ids_all": [
+        "MOD-CUSTOMER-B2C",
+        "MOD-CHANNEL-ONLINE"
+      ]
+    }
+  },
   "KCL-IR-SCI-CPI-1405-05": {
     "id": "KCL-IR-SCI-CPI-1405-05",
     "knowledge_node_id": "KB-IR-MACRO-SCI-CPI-001",
@@ -806,6 +887,30 @@ export const CANONICAL_EXTERNAL_SOURCE_REGISTRY = Object.freeze({
     "status": "VERIFIED",
     "checksum": "git-blob:33aeb425af47b6a39770cc95fd71c2653886ab71",
     "limitations": "The official site identifies the report and report-download area, but the report file was not directly fetchable by the verification client. Only headline figures repeatedly tied to the official release are promoted; table-level statistics require direct report locators."
+  },
+  "SRC-IR-LAW-ECOM-1382-QAVANIN-LOCATOR": {
+    "id": "SRC-IR-LAW-ECOM-1382-QAVANIN-LOCATOR",
+    "source_type": "OFFICIAL_LEGAL_REGISTRY",
+    "title": "قانون تجارت الکترونیکی — official qavanin.ir registry record",
+    "author_or_institution": "مجلس شورای اسلامی",
+    "issuing_authority": "معاونت حقوقی ریاست جمهوری / سامانه ملی قوانین و مقررات",
+    "published_at": "1382-11-11",
+    "effective_from": "1382-11-27",
+    "effective_until": null,
+    "observed_period": null,
+    "edition_or_version": "مصوب 1382-10-17؛ شناسه qavanin.ir = 15700719202226051269؛ روزنامه رسمی 17167؛ متن تنقیح‌شده با وضعیت اصلاحی 1403-03-30؛ locator scope verified 2026-09-27",
+    "url": "https://qavanin.ir/Law/TreeText/?IDS=15700719202226051269",
+    "repository_location": "wiki/snapshots/iran/ecommerce-1382-qavanin-consumer-distance-current-1405-07.txt",
+    "accessed_at": "2026-09-27",
+    "verified_at": "2026-09-27",
+    "jurisdiction_or_scope": "IRAN",
+    "language": "fa",
+    "authority_tier": "A",
+    "freshness_class": "LEGAL",
+    "max_age_days": 30,
+    "status": "VERIFIED",
+    "checksum": "git-blob:5e1522c4008c121c717379f8aede8fe592750cca",
+    "limitations": "Current official consolidated qavanin text was verified only for Article 2 definitions and Articles 33–39 and 50–55 consumer/distance-contract and advertising duties. This record does not establish Enamad rules, all implementing regulations, all exceptions, or activity-specific licensing."
   },
   "SRC-IR-SCI-CPI-1405-05": {
     "id": "SRC-IR-SCI-CPI-1405-05",
