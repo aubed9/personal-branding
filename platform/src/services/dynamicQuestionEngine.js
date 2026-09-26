@@ -852,11 +852,12 @@ export function composeChainedQuestions(
 
     // Inject canonical knowledge guidance
     const guidance = QUESTION_KNOWLEDGE_BASE[question.id] || {
-      nodeId: `KB-P${p}-001`,
-      canonicalSource: "رجیستری دانش معتبر و فریم‌ورک‌های تصمیم‌گیری پذیرفته‌شده در DIGITAL MARKET",
-      framework: "نردبان شواهد علمی و استراتژی یکپارچه برندسازی",
+      nodeId: null,
+      provenanceStatus: "UNMAPPED",
+      canonicalSource: null,
+      framework: "راهنمای عمومی پرسش؛ بدون ادعای اتصال به یک Knowledge Node ثبت‌شده",
       decisionChainLink: `فاز ${p}: حلقه تصمیم‌گیری اختصاصی`,
-      insight: "تمام خروجی‌ها بر مبنای داده‌های اعتبارسنجی‌شده و منطبق با بافتار صنف طراحی می‌شوند."
+      insight: "این پرسش هنوز به یک گره دانش ثبت‌شده نگاشت نشده است؛ از نمایش یا استنتاج منبع ساختگی خودداری شود."
     };
     question.knowledgeGuidance = guidance;
 
