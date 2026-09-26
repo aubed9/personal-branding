@@ -188,6 +188,26 @@ test('Wiki UI does not advertise a hard-coded source count or unsupported eviden
   assert.ok(modal.includes('Wiki canonical'));
 });
 
+function findRuntimeHardCodedSourceCounts() {
+  const srcRoot = path.join(root, 'platform', 'src');
+  const offenders = [];
+  const visit = dir => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        visit(full);
+      } else if (/\.(?:js|jsx|ts|tsx)$/.test(entry.name)) {
+        const source = fs.readFileSync(full, 'utf8');
+        if (/(?:165|۱۶۵)[^\n]{0,40}(?:source|منبع)|(?:source|منبع)[^\n]{0,40}(?:165|۱۶۵)/i.test(source)) {
+          offenders.push(path.relative(root, full).replaceAll('\\', '/'));
+        }
+      }
+    }
+  };
+  visit(srcRoot);
+  return offenders.sort();
+}
+
 test('source-count claims are registry-derived, not hard-coded 165-source marketing claims', () => {
   const project = read('PROJECT.md');
   const skill = read('skills/llm-wiki/SKILL.md');
@@ -200,6 +220,7 @@ test('source-count claims are registry-derived, not hard-coded 165-source market
   assert.equal(validator.includes('claimed_source_count = 165'), false);
   assert.equal(/165|۱۶۵/.test(chatUi), false, 'chat runtime UI must not advertise a hard-coded source count');
   assert.equal(/165|۱۶۵/.test(settingsUi), false, 'settings runtime UI must not advertise a hard-coded source count');
+  assert.deepEqual(findRuntimeHardCodedSourceCounts(), [], 'runtime source-count claims must be registry-derived');
   assert.ok(validator.includes('source-registry.json'));
 });
 
