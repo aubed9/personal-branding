@@ -1,3 +1,8 @@
+// LEGACY UI COMPATIBILITY DATA ONLY.
+// This file must not be used for AI reasoning, canonical retrieval, legal/market
+// claims, or decision-driving evidence. The authored source of truth is root /wiki
+// plus Source/Claim registries. Retained temporarily for the WikiModal UI until
+// that compatibility surface is migrated to a generated canonical catalog.
 export const WIKI_PLAYBOOKS = [
   {
     id: "context-router-playbook",
