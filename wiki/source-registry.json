@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updated_at": "2026-09-26",
+  "updated_at": "2026-09-27",
   "source_count_policy": "Counts are derived from the sources object; Knowledge Node count is never a source count.",
   "freshness_defaults_days": {
     "VOLATILE_PRICE": 7,
@@ -1549,6 +1549,30 @@
       "status": "VERIFIED",
       "checksum": "git-blob:1fe872f758c3a832b57bec9526047765379584c6",
       "limitations": "First-party Snapp platform evidence only. The >1.5 billion figure is Snapp-reported urban trips in 1404; it is not the total number of urban trips in Iran and does not by itself establish market share."
+    },
+    "SRC-INT-PHASE7-VISUAL-CONTRACT": {
+      "id": "SRC-INT-PHASE7-VISUAL-CONTRACT",
+      "source_type": "INTERNAL_SPEC",
+      "title": "Phase 7 Visual Identity & Design System Production Contract",
+      "author_or_institution": "DIGITAL MARKET",
+      "issuing_authority": "DIGITAL MARKET Phase 7 specialist skill",
+      "published_at": "2026-09-05",
+      "effective_from": "2026-09-05",
+      "effective_until": null,
+      "observed_period": null,
+      "edition_or_version": "skill v1.0.0",
+      "url": null,
+      "repository_location": "skills/digital-market-phase7-visual-identity-design-system/SKILL.md",
+      "accessed_at": "2026-09-27",
+      "verified_at": "2026-09-27",
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "language": "fa/en",
+      "authority_tier": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "status": "CANONICAL",
+      "checksum": null,
+      "limitations": "Normative internal Phase 7 workflow/design-system contract only. It does not establish external color psychology, accessibility thresholds, legal requirements, market benchmarks, or other external facts; those require separately verified Source/Claim records."
     }
   }
 }

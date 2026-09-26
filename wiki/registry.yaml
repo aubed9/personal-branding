@@ -1,5 +1,5 @@
 version: 1.0.0
-updated_at: '2026-09-22'
+updated_at: '2026-09-27'
 default_status: NEEDS_RESEARCH
 source_registry: wiki/source-registry.json
 claim_registry: wiki/claims.json
@@ -475,6 +475,66 @@ knowledge_nodes:
     - KB-STR-PROMISE-001
     - KB-NAM-STRAT-001
     relevance: mandatory
+  KB-VIS-DSYS-001:
+    title: قرارداد داخلی سیستم طراحی هویت بصری
+    file: wiki/15-visual-identity/design-system.md
+    category: 15-visual-identity
+    phases:
+    - 7
+    business_types:
+    - ALL
+    dependencies:
+    - KB-IDN-CHAR-001
+    - KB-IDN-GUARD-001
+    - KB-NAM-STRAT-001
+    relevance: mandatory
+    source_ids:
+    - SRC-INT-PHASE7-VISUAL-CONTRACT
+  KB-VIS-COLOR-001:
+    title: معماری پالت و توکن‌های رنگ
+    file: wiki/15-visual-identity/color-system.md
+    category: 15-visual-identity
+    phases:
+    - 7
+    business_types:
+    - ALL
+    dependencies:
+    - KB-VIS-DSYS-001
+    - KB-IDN-CHAR-001
+    - KB-IDN-GUARD-001
+    relevance: mandatory
+    source_ids:
+    - SRC-INT-PHASE7-VISUAL-CONTRACT
+  KB-VIS-TYPE-001:
+    title: معماری تایپوگرافی برند
+    file: wiki/15-visual-identity/typography-system.md
+    category: 15-visual-identity
+    phases:
+    - 7
+    business_types:
+    - ALL
+    dependencies:
+    - KB-VIS-DSYS-001
+    - KB-IDN-CHAR-001
+    - KB-MSG-VOICE-001
+    relevance: mandatory
+    source_ids:
+    - SRC-INT-PHASE7-VISUAL-CONTRACT
+  KB-VIS-LOGO-001:
+    title: سیستم لوگو و قواعد استفاده
+    file: wiki/15-visual-identity/logo-system.md
+    category: 15-visual-identity
+    phases:
+    - 7
+    business_types:
+    - ALL
+    dependencies:
+    - KB-VIS-DSYS-001
+    - KB-NAM-STRAT-001
+    - KB-IDN-CHAR-001
+    relevance: mandatory
+    source_ids:
+    - SRC-INT-PHASE7-VISUAL-CONTRACT
   KB-TYPE-LOCAL-001:
     title: بافتار تخصصی خدمات محلی و فنی (کارواش، اتوسرویس، سالن)
     file: wiki/07-business-types/local-service.md
