@@ -5,6 +5,11 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { evaluateKnowledgeClaim, retrieveCanonicalKnowledge } from './src/knowledge/index.js';
+import {
+  CANONICAL_EXTERNAL_KNOWLEDGE_CLAIMS,
+  CANONICAL_EXTERNAL_RETRIEVAL_ENTRIES,
+  CANONICAL_EXTERNAL_SOURCE_REGISTRY,
+} from './src/knowledge/canonicalExternalKnowledge.generated.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
@@ -13,6 +18,21 @@ const json = rel => JSON.parse(fs.readFileSync(path.join(root, rel), 'utf8'));
 const sources = json('wiki/source-registry.json').sources;
 const claims = json('wiki/claims.json').claims;
 const index = json('wiki/generated/retrieval-index.json');
+
+test('browser runtime external bundle is the exact decision-driving non-internal canonical subset', () => {
+  const expectedEntries = index.entries.filter(entry =>
+    entry.decision_driving === true && entry.claim_kind !== 'INTERNAL_NORMATIVE'
+  );
+  assert.deepEqual(CANONICAL_EXTERNAL_RETRIEVAL_ENTRIES, expectedEntries);
+
+  const expectedClaimIds = [...new Set(expectedEntries.map(entry => entry.claim_id))].sort();
+  assert.deepEqual(Object.keys(CANONICAL_EXTERNAL_KNOWLEDGE_CLAIMS).sort(), expectedClaimIds);
+
+  const expectedSourceIds = [...new Set(expectedEntries.flatMap(entry => entry.source_ids || []))].sort();
+  assert.deepEqual(Object.keys(CANONICAL_EXTERNAL_SOURCE_REGISTRY).sort(), expectedSourceIds);
+  for (const id of expectedClaimIds) assert.deepEqual(CANONICAL_EXTERNAL_KNOWLEDGE_CLAIMS[id], claims[id]);
+  for (const id of expectedSourceIds) assert.deepEqual(CANONICAL_EXTERNAL_SOURCE_REGISTRY[id], sources[id]);
+});
 
 test('first external Iran evidence batch preserves verification boundaries', () => {
   for (const id of [

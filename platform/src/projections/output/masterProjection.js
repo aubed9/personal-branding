@@ -11,6 +11,7 @@ const FINANCIAL_RULES = new Set([
 ]);
 
 function themeFor(claim) {
+  if (claim.claimType === CLAIM_TYPES.EXTERNAL_FACT) return 'M2';
   if ([CLAIM_TYPES.RISK, CLAIM_TYPES.CONTRADICTION, CLAIM_TYPES.UNKNOWN].includes(claim.claimType)) return 'M7';
   if (claim.claimType === CLAIM_TYPES.CALCULATION || FINANCIAL_RULES.has(claim.ruleId)) return 'M6';
   if (claim.phase === 1) return 'M1';
