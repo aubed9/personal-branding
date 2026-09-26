@@ -60,7 +60,7 @@ export const QUESTION_KNOWLEDGE_BASE = {
     insight: "مشتری محصول یا خدمت نمی‌خرد؛ پیشرفتی در زندگی یا کار خود را با پیشنهاد شما به دست می‌آورد."
   },
   step2_value_hypothesis: {
-    nodeId: "KB-STR-ONLY-001",
+    nodeId: "KB-STR-DIFF-001",
     canonicalSource: "Marty Neumeier (Zag: The #1 Strategy of High-Performance Brands)",
     framework: "فرضیه تمایز رادیکال و دلیل انتخاب در بازار شلوغ",
     decisionChainLink: "حلقه ۶: فرضیه تمایز و انحصار",
@@ -69,14 +69,14 @@ export const QUESTION_KNOWLEDGE_BASE = {
 
   // Phase 2
   p2_step0_competitors: {
-    nodeId: "KB-MKT-COMP-001",
+    nodeId: "KB-RES-COMP-001",
     canonicalSource: "Michael Porter (Five Competitive Forces That Shape Strategy)",
     framework: "تحلیل رقبای مستقیم، غیرمستقیم و گزینه‌های جایگزین در شعاع بازار",
     decisionChainLink: "حلقه ۲: تحلیل ساختار صنعت و رقابت",
     insight: "شناخت دقیق رقبا کمک می‌کند نقاط کور آنها را کشف کرده و وارد جنگ فرسایشی نشوید."
   },
   p2_step1_customer_pain: {
-    nodeId: "KB-MKT-JTBD-001",
+    nodeId: "KB-RES-CUST-001",
     canonicalSource: "Clayton Christensen & Tony Ulwick (Outcome-Driven Innovation)",
     framework: "شناسایی دردها، اصطکاک‌ها و اضطراب‌های برطرف‌نشده مشتری در بازار",
     decisionChainLink: "حلقه ۳: نیازهای پنهان و موانع خرید",
@@ -97,7 +97,7 @@ export const QUESTION_KNOWLEDGE_BASE = {
     insight: "تسلط عمیق بر ۱ یا ۲ کانال اصلی، به مراتب موثرتر از حضور سطحی در تمامی کانال‌هاست."
   },
   p2_step4_golden_opportunity: {
-    nodeId: "KB-STR-ONLY-001",
+    nodeId: "KB-RES-DEMAND-001",
     canonicalSource: "W. Chan Kim & Renée Mauborgne (Blue Ocean Strategy)",
     framework: "خلق اقیانوس آبی و کشف شکاف خدماتی رقبای سنتی",
     decisionChainLink: "حلقه ۵: فرصت طلایی تمایز و خلاء بازار",
@@ -106,28 +106,28 @@ export const QUESTION_KNOWLEDGE_BASE = {
 
   // Phase 3
   p3_target_segment: {
-    nodeId: "KB-STR-ONLY-001",
+    nodeId: "KB-STR-TARGET-001",
     canonicalSource: "Geoffrey Moore (Crossing the Chasm: Beachhead Segment)",
     framework: "سگمنت‌بندی متمرکز و تصاحب سرپل اول بازار",
     decisionChainLink: "حلقه ۴: انتخاب مخاطب آرمانی",
     insight: "تلاش برای راضی نگه داشتن همه، سریع‌ترین مسیر برای بی‌اثر شدن برند است."
   },
   p3_positioning_frame: {
-    nodeId: "KB-STR-ONLY-001",
+    nodeId: "KB-STR-POS-001",
     canonicalSource: "Al Ries & Jack Trout (Positioning: The Battle for Your Mind)",
     framework: "چارچوب جایگاه‌یابی در ذهن مخاطب و تمایز قطعی",
     decisionChainLink: "حلقه ۵: جایگاه‌یابی استراتژیک",
     insight: "جایگاه‌یابی یعنی اشغال یک کلمه یا مفهوم روشن در ذهن مشتری که هیچ رقیبی مالک آن نیست."
   },
   p3_strategic_boundary: {
-    nodeId: "KB-STR-ONLY-001",
+    nodeId: "KB-STR-PILLARS-001",
     canonicalSource: "Richard Rumelt (Good Strategy / Bad Strategy)",
     framework: "مرزهای استراتژیک و قدرت «نه» گفتن به کارهای خارج از تمرکز",
     decisionChainLink: "حلقه ۶: مرزها و گاردریل‌های استراتژیک",
     insight: "استراتژی خوب با کارهایی که تصمیم می‌گیرید انجام ندهید تعریف می‌شود."
   },
   p3_brand_promise: {
-    nodeId: "KB-STR-ONLY-001",
+    nodeId: "KB-STR-PROMISE-001",
     canonicalSource: "David Aaker (Building Strong Brands: Brand Promise)",
     framework: "وعده تخلف‌ناپذیر برند و گارانتی ارزش",
     decisionChainLink: "حلقه ۷: تعهد و وفاداری به مشتری",
@@ -136,21 +136,21 @@ export const QUESTION_KNOWLEDGE_BASE = {
 
   // Phase 4
   p4_archetype: {
-    nodeId: "KB-ID-ARCH-001",
+    nodeId: "KB-IDN-CHAR-001",
     canonicalSource: "Margaret Mark & Carol S. Pearson (The Hero and the Outlaw)",
     framework: "۱۲ کهن‌الگوی روان‌شناختی یونگ در ساخت هویت برند",
     decisionChainLink: "حلقه ۸: روان‌شناسی و کاراکتر برند",
     insight: "کهن‌الگوها به برند روح انسانی می‌بخشند و ایجاد پیوند عاطفی ناخودآگاه با مشتری را ممکن می‌سازند."
   },
   p4_human_traits: {
-    nodeId: "KB-ID-ARCH-001",
+    nodeId: "KB-IDN-PERSON-001",
     canonicalSource: "Jennifer Aaker (Dimensions of Brand Personality)",
     framework: "ابعاد ۵ گانه شخصیت برند و صفات رفتاری ملموس",
     decisionChainLink: "حلقه ۸: صفات شخصیتی",
     insight: "صفات رفتاری شفاف به پرسنل و محتوا جهت می‌دهند تا برند همواره رفتاری یکدست داشته باشد."
   },
   p4_tone_guardrail: {
-    nodeId: "KB-ID-ARCH-001",
+    nodeId: "KB-IDN-GUARD-001",
     canonicalSource: "Robert Cialdini (Influence) & Robert McKee (Story)",
     framework: "گاردریل‌های لحن و مرزهای بازدارنده رفتاری",
     decisionChainLink: "حلقه ۸: محافظت از اصالت کاراکتر",
@@ -159,21 +159,21 @@ export const QUESTION_KNOWLEDGE_BASE = {
 
   // Phase 5
   p5_voice_style: {
-    nodeId: "KB-VERB-HOOK-001",
+    nodeId: "KB-MSG-VOICE-001",
     canonicalSource: "Donald Miller (Building a StoryBrand)",
     framework: "سبک صدای برند و شیوه سخن گفتن با مخاطب",
     decisionChainLink: "حلقه ۹: لحن و کلام برند",
     insight: "مشتری قهرمان داستان است؛ برند شما راهنمای کاربلد و امین اوست."
   },
   p5_elevator_hook: {
-    nodeId: "KB-VERB-HOOK-001",
+    nodeId: "KB-MSG-CORE-001",
     canonicalSource: "Carmine Gallo (The Presentation Secrets) & Chip Heath (Made to Stick)",
     framework: "فرمول قلاب معرفی ۳۰ ثانیه‌ای آسانسوری",
     decisionChainLink: "حلقه ۹: کپی‌رایتینگ و قلاب کلامی",
     insight: "اگر نتوانید ارزش کسب‌وکار را در ۳۰ ثانیه ساده بگویید، مخاطب فرصت شنیدن را از شما می‌گیرد."
   },
   p5_forbidden_words: {
-    nodeId: "KB-VERB-HOOK-001",
+    nodeId: "KB-MSG-VOCAB-001",
     canonicalSource: "George Orwell (Politics and the English Language) & Marty Neumeier",
     framework: "پاکسازی واژگان کلیشه‌ای و پرهیز از اصطلاحات توخالی",
     decisionChainLink: "حلقه ۹: واژگان و انضباط زبانی",
@@ -182,14 +182,14 @@ export const QUESTION_KNOWLEDGE_BASE = {
 
   // Phase 6
   p6_naming_territory: {
-    nodeId: "KB-NAM-TERR-001",
+    nodeId: "KB-NAM-STRAT-001",
     canonicalSource: "Alexandra Watkins (Hello, My Name Is Awesome: SMILE & SCRATCH)",
     framework: "قلمروهای نام‌گذاری استراتژیک و آزمون تلفظ‌پذیری",
     decisionChainLink: "حلقه ۱۰: معماری نام و علائم تجاری",
     insight: "نام خوب یادآور ارزش محوری است و در مکالمه تلفنی نیازی به دیکته کردن حروف ندارد."
   },
   p6_tagline_archetype: {
-    nodeId: "KB-NAM-TERR-001",
+    nodeId: "KB-NAM-TAG-001",
     canonicalSource: "Chip & Dan Heath (Made to Stick)",
     framework: "معماری شعارهای ماندگار و گزاره‌های اقدام‌محور",
     decisionChainLink: "حلقه ۱۰: شعار محوری",
@@ -198,21 +198,21 @@ export const QUESTION_KNOWLEDGE_BASE = {
 
   // Phase 7
   p7_color_palette: {
-    nodeId: "KB-VIS-TOKEN-001",
+    nodeId: "KB-VIS-COLOR-001",
     canonicalSource: "Eva Heller (Psychology of Color) & Josef Albers (Interaction of Color)",
     framework: "روان‌شناسی رنگ‌ها و هارمونی ۶۰-۳۰-۱۰ در هویت بصری",
     decisionChainLink: "حلقه ۱۱: زبان رنگ و ادراک بصری",
     insight: "رنگ‌ها پیش از کلمات پردازش می‌شوند و بار روانی و موقعیت کیفی برند را ناخودآگاه القا می‌کنند."
   },
   p7_typography_mood: {
-    nodeId: "KB-VIS-TOKEN-001",
+    nodeId: "KB-VIS-TYPE-001",
     canonicalSource: "Ellen Lupton (Thinking with Type) & استانداردهای تایپوگرافی دیجیتال فارسی",
     framework: "خوانایی فونت فارسی، وزن حروف و هندسه حروف‌نگاری",
     decisionChainLink: "حلقه ۱۱: تایپوگرافی و فرم کلمات",
     insight: "تایپوگرافی آبرومند و خوانا، حس احترام به وقت مخاطب و حرفه‌ای بودن را منتقل می‌کند."
   },
   p7_logo_direction: {
-    nodeId: "KB-VIS-TOKEN-001",
+    nodeId: "KB-VIS-LOGO-001",
     canonicalSource: "Paul Rand (Design, Form, and Chaos) & Sagi Haviv (Identify)",
     framework: "اصول طراحی نشان ماندگار: سادگی، تمایز و انطباق‌پذیری محیطی",
     decisionChainLink: "حلقه ۱۱: نشان و هویت بصری",
@@ -221,28 +221,28 @@ export const QUESTION_KNOWLEDGE_BASE = {
 
   // Phase 8
   p8_thought_leadership: {
-    nodeId: "KB-EXEC-ACT-001",
+    nodeId: "KB-PB-THOUGHT-001",
     canonicalSource: "Dorie Clark (Stand Out: How to Find Your Breakthrough Idea)",
     framework: "موتور رهبری فکری و نقطه نظر متمایز (POV Engine)",
     decisionChainLink: "حلقه ۱۲: فعال‌سازی تجاری و رهبری فکری",
     insight: "رهبری فکری یعنی تبدیل تخصص خام به دیدگاه‌های شفافی که مسیر پیش روی صنعت را روشن می‌کند."
   },
   p8_pr_podcast_channels: {
-    nodeId: "KB-EXEC-ACT-001",
+    nodeId: "KB-PB-THOUGHT-001",
     canonicalSource: "Ryan Holiday (Trust Me, I'm Lying) & استانداردهای رسانه‌ای ایران",
     framework: "نقشه راه روابط عمومی، حضور در پادکست‌ها و توزیع چندکاناله",
     decisionChainLink: "حلقه ۱۲: رسانه‌ها و روابط عمومی",
     insight: "یک مصاحبه عمیق یا حضور در پادکست معتبر، بیش از ده‌ها تبلیغ پولی اعتماد ایجاد می‌کند."
   },
   p8_lead_funnel: {
-    nodeId: "KB-EXEC-ACT-001",
+    nodeId: "KB-BIZ-SALES-001",
     canonicalSource: "Chet Holmes (The Ultimate Sales Machine: Core Commercial Engine)",
     framework: "قیف جذب تجاری و تبدیل مخاطب علاقه‌مند به مشتری سودآور",
     decisionChainLink: "حلقه ۱۲: معماری فروش و درآمد",
     insight: "قیف فروش منظم، مراجعات را از حالت شانس و تصادف به جریان درآمدی پیش‌بینی‌پذیر تبدیل می‌کند."
   },
   p8_crisis_reputation: {
-    nodeId: "KB-EXEC-ACT-001",
+    nodeId: "KB-PLAY-CRISIS-001",
     canonicalSource: "W. Timothy Coombs (Ongoing Crisis Communication: SCCT Framework)",
     framework: "پلی‌بوک مدیریت اعتبار و مهار بحران‌های نارضایتی مشتری",
     decisionChainLink: "حلقه ۱۲: مدیریت ریسک و حفظ اعتبار",
