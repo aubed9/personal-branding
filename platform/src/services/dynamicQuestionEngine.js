@@ -52,6 +52,20 @@ export const QUESTION_KNOWLEDGE_BASE = {
     decisionChainLink: "حلقه ۴: اهداف ملموس عملیاتی و اقتصاد واحد",
     insight: "تعیین یک هدف شفاف و سنجش‌پذیر، مانع از هدررفت منابع در فعالیت‌های پراکنده و بی‌نتیجه می‌شود."
   },
+  unit_economics: {
+    nodeId: "KB-UNIT-ECONOMICS",
+    canonicalSource: "DIGITAL MARKET canonical unit-economics decision contract",
+    framework: "اقتصاد واحد، حاشیه مشارکت، نقطه سربه‌سر و ظرفیت فروش",
+    decisionChainLink: "حلقه ۴: امکان‌پذیری اقتصادی و کیفیت هر واحد فروش",
+    insight: "قیمت، هزینه متغیر، هزینه ثابت و ظرفیت باید به‌صورت ساختاریافته ثبت شوند تا توصیه رشد از واقعیت اقتصادی جدا نشود."
+  },
+  cash_constraint: {
+    nodeId: "KB-UNIT-ECONOMICS",
+    canonicalSource: "DIGITAL MARKET canonical unit-economics decision contract",
+    framework: "قید نقدینگی و توان اجرای برنامه در کنار اقتصاد واحد",
+    decisionChainLink: "حلقه ۴: محدودیت نقدینگی و دامنه اقدام قابل اجرا",
+    insight: "پیشنهاد استراتژیک باید با محدودیت واقعی نقدینگی سازگار باشد و کمبود بودجه را با فرض یا عدد ساختگی جایگزین نکند."
+  },
   step2_core_offer: {
     nodeId: "KB-BIZ-REV-001",
     canonicalSource: "Clayton Christensen (Competing Against Luck: Jobs to be Done)",

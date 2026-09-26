@@ -131,6 +131,13 @@ test('all Knowledge Node dependency edges and Decision Module KB references reso
   const moduleRefs = new Set([...moduleText.matchAll(/'(KB-[A-Z0-9-]+)'/g)].map(m => m[1]));
   const missingModuleRefs = [...moduleRefs].filter(id => !nodes.has(id)).sort();
   assert.deepEqual(missingModuleRefs, []);
+
+  const questionEngine = read('platform/src/services/dynamicQuestionEngine.js');
+  const questionRefs = new Set([...questionEngine.matchAll(/nodeId:\s*["'](KB-[A-Z0-9-]+)["']/g)].map(m => m[1]));
+  const missingQuestionRefs = [...questionRefs].filter(id => !nodes.has(id)).sort();
+  assert.deepEqual(missingQuestionRefs, []);
+  assert.match(questionEngine, /unit_economics:\s*\{[\s\S]*?nodeId:\s*"KB-UNIT-ECONOMICS"/);
+  assert.match(questionEngine, /cash_constraint:\s*\{[\s\S]*?nodeId:\s*"KB-UNIT-ECONOMICS"/);
 });
 
 test('generated retrieval is deterministic and every entry carries canonical claim/source origin', () => {
