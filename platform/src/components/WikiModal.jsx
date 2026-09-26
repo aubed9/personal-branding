@@ -37,10 +37,10 @@ export default function WikiModal({ isOpen, onClose }) {
             </div>
             <div>
               <h2 className="text-sm sm:text-base font-black text-white tracking-tight">
-                پایگاه دانش بازاریابی و تصمیم‌گیری راهبردی (۱۶۵ منبع)
+                پایگاه دانش بازاریابی و تصمیم‌گیری راهبردی
               </h2>
               <p className="text-xs text-zinc-400 font-mono">
-                پلی‌بوک‌ها و شواهد دانشگاهی جهت استخراج راهکارهای عملیاتی و دقیق
+                نمای راهنماهای داخلی؛ تصمیم‌گیری AI فقط از مسیر Wiki canonical و قرارداد provenance انجام می‌شود
               </p>
             </div>
           </div>
