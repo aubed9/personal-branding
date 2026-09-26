@@ -21,6 +21,26 @@ function buildQuestionMethodGuidance(targetQuestion) {
   };
 }
 
+function buildPromptTargetQuestion(targetQuestion) {
+  if (!targetQuestion || typeof targetQuestion !== "object") return null;
+  return {
+    id: targetQuestion.id || null,
+    title: targetQuestion.title || "",
+    text: targetQuestion.text || "",
+    whyItMatters: targetQuestion.whyItMatters || "",
+    field: targetQuestion.field || null,
+    options: Array.isArray(targetQuestion.options)
+      ? targetQuestion.options.map(option => ({
+          id: option?.id || null,
+          label: option?.label || option?.text || "",
+          detail: option?.detail || option?.description || "",
+          value: option?.value ?? null,
+        }))
+      : [],
+    allowCustomAnswer: targetQuestion.allowCustomAnswer !== false,
+  };
+}
+
 /**
  * Builds a strict Knowledge-Grounded system instruction for the AI Brain
  */
@@ -29,6 +49,7 @@ export function buildKnowledgeGroundingPrompt({
   priorAnswers = {}, answerRecords = [], unknowns = [], contradictions = [], targetQuestion = null,
 }) {
   const methodGuidance = buildQuestionMethodGuidance(targetQuestion);
+  const promptTargetQuestion = buildPromptTargetQuestion(targetQuestion);
   return `وظیفه: سؤال مشخص‌شده برای فاز ${phaseNum} را به فارسی روشن و بر اساس پاسخ‌های واقعی کاربر شخصی‌سازی کن.
 صنف: ${context?.taxonomyTitleFa || context?.archetypeTitle || 'هنوز مشخص نشده'}.
 تنها منبع اطلاعات اختصاصی کاربر، داده‌های زیر است (Single Source of Truth). طبقه‌بندی ۷۵۳ صنف و ۱۵ محور، حدس اولیه روتر است و شاهد مستقل نیست.
@@ -55,8 +76,8 @@ ${JSON.stringify({ context, founderVision, priorAnswers, answerRecords, facts, d
 راهنمای روش داخلیِ canonical برای همین سؤال (نه شواهد بیرونی):
 ${JSON.stringify(methodGuidance)}
 
-سؤال هدف:
-${JSON.stringify(targetQuestion)}
+سؤال هدف (فقط فیلدهای لازم؛ metadata منبع legacy حذف شده است):
+${JSON.stringify(promptTargetQuestion)}
 
 فقط JSON معتبر:
 {
