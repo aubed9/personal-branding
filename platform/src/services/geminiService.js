@@ -1,21 +1,45 @@
 // Uses local wiki methods and the current interview snapshot to adapt one question.
 // Model output is validated before it can change the active interview.
 
-import { WIKI_PLAYBOOKS } from "../data/wikiKnowledge.js";
 import { sanitizeJargonForLocalTrades } from "./dynamicQuestionEngine.js";
 import { buildSecureEndpoint, secureFetchJson, validateEndpointUrl, SessionKeyManager } from "./endpointSecurity.js";
 
-// Canonical Phase Grounding Map (Strictly mapped to 49 Canonical Wiki Playbooks)
-const PHASE_PLAYBOOK_MAP = {
-  1: ["context-router-playbook", "decision-chain", "canonical-foundations", "iran-market-dynamics"],
-  2: ["pricing", "channels", "iran-market-dynamics", "decision-chain"],
-  3: ["positioning", "conflict-resolution", "canonical-foundations"],
-  4: ["archetypes", "canonical-foundations"],
-  5: ["messaging", "canonical-foundations"],
-  6: ["naming", "canonical-foundations"],
-  7: ["visual", "canonical-foundations"],
-  8: ["decision-chain", "conflict-resolution", "iran-market-dynamics"]
-};
+// AI question rewriting may use only the method metadata already attached to the
+// target question by the canonical question engine. This is internal workflow
+// guidance, not external evidence and not a second authored knowledge plane.
+function buildQuestionMethodGuidance(targetQuestion) {
+  const guidance = targetQuestion?.knowledgeGuidance || null;
+  const nodeId = typeof guidance?.nodeId === "string" && guidance.nodeId.trim()
+    ? guidance.nodeId.trim()
+    : null;
+
+  return {
+    knowledgeNodeId: nodeId,
+    provenanceStatus: nodeId ? "NODE_MAPPED" : (guidance?.provenanceStatus || "UNMAPPED"),
+    framework: typeof guidance?.framework === "string" ? guidance.framework : null,
+    decisionChainLink: typeof guidance?.decisionChainLink === "string" ? guidance.decisionChainLink : null,
+  };
+}
+
+function buildPromptTargetQuestion(targetQuestion) {
+  if (!targetQuestion || typeof targetQuestion !== "object") return null;
+  return {
+    id: targetQuestion.id || null,
+    title: targetQuestion.title || "",
+    text: targetQuestion.text || "",
+    whyItMatters: targetQuestion.whyItMatters || "",
+    field: targetQuestion.field || null,
+    options: Array.isArray(targetQuestion.options)
+      ? targetQuestion.options.map(option => ({
+          id: option?.id || null,
+          label: option?.label || option?.text || "",
+          detail: option?.detail || option?.description || "",
+          value: option?.value ?? null,
+        }))
+      : [],
+    allowCustomAnswer: targetQuestion.allowCustomAnswer !== false,
+  };
+}
 
 /**
  * Builds a strict Knowledge-Grounded system instruction for the AI Brain
@@ -24,8 +48,8 @@ export function buildKnowledgeGroundingPrompt({
   phaseNum = 1, context = null, founderVision = '', facts = [], decisions = [],
   priorAnswers = {}, answerRecords = [], unknowns = [], contradictions = [], targetQuestion = null,
 }) {
-  const playbooks = WIKI_PLAYBOOKS.filter(p => (PHASE_PLAYBOOK_MAP[phaseNum] || []).includes(p.id))
-    .map(p => ({ id: p.id, title: p.title, rules: p.keyRules || [], purpose: p.subtitle || '' }));
+  const methodGuidance = buildQuestionMethodGuidance(targetQuestion);
+  const promptTargetQuestion = buildPromptTargetQuestion(targetQuestion);
   return `وظیفه: سؤال مشخص‌شده برای فاز ${phaseNum} را به فارسی روشن و بر اساس پاسخ‌های واقعی کاربر شخصی‌سازی کن.
 صنف: ${context?.taxonomyTitleFa || context?.archetypeTitle || 'هنوز مشخص نشده'}.
 تنها منبع اطلاعات اختصاصی کاربر، داده‌های زیر است (Single Source of Truth). طبقه‌بندی ۷۵۳ صنف و ۱۵ محور، حدس اولیه روتر است و شاهد مستقل نیست.
@@ -41,15 +65,19 @@ export function buildKnowledgeGroundingPrompt({
 - برای سؤال صنف، مرحله فعالیت و جغرافیا تمام valueهای اصلی را دقیقاً حفظ کن. برای سایر سؤال‌ها value یکتا و معنادار بده.
 - هر گزینه label کوتاه و detail روشن دارد. برای کسب‌وکار محلی از واژگان CAC, LTV, Churn, DMU, SLA, Pipeline استفاده نکن؛ مفهوم را فارسی توضیح بده.
 - قانون عدم پرش فاز و هدف سؤال از متن کاربر اولویت بالاتری دارند.
+- راهنمای روش داخلی پایین فقط topology/هدف تصمیم را توضیح می‌دهد و «شاهد بیرونی» نیست.
+- حتی اگر knowledgeNodeId وجود دارد، از حافظه مدل قانون، آمار، benchmark، threshold، قیمت، درصد یا ادعای بازار اضافه نکن.
+- اگر knowledgeNodeId تهی یا provenanceStatus=UNMAPPED است، هیچ منبع یا چارچوبی را به سؤال نسبت نده.
+- هر واقعیت خارجیِ فاقد Source/Claim معتبر باید مجهول/نیازمند بررسی باقی بماند.
 
 داده‌های پروژه:
 ${JSON.stringify({ context, founderVision, priorAnswers, answerRecords, facts, decisions, unknowns, contradictions })}
 
-روش‌های مرتبط از ویکی داخلی، نه شواهد زنده بازار:
-${JSON.stringify(playbooks)}
+راهنمای روش داخلیِ canonical برای همین سؤال (نه شواهد بیرونی):
+${JSON.stringify(methodGuidance)}
 
-سؤال هدف:
-${JSON.stringify(targetQuestion)}
+سؤال هدف (فقط فیلدهای لازم؛ metadata منبع legacy حذف شده است):
+${JSON.stringify(promptTargetQuestion)}
 
 فقط JSON معتبر:
 {
