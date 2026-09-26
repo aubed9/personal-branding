@@ -192,10 +192,14 @@ test('source-count claims are registry-derived, not hard-coded 165-source market
   const project = read('PROJECT.md');
   const skill = read('skills/llm-wiki/SKILL.md');
   const validator = read('scripts/validate_system.py');
+  const chatUi = read('platform/src/components/ChatContainer.jsx');
+  const settingsUi = read('platform/src/components/SettingsModal.jsx');
 
   assert.equal(/165[- ]Source|165[- ]source|165 master/.test(project), false);
   assert.equal(/165[- ]Source|165[- ]source|165 master/.test(skill), false);
   assert.equal(validator.includes('claimed_source_count = 165'), false);
+  assert.equal(/165|۱۶۵/.test(chatUi), false, 'chat runtime UI must not advertise a hard-coded source count');
+  assert.equal(/165|۱۶۵/.test(settingsUi), false, 'settings runtime UI must not advertise a hard-coded source count');
   assert.ok(validator.includes('source-registry.json'));
 });
 
