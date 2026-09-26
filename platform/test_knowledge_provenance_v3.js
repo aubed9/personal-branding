@@ -173,6 +173,13 @@ test('AI Brain cannot use legacy wikiKnowledge.js as an authored decision-suppor
   assert.ok(aiBrain.includes('Source/Claim'));
 });
 
+test('Wiki UI does not advertise a hard-coded source count or unsupported evidence authority', () => {
+  const modal = read('platform/src/components/WikiModal.jsx');
+  assert.equal(modal.includes('۱۶۵ منبع'), false);
+  assert.equal(modal.includes('165 source'), false);
+  assert.ok(modal.includes('Wiki canonical'));
+});
+
 test('source-count claims are registry-derived, not hard-coded 165-source marketing claims', () => {
   const project = read('PROJECT.md');
   const skill = read('skills/llm-wiki/SKILL.md');
