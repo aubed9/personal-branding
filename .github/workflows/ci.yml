@@ -39,6 +39,9 @@ jobs:
         run: npm run lint --if-present
         continue-on-error: true
 
+      - name: Verify runtime external knowledge bundle
+        run: python scripts/build_platform_external_knowledge_bundle.py --check
+
       - name: Build
         working-directory: platform
         run: npm run build
