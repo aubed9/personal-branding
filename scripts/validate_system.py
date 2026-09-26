@@ -22,6 +22,7 @@ import sys
 import re
 import json
 import subprocess
+from datetime import datetime, timezone
 
 try:
     import yaml
@@ -258,6 +259,35 @@ class ValidationSuite:
                 f"Registered sources: {len(sources)}; status counts: {by_status}",
                 "PASS"
             )
+
+        # Registry relationships are hard graph edges: dependency/source/claim IDs must resolve.
+        claim_registry_path = os.path.join(wiki_dir, "claims.json")
+        source_registry_path = os.path.join(wiki_dir, "source-registry.json")
+        claims_for_edges = {}
+        sources_for_edges = {}
+        if os.path.exists(claim_registry_path):
+            with open(claim_registry_path, "r", encoding="utf-8") as f:
+                claims_for_edges = json.load(f).get("claims", {})
+        if os.path.exists(source_registry_path):
+            with open(source_registry_path, "r", encoding="utf-8") as f:
+                sources_for_edges = json.load(f).get("sources", {})
+
+        broken_edges = []
+        for node_id, node_data in knowledge_nodes.items():
+            for dep in node_data.get("dependencies", []) or []:
+                if dep not in knowledge_nodes:
+                    broken_edges.append(f"{node_id} -> missing dependency {dep}")
+            for source_id in node_data.get("source_ids", []) or []:
+                if source_id not in sources_for_edges:
+                    broken_edges.append(f"{node_id} -> missing source {source_id}")
+            for claim_id in node_data.get("claim_ids", []) or []:
+                if claim_id not in claims_for_edges:
+                    broken_edges.append(f"{node_id} -> missing claim {claim_id}")
+
+        if broken_edges:
+            self.log("Knowledge Edges", f"Broken edges: {broken_edges[:10]}", "FAIL")
+        else:
+            self.log("Knowledge Edges", "Broken Knowledge Edge Rate = 0%", "PASS")
 
     # ====================================================================
     # 3. Taxonomy 753 Data Integrity (JSON-based validation)
@@ -517,6 +547,91 @@ class ValidationSuite:
         else:
             self.log("Generated Retrieval", f"{len(entries)} entries with canonical claim/source origin", "PASS")
 
+        # Canonical time-sensitive sources must be within their declared max-age window.
+        freshness_failures = []
+        now = datetime.now(timezone.utc)
+        time_sensitive = {
+            "VOLATILE_PRICE", "PLATFORM_POLICY", "LEGAL", "TAX",
+            "REGULATORY", "MACRO", "INDUSTRY_REPORT", "INTERNAL_PLAYBOOK"
+        }
+        canonical_source_ids = {
+            sid
+            for claim in claims.values()
+            if claim.get("status") == "CANONICAL"
+            for sid in claim.get("source_ids", [])
+        }
+        for source_id in sorted(canonical_source_ids):
+            source = sources.get(source_id, {})
+            freshness_class = source.get("freshness_class")
+            max_age_days = source.get("max_age_days")
+            if freshness_class not in time_sensitive or not max_age_days:
+                continue
+            stamp = source.get("verified_at") or source.get("accessed_at") or source.get("published_at")
+            if not stamp:
+                freshness_failures.append(f"{source_id}: no freshness timestamp")
+                continue
+            try:
+                parsed = datetime.fromisoformat(str(stamp).replace("Z", "+00:00"))
+                if parsed.tzinfo is None:
+                    parsed = parsed.replace(tzinfo=timezone.utc)
+                age_days = (now - parsed.astimezone(timezone.utc)).total_seconds() / 86400
+                if age_days > float(max_age_days):
+                    freshness_failures.append(
+                        f"{source_id}: age={age_days:.1f}d > max={max_age_days}d"
+                    )
+            except Exception:
+                freshness_failures.append(f"{source_id}: invalid date {stamp}")
+
+        if freshness_failures:
+            self.log("Canonical Freshness", f"Failures: {freshness_failures[:10]}", "FAIL")
+        else:
+            self.log("Canonical Freshness", "All time-sensitive canonical sources are inside freshness contract", "PASS")
+
+        # Matched retrieval: contrasting business contexts must select materially different
+        # canonical knowledge claims, not the same generic chunk set.
+        def claims_for_modules(module_ids):
+            requested = set(module_ids)
+            return {
+                entry.get("claim_id")
+                for entry in entries
+                if requested.intersection(entry.get("module_ids", []))
+            }
+
+        b2b_regulated_recurring = claims_for_modules({
+            "MOD-CUSTOMER-B2B", "MOD-REV-RECURRING", "MOD-REG-HIGH"
+        })
+        local_b2c_retail = claims_for_modules({
+            "MOD-CUSTOMER-B2C", "MOD-CHANNEL-PHYSICAL", "MOD-GEO-LOCAL",
+            "MOD-OFFER-PHYSICAL", "MOD-REV-TRANSACTION", "MOD-SCALE-MICRO"
+        })
+
+        required_b2b = {"KCL-B2B-DMU", "KCL-RETENTION", "KCL-COMPLIANCE"}
+        required_local = {"KCL-B2C-BEHAVIOR", "KCL-LOCAL-CHANNEL", "KCL-PHYSICAL-OFFER"}
+        matched_errors = []
+        if not required_b2b.issubset(b2b_regulated_recurring):
+            matched_errors.append(
+                f"B2B/regulated/recurring missing {sorted(required_b2b - b2b_regulated_recurring)}"
+            )
+        if not required_local.issubset(local_b2c_retail):
+            matched_errors.append(
+                f"local/B2C/physical missing {sorted(required_local - local_b2c_retail)}"
+            )
+        if b2b_regulated_recurring == local_b2c_retail:
+            matched_errors.append("contrasting contexts returned identical claim sets")
+        if "KCL-B2B-DMU" in local_b2c_retail:
+            matched_errors.append("B2B DMU leaked into local B2C retrieval")
+        if "KCL-B2C-BEHAVIOR" in b2b_regulated_recurring:
+            matched_errors.append("B2C behavior leaked into B2B retrieval")
+
+        if matched_errors:
+            self.log("Matched Retrieval", f"Failures: {matched_errors}", "FAIL")
+        else:
+            self.log(
+                "Matched Retrieval",
+                f"B2B={len(b2b_regulated_recurring)} claims, local-B2C={len(local_b2c_retail)} claims, differentiated with no protected leakage",
+                "PASS"
+            )
+
         legacy_rag = os.path.join(BASE_DIR, "knowledge_base", "rag_engine.py")
         with open(legacy_rag, "r", encoding="utf-8") as f:
             legacy_rag_text = f.read()
@@ -528,6 +643,18 @@ class ValidationSuite:
             self.log("Legacy RAG", "Runtime still reads manual rag_chunks.json", "FAIL")
         else:
             self.log("Legacy RAG", "Compatibility API delegates to canonical generated retrieval", "PASS")
+
+        legacy_wiki = os.path.join(BASE_DIR, "knowledge_base", "wiki_engine.py")
+        with open(legacy_wiki, "r", encoding="utf-8") as f:
+            legacy_wiki_text = f.read()
+        points_to_root_wiki = (
+            'WIKI_DIR = os.path.join(ROOT_DIR, "wiki")' in legacy_wiki_text
+            and 'knowledge_base", "wiki"' not in legacy_wiki_text
+        )
+        if points_to_root_wiki:
+            self.log("Legacy Wiki Plane", "Compatibility API reads canonical root wiki only", "PASS")
+        else:
+            self.log("Legacy Wiki Plane", "Runtime still treats knowledge_base/wiki as an authored truth plane", "FAIL")
 
     # ====================================================================
     # 6. Phase-Specific Knowledge Coverage
