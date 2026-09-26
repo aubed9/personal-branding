@@ -177,7 +177,7 @@ test('source-count claims are registry-derived, not hard-coded 165-source market
 
 test('dynamic question fallback never fabricates Knowledge Node identifiers', () => {
   const engine = read('platform/src/services/dynamicQuestionEngine.js');
-  assert.equal(engine.includes('nodeId: \`KB-P\${p}-001\`'), false);
+  assert.equal(engine.includes('KB-P' + '${p}' + '-001'), false);
   assert.ok(engine.includes('provenanceStatus: "UNMAPPED"'));
   assert.ok(engine.includes('nodeId: null'));
 });
