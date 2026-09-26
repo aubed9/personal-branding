@@ -133,6 +133,93 @@ test('phase output keeps stable shell but conditional body is claim-driven', () 
   assert.equal(raw.includes('۳۰ روز: داده «'), false, 'missing fields must not become generic 30-day actions');
 });
 
+test('admissible Iran external knowledge is projected as source-traceable shared EXTERNAL_FACT claims', () => {
+  const data = phaseData();
+  const meta = metadata(data, { knowledgeAsOf: '2026-09-26T00:00:00Z' });
+  const model = buildCanonicalOutputClaims({
+    phaseData: data,
+    businessContext: context(),
+    unknowns: [],
+    contradictions: [],
+    metadata: meta,
+  });
+
+  const external = model.claims.filter(claim => claim.claimType === CLAIM_TYPES.EXTERNAL_FACT);
+  assert.ok(external.length > 0, 'explicit Iran context should surface admissible external knowledge');
+  assert.ok(external.some(claim => claim.sourceClaimIds.includes('KCL-IR-SCI-CPI-1405-05')));
+  assert.ok(external.some(claim => claim.sourceClaimIds.includes('KCL-IR-ECOM-1403')));
+  assert.ok(external.every(claim => claim.status === 'CONFIRMED'));
+  assert.ok(external.every(claim => claim.sourceClaimIds.length > 0 && claim.sourceIds.length > 0));
+  assert.ok(external.every(claim => claim.metadata.jurisdictionOrScope === 'IRAN'));
+  assert.equal(external.some(claim => /DIGIKALA_PLATFORM|SNAPP_PLATFORM/.test(claim.metadata.jurisdictionOrScope)), false);
+
+  const phase2 = generateDeliverable(2, data, context(), [], [], [], meta);
+  const externalIds = external
+    .filter(claim => claim.metadata.affectedPhases.includes(2))
+    .map(claim => claim.claimId);
+  const evidenceSection = phase2.sections.find(section => section.sectionType === 'EVIDENCE');
+  assert.ok(externalIds.some(id => evidenceSection.claimIds.includes(id)));
+  assert.ok(evidenceSection.sourceIds.length > 0);
+
+  const markdown = deliverableToMarkdown(phase2);
+  assert.ok(markdown.includes('source-claim:'));
+  assert.ok(markdown.includes('sources:'));
+  assert.ok(markdown.includes('limitations:'));
+});
+
+test('Iran external knowledge never leaks into non-Iran or unknown jurisdiction output', () => {
+  const data = phaseData();
+  data[1].geography = 'بین‌المللی و صادراتی';
+  const meta = metadata(data, { knowledgeAsOf: '2026-09-26T00:00:00Z' });
+  const model = buildCanonicalOutputClaims({
+    phaseData: data,
+    businessContext: context({ geography: 'INTERNATIONAL' }),
+    unknowns: [],
+    contradictions: [],
+    metadata: meta,
+  });
+  assert.equal(model.claims.some(claim => claim.claimType === CLAIM_TYPES.EXTERNAL_FACT), false);
+});
+
+test('stale external sources cannot remain CONFIRMED in generated output', () => {
+  const data = phaseData();
+  const meta = metadata(data, { knowledgeAsOf: '2030-01-01T00:00:00Z' });
+  const model = buildCanonicalOutputClaims({
+    phaseData: data,
+    businessContext: context(),
+    unknowns: [],
+    contradictions: [],
+    metadata: meta,
+  });
+  assert.equal(model.claims.some(claim => claim.claimType === CLAIM_TYPES.EXTERNAL_FACT), false);
+});
+
+test('platform-scoped evidence requires an explicit platform jurisdiction override', () => {
+  const data = phaseData();
+  const generic = buildCanonicalOutputClaims({
+    phaseData: data,
+    businessContext: context(),
+    metadata: metadata(data, { knowledgeAsOf: '2026-09-26T00:00:00Z' }),
+  });
+  assert.equal(
+    generic.claims.some(claim => claim.metadata?.jurisdictionOrScope === 'DIGIKALA_PLATFORM'),
+    false
+  );
+
+  const platform = buildCanonicalOutputClaims({
+    phaseData: data,
+    businessContext: context(),
+    metadata: metadata(data, {
+      knowledgeAsOf: '2026-09-26T00:00:00Z',
+      knowledgeJurisdiction: 'DIGIKALA_PLATFORM',
+    }),
+  });
+  assert.ok(platform.claims.some(claim =>
+    claim.claimType === CLAIM_TYPES.EXTERNAL_FACT
+    && claim.metadata?.jurisdictionOrScope === 'DIGIKALA_PLATFORM'
+  ));
+});
+
 test('canonical claims obey evidence/provenance contracts', () => {
   const data = phaseData();
   const master = generateDeliverable('master', data, context(), [], [], [], metadata(data));
