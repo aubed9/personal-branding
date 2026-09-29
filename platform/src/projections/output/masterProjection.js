@@ -141,6 +141,8 @@ export function projectSemanticMaster(state, model, phaseDocuments) {
         statement: claim.statement,
         kind: claim.metadata?.rawKind || claim.claimType,
         evidenceIds: claim.evidenceIds,
+        sourceClaimIds: claim.sourceClaimIds,
+        sourceIds: claim.sourceIds,
         field: claim.metadata?.field || null,
         claimId: claim.claimId,
         status: claim.status,

@@ -206,11 +206,18 @@ test('unknown output has no invented offer, identity, price or KPI threshold', (
   for (const forbidden of ['رفیق کاربلد و امین', 'توسعه پایدار و مشتریان وفادار', '۳۰٪', '۱.۵ برابر']) assert.ok(!md.includes(forbidden));
   assert.equal(e.generateDeliverableData('master').status, 'DRAFT');
 });
-test('every factual document claim references an active answer', () => {
+test('document facts reference either active answers or admitted external sources', () => {
   const e = fillFoundation(); const doc = e.generateDeliverableData('master');
   const ids = new Set(activeAnswers(e.answerRecords).map(a => a.id));
   assert.ok(doc.evidence.length > 0);
-  for (const claim of doc.evidence) { assert.ok(claim.evidenceIds.length); assert.ok(claim.evidenceIds.every(id => ids.has(id))); }
+  for (const claim of doc.evidence) {
+    if (claim.kind === 'EXTERNAL_FACT') {
+      assert.ok(claim.sourceClaimIds.length && claim.sourceIds.length);
+    } else {
+      assert.ok(claim.evidenceIds.length);
+      assert.ok(claim.evidenceIds.every(id => ids.has(id)));
+    }
+  }
 });
 test('same sector with different offers produces different decisions and actions', () => {
   const a = fillFoundation(), b = fillFoundation({ step2_core_offer: ['اشتراک بسته قهوه برای خانه', null], step1_primary_goal: ['افزایش تمدید اشتراک', null] });

@@ -49,6 +49,7 @@ function resolveKnowledgeJurisdiction(phaseData, businessContext, metadata) {
   const currentAnswers = activeAnswers(metadata.answerRecords || []);
   const geographyAnswer = currentAnswers.find(answer => answer.questionId === 'step0_geography');
   if (geographyAnswer?.optionValue === 'nationwide_iran') return 'IRAN';
+  if (geographyAnswer?.optionValue === 'local_city') return 'IRAN';
   if (geographyAnswer?.optionValue === 'international') return 'GENERAL';
 
   const text = [
