@@ -213,6 +213,53 @@ test('scoped e-commerce law claim requires both B2C and online modules', () => {
   assert.equal(b2cPhysical.claims.some(claim => claim.sourceClaimIds?.includes(claimId)), false);
 });
 
+test('unverified online licensing stays a visible scoped risk in Iran B2C deliverables', () => {
+  const data = phaseData();
+  const meta = metadata(data, { knowledgeAsOf: '2026-09-29T00:00:00Z' });
+  const ctx = context({ customerModel: 'B2C', channelModel: 'ONLINE_FIRST', revenueModel: 'TRANSACTION' });
+  const model = buildCanonicalOutputClaims({ phaseData: data, businessContext: ctx, metadata: meta });
+  const risk = model.claims.find(claim => claim.metadata?.researchGapClaimId === 'KCL-IR-ENAMAD-CURRENT-RULES-UNVERIFIED');
+  assert.ok(risk);
+  assert.equal(risk.claimType, CLAIM_TYPES.RISK);
+  assert.equal(risk.status, 'NEEDS_REVIEW');
+  assert.equal(risk.verificationState, 'REQUIRES_VERIFICATION');
+  assert.deepEqual(risk.sourceIds, []);
+  assert.deepEqual(risk.sourceClaimIds, []);
+  assert.match(risk.statement, /برای تصمیم‌های وابسته/);
+  assert.equal(assertOutputAcceptance(model, { specializedContext: true }).valid, true);
+
+  for (const phase of [2, 8]) {
+    const doc = generateDeliverable(phase, data, ctx, [], [], [], meta);
+    const risks = doc.sections.find(section => section.sectionType === 'RISKS');
+    assert.ok(risks.claimIds.includes(risk.claimId));
+    assert.equal(risks.status, 'NEEDS_REVIEW');
+    assert.ok(deliverableToMarkdown(doc).includes(risk.statement));
+  }
+  const master = generateDeliverable('master', data, ctx, [], [], [], meta);
+  assert.equal(master.sections.flatMap(section => section.claimIds || []).filter(id => id === risk.claimId).length, 1);
+  assert.ok(deliverableToMarkdown(master).includes(risk.statement));
+});
+
+test('online licensing verification risk is absent outside its Iran B2C online scope', () => {
+  const data = phaseData();
+  const meta = metadata(data, { knowledgeAsOf: '2026-09-29T00:00:00Z' });
+  const scenarios = [
+    [context({ customerModel: 'B2B', channelModel: 'ONLINE_FIRST' }), data],
+    [context({ customerModel: 'B2C', channelModel: 'PHYSICAL_FIRST' }), data],
+    [context({ customerModel: 'B2C', channelModel: 'ONLINE_FIRST', geography: 'INTERNATIONAL' }), {
+      ...data, 1: { ...data[1], geography: 'بین‌المللی' },
+    }],
+  ];
+  for (const [ctx, input] of scenarios) {
+    const model = buildCanonicalOutputClaims({
+      phaseData: input,
+      businessContext: ctx,
+      metadata: metadata(input, { knowledgeAsOf: meta.knowledgeAsOf }),
+    });
+    assert.equal(model.claims.some(claim => claim.metadata?.researchGapClaimId === 'KCL-IR-ENAMAD-CURRENT-RULES-UNVERIFIED'), false);
+  }
+});
+
 test('Iran external knowledge never leaks into non-Iran or unknown jurisdiction output', () => {
   const data = phaseData();
   data[1].geography = 'بین‌المللی و صادراتی';

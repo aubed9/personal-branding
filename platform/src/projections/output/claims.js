@@ -164,6 +164,34 @@ function buildExternalKnowledgeClaims({
     })));
 }
 
+function buildOnlineLicensingVerificationRisk(jurisdiction, moduleProjections, metadata) {
+  if (jurisdiction !== 'IRAN') return null;
+  const moduleIds = new Set(Object.values(moduleProjections).flatMap(projection => projection?.moduleIds || []));
+  if (!moduleIds.has('MOD-CUSTOMER-B2C') || !moduleIds.has('MOD-CHANNEL-ONLINE')) return null;
+
+  // This is a research gap, not an assertion that every online seller needs Enamad.
+  // Keep it separate from EXTERNAL_FACT until an exact current primary rule is verified.
+  return validateOrThrow(createCanonicalClaim({
+    stableKey: { kind: 'KNOWLEDGE_GAP', id: 'IR-ONLINE-B2C-LICENSING' },
+    claimType: CLAIM_TYPES.RISK,
+    statement: 'برای تصمیم‌های وابسته به درگاه پرداخت یا مجوز فروش آنلاین به مصرف‌کننده در ایران، شرایط فعلی اینماد و مجوز فعالیت مربوط را در منبع رسمی بررسی کنید؛ سند دقیق و نسخهٔ معتبر این قواعد هنوز ثبت نشده است.',
+    status: CLAIM_STATUS.NEEDS_REVIEW,
+    phase: null,
+    dependencyIds: ['MODULE:MOD-CUSTOMER-B2C', 'MODULE:MOD-CHANNEL-ONLINE', 'JURISDICTION:IRAN'],
+    evidenceIds: [],
+    ruleId: 'IR-ONLINE-B2C-LICENSING-VERIFICATION',
+    confidence: null,
+    verificationState: 'REQUIRES_VERIFICATION',
+    createdRevision: Number(metadata.revision) || 0,
+    lastValidatedRevision: Number(metadata.revision) || 0,
+    metadata: {
+      affectedPhases: [2, 8],
+      researchGapClaimId: 'KCL-IR-ENAMAD-CURRENT-RULES-UNVERIFIED',
+      applicability: 'IRAN_B2C_ONLINE_PAYMENT_OR_LICENSING_DECISIONS',
+    },
+  }));
+}
+
 export function buildEvidenceRows(phaseData = {}, answerRecords = []) {
   const current = activeAnswers(answerRecords.length ? answerRecords : migrateAnswerRecords(phaseData));
   return INTERVIEW_FIELDS.map(spec => {
@@ -517,6 +545,12 @@ export function buildCanonicalOutputClaims({
     moduleProjections,
     metadata,
   }));
+  if (businessContext) {
+    const licensingRisk = buildOnlineLicensingVerificationRisk(
+      resolveKnowledgeJurisdiction(phaseData, businessContext, metadata), moduleProjections, metadata
+    );
+    if (licensingRisk) claims.push(licensingRisk);
+  }
   claims.push(...buildContradictionClaims(contradictions, rows, metadata));
 
   const ledger = buildLedger(claims);
