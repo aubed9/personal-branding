@@ -28,23 +28,49 @@ function parseDate(value) {
   return Number.isNaN(date.getTime()) ? null : date;
 }
 
+function persianDateParts(date) {
+  return Object.fromEntries(PERSIAN_DATE_FORMATTER.formatToParts(date)
+    .filter(part => ['year', 'month', 'day'].includes(part.type))
+    .map(part => [part.type, Number(part.value)]));
+}
+
+function validEffectiveDay(year, month, day, persian) {
+  if (month < 1 || month > 12 || day < 1) return false;
+  if (!persian) {
+    const date = new Date(Date.UTC(year, month - 1, day));
+    return date.getUTCFullYear() === year && date.getUTCMonth() + 1 === month && date.getUTCDate() === day;
+  }
+  if (day <= (month <= 6 ? 31 : month <= 11 ? 30 : 29)) return true;
+  if (month !== 12 || day !== 30) return false;
+  // The Persian leap day is determined by the calendar itself, not by a Gregorian leap-year rule.
+  return [18, 19, 20, 21, 22].some(marchDay => {
+    const date = new Date(Date.UTC(year + 622, 2, marchDay, 12));
+    const parts = persianDateParts(date);
+    return parts.year === year && parts.month === 12 && parts.day === 30;
+  });
+}
+
 function compareEffectiveDate(value, asOf) {
   if (!value) return null;
   const dateOnly = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
   if (!dateOnly) {
+    const timestampDate = /^(\d{4})-(\d{2})-(\d{2})T/.exec(value);
+    if (!timestampDate) return null;
+    const [year, month, day] = timestampDate.slice(1).map(Number);
+    // Persian effective dates are date-only; a timestamp must have a real Gregorian date.
+    if ((year >= 1300 && year <= 1499) || !validEffectiveDay(year, month, day, false)) return null;
     const instant = parseDate(value);
     return instant ? instant.getTime() - asOf.getTime() : null;
   }
 
   const [year, month, day] = dateOnly.slice(1).map(Number);
-  if (month < 1 || month > 12 || day < 1 || day > 31) return null;
+  const persian = year >= 1300 && year <= 1499;
+  if (!validEffectiveDay(year, month, day, persian)) return null;
   let asOfYear;
   let asOfMonth;
   let asOfDay;
-  if (year >= 1300 && year <= 1499) {
-    const parts = Object.fromEntries(PERSIAN_DATE_FORMATTER.formatToParts(asOf)
-      .filter(part => ['year', 'month', 'day'].includes(part.type))
-      .map(part => [part.type, Number(part.value)]));
+  if (persian) {
+    const parts = persianDateParts(asOf);
     ({ year: asOfYear, month: asOfMonth, day: asOfDay } = parts);
   } else {
     asOfYear = asOf.getUTCFullYear();

@@ -355,6 +355,22 @@ test('effective period dates are inclusive in both Iranian and Gregorian calenda
   assert.equal(evaluateSourceFreshness(gregorian, { asOf: new Date('2026-10-02T12:00:00Z') }).admissible, true);
 });
 
+test('impossible effective dates never admit a verified source', () => {
+  const source = {
+    status: 'VERIFIED', freshness_class: 'LEGAL', max_age_days: 30,
+    verified_at: '2026-09-20', authority_tier: 'A',
+  };
+  const asOf = new Date('2026-09-29T12:00:00Z');
+  for (const effective_from of ['1405-07-31', '1404-12-30', '2026-02-31', '2026-02-31T12:00:00Z', '1404-12-30T12:00:00Z']) {
+    const result = evaluateSourceFreshness({ ...source, effective_from }, { asOf });
+    assert.equal(result.admissible, false, effective_from);
+    assert.equal(result.reason, 'INVALID_EFFECTIVE_FROM', effective_from);
+  }
+  assert.equal(evaluateSourceFreshness({ ...source, effective_until: '1404-12-30' }, { asOf }).reason, 'INVALID_EFFECTIVE_UNTIL');
+  assert.equal(evaluateSourceFreshness({ ...source, effective_from: '1403-12-30' }, { asOf }).admissible, true);
+  assert.equal(evaluateSourceFreshness({ ...source, effective_from: '2024-02-29' }, { asOf }).admissible, true);
+});
+
 test('critical claims require fresh Tier A evidence and retrieval filters before ranking', () => {
   const sources = {
     'SRC-A': {
