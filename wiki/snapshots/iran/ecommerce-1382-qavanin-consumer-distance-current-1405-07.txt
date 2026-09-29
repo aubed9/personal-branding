@@ -1,0 +1,23 @@
+# Verification snapshot — Iran Electronic Commerce Law consumer/distance-contract duties
+
+Source: Official qavanin.ir consolidated text
+Law ID: 15700719202226051269
+Law: قانون تجارت الکترونیکی
+Approved: 1382/10/17
+Official Gazette: 17167
+Execution date shown by official registry: 1382/11/27
+Registry status observed: اصلاحی 1403/03/30
+Verified at: 2026-09-27
+Source URLs:
+- https://qavanin.ir/Law/Attribute/?IDS=15700719202226051269
+- https://qavanin.ir/Law/TreeText/?IDS=15700719202226051269
+
+Decision-useful locator scope captured from the current consolidated text:
+- Article 2: definitions of consumer, supplier, distance communication and distance contract.
+- Article 33: supplier pre-contract information duties for consumer decision-making, including product/service characteristics, supplier identity/contact, total customer-borne costs, offer validity and transaction/payment/delivery/cancellation/after-sales process.
+- Articles 34–35: separate confirmation of key supplier/complaint/warranty/cancellation information and durable, clear delivery of the information.
+- Articles 37–39: minimum seven-working-day withdrawal framework for distance transactions, start conditions/refund consequences, and refund when supply/performance is unavailable.
+- Articles 50–55: advertising/marketing transparency duties, including prohibition of misleading conduct, clear understanding of product/service information, advertiser identity, no concealment of business identity/location, and consumer choice regarding receiving advertising.
+
+Verification boundary:
+This snapshot supports only the article scopes listed above as displayed in the current consolidated qavanin text on the verification date. It does not assert that every activity is covered, does not resolve all exceptions/implementing regulations, and does not establish current Enamad eligibility or licensing rules. Applicability depends on whether the transaction and parties satisfy the law's definitions and any specific exclusions.

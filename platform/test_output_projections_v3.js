@@ -167,6 +167,33 @@ test('admissible Iran external knowledge is projected as source-traceable shared
   assert.ok(markdown.includes('limitations:'));
 });
 
+test('scoped e-commerce law claim requires both B2C and online modules', () => {
+  const data = phaseData();
+  const meta = metadata(data, { knowledgeAsOf: '2026-09-27T00:00:00Z' });
+  const claimId = 'KCL-IR-LAW-ECOM-1382-UNVERIFIED';
+
+  const b2cOnline = buildCanonicalOutputClaims({
+    phaseData: data,
+    businessContext: context({ customerModel: 'B2C', channelModel: 'ONLINE_FIRST', revenueModel: 'TRANSACTION' }),
+    metadata: meta,
+  });
+  assert.ok(b2cOnline.claims.some(claim => claim.sourceClaimIds?.includes(claimId)));
+
+  const b2bOnline = buildCanonicalOutputClaims({
+    phaseData: data,
+    businessContext: context({ customerModel: 'B2B', channelModel: 'ONLINE_FIRST', revenueModel: 'TRANSACTION' }),
+    metadata: meta,
+  });
+  assert.equal(b2bOnline.claims.some(claim => claim.sourceClaimIds?.includes(claimId)), false);
+
+  const b2cPhysical = buildCanonicalOutputClaims({
+    phaseData: data,
+    businessContext: context({ customerModel: 'B2C', channelModel: 'PHYSICAL_FIRST', revenueModel: 'TRANSACTION' }),
+    metadata: meta,
+  });
+  assert.equal(b2cPhysical.claims.some(claim => claim.sourceClaimIds?.includes(claimId)), false);
+});
+
 test('Iran external knowledge never leaks into non-Iran or unknown jurisdiction output', () => {
   const data = phaseData();
   data[1].geography = 'بین‌المللی و صادراتی';
