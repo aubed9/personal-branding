@@ -418,6 +418,31 @@ test('critical claims require fresh Tier A evidence and retrieval filters before
   assert.deepEqual(results.map(result => result.entry.claim_id), ['KCL-LEGAL']);
 });
 
+test('a shorter claim freshness limit blocks an otherwise fresh source in retrieval', () => {
+  const source = {
+    status: 'VERIFIED', freshness_class: 'INDUSTRY_REPORT', max_age_days: 365,
+    verified_at: '2026-09-01', authority_tier: 'A',
+  };
+  const claim = {
+    id: 'KCL-SHORT-LIVED', status: 'VERIFIED', claim_kind: 'MARKET_OBSERVATION',
+    authority_requirement: 'A', freshness_class: 'INDUSTRY_REPORT', max_age_days: 7,
+    source_ids: ['SRC-REPORT'],
+  };
+  const sources = { 'SRC-REPORT': source };
+  const recent = new Date('2026-09-05T00:00:00Z');
+  const expired = new Date('2026-09-10T00:00:00Z');
+  assert.equal(evaluateKnowledgeClaim(claim, sources, { asOf: recent }).admissible, true);
+  assert.equal(evaluateSourceFreshness(source, { asOf: expired }).admissible, true);
+  assert.deepEqual(evaluateKnowledgeClaim(claim, sources, { asOf: expired }).reasons,
+    ['CLAIM_MAX_AGE_EXCEEDED:SRC-REPORT']);
+  assert.deepEqual(retrieveCanonicalKnowledge('گزارش', [{
+    retrieval_id: 'RET-SHORT', claim_id: claim.id, content: 'گزارش',
+    phases: [1], module_ids: ['MOD-REPORT'], jurisdiction_or_scope: 'IRAN',
+  }], { [claim.id]: claim }, sources, {
+    asOf: expired, phase: 1, moduleIds: ['MOD-REPORT'], jurisdiction: 'IRAN',
+  }), []);
+});
+
 
 test('legacy RAG migration inventory accounts for every chunk with zero silent loss', () => {
   const legacyChunks = json('knowledge_base/rag_chunks.json');
