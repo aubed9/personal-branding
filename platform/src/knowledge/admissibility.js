@@ -129,6 +129,9 @@ export function retrieveCanonicalKnowledge(query, entries, claims, sources, {
     const claim = claims?.[entry.claim_id];
     const admission = evaluateKnowledgeClaim(claim, sources, { asOf, criticalUse });
     if (!admission.admissible) continue;
+    // An inapplicable claim must not consume a ranked retrieval slot.
+    const requiredModules = claim?.applicability?.required_module_ids_all;
+    if (Array.isArray(requiredModules) && requiredModules.some(id => !modules.has(id))) continue;
     if (phase && !(entry.phases || []).includes(Number(phase))) continue;
     if (jurisdiction && ![jurisdiction, 'GENERAL', 'PRODUCT_INTERNAL'].includes(entry.jurisdiction_or_scope)) continue;
 
