@@ -227,6 +227,43 @@ test('Iran external knowledge never leaks into non-Iran or unknown jurisdiction 
   assert.equal(model.claims.some(claim => claim.claimType === CLAIM_TYPES.EXTERNAL_FACT), false);
 });
 
+test('the explicit local Iran choice admits national evidence for a local business', () => {
+  const data = phaseData();
+  data[1].geography = 'مشهد';
+  data[1].geographyValue = 'local_city';
+  const model = buildCanonicalOutputClaims({
+    phaseData: data,
+    businessContext: context({ geography: 'CITY', customerModel: 'B2C', channelModel: 'PHYSICAL_FIRST' }),
+    metadata: metadata(data, { knowledgeAsOf: '2026-09-26T00:00:00Z' }),
+  });
+  const external = model.claims.filter(claim => claim.claimType === CLAIM_TYPES.EXTERNAL_FACT);
+  assert.ok(external.some(claim => claim.sourceClaimIds.includes('KCL-IR-SCI-CPI-1405-05')));
+  assert.ok(external.every(claim => claim.metadata.jurisdictionOrScope === 'IRAN'));
+  assert.equal(external.some(claim => claim.sourceClaimIds.includes('KCL-IR-LAW-ECOM-1382-UNVERIFIED')), false);
+
+  const online = buildCanonicalOutputClaims({
+    phaseData: data,
+    businessContext: context({ geography: 'CITY', customerModel: 'B2C', channelModel: 'ONLINE_FIRST', revenueModel: 'TRANSACTION' }),
+    metadata: metadata(data, { knowledgeAsOf: '2026-09-27T00:00:00Z' }),
+  });
+  assert.ok(online.claims.some(claim => claim.sourceClaimIds?.includes('KCL-IR-LAW-ECOM-1382-UNVERIFIED')));
+
+  const b2b = buildCanonicalOutputClaims({
+    phaseData: data,
+    businessContext: context({ geography: 'CITY', customerModel: 'B2B', channelModel: 'ONLINE_FIRST', revenueModel: 'TRANSACTION' }),
+    metadata: metadata(data, { knowledgeAsOf: '2026-09-27T00:00:00Z' }),
+  });
+  assert.equal(b2b.claims.some(claim => claim.sourceClaimIds?.includes('KCL-IR-LAW-ECOM-1382-UNVERIFIED')), false);
+
+  const ambiguous = { ...data, 1: { ...data[1], geography: 'محلی', geographyValue: null } };
+  const unknownCountry = buildCanonicalOutputClaims({
+    phaseData: ambiguous,
+    businessContext: context({ geography: 'CITY' }),
+    metadata: metadata(ambiguous, { knowledgeAsOf: '2026-09-27T00:00:00Z' }),
+  });
+  assert.equal(unknownCountry.claims.some(claim => claim.claimType === CLAIM_TYPES.EXTERNAL_FACT), false);
+});
+
 test('stale external sources cannot remain CONFIRMED in generated output', () => {
   const data = phaseData();
   const meta = metadata(data, { knowledgeAsOf: '2030-01-01T00:00:00Z' });

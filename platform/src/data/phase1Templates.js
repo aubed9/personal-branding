@@ -129,7 +129,7 @@ export const INITIAL_QUESTIONS = [
     title: "محدوده جغرافیایی مشتریان",
     text: "مشتریان اصلی شما بیشتر در چه محدوده‌ای حضور دارند؟",
     options: [
-      { text: "محلی و منطقه‌ای (شعاع مشخصی از یک محله یا شهر)", value: "local_city", icon: "MapPin", badge: "محلی / حضوری" },
+      { text: "محلی در ایران (شعاع مشخصی از یک محله یا شهر)", value: "local_city", icon: "MapPin", badge: "محلی / حضوری" },
       { text: "سراسر کشور (ارسال کالا یا ارائه خدمت آنلاین در کل ایران)", value: "nationwide_iran", icon: "Globe", badge: "سراسری / ملی" },
       { text: "بین‌المللی و صادراتی (بازارهای خارج از کشور یا مشتریان چندزبانه)", value: "international", icon: "Plane", badge: "صادرات / بین‌المللی" }
     ]
