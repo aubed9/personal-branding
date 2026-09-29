@@ -71,13 +71,6 @@ function resolveKnowledgeAsOf(metadata) {
   return Number.isNaN(value.getTime()) ? new Date() : value;
 }
 
-function claimMatchesModuleApplicability(sourceClaim, moduleIds) {
-  const requiredAll = sourceClaim?.applicability?.required_module_ids_all;
-  if (!Array.isArray(requiredAll) || requiredAll.length === 0) return true;
-  const active = new Set(moduleIds || []);
-  return requiredAll.every(id => active.has(id));
-}
-
 function buildExternalKnowledgeClaims({
   phaseData,
   businessContext,
@@ -113,8 +106,6 @@ function buildExternalKnowledgeClaims({
     for (const result of results) {
       const entry = result.entry;
       if (!entry?.decision_driving || entry.claim_kind === 'INTERNAL_NORMATIVE') continue;
-      const sourceClaim = CANONICAL_EXTERNAL_KNOWLEDGE_CLAIMS[entry.claim_id];
-      if (!claimMatchesModuleApplicability(sourceClaim, moduleIds)) continue;
       const matchingModules = (entry.module_ids || []).filter(id => moduleIds.includes(id));
       const current = aggregated.get(entry.claim_id) || {
         entry,

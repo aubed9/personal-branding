@@ -148,6 +148,25 @@ test('Enamad current-rule claim remains REQUIRES_VERIFICATION', () => {
   assert.equal(index.entries.some(entry => entry.claim_id === claim.id), false);
 });
 
+test('canonical retrieval enforces every required module before ranking a scoped legal claim', () => {
+  const query = 'قانون تجارت الکترونیکی قرارداد از راه دور انصراف تبلیغات';
+  const retrieve = moduleIds => retrieveCanonicalKnowledge(query, index.entries, claims, sources, {
+    phase: 2,
+    moduleIds,
+    jurisdiction: 'IRAN',
+    criticalUse: true,
+    asOf: new Date('2026-09-29T00:00:00Z'),
+    topK: 50,
+  }).map(result => result.entry.claim_id);
+
+  assert.equal(retrieve([]).includes(ECOM_CLAIM), false);
+  assert.equal(retrieve(['MOD-CUSTOMER-B2C']).includes(ECOM_CLAIM), false);
+  assert.equal(retrieve(['MOD-CHANNEL-ONLINE']).includes(ECOM_CLAIM), false);
+  assert.equal(retrieve(['MOD-CUSTOMER-B2B', 'MOD-CHANNEL-ONLINE']).includes(ECOM_CLAIM), false);
+  assert.equal(retrieve(['MOD-CUSTOMER-B2C', 'MOD-CHANNEL-ONLINE']).includes(ECOM_CLAIM), true);
+  assert.equal(retrieve(['MOD-CUSTOMER-B2C', 'MOD-CHANNEL-ONLINE', 'MOD-REV-TRANSACTION']).includes(ECOM_CLAIM), true);
+});
+
 test('verified legal claims become stale after the 30-day critical-use window', () => {
   for (const id of [TAX_CLAIM, GUILD_CLAIM]) {
     const result = evaluateKnowledgeClaim(claims[id], sources, {
