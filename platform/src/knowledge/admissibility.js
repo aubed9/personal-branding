@@ -18,11 +18,41 @@ export const FRESHNESS_DEFAULTS_DAYS = Object.freeze({
 
 const ADMISSIBLE_STATUS = new Set(['VERIFIED', 'CANONICAL']);
 const DAY_MS = 24 * 60 * 60 * 1000;
+const PERSIAN_DATE_FORMATTER = new Intl.DateTimeFormat('en-US-u-ca-persian', {
+  timeZone: 'Asia/Tehran', year: 'numeric', month: '2-digit', day: '2-digit',
+});
 
 function parseDate(value) {
   if (!value) return null;
   const date = new Date(value);
   return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function compareEffectiveDate(value, asOf) {
+  if (!value) return null;
+  const dateOnly = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  if (!dateOnly) {
+    const instant = parseDate(value);
+    return instant ? instant.getTime() - asOf.getTime() : null;
+  }
+
+  const [year, month, day] = dateOnly.slice(1).map(Number);
+  if (month < 1 || month > 12 || day < 1 || day > 31) return null;
+  let asOfYear;
+  let asOfMonth;
+  let asOfDay;
+  if (year >= 1300 && year <= 1499) {
+    const parts = Object.fromEntries(PERSIAN_DATE_FORMATTER.formatToParts(asOf)
+      .filter(part => ['year', 'month', 'day'].includes(part.type))
+      .map(part => [part.type, Number(part.value)]));
+    ({ year: asOfYear, month: asOfMonth, day: asOfDay } = parts);
+  } else {
+    asOfYear = asOf.getUTCFullYear();
+    asOfMonth = asOf.getUTCMonth() + 1;
+    asOfDay = asOf.getUTCDate();
+  }
+  // Date-only effective periods include both boundary days in their own calendar.
+  return (year * 10000 + month * 100 + day) - (asOfYear * 10000 + asOfMonth * 100 + asOfDay);
 }
 
 export function evaluateSourceFreshness(source, { asOf = new Date() } = {}) {
@@ -34,8 +64,18 @@ export function evaluateSourceFreshness(source, { asOf = new Date() } = {}) {
   }
 
   const now = asOf instanceof Date ? asOf : new Date(asOf);
-  const effectiveUntil = parseDate(source.effective_until);
-  if (effectiveUntil && effectiveUntil.getTime() < now.getTime()) {
+  const effectiveFrom = compareEffectiveDate(source.effective_from, now);
+  const effectiveUntil = compareEffectiveDate(source.effective_until, now);
+  if (source.effective_from && effectiveFrom === null) {
+    return { admissible: false, state: 'REQUIRES_VERIFICATION', reason: 'INVALID_EFFECTIVE_FROM' };
+  }
+  if (source.effective_until && effectiveUntil === null) {
+    return { admissible: false, state: 'REQUIRES_VERIFICATION', reason: 'INVALID_EFFECTIVE_UNTIL' };
+  }
+  if (effectiveFrom !== null && effectiveFrom > 0) {
+    return { admissible: false, state: 'NOT_EFFECTIVE', reason: 'EFFECTIVE_PERIOD_NOT_STARTED' };
+  }
+  if (effectiveUntil !== null && effectiveUntil < 0) {
     return { admissible: false, state: 'STALE', reason: 'EFFECTIVE_PERIOD_ENDED' };
   }
 
