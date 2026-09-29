@@ -1,4 +1,5 @@
 import { defineDecisionModule, validateDecisionModule } from './contract.js';
+import { isAutomotiveService } from '../../data/businessDomain.js';
 
 const d = defineDecisionModule;
 const text = ctx => String(ctx?.businessTypeTitleFa || '').toLowerCase();
@@ -46,12 +47,90 @@ export function isMachiningDomain(ctx) {
 }
 
 export function isGeneralManufacturingDomain(ctx) {
-  return arch(ctx) === 'MANUFACTURER' && !isMachiningDomain(ctx);
+  return arch(ctx) === 'MANUFACTURER' && !isMachiningDomain(ctx) && !isTextileDomain(ctx);
+}
+
+export function isAutomotiveDomain(ctx) {
+  return isAutomotiveService({ industryId: ind(ctx), taxonomyTitleFa: text(ctx) });
+}
+
+export function isRestaurantDomain(ctx) {
+  if (isCafeDomain(ctx)) return false;
+  return ind(ctx) === 'IND-03' || bt(ctx) === 'BT-0071' ||
+    includesAny(text(ctx), ['رستوران', 'چلوکباب', 'کباب', 'دیزی', 'طباخی', 'فست فود', 'غذا']);
+}
+
+export function isTextileDomain(ctx) {
+  return ind(ctx) === 'IND-25' || (arch(ctx) === 'MANUFACTURER' &&
+    includesAny(text(ctx), ['نساجی', 'پوشاک', 'دوخت', 'تریکو', 'پارچه', 'چرم']));
 }
 
 const DOMAIN_CONTEXT = Object.freeze(['AXIS', 'BUSINESS_TYPE', 'INDUSTRY', 'ARCHETYPE']);
 
 export const DOMAIN_DECISION_MODULES = Object.freeze([
+  d({
+    id: 'MOD-DOMAIN-AUTOMOTIVE',
+    title: 'Automotive local service operations',
+    axis: 'offerType', values: ['SERVICE', 'EXPERIENCE', 'MIXED'],
+    phases: [1, 2, 3, 5, 7, 8], priority: 4,
+    contextDimensions: DOMAIN_CONTEXT, activation: isAutomotiveDomain,
+    prerequisites: ['BUSINESS_TYPE', 'INDUSTRY', 'ARCHETYPE', 'AXIS:offerType'],
+    decisionNodes: [
+      { id: 'DN-AUTO-BAY-CAPACITY', phase: 1, title: 'ظرفیت پذیرش خودرو، باکس و زمان سرویس' },
+      { id: 'DN-AUTO-DIAGNOSIS', phase: 2, title: 'تشخیص عیب، شرح کار و شفافیت قطعه' },
+      { id: 'DN-AUTO-PROOF', phase: 3, title: 'اعتماد به تعمیر، کیفیت قطعه و تحویل مستند' },
+      { id: 'DN-AUTO-MESSAGE', phase: 5, title: 'توضیح هزینه و محدوده تعمیر بدون تضمین بی‌پشتوانه' },
+      { id: 'DN-AUTO-TOUCHPOINTS', phase: 7, title: 'پذیرش، برگه سرویس و نمایش مسیر کار' },
+      { id: 'DN-AUTO-RETURN', phase: 8, title: 'یادآوری سرویس و پیگیری دوباره‌کاری' },
+    ],
+    evidenceRequirements: ['SERVICE_BAY_CAPACITY', 'DIAGNOSIS_RECORD', 'PARTS_TRACEABILITY', 'REWORK_RATE'],
+    metrics: ['bay_utilization', 'turnaround_time', 'rework_rate', 'repeat_service_rate'],
+    risks: ['misdiagnosis', 'parts_mismatch', 'delayed_vehicle_delivery'],
+    outputSections: ['automotive_capacity', 'repair_proof', 'service_retention'],
+    gates: ['GATE-AUTO-DIAGNOSIS-AND-CAPACITY'], knowledgeDependencies: ['KB-DOMAIN-AUTOMOTIVE'],
+  }),
+  d({
+    id: 'MOD-DOMAIN-RESTAURANT',
+    title: 'Restaurant and dining operations',
+    axis: 'offerType', values: ['SERVICE', 'EXPERIENCE', 'PHYSICAL_PRODUCT', 'MIXED'],
+    phases: [1, 2, 3, 5, 7, 8], priority: 4,
+    contextDimensions: DOMAIN_CONTEXT, activation: isRestaurantDomain,
+    prerequisites: ['BUSINESS_TYPE', 'INDUSTRY', 'ARCHETYPE', 'AXIS:offerType'],
+    decisionNodes: [
+      { id: 'DN-REST-KITCHEN', phase: 1, title: 'ظرفیت آشپزخانه، بهای غذا و ضایعات' },
+      { id: 'DN-REST-DINING', phase: 2, title: 'تجربه سالن، زمان انتظار و سفارش بیرون‌بر' },
+      { id: 'DN-REST-POSITIONING', phase: 3, title: 'منو، کیفیت پایدار و دلیل بازگشت مشتری' },
+      { id: 'DN-REST-MESSAGE', phase: 5, title: 'شرح صادقانه غذا، مواد و شیوه سرو' },
+      { id: 'DN-REST-TOUCHPOINTS', phase: 7, title: 'منو، بسته‌بندی بیرون‌بر و فضای سالن' },
+      { id: 'DN-REST-RETENTION', phase: 8, title: 'تکرار سفارش، شکایت و کنترل ضایعات' },
+    ],
+    evidenceRequirements: ['KITCHEN_CAPACITY', 'FOOD_COST_PCT', 'WASTE_RATE', 'ORDER_WAIT_TIME'],
+    metrics: ['food_cost_pct', 'waste_rate', 'order_wait_time', 'repeat_order_rate'],
+    risks: ['food_quality_variance', 'kitchen_bottleneck', 'food_waste'],
+    outputSections: ['restaurant_economics', 'dining_experience', 'restaurant_retention'],
+    gates: ['GATE-REST-KITCHEN-ECONOMICS'], knowledgeDependencies: ['KB-DOMAIN-RESTAURANT'],
+  }),
+  d({
+    id: 'MOD-DOMAIN-TEXTILE',
+    title: 'Textile and apparel production',
+    axis: 'offerType', values: ['PHYSICAL_PRODUCT', 'SERVICE', 'MIXED'],
+    phases: [1, 2, 3, 5, 7, 8], priority: 3,
+    contextDimensions: DOMAIN_CONTEXT, activation: isTextileDomain,
+    prerequisites: ['BUSINESS_TYPE', 'INDUSTRY', 'ARCHETYPE', 'AXIS:offerType'],
+    decisionNodes: [
+      { id: 'DN-TEXTILE-CAPACITY', phase: 1, title: 'ظرفیت برش و دوخت، تیراژ و خواب پارچه' },
+      { id: 'DN-TEXTILE-MATERIAL', phase: 2, title: 'تامین الیاف، کیفیت پارچه و ثبات سایز' },
+      { id: 'DN-TEXTILE-PROOF', phase: 3, title: 'نمونه تولید، نرخ عیب و قابلیت تحویل سفارش' },
+      { id: 'DN-TEXTILE-MESSAGE', phase: 5, title: 'شرح جنس، سایزبندی و شرایط سفارش' },
+      { id: 'DN-TEXTILE-TOUCHPOINTS', phase: 7, title: 'لیبل، راهنمای سایز و بسته‌بندی' },
+      { id: 'DN-TEXTILE-ORDERS', phase: 8, title: 'مدیریت فصل، MOQ و سفارش مجدد' },
+    ],
+    evidenceRequirements: ['CUT_SEW_CAPACITY', 'FABRIC_INVENTORY', 'SIZE_DEFECT_RATE', 'MIN_ORDER_QUANTITY'],
+    metrics: ['cut_sew_yield', 'fabric_inventory_days', 'size_defect_rate', 'on_time_delivery'],
+    risks: ['fabric_shortage', 'size_variance', 'seasonal_dead_stock'],
+    outputSections: ['textile_capacity', 'material_quality', 'apparel_orders'],
+    gates: ['GATE-TEXTILE-MATERIAL-AND-SIZING'], knowledgeDependencies: ['KB-DOMAIN-TEXTILE'],
+  }),
   d({
     id: 'MOD-DOMAIN-CAFE',
     title: 'Cafe / specialty coffee operating system',

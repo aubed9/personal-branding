@@ -5,7 +5,7 @@
     "claim_registry": "wiki/claims.json",
     "policy": "Only VERIFIED/CANONICAL claims whose referenced sources are VERIFIED/CANONICAL are indexed."
   },
-  "count": 49,
+  "count": 52,
   "entries": [
     {
       "retrieval_id": "RET-KCL-B2B-DMU",
@@ -235,6 +235,43 @@
       "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
     },
     {
+      "retrieval_id": "RET-KCL-DOMAIN-AUTOMOTIVE",
+      "knowledge_node_id": "KB-DOMAIN-AUTOMOTIVE",
+      "claim_id": "KCL-DOMAIN-AUTOMOTIVE",
+      "content": "Internal domain specialization contract for MOD-DOMAIN-AUTOMOTIVE: canonical business identity activates domain-specific decision topology, evidence requirements, metrics, risks and knowledge dependencies; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        1,
+        2,
+        3,
+        5,
+        7,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-AUTO-BAY-CAPACITY",
+        "DN-AUTO-DIAGNOSIS",
+        "DN-AUTO-PROOF",
+        "DN-AUTO-MESSAGE",
+        "DN-AUTO-TOUCHPOINTS",
+        "DN-AUTO-RETURN"
+      ],
+      "module_ids": [
+        "MOD-DOMAIN-AUTOMOTIVE"
+      ],
+      "limitations": "Internal normative domain-specialization claim only; laws, thresholds, market facts and benchmarks require separately sourced External Knowledge Claims."
+    },
+    {
       "retrieval_id": "RET-KCL-DOMAIN-BEAUTY",
       "knowledge_node_id": "KB-DOMAIN-BEAUTY",
       "claim_id": "KCL-DOMAIN-BEAUTY",
@@ -455,6 +492,43 @@
       "limitations": "Internal normative domain-specialization claim only; laws, thresholds, market facts and benchmarks require separately sourced External Knowledge Claims."
     },
     {
+      "retrieval_id": "RET-KCL-DOMAIN-RESTAURANT",
+      "knowledge_node_id": "KB-DOMAIN-RESTAURANT",
+      "claim_id": "KCL-DOMAIN-RESTAURANT",
+      "content": "Internal domain specialization contract for MOD-DOMAIN-RESTAURANT: canonical business identity activates domain-specific decision topology, evidence requirements, metrics, risks and knowledge dependencies; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        1,
+        2,
+        3,
+        5,
+        7,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-REST-KITCHEN",
+        "DN-REST-DINING",
+        "DN-REST-POSITIONING",
+        "DN-REST-MESSAGE",
+        "DN-REST-TOUCHPOINTS",
+        "DN-REST-RETENTION"
+      ],
+      "module_ids": [
+        "MOD-DOMAIN-RESTAURANT"
+      ],
+      "limitations": "Internal normative domain-specialization claim only; laws, thresholds, market facts and benchmarks require separately sourced External Knowledge Claims."
+    },
+    {
       "retrieval_id": "RET-KCL-DOMAIN-SAAS-GENERAL",
       "knowledge_node_id": "KB-DOMAIN-SAAS-GENERAL",
       "claim_id": "KCL-DOMAIN-SAAS-GENERAL",
@@ -521,6 +595,43 @@
       ],
       "module_ids": [
         "MOD-DOMAIN-TAX-SAAS"
+      ],
+      "limitations": "Internal normative domain-specialization claim only; laws, thresholds, market facts and benchmarks require separately sourced External Knowledge Claims."
+    },
+    {
+      "retrieval_id": "RET-KCL-DOMAIN-TEXTILE",
+      "knowledge_node_id": "KB-DOMAIN-TEXTILE",
+      "claim_id": "KCL-DOMAIN-TEXTILE",
+      "content": "Internal domain specialization contract for MOD-DOMAIN-TEXTILE: canonical business identity activates domain-specific decision topology, evidence requirements, metrics, risks and knowledge dependencies; external facts must never be invented.",
+      "claim_kind": "INTERNAL_NORMATIVE",
+      "decision_driving": true,
+      "status": "CANONICAL",
+      "source_ids": [
+        "SRC-INT-CONTEXT-CONTRACT",
+        "SRC-INT-ARCH-V3"
+      ],
+      "source_authority_floor": "A",
+      "freshness_class": "INTERNAL_PLAYBOOK",
+      "max_age_days": 365,
+      "jurisdiction_or_scope": "PRODUCT_INTERNAL",
+      "phases": [
+        1,
+        2,
+        3,
+        5,
+        7,
+        8
+      ],
+      "decision_node_ids": [
+        "DN-TEXTILE-CAPACITY",
+        "DN-TEXTILE-MATERIAL",
+        "DN-TEXTILE-PROOF",
+        "DN-TEXTILE-MESSAGE",
+        "DN-TEXTILE-TOUCHPOINTS",
+        "DN-TEXTILE-ORDERS"
+      ],
+      "module_ids": [
+        "MOD-DOMAIN-TEXTILE"
       ],
       "limitations": "Internal normative domain-specialization claim only; laws, thresholds, market facts and benchmarks require separately sourced External Knowledge Claims."
     },
@@ -1614,7 +1725,5 @@
       ],
       "limitations": "Internal normative claim only; external facts and thresholds require separately sourced External Knowledge Claims."
     }
-  ],
-  "updated_at": "2026-09-26",
-  "generated_at": "2026-09-27"
+  ]
 }

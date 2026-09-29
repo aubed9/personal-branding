@@ -165,6 +165,54 @@ const readJson = rel => JSON.parse(fs.readFileSync(path.join(root, rel), 'utf8')
 
 const PAIRS = [
   {
+    id: 'automotive-vs-beauty-local-service',
+    phase: 2,
+    left: context({
+      taxonomyId: 'BT-0136', taxonomyTitleFa: 'کارواش نانو بخار و صفرشویی خودرو',
+      industryId: 'IND-05', industryCode: 'AUTOMOTIVE_SERVICES_SALES',
+      primaryArchetype: 'LOCAL_SERVICE', axes: LOCAL_AXES,
+    }),
+    expectedLeftModule: 'MOD-DOMAIN-AUTOMOTIVE',
+    expectedRightModule: 'MOD-DOMAIN-BEAUTY',
+    right: context({
+      taxonomyId: 'BT-0997', taxonomyTitleFa: 'سالن زیبایی و مراقبت مو',
+      industryId: 'IND-04', industryCode: 'HEALTH_BEAUTY',
+      primaryArchetype: 'LOCAL_SERVICE', axes: LOCAL_AXES,
+    }),
+  },
+  {
+    id: 'restaurant-vs-cafe',
+    phase: 2,
+    left: context({
+      taxonomyId: 'BT-0071', taxonomyTitleFa: 'چلوکبابی اصیل و کباب‌سرای بازار',
+      industryId: 'IND-03', industryCode: 'FOOD_HOSPITALITY',
+      primaryArchetype: 'RESTAURANT_CAFE_HOSPITALITY', axes: LOCAL_AXES,
+    }),
+    expectedLeftModule: 'MOD-DOMAIN-RESTAURANT',
+    expectedRightModule: 'MOD-DOMAIN-CAFE',
+    right: context({
+      taxonomyId: 'BT-0066', taxonomyTitleFa: 'کافه تخصصی و رستری موج سوم',
+      industryId: 'IND-03', industryCode: 'FOOD_HOSPITALITY',
+      primaryArchetype: 'RESTAURANT_CAFE_HOSPITALITY', axes: LOCAL_AXES,
+    }),
+  },
+  {
+    id: 'textile-vs-generic-manufacturer',
+    phase: 2,
+    left: context({
+      taxonomyId: 'BT-0995', taxonomyTitleFa: 'تولید پوشاک و دوخت صنعتی',
+      industryId: 'IND-25', industryCode: 'TEXTILE_APPAREL_LEATHER',
+      primaryArchetype: 'MANUFACTURER', axes: MFG_AXES,
+    }),
+    expectedLeftModule: 'MOD-DOMAIN-TEXTILE',
+    expectedRightModule: 'MOD-DOMAIN-MANUFACTURING',
+    right: context({
+      taxonomyId: 'BT-0996', taxonomyTitleFa: 'تولیدکننده محصولات صنعتی عمومی',
+      industryId: 'IND-07', industryCode: 'GENERAL_MANUFACTURING',
+      primaryArchetype: 'MANUFACTURER', axes: MFG_AXES,
+    }),
+  },
+  {
     id: 'cafe-vs-local-retail',
     phase: 2,
     left: context({
@@ -354,4 +402,15 @@ test('canonical retrieval selects the domain claim for each exact-domain module 
       assert.ok(results.every(result => result.admission.admissible), `${pair.id} ${side}: inadmissible domain claim leaked into retrieval`);
     }
   }
+});
+
+test('textile retail title cannot activate manufacturing specialization', () => {
+  const retail = context({
+    taxonomyId: 'BT-0994', taxonomyTitleFa: 'فروشگاه پوشاک و پارچه',
+    industryId: 'IND-01', industryCode: 'RETAIL',
+    primaryArchetype: 'LOCAL_RETAIL', axes: { ...LOCAL_AXES, offerType: 'PHYSICAL_PRODUCT' },
+  });
+  const fingerprint = canonicalFingerprint(retail);
+  assert.ok(fingerprint.modules.includes('MOD-DOMAIN-LOCAL-RETAIL'));
+  assert.equal(fingerprint.modules.includes('MOD-DOMAIN-TEXTILE'), false);
 });
