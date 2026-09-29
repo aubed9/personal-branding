@@ -156,11 +156,22 @@ export function evaluateKnowledgeClaim(claim, sourceRegistry, {
 
   const reasons = [];
   if (!sourceIds.length) reasons.push('NO_SOURCES');
+  const claimMaxAgeDays = claim.max_age_days;
+  const timeBoundClaim = Number.isFinite(claimMaxAgeDays)
+    && claimMaxAgeDays >= 0 && claim.freshness_class !== 'ACADEMIC';
+  const evaluationDate = asOf instanceof Date ? asOf : new Date(asOf);
   for (const result of evaluations) {
     if (!result.source) reasons.push(`MISSING_SOURCE:${result.sourceId}`);
     else {
       if (!result.authority) reasons.push(`AUTHORITY_TOO_LOW:${result.sourceId}`);
       if (!result.freshness.admissible) reasons.push(`${result.freshness.reason}:${result.sourceId}`);
+      else if (timeBoundClaim) {
+        const verifiedAt = parseDate(result.source.verified_at);
+        if (!verifiedAt) reasons.push(`CLAIM_MISSING_VERIFIED_AT:${result.sourceId}`);
+        else if (evaluationDate.getTime() - verifiedAt.getTime() > claimMaxAgeDays * DAY_MS) {
+          reasons.push(`CLAIM_MAX_AGE_EXCEEDED:${result.sourceId}`);
+        }
+      }
     }
   }
 
