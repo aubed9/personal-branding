@@ -56,7 +56,7 @@ export default function ChatContainer({
             <Bot className="w-4 h-4 animate-spin" />
           </div>
           <div className="obsidian-card rounded-2xl px-4 py-3 text-xs text-zinc-300 flex items-center gap-2 shadow-glass">
-            <span className="font-mono">در حال تحلیل متقابل و تدوین مواضع بر اساس ۱۶۵ منبع مرجع...</span>
+            <span className="font-mono">در حال تحلیل متقابل پاسخ‌ها و تدوین مواضع بر اساس شواهد و دانش معتبر ثبت‌شده...</span>
             <span className="flex gap-1 mr-1">
               <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-bounce" />
               <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-bounce [animation-delay:0.2s]" />

@@ -169,7 +169,7 @@ export default function SettingsModal({
                 <span>موتور قواعد محلی (آفلاین)</span>
               </div>
               <span className={`text-[11px] leading-relaxed block ${localMode === "simulator" ? "text-zinc-700" : "text-zinc-500"}`}>
-                مبتنی بر ماتریس‌های ۷۵۳ صنف و ۱۶۵ منبع
+                مبتنی بر ماتریس‌های ۷۵۳ صنف و دانش معتبر ثبت‌شده در رجیستری
               </span>
             </button>
           </div>
