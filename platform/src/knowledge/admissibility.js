@@ -90,6 +90,9 @@ export function evaluateSourceFreshness(source, { asOf = new Date() } = {}) {
   }
 
   const now = asOf instanceof Date ? asOf : new Date(asOf);
+  if (Number.isNaN(now.getTime())) {
+    return { admissible: false, state: 'REQUIRES_VERIFICATION', reason: 'INVALID_AS_OF' };
+  }
   const effectiveFrom = compareEffectiveDate(source.effective_from, now);
   const effectiveUntil = compareEffectiveDate(source.effective_until, now);
   if (source.effective_from && effectiveFrom === null) {

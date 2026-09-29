@@ -277,6 +277,16 @@ test('stale external sources cannot remain CONFIRMED in generated output', () =>
   assert.equal(model.claims.some(claim => claim.claimType === CLAIM_TYPES.EXTERNAL_FACT), false);
 });
 
+test('invalid knowledge evaluation date cannot silently admit current external facts', () => {
+  const data = phaseData();
+  const model = buildCanonicalOutputClaims({
+    phaseData: data,
+    businessContext: context(),
+    metadata: metadata(data, { knowledgeAsOf: 'not-a-date' }),
+  });
+  assert.equal(model.claims.some(claim => claim.claimType === CLAIM_TYPES.EXTERNAL_FACT), false);
+});
+
 test('platform-scoped evidence requires an explicit platform jurisdiction override', () => {
   const data = phaseData();
   const generic = buildCanonicalOutputClaims({

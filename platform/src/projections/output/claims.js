@@ -69,7 +69,7 @@ function resolveKnowledgeAsOf(metadata) {
   const value = metadata.knowledgeAsOf instanceof Date
     ? metadata.knowledgeAsOf
     : new Date(metadata.knowledgeAsOf);
-  return Number.isNaN(value.getTime()) ? new Date() : value;
+  return Number.isNaN(value.getTime()) ? null : value;
 }
 
 function buildExternalKnowledgeClaims({
@@ -82,6 +82,7 @@ function buildExternalKnowledgeClaims({
 
   const jurisdiction = resolveKnowledgeJurisdiction(phaseData, businessContext, metadata);
   const asOf = resolveKnowledgeAsOf(metadata);
+  if (!asOf) return [];
   const aggregated = new Map();
 
   for (let phase = 1; phase <= 8; phase++) {

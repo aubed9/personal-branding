@@ -333,6 +333,16 @@ test('a source verified after the evaluation date cannot support a historical cl
   assert.deepEqual(results, []);
 });
 
+test('invalid as-of dates fail closed before source effective-period comparisons', () => {
+  const source = {
+    status: 'VERIFIED', freshness_class: 'LEGAL', verified_at: '2026-09-20',
+    effective_from: '1405-01-01', authority_tier: 'A',
+  };
+  const result = evaluateSourceFreshness(source, { asOf: new Date('invalid') });
+  assert.equal(result.admissible, false);
+  assert.equal(result.reason, 'INVALID_AS_OF');
+});
+
 test('effective period dates are inclusive in both Iranian and Gregorian calendars', () => {
   const source = {
     status: 'VERIFIED', freshness_class: 'LEGAL', max_age_days: 30,
