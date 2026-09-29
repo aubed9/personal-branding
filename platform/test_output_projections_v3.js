@@ -5,8 +5,12 @@ import { generateDeliverable, deliverableToMarkdown } from './src/services/deliv
 import { migrateAnswerRecords } from './src/services/interviewSchema.js';
 import { buildEvidenceDerivedHandoff } from './src/projections/output/handoffProjection.js';
 import { assertOutputAcceptance, auditOutputModel } from './src/projections/output/audit.js';
-import { buildCanonicalOutputClaims } from './src/projections/output/claims.js';
+import { buildCanonicalOutputClaims, claimPresentation } from './src/projections/output/claims.js';
 import { CLAIM_TYPES, PROPOSAL_STATUS, validateCanonicalClaim } from './src/reasoning/contracts.js';
+import {
+  CANONICAL_EXTERNAL_KNOWLEDGE_CLAIMS,
+  CANONICAL_EXTERNAL_SOURCE_REGISTRY,
+} from './src/knowledge/canonicalExternalKnowledge.generated.js';
 
 const GENERIC_FALLBACKS = [
   'خدمات و تخصص محوری',
@@ -147,6 +151,16 @@ test('admissible Iran external knowledge is projected as source-traceable shared
   const external = model.claims.filter(claim => claim.claimType === CLAIM_TYPES.EXTERNAL_FACT);
   assert.ok(external.length > 0, 'explicit Iran context should surface admissible external knowledge');
   assert.ok(external.some(claim => claim.sourceClaimIds.includes('KCL-IR-SCI-CPI-1405-05')));
+  const cpi = external.find(claim => claim.sourceClaimIds.includes('KCL-IR-SCI-CPI-1405-05'));
+  const cpiSourceId = 'SRC-IR-SCI-CPI-1405-05';
+  assert.deepEqual(cpi.metadata.sourceProvenance, [{
+    sourceId: cpiSourceId,
+    locator: CANONICAL_EXTERNAL_KNOWLEDGE_CLAIMS['KCL-IR-SCI-CPI-1405-05'].locators[0].locator,
+    observedPeriod: CANONICAL_EXTERNAL_SOURCE_REGISTRY[cpiSourceId].observed_period,
+    verifiedAt: CANONICAL_EXTERNAL_SOURCE_REGISTRY[cpiSourceId].verified_at,
+    effectiveFrom: null,
+    effectiveUntil: null,
+  }]);
   assert.ok(external.some(claim => claim.sourceClaimIds.includes('KCL-IR-ECOM-1403')));
   assert.ok(external.every(claim => claim.status === 'CONFIRMED'));
   assert.ok(external.every(claim => claim.sourceClaimIds.length > 0 && claim.sourceIds.length > 0));
@@ -165,6 +179,8 @@ test('admissible Iran external knowledge is projected as source-traceable shared
   assert.ok(markdown.includes('source-claim:'));
   assert.ok(markdown.includes('sources:'));
   assert.ok(markdown.includes('limitations:'));
+  assert.ok(markdown.includes(`source-locator: ${cpiSourceId}:`));
+  assert.ok(markdown.includes(`observed: ${cpiSourceId}: 1405-05`));
 });
 
 test('scoped e-commerce law claim requires both B2C and online modules', () => {
@@ -178,6 +194,9 @@ test('scoped e-commerce law claim requires both B2C and online modules', () => {
     metadata: meta,
   });
   assert.ok(b2cOnline.claims.some(claim => claim.sourceClaimIds?.includes(claimId)));
+  const law = b2cOnline.claims.find(claim => claim.sourceClaimIds?.includes(claimId));
+  assert.equal(law.metadata.sourceProvenance[0].effectiveFrom, '1382-11-27');
+  assert.ok(claimPresentation(law).includes('effective-from: SRC-IR-LAW-ECOM-1382-QAVANIN-LOCATOR: 1382-11-27'));
 
   const b2bOnline = buildCanonicalOutputClaims({
     phaseData: data,

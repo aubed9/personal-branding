@@ -149,6 +149,15 @@ function buildExternalKnowledgeClaims({
           state: item.freshness.state,
           reason: item.freshness.reason,
         })),
+        sourceProvenance: admission.sources.map(item => ({
+          sourceId: item.sourceId,
+          locator: CANONICAL_EXTERNAL_KNOWLEDGE_CLAIMS[entry.claim_id].locators
+            .find(locator => locator.source_id === item.sourceId)?.locator || null,
+          observedPeriod: item.source?.observed_period || null,
+          verifiedAt: item.source?.verified_at || null,
+          effectiveFrom: item.source?.effective_from || null,
+          effectiveUntil: item.source?.effective_until || null,
+        })),
       },
     })));
 }
@@ -531,7 +540,14 @@ export function claimPresentation(claim) {
     const sources = claim.sourceIds?.length ? ` [sources: ${claim.sourceIds.join(', ')}]` : '';
     const scope = claim.metadata?.jurisdictionOrScope ? ` [scope: ${claim.metadata.jurisdictionOrScope}]` : '';
     const limitations = claim.metadata?.limitations ? ` [limitations: ${claim.metadata.limitations}]` : '';
-    return `[${claim.claimType}/${claim.status}] ${claim.statement} [${claim.claimId}]${sourceClaims}${sources}${scope}${limitations}`;
+    const provenance = (claim.metadata?.sourceProvenance || []).map(item => [
+      item.locator ? ` [source-locator: ${item.sourceId}: ${item.locator}]` : '',
+      item.observedPeriod ? ` [observed: ${item.sourceId}: ${item.observedPeriod}]` : '',
+      item.verifiedAt ? ` [verified: ${item.sourceId}: ${item.verifiedAt}]` : '',
+      item.effectiveFrom ? ` [effective-from: ${item.sourceId}: ${item.effectiveFrom}]` : '',
+      item.effectiveUntil ? ` [effective-until: ${item.sourceId}: ${item.effectiveUntil}]` : '',
+    ].join('')).join('');
+    return `[${claim.claimType}/${claim.status}] ${claim.statement} [${claim.claimId}]${sourceClaims}${sources}${scope}${limitations}${provenance}`;
   }
   return `[${claim.claimType}/${claim.status}] ${claim.statement} [${claim.claimId}]${evidence}`;
 }
