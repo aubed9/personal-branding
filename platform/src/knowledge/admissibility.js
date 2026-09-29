@@ -40,6 +40,9 @@ export function evaluateSourceFreshness(source, { asOf = new Date() } = {}) {
   }
 
   const verifiedAt = parseDate(source.verified_at);
+  if (verifiedAt && verifiedAt.getTime() > now.getTime()) {
+    return { admissible: false, state: 'REQUIRES_VERIFICATION', reason: 'VERIFIED_AFTER_AS_OF' };
+  }
   const maxAgeDays = source.max_age_days ?? FRESHNESS_DEFAULTS_DAYS[source.freshness_class] ?? null;
   if (verifiedAt && maxAgeDays) {
     const ageDays = (now.getTime() - verifiedAt.getTime()) / DAY_MS;

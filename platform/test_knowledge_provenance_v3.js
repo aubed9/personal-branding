@@ -303,6 +303,36 @@ test('freshness contract blocks stale critical sources while academic age only t
   assert.equal(academicFreshness.state, 'REVIEW_DUE');
 });
 
+test('a source verified after the evaluation date cannot support a historical claim', () => {
+  const source = {
+    status: 'VERIFIED', freshness_class: 'LEGAL', max_age_days: 30,
+    verified_at: '2026-10-01', effective_until: null, authority_tier: 'A',
+  };
+  const asOf = new Date('2026-09-29T00:00:00Z');
+  const freshness = evaluateSourceFreshness(source, { asOf });
+  assert.equal(freshness.admissible, false);
+  assert.equal(freshness.reason, 'VERIFIED_AFTER_AS_OF');
+  assert.equal(evaluateSourceFreshness(source, { asOf: new Date('2026-10-02T00:00:00Z') }).admissible, true);
+
+  const claim = {
+    id: 'KCL-FUTURE', status: 'VERIFIED', claim_kind: 'LEGAL_REQUIREMENT',
+    authority_requirement: 'A', source_ids: ['SRC-FUTURE'],
+  };
+  const sources = { 'SRC-FUTURE': source };
+  const admission = evaluateKnowledgeClaim(claim, sources, { asOf, criticalUse: true });
+  assert.equal(admission.admissible, false);
+  assert.equal(admission.status, 'REQUIRES_VERIFICATION');
+
+  const results = retrieveCanonicalKnowledge('الزام', [{
+    retrieval_id: 'RET-KCL-FUTURE', claim_id: claim.id, content: 'الزام',
+    phases: [1], module_ids: ['MOD-REG-HIGH'], jurisdiction_or_scope: 'IRAN',
+  }], { [claim.id]: claim }, sources, {
+    phase: 1, moduleIds: ['MOD-REG-HIGH'], jurisdiction: 'IRAN',
+    criticalUse: true, asOf,
+  });
+  assert.deepEqual(results, []);
+});
+
 test('critical claims require fresh Tier A evidence and retrieval filters before ranking', () => {
   const sources = {
     'SRC-A': {
