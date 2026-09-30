@@ -211,6 +211,20 @@ export function evaluateKnowledgeClaim(claim, sourceRegistry, {
 
 const tokenize = text => String(text || '').toLowerCase().match(/[\p{L}\p{N}_-]+/gu) || [];
 
+export function isKnowledgeEntryApplicable(entry, claim, {
+  phase = null, moduleIds = [], decisionNodeIds = [], jurisdiction = null,
+} = {}) {
+  const modules = new Set(moduleIds);
+  const decisions = new Set(decisionNodeIds);
+  const requiredModules = claim?.applicability?.required_module_ids_all;
+  if (Array.isArray(requiredModules) && requiredModules.some(id => !modules.has(id))) return false;
+  if (phase && !(entry.phases || []).includes(Number(phase))) return false;
+  if (jurisdiction && ![jurisdiction, 'GENERAL', 'PRODUCT_INTERNAL'].includes(entry.jurisdiction_or_scope)) return false;
+  if (modules.size && !moduleIds.some(id => (entry.module_ids || []).includes(id))) return false;
+  if (decisions.size && !decisionNodeIds.some(id => (entry.decision_node_ids || []).includes(id))) return false;
+  return true;
+}
+
 export function retrieveCanonicalKnowledge(query, entries, claims, sources, {
   phase = null,
   moduleIds = [],
@@ -227,18 +241,11 @@ export function retrieveCanonicalKnowledge(query, entries, claims, sources, {
 
   for (const entry of entries || []) {
     const claim = claims?.[entry.claim_id];
+    if (!isKnowledgeEntryApplicable(entry, claim, { phase, moduleIds, decisionNodeIds, jurisdiction })) continue;
     const admission = evaluateKnowledgeClaim(claim, sources, { asOf, criticalUse });
     if (!admission.admissible) continue;
-    // An inapplicable claim must not consume a ranked retrieval slot.
-    const requiredModules = claim?.applicability?.required_module_ids_all;
-    if (Array.isArray(requiredModules) && requiredModules.some(id => !modules.has(id))) continue;
-    if (phase && !(entry.phases || []).includes(Number(phase))) continue;
-    if (jurisdiction && ![jurisdiction, 'GENERAL', 'PRODUCT_INTERNAL'].includes(entry.jurisdiction_or_scope)) continue;
-
     const entryModules = new Set(entry.module_ids || []);
     const entryDecisions = new Set(entry.decision_node_ids || []);
-    if (modules.size && ![...modules].some(id => entryModules.has(id))) continue;
-    if (decisions.size && ![...decisions].some(id => entryDecisions.has(id))) continue;
 
     const text = tokenize([
       entry.content,

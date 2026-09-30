@@ -10,7 +10,7 @@ import {
 } from '../../reasoning/contracts.js';
 import { ENTITY_STATUS, NODE_TYPES } from '../../reasoning/graph/index.js';
 import { DECISION_MODULES_BY_ID, getPhaseModuleProjection } from '../../reasoning/modules/index.js';
-import { retrieveCanonicalKnowledge } from '../../knowledge/index.js';
+import { evaluateKnowledgeClaim, isKnowledgeEntryApplicable, retrieveCanonicalKnowledge } from '../../knowledge/index.js';
 import {
   CANONICAL_EXTERNAL_KNOWLEDGE_CLAIMS,
   CANONICAL_EXTERNAL_RETRIEVAL_ENTRIES,
@@ -101,7 +101,9 @@ function buildExternalKnowledgeClaims({
         jurisdiction,
         criticalUse: true,
         asOf,
-        topK: 20,
+        // The deliverable is exhaustive for applicable external evidence; a ranking cap
+        // could silently omit a fresh legal claim while its verification risk is also absent.
+        topK: CANONICAL_EXTERNAL_RETRIEVAL_ENTRIES.length,
       }
     );
 
@@ -191,6 +193,61 @@ function buildOnlineLicensingVerificationRisk(jurisdiction, moduleProjections, e
       applicability: 'IRAN_B2C_ONLINE_PAYMENT_OR_LICENSING_DECISIONS',
     },
   }));
+}
+
+function buildLegalVerificationRisks({ phaseData, businessContext, moduleProjections, metadata }) {
+  if (!businessContext) return [];
+  const asOf = resolveKnowledgeAsOf(metadata);
+  if (!asOf) return [];
+  const jurisdiction = resolveKnowledgeJurisdiction(phaseData, businessContext, metadata);
+  const blocked = new Map();
+
+  for (let phase = 1; phase <= 8; phase++) {
+    const moduleIds = moduleProjections[phase]?.moduleIds || [];
+    if (!moduleIds.length) continue;
+    for (const entry of CANONICAL_EXTERNAL_RETRIEVAL_ENTRIES) {
+      if (entry.claim_kind !== 'LEGAL_REQUIREMENT' || !entry.decision_driving) continue;
+      const claim = CANONICAL_EXTERNAL_KNOWLEDGE_CLAIMS[entry.claim_id];
+      if (!['VERIFIED', 'CANONICAL'].includes(claim?.status)) continue;
+      if (!isKnowledgeEntryApplicable(entry, claim, { phase, moduleIds, jurisdiction })) continue;
+      const admission = evaluateKnowledgeClaim(claim, CANONICAL_EXTERNAL_SOURCE_REGISTRY, {
+        asOf, criticalUse: true,
+      });
+      if (admission.admissible) continue;
+
+      const current = blocked.get(entry.claim_id) || {
+        entry, admission, phases: new Set(), moduleIds: new Set(),
+      };
+      current.phases.add(phase);
+      for (const id of entry.module_ids || []) {
+        if (moduleIds.includes(id)) current.moduleIds.add(id);
+      }
+      blocked.set(entry.claim_id, current);
+    }
+  }
+
+  return [...blocked.values()]
+    .sort((a, b) => a.entry.claim_id.localeCompare(b.entry.claim_id))
+    .map(({ entry, admission, phases, moduleIds }) => validateOrThrow(createCanonicalClaim({
+      stableKey: { kind: 'LEGAL_VERIFICATION_GAP', sourceClaimId: entry.claim_id },
+      claimType: CLAIM_TYPES.RISK,
+      statement: `اعتبار منبع حقوقی با شناسهٔ ${entry.claim_id} برای این تصمیم در تاریخ ارزیابی تأیید نشده است؛ پیش از اتکا، متن و نسخهٔ جاری را در مرجع رسمی بررسی کنید.`,
+      status: CLAIM_STATUS.NEEDS_REVIEW,
+      phase: null,
+      dependencyIds: [...moduleIds].sort().map(id => `MODULE:${id}`),
+      evidenceIds: [],
+      ruleId: 'LEGAL-SOURCE-REQUIRES-VERIFICATION',
+      confidence: null,
+      verificationState: 'REQUIRES_VERIFICATION',
+      createdRevision: Number(metadata.revision) || 0,
+      lastValidatedRevision: Number(metadata.revision) || 0,
+      metadata: {
+        blockedSourceClaimId: entry.claim_id,
+        affectedPhases: [...phases].sort((a, b) => a - b),
+        admissionReasons: admission.reasons,
+        jurisdictionOrScope: entry.jurisdiction_or_scope,
+      },
+    })));
 }
 
 export function buildEvidenceRows(phaseData = {}, answerRecords = []) {
@@ -547,6 +604,9 @@ export function buildCanonicalOutputClaims({
     metadata,
   });
   claims.push(...externalClaims);
+  claims.push(...buildLegalVerificationRisks({
+    phaseData, businessContext, moduleProjections, metadata,
+  }));
   if (businessContext) {
     const licensingRisk = buildOnlineLicensingVerificationRisk(
       resolveKnowledgeJurisdiction(phaseData, businessContext, metadata), moduleProjections, externalClaims, metadata
