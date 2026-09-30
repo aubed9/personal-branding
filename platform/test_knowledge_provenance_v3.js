@@ -343,6 +343,31 @@ test('invalid as-of dates fail closed before source effective-period comparisons
   assert.equal(result.reason, 'INVALID_AS_OF');
 });
 
+test('a malformed verification date never admits a verified source or claim', () => {
+  const asOf = new Date('2026-09-30T00:00:00Z');
+  for (const verified_at of ['2026-02-31', '2026-13-01', 'not-a-date', '1405-07-08']) {
+    for (const freshness_class of ['LEGAL', 'INDUSTRY_REPORT', 'ACADEMIC']) {
+      const source = {
+        status: 'VERIFIED', freshness_class, max_age_days: 30,
+        verified_at, authority_tier: 'A',
+      };
+      const freshness = evaluateSourceFreshness(source, { asOf });
+      assert.equal(freshness.admissible, false, `${verified_at} / ${freshness_class}`);
+      assert.equal(freshness.reason, 'INVALID_VERIFIED_AT');
+      const claim = {
+        id: 'KCL-DATE', status: 'VERIFIED', claim_kind: 'LEGAL_REQUIREMENT',
+        source_ids: ['SRC-DATE'], authority_requirement: 'A',
+      };
+      assert.equal(evaluateKnowledgeClaim(claim, { 'SRC-DATE': source }, { asOf, criticalUse: true }).admissible, false);
+    }
+  }
+  const valid = {
+    status: 'VERIFIED', freshness_class: 'INDUSTRY_REPORT', max_age_days: 30,
+    verified_at: '2026-09-29T10:00:00+03:30', authority_tier: 'A',
+  };
+  assert.equal(evaluateSourceFreshness(valid, { asOf }).admissible, true);
+});
+
 test('effective period dates are inclusive in both Iranian and Gregorian calendars', () => {
   const source = {
     status: 'VERIFIED', freshness_class: 'LEGAL', max_age_days: 30,

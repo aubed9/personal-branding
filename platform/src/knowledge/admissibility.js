@@ -50,6 +50,17 @@ function validEffectiveDay(year, month, day, persian) {
   });
 }
 
+function parseVerifiedAt(value) {
+  if (typeof value !== 'string') return null;
+  const match = /^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}):(\d{2})(?:\.\d+)?(Z|[+-]\d{2}:\d{2}))?$/.exec(value);
+  if (!match) return null;
+  const [, year, month, day, hour, minute, second] = match;
+  // Verification timestamps are Gregorian ISO dates, never Solar Hijri effective dates.
+  if (Number(year) < 1600 || !validEffectiveDay(Number(year), Number(month), Number(day), false)) return null;
+  if (hour !== undefined && (Number(hour) > 23 || Number(minute) > 59 || Number(second) > 59)) return null;
+  return parseDate(value);
+}
+
 function compareEffectiveDate(value, asOf) {
   if (!value) return null;
   const dateOnly = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
@@ -108,7 +119,10 @@ export function evaluateSourceFreshness(source, { asOf = new Date() } = {}) {
     return { admissible: false, state: 'STALE', reason: 'EFFECTIVE_PERIOD_ENDED' };
   }
 
-  const verifiedAt = parseDate(source.verified_at);
+  const verifiedAt = parseVerifiedAt(source.verified_at);
+  if (source.verified_at !== null && source.verified_at !== undefined && !verifiedAt) {
+    return { admissible: false, state: 'REQUIRES_VERIFICATION', reason: 'INVALID_VERIFIED_AT' };
+  }
   if (verifiedAt && verifiedAt.getTime() > now.getTime()) {
     return { admissible: false, state: 'REQUIRES_VERIFICATION', reason: 'VERIFIED_AFTER_AS_OF' };
   }
@@ -169,7 +183,7 @@ export function evaluateKnowledgeClaim(claim, sourceRegistry, {
       if (!result.authority) reasons.push(`AUTHORITY_TOO_LOW:${result.sourceId}`);
       if (!result.freshness.admissible) reasons.push(`${result.freshness.reason}:${result.sourceId}`);
       else if (timeBoundClaim) {
-        const verifiedAt = parseDate(result.source.verified_at);
+        const verifiedAt = parseVerifiedAt(result.source.verified_at);
         if (!verifiedAt) reasons.push(`CLAIM_MISSING_VERIFIED_AT:${result.sourceId}`);
         else if (evaluationDate.getTime() - verifiedAt.getTime() > claimMaxAgeDays * DAY_MS) {
           reasons.push(`CLAIM_MAX_AGE_EXCEEDED:${result.sourceId}`);
