@@ -259,13 +259,13 @@ export class OrchestratorEngine {
   }
 
   selectGuild(guild) {
-    if (!guild?.id || !guild?.titleFa) return;
+    if (!guild?.titleFa || (!guild?.id && !guild?.custom)) return;
     this.clearDynamicQuestion();
     this.currentPhase = 1;
     this.reviewCursor = null;
     this.currentStepIndex = 0;
     this.isNavigatingBack = false;
-    return this.processUserResponse(`صنف انتخابی: ${guild.titleFa}`, guild.id, { questionId: 'step0_description' });
+    return this.processUserResponse(guild.custom ? guild.titleFa : `صنف انتخابی: ${guild.titleFa}`, guild.custom ? null : guild.id, { questionId: 'step0_description' });
   }
 
   /**
@@ -687,10 +687,6 @@ export class OrchestratorEngine {
             data[key] = value;
             (data.inferredFields ||= {})[key] = qId;
           }
-        }
-        if (!optionValue && slots?.businessTypeMatch && qId === 'step0_description') {
-          data.descriptionValue = slots.businessTypeMatch.id;
-          data.taxonomyId = slots.businessTypeMatch.id;
         }
       }
       this.businessContext = classifyBusinessContext(this.phaseData);

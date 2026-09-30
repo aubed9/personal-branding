@@ -27,7 +27,7 @@
     "test:leakage": "node test_cross_domain_leakage.js",
     "validate": "npm run test && npm run test:adversarial && npm run test:integration && npm run test:e2e",
     "ci": "npm run build && npm run validate && npm run test:753",
-    "test:adaptive": "node --test test_adaptive_interview.js",
+    "test:adaptive": "node --test test_adaptive_interview.js test_open_business_path.js",
     "test:ui": "node --test test_app_dom.cjs",
     "test:financial": "node --test test_financial_strategy.js",
     "test:browser": "playwright test",

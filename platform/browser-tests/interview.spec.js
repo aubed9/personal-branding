@@ -30,6 +30,11 @@ const getState = page => page.evaluate(() => {
   };
 });
 async function answer(page, text) {
+  if (text === firstAnswers[0]) {
+    await page.getByRole('radio', { name: /کافه، رستری و صنعت مهمان‌نوازی/ }).click();
+    await page.getByRole('button', { name: 'تأیید پاسخ و ادامه به گام بعدی' }).click();
+    return;
+  }
   await page.getByRole('button', { name: /پاسخ اختصاصی خودم/ }).click();
   await page.getByRole('textbox', { name: 'دیدگاه، توضیحات یا راهبرد مدنظرتان' }).fill(text);
   await page.getByRole('button', { name: 'ثبت پاسخ اختصاصی و ادامه' }).click();

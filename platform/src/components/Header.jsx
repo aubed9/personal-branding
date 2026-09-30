@@ -109,10 +109,10 @@ export default function Header({
           <button
             onClick={onOpenGuildSelector}
             className="hidden sm:flex items-center gap-1.5 text-xs text-zinc-300 hover:text-white px-3 py-2 rounded-xl border border-white/15 hover:border-white/30 bg-[#0C0C0C] font-mono transition-all"
-            title="انتخاب و جستجو در فهرست ۷۵۳ صنف"
+            title="انتخاب یا تعریف فعالیت کسب‌وکار"
           >
             <Building2 className="w-3.5 h-3.5 text-white" />
-            <span>۷۵۳ صنف</span>
+            <span>تعریف فعالیت</span>
           </button>
         )}
 

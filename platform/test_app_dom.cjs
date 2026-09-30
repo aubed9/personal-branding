@@ -80,6 +80,22 @@ const answers = [
   'بودجه محدود ۵ میلیون تومان و دو نفر تیم',
 ];
 
+test('React: an activity absent from the catalog can be entered through the picker', async () => {
+  await mount();
+  await click(button('تعریف فعالیت'));
+  const input = document.querySelector('[role="dialog"] input[type="text"]');
+  assert.ok(input);
+  const description = 'اجاره پهپاد پایش مزرعه با اپراتور برای تعاونی‌ها';
+  await act(async () => {
+    Object.getOwnPropertyDescriptor(dom.window.HTMLInputElement.prototype, 'value').set.call(input, description);
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  await click(button('فعالیت من همین است'));
+  assert.equal(state().phaseData[1].description, description);
+  assert.equal(state().businessContext.taxonomyId, null);
+  assert.match(document.getElementById('strategic-question-heading').textContent, /چه کسی هزینه را می‌پردازد/);
+});
+
 test('React: complete foundation, refresh, customize pricing and display matching document', async () => {
   await mount();
   for (const text of answers) await answer(text);

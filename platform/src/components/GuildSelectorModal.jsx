@@ -88,7 +88,7 @@ export default function GuildSelectorModal({
           setPreviewGuild(filteredBusinesses[next]);
           return next;
         });
-      } else if (e.key === "Enter" && filteredBusinesses.length > 0) {
+      } else if (e.key === "Enter" && filteredBusinesses.length > 0 && !searchQuery.trim().includes(' ')) {
         e.preventDefault();
         const target = filteredBusinesses[activeIndex] || filteredBusinesses[0];
         if (target) {
@@ -99,7 +99,7 @@ export default function GuildSelectorModal({
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, filteredBusinesses, activeIndex]);
+  }, [isOpen, filteredBusinesses, activeIndex, searchQuery]);
 
   if (!isOpen) return null;
 
@@ -126,14 +126,14 @@ export default function GuildSelectorModal({
             <div>
               <div className="flex items-center gap-2">
                 <h2 id="guild-selector-title" className="font-black text-sm sm:text-base text-white">
-                  کاتالوگ جامع ۷۵۳ صنف و پیشه تخصصی
+                  فعالیت کسب‌وکار خود را تعریف کنید
                 </h2>
                 <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/10 text-white border border-white/20">
-                  ۳۱ صنعت کلان
+                  انتخاب یا شرح آزاد
                 </span>
               </div>
               <p className="text-xs text-zinc-400 mt-0.5">
-                صنف دقیق خود را انتخاب کنید تا کلیه سوالات، سنجه‌ها و ادبیات برندسازی منحصراً متناسب با تخصص شما بارگذاری شوند.
+                فعالیت خود را انتخاب کنید یا اگر در فهرست نیست، آن را با زبان خودتان شرح دهید.
               </p>
             </div>
           </div>
@@ -156,7 +156,7 @@ export default function GuildSelectorModal({
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="جستجوی سریع صنف با پشتیبانی از نیم‌فاصله و ارقام فارسی (مثال: کارواش، کافی‌شاپ، پوشاک، کلینیک...)"
+              placeholder="نام یا شرح فعالیت خود را بنویسید؛ می‌توانید از فهرست هم انتخاب کنید"
               className="w-full pl-20 pr-11 py-2.5 sm:py-3 rounded-xl bg-[#141417] border border-white/15 text-xs sm:text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-white transition-all font-mono"
             />
             {searchQuery && (
@@ -168,6 +168,16 @@ export default function GuildSelectorModal({
               </button>
             )}
           </div>
+
+          {searchQuery.trim() && (
+            <button
+              type="button"
+              onClick={() => handleSelect({ custom: true, titleFa: searchQuery.trim() })}
+              className="w-full rounded-xl border border-white/30 bg-white/10 px-3 py-2.5 text-right text-xs sm:text-sm font-semibold hover:bg-white/20"
+            >
+              فعالیت من همین است: «{searchQuery.trim()}». با این توضیح ادامه بده
+            </button>
+          )}
 
           {/* Quick Popular Suggestions if no search */}
           {!searchQuery && (
@@ -224,7 +234,7 @@ export default function GuildSelectorModal({
             {filteredBusinesses.length === 0 ? (
               <div className="py-12 text-center text-zinc-500">
                 <p className="text-sm font-semibold">صنفی با این عنوان یافت نشد.</p>
-                <p className="text-xs mt-1">عنوان دیگری را جستجو کنید یا فیلتر صنعت را تغییر دهید.</p>
+                <p className="text-xs mt-1">توضیح خودتان را با دکمه بالای فهرست ثبت کنید.</p>
               </div>
             ) : (
               filteredBusinesses.slice(0, displayLimit).map((guild, idx) => {

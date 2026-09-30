@@ -238,11 +238,12 @@ console.log("\n▶ SUITE 4: Context Classification for 5 Business Scenarios");
         geography: "تهران و منطقه غرب",
         coreOffer: "تعویض روغن موتور اورجینال، فیلتر هوا و گیربکس اتوماتیک"
       },
-      expectedArch: "LOCAL_SERVICE",
-      expectedChannel: "PHYSICAL_FIRST",
-      expectedCustomer: "B2C",
-      expectedScope: "CITY",
-      mustHaveOverlay: "LOCAL_GUILD_REGULATION"
+      expectedArch: "OTHER",
+      expectedChannel: "UNKNOWN",
+      expectedCustomer: "UNKNOWN",
+      expectedScope: "UNKNOWN",
+      mustHaveOverlay: "OTHER",
+      custom: true
     },
     {
       name: "4. Cloud Accounting B2B SaaS (Technology & Software)",
@@ -281,6 +282,10 @@ console.log("\n▶ SUITE 4: Context Classification for 5 Business Scenarios");
   scenarios.forEach((sc, idx) => {
     console.log(`  Subtest 4.${idx + 1}: ${sc.name}`);
     const ctx = classifyBusinessContext({ 1: sc.phase1 });
+    if (sc.custom) {
+      assert(ctx.customBusiness === true && ctx.taxonomyId === null && ctx.iranianGuildCode === null,
+        `${sc.name} keeps its own description without a guessed guild`);
+    }
     assert(ctx.archetype === sc.expectedArch, `${sc.name} archetype is ${sc.expectedArch}`);
     assert(ctx.customerModel === sc.expectedCustomer, `${sc.name} customerModel is ${sc.expectedCustomer}`);
     assert(ctx.channelModel === sc.expectedChannel, `${sc.name} channelModel is ${sc.expectedChannel}`);
