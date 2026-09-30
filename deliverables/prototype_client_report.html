@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>کتابچه استراتژی و هویت برند — DIGITAL MARKET</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-light: #3b82f6;
+      --accent: #059669;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --muted: #64748b;
+      --badge-fact: #0284c7;
+      --badge-decision: #16a34a;
+      --badge-calc: #d97706;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Vazirmatn", "IRANSans", Tahoma, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.8;
+      padding: 2rem 1rem;
+    }
+    .container { max-width: 960px; margin: 0 auto; }
+    .header-card {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      color: #ffffff;
+      padding: 2.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+      margin-bottom: 2rem;
+      position: relative;
+    }
+    .header-badge {
+      display: inline-block;
+      background: rgba(59, 130, 246, 0.2);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .header-title { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .header-subtitle { color: #94a3b8; font-size: 1rem; }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.9rem;
+    }
+    .meta-item strong { color: #cbd5e1; display: block; font-size: 0.8rem; }
+    
+    .financial-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 1.75rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .financial-title { font-size: 1.25rem; font-weight: 700; color: var(--primary); margin-bottom: 1.25rem; display: flex; align-items: center; justify-content: space-between; }
+    .calc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+    .calc-box {
+      background: #f1f5f9;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      text-align: center;
+      border-right: 4px solid var(--primary-light);
+    }
+    .calc-box.highlight {
+      background: #ecfdf5;
+      border-right-color: var(--accent);
+    }
+    .calc-label { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.25rem; }
+    .calc-value { font-size: 1.35rem; font-weight: 800; color: var(--text); }
+    .calc-sub { font-size: 0.75rem; color: var(--muted); margin-top: 0.25rem; }
+
+    .phase-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 1.75rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .phase-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid #f1f5f9;
+    }
+    .phase-num {
+      background: #eff6ff;
+      color: #2563eb;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 0.375rem;
+    }
+    .phase-title { font-size: 1.2rem; font-weight: 700; }
+    
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.15rem 0.5rem;
+      border-radius: 0.25rem;
+      margin-right: 0.5rem;
+    }
+    .badge-fact { background: #e0f2fe; color: var(--badge-fact); }
+    .badge-decision { background: #dcfce7; color: var(--badge-decision); }
+    .badge-calc { background: #fef3c7; color: var(--badge-calc); }
+
+    .action-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+    .action-table th { background: #f8fafc; color: var(--muted); text-align: right; padding: 0.75rem; border-bottom: 2px solid var(--border); }
+    .action-table td { padding: 0.75rem; border-bottom: 1px solid var(--border); }
+
+    @media print {
+      body { background: #fff; padding: 0; font-size: 11pt; }
+      .container { max-width: 100%; }
+      .header-card { box-shadow: none; border-radius: 0; background: #0f172a !important; color: #fff !important; page-break-after: avoid; }
+      .phase-card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
+      .no-print { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header-card">
+      <span class="header-badge">خروجی رسمی سند مشاوره استراتژی برند</span>
+      <h1 class="header-title">کتابچه راهبردی و هویت برند: دیجیتال مارکت</h1>
+      <p class="header-subtitle">بر اساس ساختار مصاحبه سازگار و پایگاه دانش ۴۹ مقاله‌ای صنف فناوری و خدمات تخصصی</p>
+      
+      <div class="meta-grid">
+        <div class="meta-item">
+          <strong>شناسه صنف (ISIC)</strong>
+          <span>BT-0166 (کد صنفی: 721110)</span>
+        </div>
+        <div class="meta-item">
+          <strong>مدل مشتری و کانال</strong>
+          <span>B2B / هیبریدی (Omnichannel)</span>
+        </div>
+        <div class="meta-item">
+          <strong>افق استراتژیک</strong>
+          <span>۳۶۵ روزه (گام‌های ۳۰ / ۶۰ / ۹۰)</span>
+        </div>
+        <div class="meta-item">
+          <strong>درجه قطعیت شواهد</strong>
+          <span>۱۰۰٪ مبتنی بر شواهد کاربر (فاقد توهم)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- بخش مالی -->
+    <div class="financial-card">
+      <div class="financial-title">
+        <span>تحلیل اقتصاد واحد و نقطه سربه‌سر (Unit Economics)</span>
+        <span class="badge badge-calc">محاسبه دقیق ریاضی (CALCULATION)</span>
+      </div>
+      <div class="calc-grid">
+        <div class="calc-box">
+          <div class="calc-label">قیمت فروش هر واحد</div>
+          <div class="calc-value">۵۵۰٬۰۰۰</div>
+          <div class="calc-sub">تومان</div>
+        </div>
+        <div class="calc-box">
+          <div class="calc-label">هزینه متغیر هر واحد</div>
+          <div class="calc-value">۱۸۰٬۰۰۰</div>
+          <div class="calc-sub">تومان</div>
+        </div>
+        <div class="calc-box">
+          <div class="calc-label">حاشیه مشارکت (CM)</div>
+          <div class="calc-value">۳۷۰٬۰۰۰</div>
+          <div class="calc-sub">۶۷.۲٪ حاشیه سود واحد</div>
+        </div>
+        <div class="calc-box highlight">
+          <div class="calc-label">فروش سربه‌سر ماهانه</div>
+          <div class="calc-value">۱۰۸ واحد</div>
+          <div class="calc-sub">پوشش هزینه ثابت ۴۰M تومانی</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- فازهای استراتژی برند -->
+    <div class="phase-card">
+      <div class="phase-header">
+        <div class="phase-title">فاز ۳: استراتژی، جایگاه‌یابی و بیانیه تمایز</div>
+        <span class="phase-num">فاز ۳ از ۸</span>
+      </div>
+      <p>
+        <span class="badge badge-decision">DECISION</span>
+        <strong>بیانیه تمایز انحصاری (Only-ness Statement):</strong>
+        تنها پلتفرم بومی برندینگ و مشاوره تجاری در ایران که استراتژی برند را از روی فرمول‌های ریاضی اقتصاد واحد و شواهد عینی صنف بنیان‌گذاری می‌کند و نه بر اساس حدس و ادعاهای لفاظانه.
+      </p>
+      <div style="margin-top: 1rem;">
+        <span class="badge badge-fact">FACT</span>
+        <strong>مسئله حیاتی مشتری هدف:</strong>
+        مدیران عامل و مشاوران برند از ارائه‌های کلیشه‌ای و خروجی‌های متنی بی‌فایده خسته شده‌اند و سندی دقیق با گام‌های اجرایی می‌خواهند.
+      </div>
+    </div>
+
+    <div class="phase-card">
+      <div class="phase-header">
+        <div class="phase-title">فاز ۴: هویت و کهن‌الگوی روان‌شناختی برند</div>
+        <span class="phase-num">فاز ۴ از ۸</span>
+      </div>
+      <p>
+        <span class="badge badge-decision">DECISION</span>
+        <strong>کهن‌الگوی راهبر:</strong>
+        فرزانه (Sage) با سایه‌ای از حکمران (Ruler). لحن برند مستدل، بی‌پرده، آرام، علمی و عاری از هرگونه هیجان کاذب یا مبالغه در فروش است.
+      </p>
+    </div>
+
+    <div class="phase-card">
+      <div class="phase-header">
+        <div class="phase-title">فاز ۸: برنامه فعال‌سازی و نقشه راه ۹۰ روزه</div>
+        <span class="phase-num">فاز ۸ از ۸</span>
+      </div>
+      <table class="action-table">
+        <thead>
+          <tr>
+            <th>دوره</th>
+            <th>اقدام کلیدی</th>
+            <th>شاخص ارزیابی (KPI)</th>
+            <th>نوع شاهد</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>روز ۱ تا ۳۰</td>
+            <td>تثبیت حاشیه مشارکت و آزمون قیمت با ۵ مشتری آزمایشی</td>
+            <td>رسیدن به نرخ تبدیل بالای ۲۰٪ در نسخه پایه</td>
+            <td><span class="badge badge-calc">CALCULATION</span></td>
+          </tr>
+          <tr>
+            <td>روز ۳۱ تا ۶۰</td>
+            <td>راه‌اندازی کانال‌های ارجاعی B2B و مستندسازی ۲ مطالعه موردی</td>
+            <td>جذب ۳ مشتری با حاشیه سود ۶۷٪</td>
+            <td><span class="badge badge-decision">DECISION</span></td>
+          </tr>
+          <tr>
+            <td>روز ۶۱ تا ۹۰</td>
+            <td>انتشار گزارش وضعیت صنفی و ایجاد رهبری فکری (Thought Leadership)</td>
+            <td>ورود ۱۰۸ سرنخ برای پوشش کامل فروش سربه‌سر</td>
+            <td><span class="badge badge-fact">FACT</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="text-align: center; margin-top: 2rem; color: var(--muted); font-size: 0.85rem;" class="no-print">
+      <p>چاپ یا ذخیره به صورت PDF با فشردن کلیدهای Ctrl + P</p>
+      <p>تولیدشده توسط پلتفرم DIGITAL MARKET — تمام حقوق محفوظ است</p>
+    </div>
+  </div>
+</body>
+</html>

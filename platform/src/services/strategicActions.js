@@ -88,9 +88,68 @@ export function buildStrategicActions(phase, rows, economics, businessContext = 
     if (crisis) add('complaint_rehearsal', 30, `برای شیوه رسیدگی ${text(crisis)}، یک شکایت نمونه تمرین کنید. مسئول پاسخ، شواهد لازم، راه‌حل مجاز و زمان پاسخ قابل اجرا را مشخص کنید.`, [crisis, promise, get(4, 'toneGuardrail')], 'ثبت و پیگیری شکایت تا نتیجه، بدون وعده جبران خارج از اختیار');
   }
 
+  // --- Domain-Specific Dedicated Proposals ---
+  const titleFa = businessContext?.taxonomyTitleFa || '';
+  const indId = businessContext?.industryId || '';
+  const axes = businessContext?.axes || {};
+
+  // 1. Food waste control (Restaurant, Cafe, Dining)
+  const isFoodDomain = indId === 'IND-03' || /کافه|رستوران|غذا|خوراک|فست[‌\s]*فود|چلوکباب/.test(titleFa);
+  if (isFoodDomain && phase === 1) {
+    add('food_waste_control', 30, `برای کنترل ضایعات مواد غذایی و بهای تمام‌شده، گزارش روزانه دورریز انبار و آماده‌سازی آشپزخانه/بار را ثبت و منو را بر مبنای اقلام پرگردش مهندسی کنید.`, [offer, costs], 'کاهش سهم ضایعات به زیر ۵٪ بهای مواد و اصلاح قیمت اقلام پرضایعات');
+  }
+
+  // 2. Inventory and expiration management (Retail, Grocery, Agriculture, Cosmetics)
+  const isPerishableDomain = indId === 'IND-01' || indId === 'IND-02' || /خواربار|سوپرمارکت|کشاورزی|میوه|خشکبار|دارو|بهداشتی|محصولات کشاورزی/.test(titleFa);
+  if (isPerishableDomain && phase === 1) {
+    add('inventory_expiry_fifo', 30, `سیستم پایش تاریخ انقضا و گردش موجودی به روش FIFO را مستقر کنید و سهم اقلام در معرض ریسک فساد یا خواب سرمایه را هفتگی ارزیابی نمایید.`, [offer, costs], 'به صفر رسیدن دورریز اقلام تاریخ‌گذشته و حفظ جریان نقدینگی موجودی');
+  }
+
+  // 3. Subscription renewal and retention (SaaS, Retainers, Subscriptions)
+  const isSubscriptionDomain = axes.revenueModel === 'RECURRING' || indId === 'IND-06' || /اشتراک|نرم‌افزار|ابری|saas/i.test(titleFa);
+  if (isSubscriptionDomain && phase === 2) {
+    add('subscription_renewal_churn', 30, `فرایند فعال‌سازی زودهنگام (Time-to-Value) و تماس پیش‌دستانه پیش از سررسید تمدید اشتراک را برای کاهش churn پیاده‌سازی کنید.`, [offer, channel], 'افزایش نرخ تمدید دوره به بالای ۸۰٪ و پایش دلایل لغو اشتراک');
+  }
+
+  // 4. Contract collection and milestone billing (B2B, Industrial repair, Legal, Machining, Consulting)
+  const isContractDomain = axes.customerModel === 'B2B' || axes.revenueModel === 'PROJECT_BASED' || /حقوق|وکالت|تعمیرات صنعتی|ماشین‌آلات|قالب|تراشکاری|مشاوره/i.test(titleFa);
+  if (isContractDomain && phase === 1) {
+    add('contract_milestone_collection', 30, `قراردادها را به جدول زمان‌بندی وصول مطالبات با پرداخت‌های مرحله‌ای (پیش‌پرداخت حداقل ۴۰٪ و تسویه نهایی پیش از تحویل قطعی) مجهز کنید.`, [offer, costs], 'کاهش متوسط دوره وصول مطالبات (DSO) به زیر ۳۰ روز و حذف مطالبات معوق');
+  }
+
+  // 5. Returns and sizing policy (Online store, Fashion, Apparel, E-commerce)
+  const isReturnsDomain = axes.channelModel === 'ONLINE_FIRST' || axes.salesMotion === 'ECOMMERCE' || /پوشاک|لباس|تریکو|آنلاین|فروشگاه اینترنتی|مد/i.test(titleFa);
+  if (isReturnsDomain && phase === 2) {
+    add('returns_and_sizing_control', 30, `راهنمای دقیق سایز، جدول اندازه‌گیری سانتیمتری و سیاست شفاف مرجوعی کالا را تدوین و هزینه لجستیک برگشت را به تفکیک علت عیب رهگیری کنید.`, [offer, channel], 'کاهش نرخ مرجوعی ناشی از عدم تطابق سایز به زیر ۸٪ و شفافیت هزینه استرداد');
+  }
+
+  // 6. Vehicle service history card (Automotive services, Detailing, Workshop)
+  const isAutoDomain = indId === 'IND-05' || /خودرو|اتومبیل|کارواش|تعمیرگاه|مکانیکی|دیتیلینگ|روغن/i.test(titleFa);
+  if (isAutoDomain && phase === 2) {
+    add('vehicle_service_history_card', 30, `کارت سابقه دیجیتال سرویس و کیلومتر پیمایش خودرو را هنگام تحویل صادر کرده و یادآوری پیامکی نوبت بعدی سرویس را زمان‌بندی کنید.`, [offer, channel], 'افزایش نرخ بازگشت خودروها برای سرویس دوره‌ای به بالای ۶۵٪');
+  }
+
+  // 7. Scrutinize definitive / 100% guarantee claims
+  const allTexts = rows.map(r => r.text || '').join(' ');
+  const hasGuaranteeClaim = /(?:تضمین\s*(?:صددرصد|۱۰۰٪|قطعی)|نتیجه\s*قطعی)/.test(allTexts);
+  const isNegatedGuarantee = /(?:تضمین\s*(?:نمی‌کنیم|نمیکنیم|نیست|نداریم)|فاقد\s*تضمین)/.test(allTexts);
+  if (hasGuaranteeClaim && !isNegatedGuarantee && phase === 3) {
+    add('scrutinize_definitive_claims', 30, `ادعای نتیجه قطعی یا تضمین صددرصد در تعهدات نیازمند شواهد اثبات‌پذیر است؛ برای صیانت از اعتبار برند، تعهدات را بر اساس فرایند مستند و شرایط معین بازنویسی کنید.`, [promise || offer], 'حذف ادعاهای مطلق و تدوین تعهدات مشروط و شفاف برای مشتری');
+  }
+
   // Resource constraints are a foundation decision, not a generic filler action on every phase.
   if (phase === 1 && budget) {
     add('resource_ceiling', 30, `محدودیت ${text(budget)} را به سقف هزینه و زمان اقدام‌های همین دوره تبدیل کنید. تخصیص نهایی باید توسط خودتان تأیید شود.`, [budget], 'جمع هزینه و زمان برنامه در محدوده منابع تأییدشده');
+  }
+
+  // Guard against aggressive acquisition when margin is negative or capacity is exceeded
+  if (economics && (economics.contributionPerUnit <= 0 || (economics.breakEvenUnits !== null && economics.inputs.monthlyCapacity !== null && economics.breakEvenUnits > economics.inputs.monthlyCapacity))) {
+    // If unit margin is negative or capacity is exhausted, ensure customer acquisition proposals do not recommend scaling
+    for (const act of actions) {
+      if (act.ruleId === 'single_channel_pilot' || act.ruleId === 'conversion_steps') {
+        act.invalidationCondition = 'به دلیل کسری ظرفیت عملیاتی یا حاشیه مشارکت منفی، افزایش جذب باید تا زمان رفع گلوگاه متوقف یا محدود به اصلاح قیمت شود.';
+      }
+    }
   }
 
   // No unconditional 60/90-day filler actions. Later review/revision actions must be

@@ -341,8 +341,14 @@ export function classifyBusinessContext(phaseData = {}, rawAnswers = {}) {
   }
 
   // 4. Channel & Geography
+  const isHybridChannel =
+    (combined.includes("حضوری") || combined.includes("فروشگاه") || combined.includes("مغازه") || combined.includes("شعبه")) &&
+    (combined.includes("آنلاین") || combined.includes("سایت") || combined.includes("اینترنتی") || combined.includes("پیج"));
+
   const channelModel =
-    archetype.id === "LOCAL_SERVICE" || archetype.id === "RESTAURANT_CAFE_HOSPITALITY" || geo.includes("local")
+    isHybridChannel
+      ? "HYBRID"
+      : (archetype.id === "LOCAL_SERVICE" || archetype.id === "RESTAURANT_CAFE_HOSPITALITY" || geo.includes("local"))
       ? "PHYSICAL_FIRST"
       : archetype.id === "MANUFACTURER"
       ? "DIRECT_SALES_B2B"
