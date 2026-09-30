@@ -44,7 +44,7 @@ export function toCanonicalModuleContext(context = {}) {
   const canonical = {
     schemaVersion: '3.0.0',
     businessTypeId: context.businessTypeId || context.taxonomyId || null,
-    businessTypeTitleFa: context.businessTypeTitleFa || context.taxonomyTitleFa || null,
+    businessTypeTitleFa: context.customBusiness ? 'فعالیت اختصاصی' : (context.businessTypeTitleFa || context.taxonomyTitleFa || null),
     industryId: context.industryId || null,
     industryCode: context.industryCode || null,
     iranianGuildCode: context.iranianGuildCode || null,

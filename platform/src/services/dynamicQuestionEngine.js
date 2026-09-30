@@ -308,6 +308,7 @@ export function sanitizeJargonForLocalTrades(text, context) {
  * and 15-axis profile.
  */
 export function detectTradeSector(context, priorAnswers = {}) {
+  if (context?.customBusiness) return 'GENERAL';
   const p1 = priorAnswers[1] || {};
   const tradeTitle = context?.taxonomyTitleFa || p1.description || "";
   const industryId = context?.industryId || context?.industryCode || "";
@@ -874,6 +875,11 @@ export function composeChainedQuestions(
       insight: "این پرسش هنوز به یک گره دانش ثبت‌شده نگاشت نشده است؛ از نمایش یا استنتاج منبع ساختگی خودداری شود."
     };
     question.knowledgeGuidance = guidance;
+    if (context?.customBusiness && question.id === 'step0_description') {
+      question.knowledgeGuidance = { nodeId: null, provenanceStatus: 'USER_DESCRIPTION', canonicalSource: null,
+        framework: 'شرح آزاد فعالیت و سؤال‌های روشن‌کننده', decisionChainLink: 'شناخت مدل فعالیت',
+        insight: 'رسته صنفی بدون انتخاب صریح کاربر تعیین نمی‌شود.' };
+    }
 
     // Record Applied Formula metadata
     question.appliedFormula = {
@@ -887,6 +893,30 @@ export function composeChainedQuestions(
 
     // Apply context-aware options and jargon sanitization
     question = synthesizeContextOptions(question, context, vision, priorAnswers);
+    if (context?.customBusiness) {
+      const activity = String(context.businessDescription || 'فعالیت شما').slice(0, 120);
+      const p1 = priorAnswers[1] || {};
+      const customPrompts = {
+        step0_diagnostic_probing: `در «${activity}» چه کسی هزینه را می‌پردازد، چه مسئله‌ای دارد و کار شما دقیقاً چگونه آن مسئله را حل می‌کند؟ اگر چند گروه مشتری دارید، نقش هر کدام را جدا بگویید.`,
+        step0_geography: `مشتریان «${activity}» کجا هستند و تحویل کار حضوری، آنلاین یا ترکیبی است؟`,
+        step2_core_offer: `برای «${activity}» دقیقاً چه چیزی تحویل می‌دهید، درآمد از کدام بخش و با چه روش پرداختی به دست می‌آید؟ ${p1.diagnosticVision ? `با توجه به توضیح شما «${String(p1.diagnosticVision).slice(0, 180)}»، مرز خدمت و محصول را هم روشن کنید.` : ''}`,
+        step2_value_hypothesis: `مشتری «${activity}» چه نتیجه قابل بررسی می‌گیرد و برای اثبات تمایزتان چه شاهد واقعی دارید؟`,
+        p2_step0_competitors: `برای مسئله‌ای که «${activity}» حل می‌کند، مشتری اکنون از چه جایگزین‌هایی استفاده می‌کند؟ رقیب مستقیم، روش دستی و انجام ندادن کار را جدا کنید.`,
+        p2_step1_customer_pain: `مشتری واقعی «${activity}» در کدام گام مشکل دارد و این را از چه مصاحبه یا رفتار مشاهده‌شده می‌دانید؟`,
+        p2_step2_pricing_models: `با توجه به پیشنهاد واقعی «${String(p1.coreOffer || activity).slice(0, 150)}»، چه کسی، بابت کدام بخش و در چه زمانی پول می‌دهد؟ هزینه تحویل هر بخش چیست؟`,
+        p3_target_segment: `از میان خریداران احتمالی «${activity}» کدام گروه مسئله فوری و اختیار پرداخت دارد؟ کاربر و پرداخت‌کننده را اگر متفاوت‌اند جدا کنید.`,
+        p5_elevator_hook: `«${activity}» را در یک جمله برای همان مشتری هدف با نتیجه‌ای که بتوانید اثبات کنید معرفی کنید.`,
+        p8_pr_podcast_channels: `خریدار واقعی «${activity}» را از چه کانال قابل آزمونی پیدا می‌کنید و هزینه و معیار توقف آزمون چیست؟`,
+      };
+      if (customPrompts[question.id]) question.text = customPrompts[question.id];
+      if (question.id === 'step0_geography') question.options = [
+        { text: 'محدوده یک شهر یا محله', value: 'local_city' },
+        { text: 'چند شهر در سراسر ایران', value: 'nationwide_iran' },
+        { text: 'بازارهای خارج از ایران', value: 'international' },
+      ];
+      else if (!['step0_description', 'step0_stage'].includes(question.id)) question.options = [];
+      question.allowCustomAnswer = true;
+    }
     question = adaptQuestionToAnswers(question, context, priorAnswers, options.answerRecords || []);
 
     return question;
