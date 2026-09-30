@@ -93,7 +93,7 @@ test('React: an activity absent from the catalog can be entered through the pick
   await click(button('فعالیت من همین است'));
   assert.equal(state().phaseData[1].description, description);
   assert.equal(state().businessContext.taxonomyId, null);
-  assert.match(document.getElementById('strategic-question-heading').textContent, /چه کسی هزینه را می‌پردازد/);
+  assert.match(document.getElementById('strategic-question-heading').textContent, /چه کسی سفارش می‌دهد و هزینه را می‌پردازد/);
 });
 
 test('React: complete foundation, refresh, customize pricing and display matching document', async () => {
@@ -132,7 +132,9 @@ test('React: model question is displayed only after complete response and detail
     targetQuestionId: 'step0_diagnostic_probing', text: 'برای کافه کنار دانشگاه چه تجربه‌ای می‌سازید؟', title: 'دیدگاه کافه', options: [{ label: 'فضای مطالعه', detail: 'میز آرام برای دانشجویان با سفارش محدود', value: 'study_space' }],
   } }) }] } }] }) });
   try {
-    await mount({ key: 'test-key' }); await answer('کافه نزدیک دانشگاه');
+    await mount({ key: 'test-key' });
+    await click(document.querySelector('[role="radio"][aria-label*="کافه، رستری"]'));
+    await click(document.querySelector('button[aria-label="تأیید پاسخ و ادامه به گام بعدی"]'));
     assert.match(document.getElementById('strategic-question-heading').textContent, /کنار دانشگاه/);
     // Switch off network after selecting the generated option: failure should be visible.
     global.fetch = async () => { throw new TypeError('fetch failed'); };

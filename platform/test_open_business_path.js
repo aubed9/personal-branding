@@ -17,7 +17,7 @@ test('an unlisted mixed business retains its own identity and asks about the buy
   assert.equal(e.businessContext.axes.offerType, 'MIXED');
   assert.equal(e.businessContext.axes.revenueModel, 'UNKNOWN', 'sharing data does not establish subscription billing');
   assert.equal(e.getCurrentQuestion().id, 'step0_diagnostic_probing');
-  assert.match(e.getCurrentQuestion().text, /چه کسی هزینه را می‌پردازد/);
+  assert.match(e.getCurrentQuestion().text, /چه کسی سفارش می‌دهد و هزینه را می‌پردازد/);
   assert.deepEqual(e.getCurrentQuestion().options, []);
   assert.equal(toCanonicalModuleContext(e.businessContext).businessTypeId, null);
   const spec = resolveDomainSpecialization(e.businessContext, e.businessContext.axes, 1);
@@ -35,7 +35,7 @@ test('later answers alter the questions and outputs of a second unlisted busines
   assert.equal(e.businessContext.taxonomyId, null);
   assert.notEqual(e.getCurrentQuestion().text.includes(drone), true);
   e.processUserResponse('مدیر مدرسه هزینه را می‌دهد تا آب سالم داشته باشد؛ تکنسین حضوری دستگاه را سرویس می‌کند');
-  assert.match(e.getCurrentQuestion().text, /مرحله/);
+  assert.match(e.getCurrentQuestion().text, /چه وضعیتی قرار دارد/);
   e.processUserResponse('فعال', 'active');
   e.processUserResponse('مدارس تهران و سرویس حضوری', 'local_city');
   e.processUserResponse('کاهش خرابی دستگاه در سه ماه');
@@ -84,7 +84,7 @@ test('an unlisted business completes the foundation and advances to evidence-led
   assert.equal(e.businessContext.axes.geography, 'CITY');
   assert.equal(e.generateDeliverableData(1).status, 'CONFIRMED');
   e.startPhase(2);
-  assert.match(e.getCurrentQuestion().text, /چه جایگزین‌هایی استفاده می‌کند/);
+  assert.match(e.getCurrentQuestion().text, /چه جایگزینی انجام می‌دهد/);
   assert.match(e.generateMarkdownText('master'), /مدیر مدرسه/);
   assert.doesNotMatch(e.generateMarkdownText('master'), /BT-0753|999999|مودیان/);
 });
