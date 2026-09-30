@@ -174,10 +174,15 @@ export function classifyBusinessContext(phaseData = {}, rawAnswers = {}) {
   const desc = String(p1.description || rawAnswers.description || "").toLowerCase();
   const descVal = String(p1.descriptionValue || rawAnswers.descriptionValue || "").toLowerCase();
   const geo = String(p1.geography || rawAnswers.geography || "nationwide_iran").toLowerCase();
+  const geoValue = String(p1.geographyValue || rawAnswers.geographyValue || '').toLowerCase();
   const offer = String(p1.coreOffer || rawAnswers.coreOffer || "").toLowerCase();
   const goal = String(p1.primaryGoal || rawAnswers.primaryGoal || "").toLowerCase();
   const taxonomyQuery = String(p1.taxonomyId || p1.taxonomyCode || rawAnswers.taxonomyId || rawAnswers.taxonomyCode || "").toLowerCase();
   const combined = `${desc} ${descVal} ${offer} ${geo} ${goal} ${taxonomyQuery}`;
+  const explicitTaxonomy = BUSINESS_TYPES_MAP[taxonomyQuery.toUpperCase()] || BUSINESS_TYPES_MAP[descVal.toUpperCase()] || BUSINESS_TYPES_MAP[desc.toUpperCase()];
+  const selectedModel = ['industrial_manufacturing', 'manufacturer', 'hospitality_cafe_roastery', 'restaurant_cafe', 'local_automotive_service', 'local_service', 'b2b_saas_software', 'saas_software', 'creator_coaching_personal', 'creator_media', 'ecommerce_products', 'ecommerce', 'coaching_consulting', 'professional_service', 'b2b_service', 'health_beauty_wellness'].includes(descVal);
+  const exactTitle = BUSINESS_TYPES.find(bt => bt.titleFa.toLowerCase() === desc.trim() || bt.titleEn.toLowerCase() === desc.trim());
+  const customBusiness = Boolean(desc.trim() && !explicitTaxonomy && !selectedModel && !exactTitle);
 
   // 1. Resolve Universal 753 Taxonomy Business Type
   let resolvedBusiness = null;
@@ -203,7 +208,28 @@ export function classifyBusinessContext(phaseData = {}, rawAnswers = {}) {
   } else if (descVal === "b2b_service") {
     resolvedBusiness = BUSINESS_TYPES_MAP["BT-0431"] || resolveBusinessType(desc || combined);
   } else {
-    resolvedBusiness = resolveBusinessType(desc || offer || combined);
+    resolvedBusiness = exactTitle || (customBusiness ? null : resolveBusinessType(desc || offer || combined));
+  }
+
+  if (customBusiness) {
+    const described = `${desc} ${String(p1.diagnosticVision || '').toLowerCase()} ${offer}`;
+    const customerModel = /تعاونی|سازمان|مدرسه|شرکت|کارخانه|بنگاه|b2b|اداره/.test(described) ? 'B2B' : /خانوار|مصرف‌کننده|مردم|b2c/.test(described) ? 'B2C' : 'UNKNOWN';
+    const offerType = /محصول|کالا|دستگاه|تجهیزات|اجاره/.test(described) && /خدمت|سرویس|نصب|تعمیر|اپراتور/.test(described) ? 'MIXED' : /اپلیکیشن|نرم‌افزار/.test(described) ? 'DIGITAL_PRODUCT' : /خدمت|سرویس|نصب|تعمیر|مشاوره/.test(described) ? 'SERVICE' : 'UNKNOWN';
+    const revenueModel = /حق اشتراک|اشتراک ماهانه|اشتراک سالانه|پرداخت ماهانه|آبونمان/.test(described) ? 'RECURRING' : /پروژه|قرارداد پروژه/.test(described) ? 'PROJECT_BASED' : 'UNKNOWN';
+    const geography = /local_city/.test(geoValue || geo) ? 'CITY' : /international/.test(geoValue || geo) ? 'REGIONAL_INTERNATIONAL' : /nationwide_iran/.test(geoValue || geo) && p1.geography ? 'NATIONAL' : 'UNKNOWN';
+    const channelModel = /حضوری/.test(described) && /آنلاین|اپلیکیشن/.test(described) ? 'HYBRID' : /حضوری/.test(described) ? 'PHYSICAL_FIRST' : /آنلاین|اپلیکیشن/.test(described) ? 'ONLINE_FIRST' : 'UNKNOWN';
+    const axes = Object.fromEntries(['customerModel', 'offerType', 'channelModel', 'revenueModel', 'maturity', 'scale', 'salesMotion', 'geography', 'branchStructure', 'founderRole', 'purchaseCycle', 'relationshipModel', 'regulatoryProfile', 'operationalComplexity', 'brandArchitecture'].map(axis => [axis, 'UNKNOWN']));
+    Object.assign(axes, { customerModel, offerType, channelModel, revenueModel, geography, maturity: /idea/i.test(stage) ? 'IDEA' : /pre_launch/i.test(stage) ? 'PRE_LAUNCH' : p1.stage ? 'EARLY_ACTIVE' : 'UNKNOWN' });
+    return {
+      customBusiness: true, businessDescription: p1.description || rawAnswers.description,
+      archetype: 'OTHER', primaryArchetype: 'OTHER', archetypeTitle: BUSINESS_ARCHETYPES.OTHER.titleFa,
+      customerModel, channelModel, maturity: axes.maturity, geographicScope: geography,
+      activeOverlays: ['OTHER'], focusAreas: BUSINESS_ARCHETYPES.OTHER.focus,
+      candidateMetrics: [], seededRisks: [], confidence: 'NEEDS_CLARIFICATION',
+      taxonomyId: null, taxonomyTitleFa: p1.description || rawAnswers.description,
+      taxonomyTitleEn: null, iranianGuildCode: null, industryId: null, industryCode: null,
+      axes, ...axes, geography
+    };
   }
 
   // 2. Determine Archetype (Strict Precedence for 100% Backward Compatibility)
@@ -443,7 +469,7 @@ export function classifyBusinessContext(phaseData = {}, rawAnswers = {}) {
     focusAreas: archetype.focus,
     candidateMetrics: archetype.metrics,
     seededRisks: archetype.risks,
-    confidence: "USER_CONFIRMED",
+    confidence: explicitTaxonomy || selectedModel ? "USER_CONFIRMED" : "INFERRED",
 
     // Universal 753 Taxonomy Identifiers
     taxonomyId: resolvedBusiness?.id || "BT-0753",
@@ -513,7 +539,7 @@ export function resolveDomainSpecialization(businessTypeInput, contextAxes = {},
   let inputOverlays = [];
 
   if (businessTypeInput && typeof businessTypeInput === "object") {
-    const btId = businessTypeInput.taxonomyId || businessTypeInput.id;
+    const btId = businessTypeInput.customBusiness ? null : (businessTypeInput.taxonomyId || businessTypeInput.id);
     if (btId && typeof btId === "string" && btId.toUpperCase().startsWith("BT-")) {
       matchedBt = BUSINESS_TYPES_MAP[btId.toUpperCase()] || null;
     }
@@ -523,7 +549,7 @@ export function resolveDomainSpecialization(businessTypeInput, contextAxes = {},
       matchedIndustry = MACRO_INDUSTRIES.find(m => m.id === indId || m.code === indId) || null;
     }
 
-    if (!matchedBt) {
+    if (!matchedBt && !businessTypeInput.customBusiness) {
       const q = businessTypeInput.query || businessTypeInput.taxonomyTitleFa || businessTypeInput.archetypeTitle || "";
       if (q) {
         matchedBt = resolveBusinessType(q);
@@ -558,12 +584,12 @@ export function resolveDomainSpecialization(businessTypeInput, contextAxes = {},
     specializationLevel = "INDUSTRY_OVERLAY";
   }
 
-  const taxonomyId = matchedBt?.id || (typeof businessTypeInput === "object" && businessTypeInput?.taxonomyId) || "BT-0753";
-  const tradeTitleFa = matchedBt?.titleFa || (typeof businessTypeInput === "object" && businessTypeInput?.taxonomyTitleFa) || matchedIndustry?.titleFa || (typeof businessTypeInput === "object" && businessTypeInput?.archetypeTitle) || "کسب‌وکار";
+  const taxonomyId = matchedBt?.id || (typeof businessTypeInput === "object" && businessTypeInput?.taxonomyId) || (businessTypeInput?.customBusiness ? null : "BT-0753");
+  const tradeTitleFa = matchedBt?.titleFa || (businessTypeInput?.customBusiness ? 'فعالیت اختصاصی' : (typeof businessTypeInput === "object" && businessTypeInput?.taxonomyTitleFa)) || matchedIndustry?.titleFa || (typeof businessTypeInput === "object" && businessTypeInput?.archetypeTitle) || "کسب‌وکار";
   const tradeTitleEn = matchedBt?.titleEn || (typeof businessTypeInput === "object" && businessTypeInput?.taxonomyTitleEn) || matchedIndustry?.titleEn || "Business";
-  const iranianGuildCode = matchedBt?.iranianGuildCode || (typeof businessTypeInput === "object" && businessTypeInput?.iranianGuildCode) || "999999";
-  const industryId = matchedBt?.industryId || matchedIndustry?.id || (typeof businessTypeInput === "object" && businessTypeInput?.industryId) || "IND-31";
-  const industryCode = matchedBt?.industryCode || matchedIndustry?.code || (typeof businessTypeInput === "object" && businessTypeInput?.industryCode) || "EMERGING_HYBRID_FRONTIER_MODELS";
+  const iranianGuildCode = matchedBt?.iranianGuildCode || (typeof businessTypeInput === "object" && businessTypeInput?.iranianGuildCode) || (businessTypeInput?.customBusiness ? null : "999999");
+  const industryId = matchedBt?.industryId || matchedIndustry?.id || (typeof businessTypeInput === "object" && businessTypeInput?.industryId) || (businessTypeInput?.customBusiness ? null : "IND-31");
+  const industryCode = matchedBt?.industryCode || matchedIndustry?.code || (typeof businessTypeInput === "object" && businessTypeInput?.industryCode) || (businessTypeInput?.customBusiness ? null : "EMERGING_HYBRID_FRONTIER_MODELS");
   const industryTitleFa = matchedIndustry?.titleFa || "مدل‌های نوظهور و هیبریدی پیشگام";
 
   let primaryArchetype = matchedBt?.primaryArchetype || matchedIndustry?.primaryArchetype;
@@ -876,6 +902,21 @@ export function resolveDomainSpecialization(businessTypeInput, contextAxes = {},
     }
   }
 
+  if (businessTypeInput?.customBusiness) {
+    const description = String(businessTypeInput.businessDescription || 'فعالیت ثبت‌شده').slice(0, 180);
+    const tasks = {
+      1: 'خریدار، کاربر، پیشنهاد، روش دریافت پول و محدودیت ظرفیت را از پاسخ‌های ثبت‌شده روشن کنید.',
+      2: 'جایگزین‌های واقعی مشتری، شواهد مسئله و هزینه و قیمت هر بخش پیشنهاد را بررسی کنید.',
+      3: 'مشتری هدف، تمایز قابل اثبات و مرز تعهد برند را از شواهد ثبت‌شده بسازید.',
+      4: 'رفتار و شخصیت برند را به تصمیم‌های تأییدشده مشتری هدف پیوند دهید.',
+      5: 'پیام برند را برای پرداخت‌کننده و کاربر واقعی، بدون وعده اثبات‌نشده، بنویسید.',
+      6: 'نام و شعار را با کار واقعی و وعده تأییدشده بسنجید.',
+      7: 'هویت بصری را با نقاط تماس واقعی و محدودیت‌های اجرا هماهنگ کنید.',
+      8: 'کانال جذب، آزمون کوچک و معیار توقف را بر اساس خریدار و بودجه ثبت‌شده تعیین کنید.'
+    };
+    phaseInstruction = `برای «${description}» ${tasks[p] || tasks[1]}`;
+  }
+
   const activeOverlays = Array.from(new Set([
     primaryArchetype,
     mergedAxes.customerModel,
@@ -887,12 +928,12 @@ export function resolveDomainSpecialization(businessTypeInput, contextAxes = {},
     ...inputOverlays
   ]));
 
-  const kpis = Array.from(new Set([
+  const kpis = businessTypeInput?.customBusiness ? [] : Array.from(new Set([
     ...(archetypeDef.metrics || []),
     ...(matchedIndustry?.defaultAxes?.kpis || [])
   ]));
 
-  const risks = Array.from(new Set([
+  const risks = businessTypeInput?.customBusiness ? [] : Array.from(new Set([
     ...(archetypeDef.risks || []),
     ...(matchedIndustry?.defaultAxes?.risks || [])
   ]));
@@ -982,6 +1023,12 @@ export function getPhaseAdaptationRules(phaseNum, context) {
 
 export function generateContextProfileMarkdown(context) {
   if (!context) return "";
+
+  if (context.customBusiness) {
+    const known = Object.entries(context.axes || {}).filter(([, value]) => value !== 'UNKNOWN');
+    const unknown = Object.entries(context.axes || {}).filter(([, value]) => value === 'UNKNOWN');
+    return `# شناسنامه فعالیت اختصاصی\n\n**شرح ثبت‌شده:** ${context.businessDescription}\n\n**رسته و کد صنفی:** هنوز تعیین نشده؛ از روی شرح آزاد حدس زده نمی‌شود.\n\n## محورهای استخراج‌شده برای بررسی\n${known.map(([axis, value]) => `- ${axis}: ${value}`).join('\n') || '- هنوز محوری با اطمینان استخراج نشده است.'}\n\n## پرسش‌های باز\n${unknown.map(([axis]) => `- ${axis}: نیازمند پاسخ یا بررسی`).join('\n') || '- مورد بازی باقی نمانده است.'}\n`;
+  }
 
   const axes = context.axes || {
     customerModel: context.customerModel,

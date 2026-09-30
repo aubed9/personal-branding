@@ -5,8 +5,12 @@ import { generateDeliverable, deliverableToMarkdown } from './src/services/deliv
 import { migrateAnswerRecords } from './src/services/interviewSchema.js';
 import { buildEvidenceDerivedHandoff } from './src/projections/output/handoffProjection.js';
 import { assertOutputAcceptance, auditOutputModel } from './src/projections/output/audit.js';
-import { buildCanonicalOutputClaims } from './src/projections/output/claims.js';
+import { buildCanonicalOutputClaims, claimPresentation } from './src/projections/output/claims.js';
 import { CLAIM_TYPES, PROPOSAL_STATUS, validateCanonicalClaim } from './src/reasoning/contracts.js';
+import {
+  CANONICAL_EXTERNAL_KNOWLEDGE_CLAIMS,
+  CANONICAL_EXTERNAL_SOURCE_REGISTRY,
+} from './src/knowledge/canonicalExternalKnowledge.generated.js';
 
 const GENERIC_FALLBACKS = [
   'خدمات و تخصص محوری',
@@ -147,6 +151,16 @@ test('admissible Iran external knowledge is projected as source-traceable shared
   const external = model.claims.filter(claim => claim.claimType === CLAIM_TYPES.EXTERNAL_FACT);
   assert.ok(external.length > 0, 'explicit Iran context should surface admissible external knowledge');
   assert.ok(external.some(claim => claim.sourceClaimIds.includes('KCL-IR-SCI-CPI-1405-05')));
+  const cpi = external.find(claim => claim.sourceClaimIds.includes('KCL-IR-SCI-CPI-1405-05'));
+  const cpiSourceId = 'SRC-IR-SCI-CPI-1405-05';
+  assert.deepEqual(cpi.metadata.sourceProvenance, [{
+    sourceId: cpiSourceId,
+    locator: CANONICAL_EXTERNAL_KNOWLEDGE_CLAIMS['KCL-IR-SCI-CPI-1405-05'].locators[0].locator,
+    observedPeriod: CANONICAL_EXTERNAL_SOURCE_REGISTRY[cpiSourceId].observed_period,
+    verifiedAt: CANONICAL_EXTERNAL_SOURCE_REGISTRY[cpiSourceId].verified_at,
+    effectiveFrom: null,
+    effectiveUntil: null,
+  }]);
   assert.ok(external.some(claim => claim.sourceClaimIds.includes('KCL-IR-ECOM-1403')));
   assert.ok(external.every(claim => claim.status === 'CONFIRMED'));
   assert.ok(external.every(claim => claim.sourceClaimIds.length > 0 && claim.sourceIds.length > 0));
@@ -165,6 +179,8 @@ test('admissible Iran external knowledge is projected as source-traceable shared
   assert.ok(markdown.includes('source-claim:'));
   assert.ok(markdown.includes('sources:'));
   assert.ok(markdown.includes('limitations:'));
+  assert.ok(markdown.includes(`source-locator: ${cpiSourceId}:`));
+  assert.ok(markdown.includes(`observed: ${cpiSourceId}: 1405-05`));
 });
 
 test('scoped e-commerce law claim requires both B2C and online modules', () => {
@@ -178,6 +194,9 @@ test('scoped e-commerce law claim requires both B2C and online modules', () => {
     metadata: meta,
   });
   assert.ok(b2cOnline.claims.some(claim => claim.sourceClaimIds?.includes(claimId)));
+  const law = b2cOnline.claims.find(claim => claim.sourceClaimIds?.includes(claimId));
+  assert.equal(law.metadata.sourceProvenance[0].effectiveFrom, '1382-11-27');
+  assert.ok(claimPresentation(law).includes('effective-from: SRC-IR-LAW-ECOM-1382-QAVANIN-LOCATOR: 1382-11-27'));
 
   const b2bOnline = buildCanonicalOutputClaims({
     phaseData: data,
@@ -194,6 +213,53 @@ test('scoped e-commerce law claim requires both B2C and online modules', () => {
   assert.equal(b2cPhysical.claims.some(claim => claim.sourceClaimIds?.includes(claimId)), false);
 });
 
+test('unverified online licensing stays a visible scoped risk in Iran B2C deliverables', () => {
+  const data = phaseData();
+  const meta = metadata(data, { knowledgeAsOf: '2026-09-29T00:00:00Z' });
+  const ctx = context({ customerModel: 'B2C', channelModel: 'ONLINE_FIRST', revenueModel: 'TRANSACTION' });
+  const model = buildCanonicalOutputClaims({ phaseData: data, businessContext: ctx, metadata: meta });
+  const risk = model.claims.find(claim => claim.metadata?.researchGapClaimId === 'KCL-IR-ENAMAD-CURRENT-RULES-UNVERIFIED');
+  assert.ok(risk);
+  assert.equal(risk.claimType, CLAIM_TYPES.RISK);
+  assert.equal(risk.status, 'NEEDS_REVIEW');
+  assert.equal(risk.verificationState, 'REQUIRES_VERIFICATION');
+  assert.deepEqual(risk.sourceIds, []);
+  assert.deepEqual(risk.sourceClaimIds, []);
+  assert.match(risk.statement, /برای تصمیم‌های وابسته/);
+  assert.equal(assertOutputAcceptance(model, { specializedContext: true }).valid, true);
+
+  for (const phase of [2, 8]) {
+    const doc = generateDeliverable(phase, data, ctx, [], [], [], meta);
+    const risks = doc.sections.find(section => section.sectionType === 'RISKS');
+    assert.ok(risks.claimIds.includes(risk.claimId));
+    assert.equal(risks.status, 'NEEDS_REVIEW');
+    assert.ok(deliverableToMarkdown(doc).includes(risk.statement));
+  }
+  const master = generateDeliverable('master', data, ctx, [], [], [], meta);
+  assert.equal(master.sections.flatMap(section => section.claimIds || []).filter(id => id === risk.claimId).length, 1);
+  assert.ok(deliverableToMarkdown(master).includes(risk.statement));
+});
+
+test('online licensing verification risk is absent outside its Iran B2C online scope', () => {
+  const data = phaseData();
+  const meta = metadata(data, { knowledgeAsOf: '2026-09-29T00:00:00Z' });
+  const scenarios = [
+    [context({ customerModel: 'B2B', channelModel: 'ONLINE_FIRST' }), data],
+    [context({ customerModel: 'B2C', channelModel: 'PHYSICAL_FIRST' }), data],
+    [context({ customerModel: 'B2C', channelModel: 'ONLINE_FIRST', geography: 'INTERNATIONAL' }), {
+      ...data, 1: { ...data[1], geography: 'بین‌المللی' },
+    }],
+  ];
+  for (const [ctx, input] of scenarios) {
+    const model = buildCanonicalOutputClaims({
+      phaseData: input,
+      businessContext: ctx,
+      metadata: metadata(input, { knowledgeAsOf: meta.knowledgeAsOf }),
+    });
+    assert.equal(model.claims.some(claim => claim.metadata?.researchGapClaimId === 'KCL-IR-ENAMAD-CURRENT-RULES-UNVERIFIED'), false);
+  }
+});
+
 test('Iran external knowledge never leaks into non-Iran or unknown jurisdiction output', () => {
   const data = phaseData();
   data[1].geography = 'بین‌المللی و صادراتی';
@@ -208,6 +274,43 @@ test('Iran external knowledge never leaks into non-Iran or unknown jurisdiction 
   assert.equal(model.claims.some(claim => claim.claimType === CLAIM_TYPES.EXTERNAL_FACT), false);
 });
 
+test('the explicit local Iran choice admits national evidence for a local business', () => {
+  const data = phaseData();
+  data[1].geography = 'مشهد';
+  data[1].geographyValue = 'local_city';
+  const model = buildCanonicalOutputClaims({
+    phaseData: data,
+    businessContext: context({ geography: 'CITY', customerModel: 'B2C', channelModel: 'PHYSICAL_FIRST' }),
+    metadata: metadata(data, { knowledgeAsOf: '2026-09-26T00:00:00Z' }),
+  });
+  const external = model.claims.filter(claim => claim.claimType === CLAIM_TYPES.EXTERNAL_FACT);
+  assert.ok(external.some(claim => claim.sourceClaimIds.includes('KCL-IR-SCI-CPI-1405-05')));
+  assert.ok(external.every(claim => claim.metadata.jurisdictionOrScope === 'IRAN'));
+  assert.equal(external.some(claim => claim.sourceClaimIds.includes('KCL-IR-LAW-ECOM-1382-UNVERIFIED')), false);
+
+  const online = buildCanonicalOutputClaims({
+    phaseData: data,
+    businessContext: context({ geography: 'CITY', customerModel: 'B2C', channelModel: 'ONLINE_FIRST', revenueModel: 'TRANSACTION' }),
+    metadata: metadata(data, { knowledgeAsOf: '2026-09-27T00:00:00Z' }),
+  });
+  assert.ok(online.claims.some(claim => claim.sourceClaimIds?.includes('KCL-IR-LAW-ECOM-1382-UNVERIFIED')));
+
+  const b2b = buildCanonicalOutputClaims({
+    phaseData: data,
+    businessContext: context({ geography: 'CITY', customerModel: 'B2B', channelModel: 'ONLINE_FIRST', revenueModel: 'TRANSACTION' }),
+    metadata: metadata(data, { knowledgeAsOf: '2026-09-27T00:00:00Z' }),
+  });
+  assert.equal(b2b.claims.some(claim => claim.sourceClaimIds?.includes('KCL-IR-LAW-ECOM-1382-UNVERIFIED')), false);
+
+  const ambiguous = { ...data, 1: { ...data[1], geography: 'محلی', geographyValue: null } };
+  const unknownCountry = buildCanonicalOutputClaims({
+    phaseData: ambiguous,
+    businessContext: context({ geography: 'CITY' }),
+    metadata: metadata(ambiguous, { knowledgeAsOf: '2026-09-27T00:00:00Z' }),
+  });
+  assert.equal(unknownCountry.claims.some(claim => claim.claimType === CLAIM_TYPES.EXTERNAL_FACT), false);
+});
+
 test('stale external sources cannot remain CONFIRMED in generated output', () => {
   const data = phaseData();
   const meta = metadata(data, { knowledgeAsOf: '2030-01-01T00:00:00Z' });
@@ -217,6 +320,76 @@ test('stale external sources cannot remain CONFIRMED in generated output', () =>
     unknowns: [],
     contradictions: [],
     metadata: meta,
+  });
+  assert.equal(model.claims.some(claim => claim.claimType === CLAIM_TYPES.EXTERNAL_FACT), false);
+});
+
+test('expired Iran consumer law is a scoped verification risk, not a confirmed fact', () => {
+  const data = phaseData();
+  const meta = metadata(data, { knowledgeAsOf: '2026-11-01T00:00:00Z' });
+  const ctx = context({ customerModel: 'B2C', channelModel: 'ONLINE_FIRST', revenueModel: 'TRANSACTION' });
+  const sourceClaimId = 'KCL-IR-LAW-ECOM-1382-UNVERIFIED';
+  const model = buildCanonicalOutputClaims({ phaseData: data, businessContext: ctx, metadata: meta });
+  assert.equal(model.claims.some(claim => claim.claimType === CLAIM_TYPES.EXTERNAL_FACT && claim.sourceClaimIds.includes(sourceClaimId)), false);
+  const risk = model.claims.find(claim => claim.metadata?.blockedSourceClaimId === sourceClaimId);
+  assert.ok(risk, 'applicable stale legal evidence should produce a visible review risk');
+  assert.equal(risk.status, 'NEEDS_REVIEW');
+  assert.equal(risk.verificationState, 'REQUIRES_VERIFICATION');
+  assert.deepEqual(risk.sourceClaimIds, []);
+  assert.ok(risk.metadata.admissionReasons.some(reason => reason.includes('MAX_AGE_EXCEEDED')));
+  assert.equal(assertOutputAcceptance(model, { specializedContext: true }).valid, true);
+
+  const phase2 = generateDeliverable(2, data, ctx, [], [], [], meta);
+  assert.ok(phase2.sections.find(section => section.sectionType === 'RISKS').claimIds.includes(risk.claimId));
+  assert.ok(deliverableToMarkdown(phase2).includes(sourceClaimId));
+  const master = generateDeliverable('master', data, ctx, [], [], [], meta);
+  assert.equal(master.sections.flatMap(section => section.claimIds || []).filter(id => id === risk.claimId).length, 1);
+
+  for (const other of [
+    context({ customerModel: 'B2B', channelModel: 'ONLINE_FIRST' }),
+    context({ customerModel: 'B2C', channelModel: 'PHYSICAL_FIRST' }),
+  ]) {
+    const output = buildCanonicalOutputClaims({ phaseData: data, businessContext: other, metadata: meta });
+    assert.equal(output.claims.some(claim => claim.metadata?.blockedSourceClaimId === sourceClaimId), false);
+  }
+  const international = { ...data, 1: { ...data[1], geography: 'بین‌المللی' } };
+  const nonIran = buildCanonicalOutputClaims({
+    phaseData: international,
+    businessContext: context({ customerModel: 'B2C', channelModel: 'ONLINE_FIRST', geography: 'INTERNATIONAL' }),
+    metadata: metadata(international, { knowledgeAsOf: meta.knowledgeAsOf }),
+  });
+  assert.equal(nonIran.claims.some(claim => claim.metadata?.blockedSourceClaimId === sourceClaimId), false);
+});
+
+test('fresh Iran consumer law does not produce a verification risk', () => {
+  const data = phaseData();
+  const model = buildCanonicalOutputClaims({
+    phaseData: data,
+    businessContext: context({ customerModel: 'B2C', channelModel: 'ONLINE_FIRST' }),
+    metadata: metadata(data, { knowledgeAsOf: '2026-09-29T00:00:00Z' }),
+  });
+  assert.equal(model.claims.some(claim => claim.metadata?.blockedSourceClaimId === 'KCL-IR-LAW-ECOM-1382-UNVERIFIED'), false);
+});
+
+test('regulated B2B context flags only applicable stale tax and guild evidence', () => {
+  const data = phaseData();
+  const model = buildCanonicalOutputClaims({
+    phaseData: data,
+    businessContext: context({ regulatoryProfile: 'HIGHLY_REGULATED', customerModel: 'B2B' }),
+    metadata: metadata(data, { knowledgeAsOf: '2026-11-01T00:00:00Z' }),
+  });
+  const blocked = new Set(model.claims.map(claim => claim.metadata?.blockedSourceClaimId).filter(Boolean));
+  assert.ok(blocked.has('KCL-IR-TAX-TERMINALS-1398-UNVERIFIED'));
+  assert.ok(blocked.has('KCL-IR-TRADE-UNION-LICENSING-UNVERIFIED'));
+  assert.equal(blocked.has('KCL-IR-LAW-ECOM-1382-UNVERIFIED'), false);
+});
+
+test('invalid knowledge evaluation date cannot silently admit current external facts', () => {
+  const data = phaseData();
+  const model = buildCanonicalOutputClaims({
+    phaseData: data,
+    businessContext: context(),
+    metadata: metadata(data, { knowledgeAsOf: 'not-a-date' }),
   });
   assert.equal(model.claims.some(claim => claim.claimType === CLAIM_TYPES.EXTERNAL_FACT), false);
 });

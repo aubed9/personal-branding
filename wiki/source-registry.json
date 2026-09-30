@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updated_at": "2026-09-27",
+  "updated_at": "2026-09-30",
   "source_count_policy": "Counts are derived from the sources object; Knowledge Node count is never a source count.",
   "freshness_defaults_days": {
     "VOLATILE_PRICE": 7,
@@ -2089,6 +2089,54 @@
       "status": "CANONICAL",
       "checksum": null,
       "limitations": "Normative internal Phase 7 workflow/design-system contract only. It does not establish external color psychology, accessibility thresholds, legal requirements, market benchmarks, or other external facts; those require separately verified Source/Claim records."
+    },
+    "SRC-IR-NAJVA-REPORT-1404-FIRST-PARTY": {
+      "id": "SRC-IR-NAJVA-REPORT-1404-FIRST-PARTY",
+      "source_type": "PLATFORM_FIRST_PARTY_REPORT",
+      "title": "تنوع‌بخشی — گزارش سالانه نجوا ۱۴۰۴",
+      "author_or_institution": "Najva",
+      "issuing_authority": "Najva",
+      "published_at": null,
+      "effective_from": null,
+      "effective_until": null,
+      "observed_period": "Farvardin 1404 through Ordibehesht 1405 (14 months)",
+      "edition_or_version": "Annual 1404 report; methodology covers 14 months",
+      "url": "https://najva.com/annual-1404/",
+      "repository_location": "wiki/snapshots/iran/najva-1404-first-party-report.txt",
+      "accessed_at": "2026-09-30",
+      "verified_at": "2026-09-30",
+      "jurisdiction_or_scope": "NAJVA_PLATFORM",
+      "language": "fa",
+      "authority_tier": "C",
+      "freshness_class": "INDUSTRY_REPORT",
+      "max_age_days": 365,
+      "status": "VERIFIED",
+      "checksum": "git-blob:c9c709dfc07b4fad13ab8f6338cb4c8f45f1b24d",
+      "limitations": "First-party Najva campaign observations only, over the 14-month period stated in its methodology. Observational comparisons do not identify causal effects, national SMS benchmarks, conversions or ROI. Sample sizes are not disclosed for personalization; the clicker case covers only 20 campaigns of one brand."
+    },
+    "SRC-IR-DIGIKALA-REPORT-1404-OFFICIAL-FULL": {
+      "id": "SRC-IR-DIGIKALA-REPORT-1404-OFFICIAL-FULL",
+      "source_type": "PLATFORM_FIRST_PARTY_REPORT",
+      "title": "گزارش سال ۱۴۰۴ گروه دیجی‌کالا — نسخه کامل وب",
+      "author_or_institution": "Digikala Group",
+      "issuing_authority": "Digikala Group",
+      "published_at": "2026-09-21",
+      "effective_from": null,
+      "effective_until": null,
+      "observed_period": "1404",
+      "edition_or_version": "1404 annual full web edition",
+      "url": "https://about.digikala.com/reports/digikala1404/",
+      "repository_location": "wiki/snapshots/iran/digikala-1404-first-party-full-report.txt",
+      "accessed_at": "2026-09-30",
+      "verified_at": "2026-09-30",
+      "jurisdiction_or_scope": "DIGIKALA_PLATFORM",
+      "language": "fa",
+      "authority_tier": "C",
+      "freshness_class": "INDUSTRY_REPORT",
+      "max_age_days": 365,
+      "status": "VERIFIED",
+      "checksum": "git-blob:e5789db07520fd153067cb13939735064fef540b",
+      "limitations": "Full first-party web report is reproducible at the exact URL. Admit only metrics explicitly located in its 1404 Digikala sections; reported price and value changes are platform-specific nominal observations, not an official Iran-wide inflation, real-growth or unit-volume measure. Other awkwardly rendered statistics are excluded."
     }
   }
 }

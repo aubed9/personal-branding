@@ -1,0 +1,17 @@
+# Digikala 1404 annual report — first-party full web edition locator
+
+Captured: 2026-09-30
+Publisher: Digikala Group
+Report year: 1404
+Official report: https://about.digikala.com/reports/digikala1404/
+Official newsroom announcement (30 Shahrivar 1405): https://about.digikala.com/newsroom/گزارش-سال-۱۴۰۴گروه-دیجیکالا-سالی-که/
+
+Exact report sections and paraphrased observations:
+- «جستجو در دیجی‌کالا»: the search term «ارزان» appears 745,437 times during 1404 and its search count is reported up 44%. The report does not state that this represents all budget-sensitive shopping or the national market.
+- «دیجی‌کالا در سال ۱۴۰۴»: average price of goods sold across Digikala including supermarket grew 74% compared with 1403; value of goods sold grew 91.5%. The publisher's newsroom announcement confirms the latter comparison is with the previous year. These are platform-reported nominal figures, not an official consumer price index or an identified change in unit volume.
+- The full report also repeats the 51% increase for searches of «دست دوم» with 116,078 occurrences; the earlier first-party announcement source remains separately registered for the pre-existing claim.
+
+Admission boundary:
+- DIGIKALA_PLATFORM only, for the stated 1404 period. Do not infer Iran-wide price inflation, market growth, population spending power or causal effects.
+- The website includes some internally awkward renderings of other statistics; only the exact figures and labels listed above are admitted here.
+- The official page links a large PDF, but the complete web edition itself exposes these locators directly. This snapshot is an evidence index, not a copy of the report.

@@ -10,7 +10,7 @@ import {
 } from '../../reasoning/contracts.js';
 import { ENTITY_STATUS, NODE_TYPES } from '../../reasoning/graph/index.js';
 import { DECISION_MODULES_BY_ID, getPhaseModuleProjection } from '../../reasoning/modules/index.js';
-import { retrieveCanonicalKnowledge } from '../../knowledge/index.js';
+import { evaluateKnowledgeClaim, isKnowledgeEntryApplicable, retrieveCanonicalKnowledge } from '../../knowledge/index.js';
 import {
   CANONICAL_EXTERNAL_KNOWLEDGE_CLAIMS,
   CANONICAL_EXTERNAL_RETRIEVAL_ENTRIES,
@@ -49,6 +49,7 @@ function resolveKnowledgeJurisdiction(phaseData, businessContext, metadata) {
   const currentAnswers = activeAnswers(metadata.answerRecords || []);
   const geographyAnswer = currentAnswers.find(answer => answer.questionId === 'step0_geography');
   if (geographyAnswer?.optionValue === 'nationwide_iran') return 'IRAN';
+  if (geographyAnswer?.optionValue === 'local_city') return 'IRAN';
   if (geographyAnswer?.optionValue === 'international') return 'GENERAL';
 
   const text = [
@@ -68,7 +69,7 @@ function resolveKnowledgeAsOf(metadata) {
   const value = metadata.knowledgeAsOf instanceof Date
     ? metadata.knowledgeAsOf
     : new Date(metadata.knowledgeAsOf);
-  return Number.isNaN(value.getTime()) ? new Date() : value;
+  return Number.isNaN(value.getTime()) ? null : value;
 }
 
 function buildExternalKnowledgeClaims({
@@ -81,6 +82,7 @@ function buildExternalKnowledgeClaims({
 
   const jurisdiction = resolveKnowledgeJurisdiction(phaseData, businessContext, metadata);
   const asOf = resolveKnowledgeAsOf(metadata);
+  if (!asOf) return [];
   const aggregated = new Map();
 
   for (let phase = 1; phase <= 8; phase++) {
@@ -99,7 +101,9 @@ function buildExternalKnowledgeClaims({
         jurisdiction,
         criticalUse: true,
         asOf,
-        topK: 20,
+        // The deliverable is exhaustive for applicable external evidence; a ranking cap
+        // could silently omit a fresh legal claim while its verification risk is also absent.
+        topK: CANONICAL_EXTERNAL_RETRIEVAL_ENTRIES.length,
       }
     );
 
@@ -149,6 +153,99 @@ function buildExternalKnowledgeClaims({
           state: item.freshness.state,
           reason: item.freshness.reason,
         })),
+        sourceProvenance: admission.sources.map(item => ({
+          sourceId: item.sourceId,
+          locator: CANONICAL_EXTERNAL_KNOWLEDGE_CLAIMS[entry.claim_id].locators
+            .find(locator => locator.source_id === item.sourceId)?.locator || null,
+          observedPeriod: item.source?.observed_period || null,
+          verifiedAt: item.source?.verified_at || null,
+          effectiveFrom: item.source?.effective_from || null,
+          effectiveUntil: item.source?.effective_until || null,
+        })),
+      },
+    })));
+}
+
+function buildOnlineLicensingVerificationRisk(jurisdiction, moduleProjections, externalClaims, metadata) {
+  if (jurisdiction !== 'IRAN') return null;
+  const moduleIds = new Set(Object.values(moduleProjections).flatMap(projection => projection?.moduleIds || []));
+  if (!moduleIds.has('MOD-CUSTOMER-B2C') || !moduleIds.has('MOD-CHANNEL-ONLINE')) return null;
+  if (externalClaims.some(claim => claim.sourceClaimIds.includes('KCL-IR-ENAMAD-CURRENT-RULES-UNVERIFIED'))) return null;
+
+  // This is a research gap, not an assertion that every online seller needs Enamad.
+  // Keep it separate from EXTERNAL_FACT until an exact current primary rule is verified.
+  return validateOrThrow(createCanonicalClaim({
+    stableKey: { kind: 'KNOWLEDGE_GAP', id: 'IR-ONLINE-B2C-LICENSING' },
+    claimType: CLAIM_TYPES.RISK,
+    statement: 'برای تصمیم‌های وابسته به درگاه پرداخت یا مجوز فروش آنلاین به مصرف‌کننده در ایران، شرایط فعلی اینماد و مجوز فعالیت مربوط را در منبع رسمی بررسی کنید؛ سند دقیق و نسخهٔ معتبر این قواعد هنوز ثبت نشده است.',
+    status: CLAIM_STATUS.NEEDS_REVIEW,
+    phase: null,
+    dependencyIds: ['MODULE:MOD-CUSTOMER-B2C', 'MODULE:MOD-CHANNEL-ONLINE', 'JURISDICTION:IRAN'],
+    evidenceIds: [],
+    ruleId: 'IR-ONLINE-B2C-LICENSING-VERIFICATION',
+    confidence: null,
+    verificationState: 'REQUIRES_VERIFICATION',
+    createdRevision: Number(metadata.revision) || 0,
+    lastValidatedRevision: Number(metadata.revision) || 0,
+    metadata: {
+      affectedPhases: [2, 8],
+      researchGapClaimId: 'KCL-IR-ENAMAD-CURRENT-RULES-UNVERIFIED',
+      applicability: 'IRAN_B2C_ONLINE_PAYMENT_OR_LICENSING_DECISIONS',
+    },
+  }));
+}
+
+function buildLegalVerificationRisks({ phaseData, businessContext, moduleProjections, metadata }) {
+  if (!businessContext) return [];
+  const asOf = resolveKnowledgeAsOf(metadata);
+  if (!asOf) return [];
+  const jurisdiction = resolveKnowledgeJurisdiction(phaseData, businessContext, metadata);
+  const blocked = new Map();
+
+  for (let phase = 1; phase <= 8; phase++) {
+    const moduleIds = moduleProjections[phase]?.moduleIds || [];
+    if (!moduleIds.length) continue;
+    for (const entry of CANONICAL_EXTERNAL_RETRIEVAL_ENTRIES) {
+      if (entry.claim_kind !== 'LEGAL_REQUIREMENT' || !entry.decision_driving) continue;
+      const claim = CANONICAL_EXTERNAL_KNOWLEDGE_CLAIMS[entry.claim_id];
+      if (!['VERIFIED', 'CANONICAL'].includes(claim?.status)) continue;
+      if (!isKnowledgeEntryApplicable(entry, claim, { phase, moduleIds, jurisdiction })) continue;
+      const admission = evaluateKnowledgeClaim(claim, CANONICAL_EXTERNAL_SOURCE_REGISTRY, {
+        asOf, criticalUse: true,
+      });
+      if (admission.admissible) continue;
+
+      const current = blocked.get(entry.claim_id) || {
+        entry, admission, phases: new Set(), moduleIds: new Set(),
+      };
+      current.phases.add(phase);
+      for (const id of entry.module_ids || []) {
+        if (moduleIds.includes(id)) current.moduleIds.add(id);
+      }
+      blocked.set(entry.claim_id, current);
+    }
+  }
+
+  return [...blocked.values()]
+    .sort((a, b) => a.entry.claim_id.localeCompare(b.entry.claim_id))
+    .map(({ entry, admission, phases, moduleIds }) => validateOrThrow(createCanonicalClaim({
+      stableKey: { kind: 'LEGAL_VERIFICATION_GAP', sourceClaimId: entry.claim_id },
+      claimType: CLAIM_TYPES.RISK,
+      statement: `اعتبار منبع حقوقی با شناسهٔ ${entry.claim_id} برای این تصمیم در تاریخ ارزیابی تأیید نشده است؛ پیش از اتکا، متن و نسخهٔ جاری را در مرجع رسمی بررسی کنید.`,
+      status: CLAIM_STATUS.NEEDS_REVIEW,
+      phase: null,
+      dependencyIds: [...moduleIds].sort().map(id => `MODULE:${id}`),
+      evidenceIds: [],
+      ruleId: 'LEGAL-SOURCE-REQUIRES-VERIFICATION',
+      confidence: null,
+      verificationState: 'REQUIRES_VERIFICATION',
+      createdRevision: Number(metadata.revision) || 0,
+      lastValidatedRevision: Number(metadata.revision) || 0,
+      metadata: {
+        blockedSourceClaimId: entry.claim_id,
+        affectedPhases: [...phases].sort((a, b) => a - b),
+        admissionReasons: admission.reasons,
+        jurisdictionOrScope: entry.jurisdiction_or_scope,
       },
     })));
 }
@@ -500,12 +597,22 @@ export function buildCanonicalOutputClaims({
     claims.push(...module.inferenceClaims, ...module.riskClaims);
     claims.push(...buildProposalClaims(phase, rows, calculation, businessContext, metadata, answerClaimsByEvidenceId));
   }
-  claims.push(...buildExternalKnowledgeClaims({
+  const externalClaims = buildExternalKnowledgeClaims({
     phaseData,
     businessContext,
     moduleProjections,
     metadata,
+  });
+  claims.push(...externalClaims);
+  claims.push(...buildLegalVerificationRisks({
+    phaseData, businessContext, moduleProjections, metadata,
   }));
+  if (businessContext) {
+    const licensingRisk = buildOnlineLicensingVerificationRisk(
+      resolveKnowledgeJurisdiction(phaseData, businessContext, metadata), moduleProjections, externalClaims, metadata
+    );
+    if (licensingRisk) claims.push(licensingRisk);
+  }
   claims.push(...buildContradictionClaims(contradictions, rows, metadata));
 
   const ledger = buildLedger(claims);
@@ -531,7 +638,14 @@ export function claimPresentation(claim) {
     const sources = claim.sourceIds?.length ? ` [sources: ${claim.sourceIds.join(', ')}]` : '';
     const scope = claim.metadata?.jurisdictionOrScope ? ` [scope: ${claim.metadata.jurisdictionOrScope}]` : '';
     const limitations = claim.metadata?.limitations ? ` [limitations: ${claim.metadata.limitations}]` : '';
-    return `[${claim.claimType}/${claim.status}] ${claim.statement} [${claim.claimId}]${sourceClaims}${sources}${scope}${limitations}`;
+    const provenance = (claim.metadata?.sourceProvenance || []).map(item => [
+      item.locator ? ` [source-locator: ${item.sourceId}: ${item.locator}]` : '',
+      item.observedPeriod ? ` [observed: ${item.sourceId}: ${item.observedPeriod}]` : '',
+      item.verifiedAt ? ` [verified: ${item.sourceId}: ${item.verifiedAt}]` : '',
+      item.effectiveFrom ? ` [effective-from: ${item.sourceId}: ${item.effectiveFrom}]` : '',
+      item.effectiveUntil ? ` [effective-until: ${item.sourceId}: ${item.effectiveUntil}]` : '',
+    ].join('')).join('');
+    return `[${claim.claimType}/${claim.status}] ${claim.statement} [${claim.claimId}]${sourceClaims}${sources}${scope}${limitations}${provenance}`;
   }
   return `[${claim.claimType}/${claim.status}] ${claim.statement} [${claim.claimId}]${evidence}`;
 }

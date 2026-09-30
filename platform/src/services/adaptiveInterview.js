@@ -119,6 +119,13 @@ export function validateQuestionAdaptation(proposed, target) {
     const allowed = new Set((target.options || []).map(opt => opt.value));
     if (options.length !== allowed.size || options.some(opt => !allowed.has(opt.value))) return null;
   }
+  // For freely described activities, the local question has already been built
+  // from active answers. A model may explain it but cannot swap in an unrelated
+  // industry or invent selectable facts.
+  if (target.customBusiness) {
+    return { ...target, baseQuestionId: target.id, targetQuestionId: target.id,
+      phase: FIELD_BY_QUESTION[target.id]?.phase, isDynamic: true, allowCustomAnswer: true };
+  }
   return {
     ...target, ...proposed, id: target.id, baseQuestionId: target.id,
     targetQuestionId: target.id, phase: FIELD_BY_QUESTION[target.id]?.phase,

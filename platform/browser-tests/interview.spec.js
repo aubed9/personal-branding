@@ -30,6 +30,11 @@ const getState = page => page.evaluate(() => {
   };
 });
 async function answer(page, text) {
+  if (text === firstAnswers[0]) {
+    await page.getByRole('radio', { name: /کافه، رستری و صنعت مهمان‌نوازی/ }).click();
+    await page.getByRole('button', { name: 'تأیید پاسخ و ادامه به گام بعدی' }).click();
+    return;
+  }
   await page.getByRole('button', { name: /پاسخ اختصاصی خودم/ }).click();
   await page.getByRole('textbox', { name: 'دیدگاه، توضیحات یا راهبرد مدنظرتان' }).fill(text);
   await page.getByRole('button', { name: 'ثبت پاسخ اختصاصی و ادامه' }).click();
@@ -131,6 +136,42 @@ test('complete eight phases and download one consistent master book', async ({ p
     'ریسک‌ها، تعارض‌ها و مجهولات باز',
     'ردیابی تصمیم و Provenance',
   ]) expect(output).toContain(heading);
+});
+
+test('freeform website design keeps relevant selectable answers through eight phases', async ({ page }) => {
+  for (const text of [
+    'طراحی سایت',
+    'برای شرکت‌های خدماتی سایت معرفی و ثبت درخواست می‌سازیم؛ مدیر شرکت هزینه می‌دهد',
+    'کسب‌وکار فعال',
+    'چند شهر در ایران',
+    'افزایش قراردادهای طراحی سایت در سه ماه',
+    'طراحی سایت شرکتی و فرم ثبت درخواست با آموزش',
+    'مدیر شرکت بتواند درخواست‌ها را ببیند؛ باید آن را با مشتری بیازماییم',
+  ]) await answer(page, text);
+  await expect(page.getByRole('form', { name: 'ثبت اعداد قیمت و هزینه' })).toBeVisible();
+  await fillFinance(page);
+  await page.getByRole('form', { name: 'ثبت اعداد قیمت و هزینه' }).getByRole('textbox', { name: 'واحد فروش', exact: true }).fill('پروژه');
+  await page.getByRole('button', { name: 'ثبت اعداد و ادامه' }).click();
+  await answer(page, 'بودجه محدود ۵ میلیون تومان و دو نفر تیم');
+  expect((await getState(page)).completedPhases[1]).toBe(true);
+  for (let phase = 2; phase <= 8; phase++) {
+    await page.getByRole('main').getByRole('button', { name: `ورود به فاز ${phase}`, exact: true }).click();
+    let steps = 0;
+    while (!(await getState(page)).completedPhases[phase]) {
+      expect(++steps).toBeLessThan(16);
+      const options = page.getByRole('radio');
+      await expect(options.first()).toBeVisible();
+      const question = await page.locator('#strategic-question-heading').innerText();
+      const choices = await options.allInnerTexts();
+      expect(`${question} ${choices.join(' ')}`).not.toMatch(/کارواش|قهوه|رستری|روغن موتور|سالن انتظار|سامانه مودیان/);
+      if (phase === 2 && steps === 1) expect(choices.join(' ')).toMatch(/آژانس|سایت‌ساز/);
+      await options.first().click();
+      await page.getByRole('button', { name: 'تأیید پاسخ و ادامه به گام بعدی' }).click();
+    }
+  }
+  const state = await getState(page);
+  expect(state.businessContext.taxonomyId).toBeNull();
+  expect(Object.values(state.completedPhases).every(Boolean)).toBe(true);
 });
 
 test('changed finances invalidate a later phase and replace its numeric evidence', async ({ page }) => {

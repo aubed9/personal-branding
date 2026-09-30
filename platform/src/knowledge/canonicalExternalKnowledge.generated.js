@@ -11,6 +11,36 @@ export const CANONICAL_EXTERNAL_KNOWLEDGE_META = Object.freeze({
 });
 export const CANONICAL_EXTERNAL_RETRIEVAL_ENTRIES = Object.freeze([
   {
+    "retrieval_id": "RET-KCL-IR-DIGIKALA-1404-CHEAP-SEARCH",
+    "knowledge_node_id": "KB-IR-PLATFORM-DIGIKALA-1404",
+    "claim_id": "KCL-IR-DIGIKALA-1404-CHEAP-SEARCH",
+    "content": "در نسخهٔ کامل گزارش ۱۴۰۴ دیجی‌کالا، جست‌وجوی عبارت «ارزان» ۷۴۵٬۴۳۷ بار و رشد آن ۴۴٪ گزارش شده است.",
+    "claim_kind": "MARKET_OBSERVATION",
+    "decision_driving": true,
+    "status": "VERIFIED",
+    "source_ids": [
+      "SRC-IR-DIGIKALA-REPORT-1404-OFFICIAL-FULL"
+    ],
+    "source_authority_floor": "C",
+    "freshness_class": "INDUSTRY_REPORT",
+    "max_age_days": 365,
+    "jurisdiction_or_scope": "DIGIKALA_PLATFORM",
+    "phases": [
+      1,
+      2,
+      8
+    ],
+    "decision_node_ids": [
+      "DN-ONLINE-FUNNEL",
+      "DN-OFFER-PLATFORM-LOOP"
+    ],
+    "module_ids": [
+      "MOD-CHANNEL-ONLINE",
+      "MOD-OFFER-PLATFORM"
+    ],
+    "limitations": "شمار جست‌وجوهای یک عبارت در دیجی‌کالا است، نه تعداد کاربران یکتا، خرید انجام‌شده، حساسیت قیمت همهٔ مشتریان، یا تقاضای ملی. مبنای مقایسه رشد در همان بخش با جزئیات روش‌شناختی منتشر نشده است."
+  },
+  {
     "retrieval_id": "RET-KCL-IR-DIGIKALA-1404-DIGITAL-GOLD",
     "knowledge_node_id": "KB-IR-PLATFORM-DIGIKALA-1404",
     "claim_id": "KCL-IR-DIGIKALA-1404-DIGITAL-GOLD",
@@ -40,6 +70,36 @@ export const CANONICAL_EXTERNAL_RETRIEVAL_ENTRIES = Object.freeze([
       "MOD-OFFER-PLATFORM"
     ],
     "limitations": "رشد اعلام‌شده مربوط به خرید طلای دیجیتال داخل اکوسیستم دیجی‌کالا است و نباید به کل بازار طلا، سرمایه‌گذاری یا تجارت الکترونیکی ایران تعمیم داده شود."
+  },
+  {
+    "retrieval_id": "RET-KCL-IR-DIGIKALA-1404-PRICE-AND-VALUE",
+    "knowledge_node_id": "KB-IR-PLATFORM-DIGIKALA-1404",
+    "claim_id": "KCL-IR-DIGIKALA-1404-PRICE-AND-VALUE",
+    "content": "گزارش ۱۴۰۴ دیجی‌کالا رشد ۷۴٪ میانگین قیمت کالاهای فروخته‌شده با احتساب سوپرمارکت نسبت به ۱۴۰۳ و رشد ۹۱٫۵٪ ارزش کالاهای فروخته‌شده را اعلام می‌کند.",
+    "claim_kind": "MARKET_OBSERVATION",
+    "decision_driving": true,
+    "status": "VERIFIED",
+    "source_ids": [
+      "SRC-IR-DIGIKALA-REPORT-1404-OFFICIAL-FULL"
+    ],
+    "source_authority_floor": "C",
+    "freshness_class": "INDUSTRY_REPORT",
+    "max_age_days": 365,
+    "jurisdiction_or_scope": "DIGIKALA_PLATFORM",
+    "phases": [
+      1,
+      2,
+      8
+    ],
+    "decision_node_ids": [
+      "DN-ONLINE-FUNNEL",
+      "DN-OFFER-PLATFORM-LOOP"
+    ],
+    "module_ids": [
+      "MOD-CHANNEL-ONLINE",
+      "MOD-OFFER-PLATFORM"
+    ],
+    "limitations": "اعداد اسمی و محدود به ترکیب کالاهای فروخته‌شده در دیجی‌کالا هستند. این مشاهده شاخص تورم ایران، رشد واقعی بازار، تغییر مقدار فروش یا تعداد سفارش را به‌تنهایی تعیین نمی‌کند."
   },
   {
     "retrieval_id": "RET-KCL-IR-DIGIKALA-1404-SECONDHAND-SEARCH",
@@ -169,6 +229,60 @@ export const CANONICAL_EXTERNAL_RETRIEVAL_ENTRIES = Object.freeze([
       "MOD-CHANNEL-ONLINE"
     ],
     "limitations": "Verified only for the listed article scopes and only where the law's definitions/applicability fit the transaction. Article-specific exceptions, implementing regulations, regulated-product rules and current Enamad/licensing requirements remain separate verification tasks."
+  },
+  {
+    "retrieval_id": "RET-KCL-IR-NAJVA-1404-SMS-CLICKER-CASE",
+    "knowledge_node_id": "KB-IR-PLATFORM-NAJVA-1404",
+    "claim_id": "KCL-IR-NAJVA-1404-SMS-CLICKER-CASE",
+    "content": "در مطالعهٔ موردی گزارش نجوا از ۲۰ کمپین یک برند، نرخ کلیک ۱۰ کمپین عمومی ۱٫۵۲٪ و ۱۰ کمپین هدفمند برای کلیک‌کنندگان پیشین ۵٫۸۹٪ گزارش شده است.",
+    "claim_kind": "MARKET_OBSERVATION",
+    "decision_driving": true,
+    "status": "VERIFIED",
+    "source_ids": [
+      "SRC-IR-NAJVA-REPORT-1404-FIRST-PARTY"
+    ],
+    "source_authority_floor": "C",
+    "freshness_class": "INDUSTRY_REPORT",
+    "max_age_days": 365,
+    "jurisdiction_or_scope": "NAJVA_PLATFORM",
+    "phases": [
+      2,
+      8
+    ],
+    "decision_node_ids": [
+      "DN-ONLINE-FUNNEL"
+    ],
+    "module_ids": [
+      "MOD-CHANNEL-ONLINE"
+    ],
+    "limitations": "فقط یک برند و ۲۰ کمپین در نجوا؛ میانگین سراسری پلتفرم یا بازار نیست. گروه‌ها تصادفی تخصیص نیافته‌اند و افزایش مشاهده‌شده اثر علّی هدف‌گیری، نرخ تبدیل یا ROI را اثبات نمی‌کند."
+  },
+  {
+    "retrieval_id": "RET-KCL-IR-NAJVA-1404-SMS-PERSONALIZATION",
+    "knowledge_node_id": "KB-IR-PLATFORM-NAJVA-1404",
+    "claim_id": "KCL-IR-NAJVA-1404-SMS-PERSONALIZATION",
+    "content": "در گزارش سالانهٔ ۱۴۰۴ نجوا با دورهٔ مشاهدهٔ ۱۴ ماهه، میانگین نرخ کلیک پیامک‌های دارای متغیرهای شخصی‌سازی ۴٫۳۹٪ و پیامک‌های بدون آن ۲٫۳۴٪ گزارش شده است.",
+    "claim_kind": "MARKET_OBSERVATION",
+    "decision_driving": true,
+    "status": "VERIFIED",
+    "source_ids": [
+      "SRC-IR-NAJVA-REPORT-1404-FIRST-PARTY"
+    ],
+    "source_authority_floor": "C",
+    "freshness_class": "INDUSTRY_REPORT",
+    "max_age_days": 365,
+    "jurisdiction_or_scope": "NAJVA_PLATFORM",
+    "phases": [
+      2,
+      8
+    ],
+    "decision_node_ids": [
+      "DN-ONLINE-FUNNEL"
+    ],
+    "module_ids": [
+      "MOD-CHANNEL-ONLINE"
+    ],
+    "limitations": "فقط کمپین‌های نجوا؛ مقایسه مشاهده‌ای است، حجم نمونه هر گروه اعلام نشده و تفاوت مخاطب و محتوا کنترل نشده است. اثر علّی، بنچمارک ملی، نرخ تبدیل یا ROI از این داده به دست نمی‌آید."
   },
   {
     "retrieval_id": "RET-KCL-IR-SCI-CPI-1405-05",
@@ -388,6 +502,41 @@ export const CANONICAL_EXTERNAL_RETRIEVAL_ENTRIES = Object.freeze([
   }
 ]);
 export const CANONICAL_EXTERNAL_KNOWLEDGE_CLAIMS = Object.freeze({
+  "KCL-IR-DIGIKALA-1404-CHEAP-SEARCH": {
+    "id": "KCL-IR-DIGIKALA-1404-CHEAP-SEARCH",
+    "statement": "در نسخهٔ کامل گزارش ۱۴۰۴ دیجی‌کالا، جست‌وجوی عبارت «ارزان» ۷۴۵٬۴۳۷ بار و رشد آن ۴۴٪ گزارش شده است.",
+    "knowledge_node_id": "KB-IR-PLATFORM-DIGIKALA-1404",
+    "claim_kind": "MARKET_OBSERVATION",
+    "decision_driving": true,
+    "status": "VERIFIED",
+    "source_ids": [
+      "SRC-IR-DIGIKALA-REPORT-1404-OFFICIAL-FULL"
+    ],
+    "authority_requirement": "A_TO_C",
+    "freshness_class": "INDUSTRY_REPORT",
+    "max_age_days": 365,
+    "jurisdiction_or_scope": "DIGIKALA_PLATFORM",
+    "phases": [
+      1,
+      2,
+      8
+    ],
+    "decision_node_ids": [
+      "DN-ONLINE-FUNNEL",
+      "DN-OFFER-PLATFORM-LOOP"
+    ],
+    "module_ids": [
+      "MOD-CHANNEL-ONLINE",
+      "MOD-OFFER-PLATFORM"
+    ],
+    "locators": [
+      {
+        "source_id": "SRC-IR-DIGIKALA-REPORT-1404-OFFICIAL-FULL",
+        "locator": "نسخه کامل وب، فصل «دیجی‌کالا»، بخش «جستجو در دیجی‌کالا»، ردیف‌های رشد ۴۴٪ و تعداد ۷۴۵٬۴۳۷ جست‌وجوی «ارزان» در سال ۱۴۰۴."
+      }
+    ],
+    "limitations": "شمار جست‌وجوهای یک عبارت در دیجی‌کالا است، نه تعداد کاربران یکتا، خرید انجام‌شده، حساسیت قیمت همهٔ مشتریان، یا تقاضای ملی. مبنای مقایسه رشد در همان بخش با جزئیات روش‌شناختی منتشر نشده است."
+  },
   "KCL-IR-DIGIKALA-1404-DIGITAL-GOLD": {
     "id": "KCL-IR-DIGIKALA-1404-DIGITAL-GOLD",
     "knowledge_node_id": "KB-IR-PLATFORM-DIGIKALA-1404",
@@ -423,6 +572,41 @@ export const CANONICAL_EXTERNAL_KNOWLEDGE_CLAIMS = Object.freeze({
       "MOD-OFFER-PLATFORM"
     ],
     "limitations": "رشد اعلام‌شده مربوط به خرید طلای دیجیتال داخل اکوسیستم دیجی‌کالا است و نباید به کل بازار طلا، سرمایه‌گذاری یا تجارت الکترونیکی ایران تعمیم داده شود."
+  },
+  "KCL-IR-DIGIKALA-1404-PRICE-AND-VALUE": {
+    "id": "KCL-IR-DIGIKALA-1404-PRICE-AND-VALUE",
+    "statement": "گزارش ۱۴۰۴ دیجی‌کالا رشد ۷۴٪ میانگین قیمت کالاهای فروخته‌شده با احتساب سوپرمارکت نسبت به ۱۴۰۳ و رشد ۹۱٫۵٪ ارزش کالاهای فروخته‌شده را اعلام می‌کند.",
+    "knowledge_node_id": "KB-IR-PLATFORM-DIGIKALA-1404",
+    "claim_kind": "MARKET_OBSERVATION",
+    "decision_driving": true,
+    "status": "VERIFIED",
+    "source_ids": [
+      "SRC-IR-DIGIKALA-REPORT-1404-OFFICIAL-FULL"
+    ],
+    "authority_requirement": "A_TO_C",
+    "freshness_class": "INDUSTRY_REPORT",
+    "max_age_days": 365,
+    "jurisdiction_or_scope": "DIGIKALA_PLATFORM",
+    "phases": [
+      1,
+      2,
+      8
+    ],
+    "decision_node_ids": [
+      "DN-ONLINE-FUNNEL",
+      "DN-OFFER-PLATFORM-LOOP"
+    ],
+    "module_ids": [
+      "MOD-CHANNEL-ONLINE",
+      "MOD-OFFER-PLATFORM"
+    ],
+    "locators": [
+      {
+        "source_id": "SRC-IR-DIGIKALA-REPORT-1404-OFFICIAL-FULL",
+        "locator": "نسخه کامل وب، فصل «دیجی‌کالا»، بخش «دیجی‌کالا در سال ۱۴۰۴»، ردیف‌های میانگین قیمت کالاهای فروخته‌شده (با سوپرمارکت) ۷۴٪ نسبت به ۱۴۰۳ و ارزش کالاهای فروخته‌شده ۹۱٫۵٪؛ خبر رسمی انتشار گزارش، ۳۰ شهریور ۱۴۰۵، مقایسه ارزش با سال قبل را تأیید می‌کند."
+      }
+    ],
+    "limitations": "اعداد اسمی و محدود به ترکیب کالاهای فروخته‌شده در دیجی‌کالا هستند. این مشاهده شاخص تورم ایران، رشد واقعی بازار، تغییر مقدار فروش یا تعداد سفارش را به‌تنهایی تعیین نمی‌کند."
   },
   "KCL-IR-DIGIKALA-1404-SECONDHAND-SEARCH": {
     "id": "KCL-IR-DIGIKALA-1404-SECONDHAND-SEARCH",
@@ -578,6 +762,70 @@ export const CANONICAL_EXTERNAL_KNOWLEDGE_CLAIMS = Object.freeze({
         "MOD-CHANNEL-ONLINE"
       ]
     }
+  },
+  "KCL-IR-NAJVA-1404-SMS-CLICKER-CASE": {
+    "id": "KCL-IR-NAJVA-1404-SMS-CLICKER-CASE",
+    "statement": "در مطالعهٔ موردی گزارش نجوا از ۲۰ کمپین یک برند، نرخ کلیک ۱۰ کمپین عمومی ۱٫۵۲٪ و ۱۰ کمپین هدفمند برای کلیک‌کنندگان پیشین ۵٫۸۹٪ گزارش شده است.",
+    "knowledge_node_id": "KB-IR-PLATFORM-NAJVA-1404",
+    "claim_kind": "MARKET_OBSERVATION",
+    "decision_driving": true,
+    "status": "VERIFIED",
+    "source_ids": [
+      "SRC-IR-NAJVA-REPORT-1404-FIRST-PARTY"
+    ],
+    "authority_requirement": "A_TO_C",
+    "freshness_class": "INDUSTRY_REPORT",
+    "max_age_days": 365,
+    "jurisdiction_or_scope": "NAJVA_PLATFORM",
+    "phases": [
+      2,
+      8
+    ],
+    "decision_node_ids": [
+      "DN-ONLINE-FUNNEL"
+    ],
+    "module_ids": [
+      "MOD-CHANNEL-ONLINE"
+    ],
+    "locators": [
+      {
+        "source_id": "SRC-IR-NAJVA-REPORT-1404-FIRST-PARTY",
+        "locator": "فصل ۵، «تعامل بیشتر، با ارسال کمتر»، نمونه ۲۰ کمپین یک برند (۱۰ عمومی، ۱۰ هدفمند)؛ ضمیمه «واژه‌نامه تحلیلی» برای مخرج CTR و «روش تحلیل داده‌ها» برای دوره."
+      }
+    ],
+    "limitations": "فقط یک برند و ۲۰ کمپین در نجوا؛ میانگین سراسری پلتفرم یا بازار نیست. گروه‌ها تصادفی تخصیص نیافته‌اند و افزایش مشاهده‌شده اثر علّی هدف‌گیری، نرخ تبدیل یا ROI را اثبات نمی‌کند."
+  },
+  "KCL-IR-NAJVA-1404-SMS-PERSONALIZATION": {
+    "id": "KCL-IR-NAJVA-1404-SMS-PERSONALIZATION",
+    "statement": "در گزارش سالانهٔ ۱۴۰۴ نجوا با دورهٔ مشاهدهٔ ۱۴ ماهه، میانگین نرخ کلیک پیامک‌های دارای متغیرهای شخصی‌سازی ۴٫۳۹٪ و پیامک‌های بدون آن ۲٫۳۴٪ گزارش شده است.",
+    "knowledge_node_id": "KB-IR-PLATFORM-NAJVA-1404",
+    "claim_kind": "MARKET_OBSERVATION",
+    "decision_driving": true,
+    "status": "VERIFIED",
+    "source_ids": [
+      "SRC-IR-NAJVA-REPORT-1404-FIRST-PARTY"
+    ],
+    "authority_requirement": "A_TO_C",
+    "freshness_class": "INDUSTRY_REPORT",
+    "max_age_days": 365,
+    "jurisdiction_or_scope": "NAJVA_PLATFORM",
+    "phases": [
+      2,
+      8
+    ],
+    "decision_node_ids": [
+      "DN-ONLINE-FUNNEL"
+    ],
+    "module_ids": [
+      "MOD-CHANNEL-ONLINE"
+    ],
+    "locators": [
+      {
+        "source_id": "SRC-IR-NAJVA-REPORT-1404-FIRST-PARTY",
+        "locator": "فصل ۵، «شخصی‌سازی: ساده‌ترین اهرم کم‌استفاده» و «میانگین نرخ کلیک پیامک — با و بدون متغیرهای دینامیک»؛ ضمیمه «واژه‌نامه تحلیلی» برای مخرج CTR و «روش تحلیل داده‌ها» برای دوره."
+      }
+    ],
+    "limitations": "فقط کمپین‌های نجوا؛ مقایسه مشاهده‌ای است، حجم نمونه هر گروه اعلام نشده و تفاوت مخاطب و محتوا کنترل نشده است. اثر علّی، بنچمارک ملی، نرخ تبدیل یا ROI از این داده به دست نمی‌آید."
   },
   "KCL-IR-SCI-CPI-1405-05": {
     "id": "KCL-IR-SCI-CPI-1405-05",
@@ -840,6 +1088,30 @@ export const CANONICAL_EXTERNAL_KNOWLEDGE_CLAIMS = Object.freeze({
   }
 });
 export const CANONICAL_EXTERNAL_SOURCE_REGISTRY = Object.freeze({
+  "SRC-IR-DIGIKALA-REPORT-1404-OFFICIAL-FULL": {
+    "id": "SRC-IR-DIGIKALA-REPORT-1404-OFFICIAL-FULL",
+    "source_type": "PLATFORM_FIRST_PARTY_REPORT",
+    "title": "گزارش سال ۱۴۰۴ گروه دیجی‌کالا — نسخه کامل وب",
+    "author_or_institution": "Digikala Group",
+    "issuing_authority": "Digikala Group",
+    "published_at": "2026-09-21",
+    "effective_from": null,
+    "effective_until": null,
+    "observed_period": "1404",
+    "edition_or_version": "1404 annual full web edition",
+    "url": "https://about.digikala.com/reports/digikala1404/",
+    "repository_location": "wiki/snapshots/iran/digikala-1404-first-party-full-report.txt",
+    "accessed_at": "2026-09-30",
+    "verified_at": "2026-09-30",
+    "jurisdiction_or_scope": "DIGIKALA_PLATFORM",
+    "language": "fa",
+    "authority_tier": "C",
+    "freshness_class": "INDUSTRY_REPORT",
+    "max_age_days": 365,
+    "status": "VERIFIED",
+    "checksum": "git-blob:e5789db07520fd153067cb13939735064fef540b",
+    "limitations": "Full first-party web report is reproducible at the exact URL. Admit only metrics explicitly located in its 1404 Digikala sections; reported price and value changes are platform-specific nominal observations, not an official Iran-wide inflation, real-growth or unit-volume measure. Other awkwardly rendered statistics are excluded."
+  },
   "SRC-IR-DIGIKALA-REPORT-1404-OFFICIAL-POST": {
     "id": "SRC-IR-DIGIKALA-REPORT-1404-OFFICIAL-POST",
     "source_type": "PLATFORM_FIRST_PARTY_ANNOUNCEMENT",
@@ -911,6 +1183,30 @@ export const CANONICAL_EXTERNAL_SOURCE_REGISTRY = Object.freeze({
     "status": "VERIFIED",
     "checksum": "git-blob:5e1522c4008c121c717379f8aede8fe592750cca",
     "limitations": "Current official consolidated qavanin text was verified only for Article 2 definitions and Articles 33–39 and 50–55 consumer/distance-contract and advertising duties. This record does not establish Enamad rules, all implementing regulations, all exceptions, or activity-specific licensing."
+  },
+  "SRC-IR-NAJVA-REPORT-1404-FIRST-PARTY": {
+    "id": "SRC-IR-NAJVA-REPORT-1404-FIRST-PARTY",
+    "source_type": "PLATFORM_FIRST_PARTY_REPORT",
+    "title": "تنوع‌بخشی — گزارش سالانه نجوا ۱۴۰۴",
+    "author_or_institution": "Najva",
+    "issuing_authority": "Najva",
+    "published_at": null,
+    "effective_from": null,
+    "effective_until": null,
+    "observed_period": "Farvardin 1404 through Ordibehesht 1405 (14 months)",
+    "edition_or_version": "Annual 1404 report; methodology covers 14 months",
+    "url": "https://najva.com/annual-1404/",
+    "repository_location": "wiki/snapshots/iran/najva-1404-first-party-report.txt",
+    "accessed_at": "2026-09-30",
+    "verified_at": "2026-09-30",
+    "jurisdiction_or_scope": "NAJVA_PLATFORM",
+    "language": "fa",
+    "authority_tier": "C",
+    "freshness_class": "INDUSTRY_REPORT",
+    "max_age_days": 365,
+    "status": "VERIFIED",
+    "checksum": "git-blob:c9c709dfc07b4fad13ab8f6338cb4c8f45f1b24d",
+    "limitations": "First-party Najva campaign observations only, over the 14-month period stated in its methodology. Observational comparisons do not identify causal effects, national SMS benchmarks, conversions or ROI. Sample sizes are not disclosed for personalization; the clicker case covers only 20 campaigns of one brand."
   },
   "SRC-IR-SCI-CPI-1405-05": {
     "id": "SRC-IR-SCI-CPI-1405-05",

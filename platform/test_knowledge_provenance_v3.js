@@ -333,6 +333,91 @@ test('a source verified after the evaluation date cannot support a historical cl
   assert.deepEqual(results, []);
 });
 
+test('invalid as-of dates fail closed before source effective-period comparisons', () => {
+  const source = {
+    status: 'VERIFIED', freshness_class: 'LEGAL', verified_at: '2026-09-20',
+    effective_from: '1405-01-01', authority_tier: 'A',
+  };
+  const result = evaluateSourceFreshness(source, { asOf: new Date('invalid') });
+  assert.equal(result.admissible, false);
+  assert.equal(result.reason, 'INVALID_AS_OF');
+});
+
+test('a malformed verification date never admits a verified source or claim', () => {
+  const asOf = new Date('2026-09-30T00:00:00Z');
+  for (const verified_at of ['2026-02-31', '2026-13-01', 'not-a-date', '1405-07-08']) {
+    for (const freshness_class of ['LEGAL', 'INDUSTRY_REPORT', 'ACADEMIC']) {
+      const source = {
+        status: 'VERIFIED', freshness_class, max_age_days: 30,
+        verified_at, authority_tier: 'A',
+      };
+      const freshness = evaluateSourceFreshness(source, { asOf });
+      assert.equal(freshness.admissible, false, `${verified_at} / ${freshness_class}`);
+      assert.equal(freshness.reason, 'INVALID_VERIFIED_AT');
+      const claim = {
+        id: 'KCL-DATE', status: 'VERIFIED', claim_kind: 'LEGAL_REQUIREMENT',
+        source_ids: ['SRC-DATE'], authority_requirement: 'A',
+      };
+      assert.equal(evaluateKnowledgeClaim(claim, { 'SRC-DATE': source }, { asOf, criticalUse: true }).admissible, false);
+    }
+  }
+  const valid = {
+    status: 'VERIFIED', freshness_class: 'INDUSTRY_REPORT', max_age_days: 30,
+    verified_at: '2026-09-29T10:00:00+03:30', authority_tier: 'A',
+  };
+  assert.equal(evaluateSourceFreshness(valid, { asOf }).admissible, true);
+});
+
+test('verified reports and academic sources require a verification date for freshness', () => {
+  for (const freshness_class of ['INDUSTRY_REPORT', 'ACADEMIC', 'INTERNAL_PLAYBOOK']) {
+    const source = {
+      status: 'VERIFIED', freshness_class, max_age_days: 365,
+      verified_at: null, authority_tier: 'A',
+    };
+    const freshness = evaluateSourceFreshness(source, { asOf: new Date('2026-09-30T00:00:00Z') });
+    assert.equal(freshness.admissible, false, freshness_class);
+    assert.equal(freshness.reason, 'MISSING_VERIFIED_AT');
+  }
+});
+
+test('effective period dates are inclusive in both Iranian and Gregorian calendars', () => {
+  const source = {
+    status: 'VERIFIED', freshness_class: 'LEGAL', max_age_days: 30,
+    verified_at: '2026-09-20', effective_from: '1405-07-08',
+    effective_until: '1405-07-08', authority_tier: 'A',
+  };
+  const before = evaluateSourceFreshness(source, { asOf: new Date('2026-09-29T12:00:00Z') });
+  assert.equal(before.admissible, false);
+  assert.equal(before.reason, 'EFFECTIVE_PERIOD_NOT_STARTED');
+
+  const onDate = evaluateSourceFreshness(source, { asOf: new Date('2026-09-30T12:00:00Z') });
+  assert.equal(onDate.admissible, true);
+
+  const after = evaluateSourceFreshness(source, { asOf: new Date('2026-10-01T12:00:00Z') });
+  assert.equal(after.admissible, false);
+  assert.equal(after.reason, 'EFFECTIVE_PERIOD_ENDED');
+
+  const gregorian = { ...source, effective_from: '2026-10-02', effective_until: null };
+  assert.equal(evaluateSourceFreshness(gregorian, { asOf: new Date('2026-10-01T12:00:00Z') }).admissible, false);
+  assert.equal(evaluateSourceFreshness(gregorian, { asOf: new Date('2026-10-02T12:00:00Z') }).admissible, true);
+});
+
+test('impossible effective dates never admit a verified source', () => {
+  const source = {
+    status: 'VERIFIED', freshness_class: 'LEGAL', max_age_days: 30,
+    verified_at: '2026-09-20', authority_tier: 'A',
+  };
+  const asOf = new Date('2026-09-29T12:00:00Z');
+  for (const effective_from of ['1405-07-31', '1404-12-30', '2026-02-31', '2026-02-31T12:00:00Z', '1404-12-30T12:00:00Z']) {
+    const result = evaluateSourceFreshness({ ...source, effective_from }, { asOf });
+    assert.equal(result.admissible, false, effective_from);
+    assert.equal(result.reason, 'INVALID_EFFECTIVE_FROM', effective_from);
+  }
+  assert.equal(evaluateSourceFreshness({ ...source, effective_until: '1404-12-30' }, { asOf }).reason, 'INVALID_EFFECTIVE_UNTIL');
+  assert.equal(evaluateSourceFreshness({ ...source, effective_from: '1403-12-30' }, { asOf }).admissible, true);
+  assert.equal(evaluateSourceFreshness({ ...source, effective_from: '2024-02-29' }, { asOf }).admissible, true);
+});
+
 test('critical claims require fresh Tier A evidence and retrieval filters before ranking', () => {
   const sources = {
     'SRC-A': {
@@ -378,6 +463,31 @@ test('critical claims require fresh Tier A evidence and retrieval filters before
     criticalUse: true, asOf: new Date('2026-09-22'), topK: 10,
   });
   assert.deepEqual(results.map(result => result.entry.claim_id), ['KCL-LEGAL']);
+});
+
+test('a shorter claim freshness limit blocks an otherwise fresh source in retrieval', () => {
+  const source = {
+    status: 'VERIFIED', freshness_class: 'INDUSTRY_REPORT', max_age_days: 365,
+    verified_at: '2026-09-01', authority_tier: 'A',
+  };
+  const claim = {
+    id: 'KCL-SHORT-LIVED', status: 'VERIFIED', claim_kind: 'MARKET_OBSERVATION',
+    authority_requirement: 'A', freshness_class: 'INDUSTRY_REPORT', max_age_days: 7,
+    source_ids: ['SRC-REPORT'],
+  };
+  const sources = { 'SRC-REPORT': source };
+  const recent = new Date('2026-09-05T00:00:00Z');
+  const expired = new Date('2026-09-10T00:00:00Z');
+  assert.equal(evaluateKnowledgeClaim(claim, sources, { asOf: recent }).admissible, true);
+  assert.equal(evaluateSourceFreshness(source, { asOf: expired }).admissible, true);
+  assert.deepEqual(evaluateKnowledgeClaim(claim, sources, { asOf: expired }).reasons,
+    ['CLAIM_MAX_AGE_EXCEEDED:SRC-REPORT']);
+  assert.deepEqual(retrieveCanonicalKnowledge('گزارش', [{
+    retrieval_id: 'RET-SHORT', claim_id: claim.id, content: 'گزارش',
+    phases: [1], module_ids: ['MOD-REPORT'], jurisdiction_or_scope: 'IRAN',
+  }], { [claim.id]: claim }, sources, {
+    asOf: expired, phase: 1, moduleIds: ['MOD-REPORT'], jurisdiction: 'IRAN',
+  }), []);
 });
 
 

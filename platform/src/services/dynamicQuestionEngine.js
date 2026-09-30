@@ -9,6 +9,7 @@ import { getAdaptedPhaseQuestions } from "../data/allPhasesTemplates.js";
 import { BUSINESS_TYPES_MAP, resolveBusinessType } from "../data/businessTaxonomy753.js";
 import { FOUNDATION_DETAIL_QUESTIONS } from './interviewSchema.js';
 import { adaptQuestionToAnswers } from './adaptiveInterview.js';
+import { adaptCustomBusinessQuestion } from './customBusinessInterview.js';
 import { isAutomotiveService } from '../data/businessDomain.js';
 
 export const DYNAMIC_QUESTION_FORMULA = 
@@ -308,6 +309,7 @@ export function sanitizeJargonForLocalTrades(text, context) {
  * and 15-axis profile.
  */
 export function detectTradeSector(context, priorAnswers = {}) {
+  if (context?.customBusiness) return 'GENERAL';
   const p1 = priorAnswers[1] || {};
   const tradeTitle = context?.taxonomyTitleFa || p1.description || "";
   const industryId = context?.industryId || context?.industryCode || "";
@@ -874,6 +876,11 @@ export function composeChainedQuestions(
       insight: "این پرسش هنوز به یک گره دانش ثبت‌شده نگاشت نشده است؛ از نمایش یا استنتاج منبع ساختگی خودداری شود."
     };
     question.knowledgeGuidance = guidance;
+    if (context?.customBusiness && question.id === 'step0_description') {
+      question.knowledgeGuidance = { nodeId: null, provenanceStatus: 'USER_DESCRIPTION', canonicalSource: null,
+        framework: 'شرح آزاد فعالیت و سؤال‌های روشن‌کننده', decisionChainLink: 'شناخت مدل فعالیت',
+        insight: 'رسته صنفی بدون انتخاب صریح کاربر تعیین نمی‌شود.' };
+    }
 
     // Record Applied Formula metadata
     question.appliedFormula = {
@@ -886,8 +893,13 @@ export function composeChainedQuestions(
     };
 
     // Apply context-aware options and jargon sanitization
-    question = synthesizeContextOptions(question, context, vision, priorAnswers);
+    if (!context?.customBusiness) question = synthesizeContextOptions(question, context, vision, priorAnswers);
     question = adaptQuestionToAnswers(question, context, priorAnswers, options.answerRecords || []);
+    if (context?.customBusiness) {
+      question = adaptCustomBusinessQuestion(question, context, priorAnswers);
+      if (['unit_economics', 'cash_constraint'].includes(question.id)) question.options = [];
+      question.customBusiness = true;
+    }
 
     return question;
   });
