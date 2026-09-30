@@ -1244,3 +1244,15 @@ knowledge_nodes:
     status: VERIFIED
     source_ids: [SRC-IR-SNAPP-REPORT-1404-OFFICIAL-COMPANY, SRC-IR-SNAPP-REPORT-1404-URBAN-TRIPS-POST]
     claim_ids: [KCL-IR-SNAPP-1404-SUPERAPP-VISITS, KCL-IR-SNAPP-1404-RIDE-HOURS, KCL-IR-SNAPP-1404-URBAN-TRIPS]
+
+  KB-IR-PLATFORM-NAJVA-1404:
+    title: "رفتار کمپین‌های پیامکی نجوا — گزارش سالانه ۱۴۰۴"
+    file: wiki/14-iran-evidence/najva-1404-platform.md
+    category: 14-iran-evidence
+    phases: [2, 8]
+    business_types: [CONTEXT_DRIVEN]
+    dependencies: [KB-DIGITAL-FUNNEL, KB-LOCAL-CHANNEL]
+    relevance: high
+    status: VERIFIED
+    source_ids: [SRC-IR-NAJVA-REPORT-1404-FIRST-PARTY]
+    claim_ids: [KCL-IR-NAJVA-1404-SMS-PERSONALIZATION, KCL-IR-NAJVA-1404-SMS-CLICKER-CASE]

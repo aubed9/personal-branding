@@ -1,0 +1,17 @@
+# Najva annual 1404 report — first-party evidence locator
+
+Captured: 2026-09-30
+Publisher: Najva
+Canonical report URL: https://najva.com/annual-1404/
+Report title: تنوع‌بخشی — گزارش سالانه نجوا ۱۴۰۴
+Observed period stated in methodology: Farvardin 1404 through end of Ordibehesht 1405 (14 months).
+
+Exact report locators and paraphrased observations:
+- Chapter 5, «شخصی‌سازی: ساده‌ترین اهرم کم‌استفاده»: average SMS click-through rate for campaigns with dynamic personalization was 4.39%, compared with 2.34% for campaigns without it; the page does not disclose a controlled experiment or subgroup sample sizes.
+- Chapter 5, «تعامل بیشتر، با ارسال کمتر»: a case study of one brand's 20 campaigns compares 10 broad campaigns with 10 campaigns targeted to prior clickers; reported click-through rates were 1.52% and 5.89%, respectively. This is a single brand example, not a platform average.
+- Appendix, «واژه‌نامه تحلیلی», CTR: clicks divided by delivered messages. Appendix, «روش تحلیل داده‌ها»: test campaigns with negligible deliveries excluded; some lost raw data reconstructed from infrastructure and footnoted.
+
+Admission boundary:
+- Scope is NAJVA_PLATFORM campaigns only. Neither comparison estimates an Iran-wide SMS benchmark, a causal lift, a conversion rate, or return on investment.
+- The source calls itself an annual 1404 report but explicitly covers 14 months ending Ordibehesht 1405. Keep both identifiers in citations.
+- The first-party page remains the exact metric and methodology locator; this snapshot is a concise reproducible evidence index, not a copy of the report.
