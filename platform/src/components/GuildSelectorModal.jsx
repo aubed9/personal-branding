@@ -126,10 +126,10 @@ export default function GuildSelectorModal({
             <div>
               <div className="flex items-center gap-2">
                 <h2 id="guild-selector-title" className="font-black text-sm sm:text-base text-white">
-                  کاتالوگ جامع ۷۵۳ صنف و پیشه تخصصی
+                  فعالیت کسب‌وکار خود را تعریف کنید
                 </h2>
                 <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/10 text-white border border-white/20">
-                  ۳۱ صنعت کلان
+                  انتخاب یا شرح آزاد
                 </span>
               </div>
               <p className="text-xs text-zinc-400 mt-0.5">
@@ -156,7 +156,7 @@ export default function GuildSelectorModal({
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="جستجوی سریع صنف با پشتیبانی از نیم‌فاصله و ارقام فارسی (مثال: کارواش، کافی‌شاپ، پوشاک، کلینیک...)"
+              placeholder="نام یا شرح فعالیت خود را بنویسید؛ می‌توانید از فهرست هم انتخاب کنید"
               className="w-full pl-20 pr-11 py-2.5 sm:py-3 rounded-xl bg-[#141417] border border-white/15 text-xs sm:text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-white transition-all font-mono"
             />
             {searchQuery && (

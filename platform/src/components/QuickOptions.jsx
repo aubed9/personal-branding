@@ -95,16 +95,15 @@ export default function QuickOptions({
             </div>
             <div>
               <div className="font-bold text-xs sm:text-sm text-white flex items-center gap-2">
-                <span>جستجو و انتخاب از میان تمامی ۷۵۳ صنف کشور</span>
-                <span className="text-[10px] bg-blue-500/30 text-blue-200 px-2 py-0.5 rounded-full font-mono">۳۱ صنعت کلان</span>
+                <span>فعالیت خود را شرح دهید یا از فهرست انتخاب کنید</span>
               </div>
               <p className="text-[11px] text-zinc-300 mt-0.5">
-                برای جستجو، فیلتر یا انتخاب مستقیم صنف تخصصی خود از میان تمامی ۷۵۳ پیشه رسمی کلیک کنید
+                حتی اگر فعالیت شما در فهرست نیست، آن را با زبان خودتان وارد کنید.
               </p>
             </div>
           </div>
           <div className="flex items-center gap-1 text-blue-300 font-mono text-xs font-bold shrink-0 pr-2">
-            <span className="hidden sm:inline">مشاهده کاتالوگ ۷۵۳ صنف</span>
+            <span className="hidden sm:inline">تعریف فعالیت</span>
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
           </div>
         </button>
