@@ -164,10 +164,11 @@ function buildExternalKnowledgeClaims({
     })));
 }
 
-function buildOnlineLicensingVerificationRisk(jurisdiction, moduleProjections, metadata) {
+function buildOnlineLicensingVerificationRisk(jurisdiction, moduleProjections, externalClaims, metadata) {
   if (jurisdiction !== 'IRAN') return null;
   const moduleIds = new Set(Object.values(moduleProjections).flatMap(projection => projection?.moduleIds || []));
   if (!moduleIds.has('MOD-CUSTOMER-B2C') || !moduleIds.has('MOD-CHANNEL-ONLINE')) return null;
+  if (externalClaims.some(claim => claim.sourceClaimIds.includes('KCL-IR-ENAMAD-CURRENT-RULES-UNVERIFIED'))) return null;
 
   // This is a research gap, not an assertion that every online seller needs Enamad.
   // Keep it separate from EXTERNAL_FACT until an exact current primary rule is verified.
@@ -539,15 +540,16 @@ export function buildCanonicalOutputClaims({
     claims.push(...module.inferenceClaims, ...module.riskClaims);
     claims.push(...buildProposalClaims(phase, rows, calculation, businessContext, metadata, answerClaimsByEvidenceId));
   }
-  claims.push(...buildExternalKnowledgeClaims({
+  const externalClaims = buildExternalKnowledgeClaims({
     phaseData,
     businessContext,
     moduleProjections,
     metadata,
-  }));
+  });
+  claims.push(...externalClaims);
   if (businessContext) {
     const licensingRisk = buildOnlineLicensingVerificationRisk(
-      resolveKnowledgeJurisdiction(phaseData, businessContext, metadata), moduleProjections, metadata
+      resolveKnowledgeJurisdiction(phaseData, businessContext, metadata), moduleProjections, externalClaims, metadata
     );
     if (licensingRisk) claims.push(licensingRisk);
   }
