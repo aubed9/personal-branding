@@ -127,6 +127,9 @@ export function evaluateSourceFreshness(source, { asOf = new Date() } = {}) {
     return { admissible: false, state: 'REQUIRES_VERIFICATION', reason: 'VERIFIED_AFTER_AS_OF' };
   }
   const maxAgeDays = source.max_age_days ?? FRESHNESS_DEFAULTS_DAYS[source.freshness_class] ?? null;
+  if (!verifiedAt && maxAgeDays !== null) {
+    return { admissible: false, state: 'REQUIRES_VERIFICATION', reason: 'MISSING_VERIFIED_AT' };
+  }
   if (verifiedAt && maxAgeDays) {
     const ageDays = (now.getTime() - verifiedAt.getTime()) / DAY_MS;
     if (ageDays > maxAgeDays) {

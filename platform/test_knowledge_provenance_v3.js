@@ -368,6 +368,18 @@ test('a malformed verification date never admits a verified source or claim', ()
   assert.equal(evaluateSourceFreshness(valid, { asOf }).admissible, true);
 });
 
+test('verified reports and academic sources require a verification date for freshness', () => {
+  for (const freshness_class of ['INDUSTRY_REPORT', 'ACADEMIC', 'INTERNAL_PLAYBOOK']) {
+    const source = {
+      status: 'VERIFIED', freshness_class, max_age_days: 365,
+      verified_at: null, authority_tier: 'A',
+    };
+    const freshness = evaluateSourceFreshness(source, { asOf: new Date('2026-09-30T00:00:00Z') });
+    assert.equal(freshness.admissible, false, freshness_class);
+    assert.equal(freshness.reason, 'MISSING_VERIFIED_AT');
+  }
+});
+
 test('effective period dates are inclusive in both Iranian and Gregorian calendars', () => {
   const source = {
     status: 'VERIFIED', freshness_class: 'LEGAL', max_age_days: 30,
