@@ -9,6 +9,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
+from datetime import date, datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -25,6 +27,25 @@ def load_json(path: Path):
 
 def js_json(value):
     return json.dumps(value, ensure_ascii=False, indent=2)
+
+
+def validate_verified_dates(sources):
+    pattern = re.compile(r"^(\d{4})-(\d{2})-(\d{2})(?:T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2}))?$")
+    for source_id, source in sources.items():
+        if source.get("status") not in {"VERIFIED", "CANONICAL"}:
+            continue
+        stamp = source.get("verified_at")
+        match = pattern.fullmatch(stamp) if isinstance(stamp, str) else None
+        if not match:
+            raise ValueError(f"{source_id}: verified source needs a Gregorian ISO verified_at date")
+        try:
+            if int(match.group(1)) < 1600:
+                raise ValueError("Solar Hijri year in a Gregorian verification field")
+            date.fromisoformat(stamp[:10])
+            if "T" in stamp:
+                datetime.fromisoformat(stamp.replace("Z", "+00:00"))
+        except ValueError as exc:
+            raise ValueError(f"{source_id}: invalid verified_at {stamp}") from exc
 
 
 def build_content():
@@ -46,6 +67,7 @@ def build_content():
 
     claims = {claim_id: all_claims[claim_id] for claim_id in claim_ids}
     sources = {source_id: all_sources[source_id] for source_id in source_ids}
+    validate_verified_dates(sources)
     meta = {
         "version": "1.0.0",
         "generatedFrom": [
