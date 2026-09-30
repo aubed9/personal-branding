@@ -1,5 +1,6 @@
 ---
 id: KB-BRAND-ARCHITECTURE
+tags: ['decision_modules', 'brand_architecture']
 title: "Decision Module knowledge contract: KB-BRAND-ARCHITECTURE"
 category: "13-decision-modules"
 version: "1.0.0"

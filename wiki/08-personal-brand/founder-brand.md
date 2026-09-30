@@ -1,10 +1,12 @@
 ---
 id: KB-PB-FOUNDER-001
+tags: ['founder_brand', 'personal_branding', 'executive_presence', 'business_alignment', 'founder_equity']
 title: "برند شخصی بنیان‌گذار و پیوند با کسب‌وکار (Founder Brand)"
 category: "08-personal-brand"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [1, 4, 5, 8]
+related_nodes: ['KB-PB-THOUGHT-001', 'KB-BIZ-MODEL-001']
 related_business_types: ['FOUNDER_LED', 'PERSONAL_BRAND']
 related_metrics: ['founder_influence_score', 'lead_generation_attributed']
 related_concepts: ['THOUGHT_LEADERSHIP', 'FOUNDER_DEPENDENCY_RISK']

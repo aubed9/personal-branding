@@ -1,10 +1,12 @@
 ---
 id: KB-RES-DEMAND-001
+tags: ['demand_validation', 'market_friction', 'adoption_barriers', 'mom_test', 'willingness_to_pay']
 title: "اعتبارسنجی تقاضای واقعی و اصطکاک‌های پذیرش"
 category: "02-market-research"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [2]
+related_nodes: ['KB-RES-CUST-001', 'KB-RES-PRICE-001']
 related_business_types: ['ALL']
 related_metrics: ['demand_velocity', 'search_volume_intent']
 related_concepts: ['DEMAND_VALIDATION', 'ADOPTION_FRICTION']

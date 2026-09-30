@@ -1,10 +1,12 @@
 ---
 id: KB-BIZ-STAGE-001
+tags: ['business_stage', 'maturity_levels', 'certainty_degree', 'idea_stage', 'active_business']
 title: "مراحل بلوغ کسب‌وکار و درجه قطعیت"
 category: "01-business-foundation"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [1]
+related_nodes: ['KB-BIZ-MODEL-001', 'KB-RES-DEMAND-001']
 related_business_types: ['ALL']
 related_metrics: ['runway_months', 'validation_confidence']
 related_concepts: ['MATURITY_LADDER', 'STAGE_GATE']

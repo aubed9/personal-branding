@@ -1,10 +1,12 @@
 ---
 id: KB-BIZ-REV-001
+tags: ['revenue_models', 'monetization', 'pricing_mechanisms', 'subscription', 'transactional', 'retainer']
 title: "مدل‌های درآمدی و مکانیزم‌های قیمت‌ستانی"
 category: "01-business-foundation"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [1, 3]
+related_nodes: ['KB-BIZ-MODEL-001', 'KB-BIZ-ECON-001']
 related_business_types: ['ALL']
 related_metrics: ['arpu', 'mrr_arr']
 related_concepts: ['REVENUE_ARCHITECTURE', 'PRICING_MECHANISM']

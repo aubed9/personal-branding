@@ -1,5 +1,6 @@
 ---
 id: KB-DOMAIN-MANUFACTURING
+tags: ['decision_modules', 'domain_manufacturing']
 title: "General manufacturing domain decision contract"
 category: "13-decision-modules"
 version: "1.0.0"

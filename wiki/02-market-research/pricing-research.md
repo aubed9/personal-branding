@@ -1,10 +1,12 @@
 ---
 id: KB-RES-PRICE-001
+tags: ['pricing_research', 'price_elasticity', 'consumer_surplus', 'van_westendorp', 'perceived_value']
 title: "پژوهش کشش قیمتی و مازاد رفاه مصرف‌کننده"
 category: "02-market-research"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [2, 3]
+related_nodes: ['KB-BIZ-REV-001', 'KB-BIZ-ECON-001']
 related_business_types: ['ALL']
 related_metrics: ['price_elasticity', 'perceived_value_ratio']
 related_concepts: ['PRICE_ELASTICITY', 'ECONOMIC_SURPLUS']

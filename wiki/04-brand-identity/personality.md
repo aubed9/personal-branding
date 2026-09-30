@@ -1,10 +1,12 @@
 ---
 id: KB-IDN-PERSON-001
+tags: ['brand_personality', 'brand_traits', 'behavioral_posture', 'emotional_connection']
 title: "صفات شخصیتی محوری برند (Brand Traits)"
 category: "04-brand-identity"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [4]
+related_nodes: ['KB-IDN-CHAR-001', 'KB-MSG-VOICE-001']
 related_business_types: ['ALL']
 related_metrics: ['trait_consistency', 'personality_depth']
 related_concepts: ['BRAND_PERSONALITY_5_DIMENSIONS', 'HUMAN_TRAITS']

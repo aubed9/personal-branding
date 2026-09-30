@@ -1,10 +1,12 @@
 ---
 id: KB-BIZ-SALES-001
+tags: ['sales_models', 'b2b_sales', 'b2c_sales', 'buyer_decision_process', 'sales_motion']
 title: "مدل‌های فروش و فرآیند تصمیم‌گیری مشتری"
 category: "01-business-foundation"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [1, 3]
+related_nodes: ['KB-BIZ-MODEL-001', 'KB-BIZ-CHANNEL-001']
 related_business_types: ['ALL']
 related_metrics: ['sales_cycle_days', 'win_rate']
 related_concepts: ['SALES_MOTION', 'DECISION_MAKING_UNIT']

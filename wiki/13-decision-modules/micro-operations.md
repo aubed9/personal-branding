@@ -1,5 +1,6 @@
 ---
 id: KB-MICRO-OPERATIONS
+tags: ['decision_modules', 'micro_operations']
 title: "Decision Module knowledge contract: KB-MICRO-OPERATIONS"
 category: "13-decision-modules"
 version: "1.0.0"

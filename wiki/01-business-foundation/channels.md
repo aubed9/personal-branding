@@ -1,10 +1,12 @@
 ---
 id: KB-BIZ-CHANNEL-001
+tags: ['acquisition_channels', 'distribution', 'marketing_channels', 'channel_fit', 'go_to_market']
 title: "کانال‌های دسترسی، توزیع و بازاریابی"
 category: "01-business-foundation"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [1, 2, 5]
+related_nodes: ['KB-BIZ-SALES-001', 'KB-BIZ-ECON-001']
 related_business_types: ['ALL']
 related_metrics: ['channel_cac', 'channel_share']
 related_concepts: ['OMNICHANNEL', 'DISTRIBUTION_STRATEGY']

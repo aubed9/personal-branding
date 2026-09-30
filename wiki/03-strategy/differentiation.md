@@ -1,10 +1,12 @@
 ---
 id: KB-STR-DIFF-001
+tags: ['differentiation', 'only_ness_statement', 'defensible_advantage', 'purple_cow', 'uniqueness']
 title: "تمایز معنادار و بیانیه انحصار (Only-ness)"
 category: "03-strategy"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [3]
+related_nodes: ['KB-STR-POS-001', 'KB-RES-COMP-001']
 related_business_types: ['ALL']
 related_metrics: ['onlyness_clarity', 'substitutability_index']
 related_concepts: ['ONLYNESS_STATEMENT', 'RADICAL_DIFFERENTIATION']

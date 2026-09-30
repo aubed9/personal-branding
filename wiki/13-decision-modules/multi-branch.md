@@ -1,5 +1,6 @@
 ---
 id: KB-MULTI-BRANCH
+tags: ['decision_modules', 'multi_branch']
 title: "Decision Module knowledge contract: KB-MULTI-BRANCH"
 category: "13-decision-modules"
 version: "1.0.0"

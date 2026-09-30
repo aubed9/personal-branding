@@ -1,10 +1,12 @@
 ---
 id: KB-PLAY-CRISIS-001
+tags: ['crisis_management', 'reputation_defense', 'pr_playbook', 'stakeholder_communication', 'escalation']
 title: "پلی‌بوک مدیریت بحران و صیانت از اعتبار برند"
 category: "10-playbooks"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [4, 5, 8]
+related_nodes: ['KB-STR-PROMISE-001', 'KB-IDN-GUARD-001']
 related_business_types: ['ALL']
 related_metrics: ['crisis_response_time', 'sentiment_recovery_rate']
 related_concepts: ['REPUTATION_PROTECTION', 'CRISIS_COMMUNICATION']

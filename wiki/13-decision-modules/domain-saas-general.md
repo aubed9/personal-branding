@@ -1,5 +1,6 @@
 ---
 id: KB-DOMAIN-SAAS-GENERAL
+tags: ['decision_modules', 'domain_saas_general']
 title: "General SaaS adoption domain decision contract"
 category: "13-decision-modules"
 version: "1.0.0"

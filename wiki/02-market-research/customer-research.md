@@ -1,10 +1,12 @@
 ---
 id: KB-RES-CUST-001
+tags: ['customer_research', 'jobs_to_be_done', 'jtbd', 'customer_struggles', 'pain_points']
 title: "پژوهش عمیق مشتری و شغل‌های انجام‌نشده (JTBD)"
 category: "02-market-research"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [2, 3]
+related_nodes: ['KB-RES-MKT-001', 'KB-RES-SEG-001', 'KB-STR-VP-001']
 related_business_types: ['ALL']
 related_metrics: ['jtbd_validation_score', 'pain_severity']
 related_concepts: ['JTBD', 'MOM_TEST']

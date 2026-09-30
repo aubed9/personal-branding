@@ -1,5 +1,6 @@
 ---
 id: KB-LOCAL-MARKET
+tags: ['decision_modules', 'local_market']
 title: "Decision Module knowledge contract: KB-LOCAL-MARKET"
 category: "13-decision-modules"
 version: "1.0.0"

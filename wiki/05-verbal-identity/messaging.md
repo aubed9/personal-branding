@@ -1,10 +1,12 @@
 ---
 id: KB-MSG-CORE-001
+tags: ['message_pillars', 'elevator_hook', '30_second_pitch', 'core_narrative', 'value_hook']
 title: "ارکان پیام و قلاب معرفی ۳۰ ثانیه‌ای (Elevator Hook)"
 category: "05-verbal-identity"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [5]
+related_nodes: ['KB-STR-VP-001', 'KB-MSG-TONE-001']
 related_business_types: ['ALL']
 related_metrics: ['message_recall', 'elevator_pitch_conversion']
 related_concepts: ['MESSAGE_PILLARS', 'ELEVATOR_PITCH']

@@ -1,10 +1,12 @@
 ---
 id: KB-MSG-VOICE-001
+tags: ['brand_voice', 'verbal_identity', 'consistent_voice', 'personality_expression', 'tone_of_voice']
 title: "صدای ثابت و پایدار برند (Brand Voice)"
 category: "05-verbal-identity"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [5]
+related_nodes: ['KB-IDN-PERSON-001', 'KB-MSG-TONE-001']
 related_business_types: ['ALL']
 related_metrics: ['voice_consistency', 'brand_resonance']
 related_concepts: ['BRAND_VOICE', 'CONSISTENT_EXPRESSION']

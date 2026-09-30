@@ -1,10 +1,12 @@
 ---
 id: KB-STR-PROOF-001
+tags: ['reasons_to_believe', 'rtb', 'proof_points', 'social_proof', 'credibility', 'trust_signals']
 title: "دلایل باورپذیری و شواهد اثبات ادعا (RTB)"
 category: "03-strategy"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [3, 5]
+related_nodes: ['KB-STR-PROMISE-001', 'KB-STR-VP-001']
 related_business_types: ['ALL']
 related_metrics: ['credibility_score', 'claim_proof_ratio']
 related_concepts: ['REASONS_TO_BELIEVE', 'EVIDENCE_OF_CAPABILITY']

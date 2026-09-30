@@ -1,5 +1,6 @@
 ---
 id: KB-DOMAIN-CAFE
+tags: ['decision_modules', 'domain_cafe']
 title: "Cafe / specialty coffee domain decision contract"
 category: "13-decision-modules"
 version: "1.0.0"

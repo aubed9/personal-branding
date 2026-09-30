@@ -1,10 +1,12 @@
 ---
 id: KB-NAM-TAG-001
+tags: ['tagline', 'slogan', 'brand_catchphrase', 'mnemonic_devices', 'brand_hook']
 title: "معماری شعار برند و تکنیک‌های خلق تگ‌لاین"
 category: "06-naming"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [6]
+related_nodes: ['KB-NAM-STRAT-001', 'KB-STR-PROMISE-001']
 related_business_types: ['ALL']
 related_metrics: ['tagline_stickiness', 'claim_clarity']
 related_concepts: ['TAGLINE_ARCHITECTURE', 'SLOGAN_DESIGN']

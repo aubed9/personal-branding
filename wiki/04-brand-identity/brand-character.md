@@ -1,10 +1,12 @@
 ---
 id: KB-IDN-CHAR-001
+tags: ['brand_character', 'archetypes', 'psychological_soul', 'jungian_archetypes', 'brand_archetype']
 title: "کاراکتر و کهن‌الگوی روان‌شناختی برند"
 category: "04-brand-identity"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [4]
+related_nodes: ['KB-IDN-PERSON-001', 'KB-IDN-GUARD-001']
 related_business_types: ['ALL']
 related_metrics: ['archetype_coherence', 'character_resonance']
 related_concepts: ['JUNGIAN_ARCHETYPES', 'BRAND_PERSONA']

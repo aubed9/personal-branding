@@ -1,5 +1,6 @@
 ---
 id: KB-ORGANIZATIONAL-BRAND
+tags: ['decision_modules', 'organizational_brand']
 title: "Decision Module knowledge contract: KB-ORGANIZATIONAL-BRAND"
 category: "13-decision-modules"
 version: "1.0.0"

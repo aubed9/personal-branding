@@ -1,5 +1,6 @@
 ---
 id: KB-PHYSICAL-OFFER
+tags: ['decision_modules', 'physical_offer']
 title: "Decision Module knowledge contract: KB-PHYSICAL-OFFER"
 category: "13-decision-modules"
 version: "1.0.0"

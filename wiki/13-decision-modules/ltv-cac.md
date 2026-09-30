@@ -1,5 +1,6 @@
 ---
 id: KB-LTV-CAC
+tags: ['decision_modules', 'ltv_cac']
 title: "Decision Module knowledge contract: KB-LTV-CAC"
 category: "13-decision-modules"
 version: "1.0.0"

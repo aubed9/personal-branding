@@ -1,5 +1,6 @@
 ---
 id: KB-MARKET-ENTRY
+tags: ['decision_modules', 'market_entry']
 title: "Decision Module knowledge contract: KB-MARKET-ENTRY"
 category: "13-decision-modules"
 version: "1.0.0"

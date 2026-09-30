@@ -1,5 +1,6 @@
 ---
 id: KB-DOMAIN-AUTOMOTIVE
+tags: ['decision_modules', 'domain_automotive']
 title: "Automotive local service operations domain decision contract"
 category: "13-decision-modules"
 version: "1.0.0"

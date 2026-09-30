@@ -1,5 +1,6 @@
 ---
 id: KB-B2C-BEHAVIOR
+tags: ['decision_modules', 'b2c_behavior']
 title: "Decision Module knowledge contract: KB-B2C-BEHAVIOR"
 category: "13-decision-modules"
 version: "1.0.0"

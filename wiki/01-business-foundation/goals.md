@@ -1,10 +1,12 @@
 ---
 id: KB-BIZ-GOALS-001
+tags: ['strategic_goals', '90_day_milestones', 'paired_indicators', 'okr', 'execution_targets']
 title: "هدف‌گذاری ملموس ۹۰ روزه و شاخص‌های موفقیت"
 category: "01-business-foundation"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [1]
+related_nodes: ['KB-BIZ-MODEL-001', 'KB-SYS-GATES-001']
 related_business_types: ['ALL']
 related_metrics: ['goal_attainment_rate', 'mrr_target']
 related_concepts: ['GOAL_CLARITY', 'NORTH_STAR_METRIC']

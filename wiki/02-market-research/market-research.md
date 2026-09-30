@@ -1,10 +1,12 @@
 ---
 id: KB-RES-MKT-001
+tags: ['market_intelligence', 'ecosystem_analysis', 'macro_environment', 'industry_dynamics']
 title: "اصول هوش بازار و تحلیل جامع اکوسیستم"
 category: "02-market-research"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [2]
+related_nodes: ['KB-RES-COMP-001', 'KB-RES-CUST-001']
 related_business_types: ['ALL']
 related_metrics: ['tam_sam_som', 'market_growth_rate']
 related_concepts: ['MARKET_INTELLIGENCE', 'PESTEL_ANALYSIS']

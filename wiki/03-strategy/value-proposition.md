@@ -1,10 +1,12 @@
 ---
 id: KB-STR-VP-001
+tags: ['value_proposition', 'pain_relievers', 'gain_creators', 'value_map', 'customer_profile']
 title: "گزاره ارزش پیشنهادی و تسکین دردهای مشتری"
 category: "03-strategy"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [3]
+related_nodes: ['KB-RES-CUST-001', 'KB-STR-POS-001', 'KB-STR-PROMISE-001']
 related_business_types: ['ALL']
 related_metrics: ['value_prop_resonance', 'pain_relief_score']
 related_concepts: ['VALUE_PROPOSITION', 'PAIN_RELIEVERS_GAIN_CREATORS']

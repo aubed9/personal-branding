@@ -1,10 +1,12 @@
 ---
 id: KB-KPI-SAAS-001
+tags: ['saas_kpis', 'mrr', 'arr', 'churn_rate', 'ltv_cac', 'net_revenue_retention', 'nrr']
 title: "شاخص‌های کلیدی عملکرد نرم‌افزارهای ابری (SaaS Metrics)"
 category: "09-metrics"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [1, 2, 8]
+related_nodes: ['KB-TYPE-SAAS-001', 'KB-BIZ-ECON-001']
 related_business_types: ['SAAS_SOFTWARE']
 related_metrics: ['mrr', 'arr', 'churn', 'nrr']
 related_concepts: ['SAAS_FINANCIALS', 'UNIT_ECONOMICS']

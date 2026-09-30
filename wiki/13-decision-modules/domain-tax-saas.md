@@ -1,5 +1,6 @@
 ---
 id: KB-DOMAIN-TAX-SAAS
+tags: ['decision_modules', 'domain_tax_saas']
 title: "Iran tax/accounting SaaS domain decision contract"
 category: "13-decision-modules"
 version: "1.0.0"

@@ -1,5 +1,6 @@
 ---
 id: KB-VIS-TYPE-001
+tags: ['visual_identity', 'typography_system']
 title: "معماری تایپوگرافی برند"
 category: "15-visual-identity"
 version: "1.0.0"

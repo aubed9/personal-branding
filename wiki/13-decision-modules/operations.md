@@ -1,5 +1,6 @@
 ---
 id: KB-OPERATIONS
+tags: ['decision_modules', 'operations']
 title: "Decision Module knowledge contract: KB-OPERATIONS"
 category: "13-decision-modules"
 version: "1.0.0"

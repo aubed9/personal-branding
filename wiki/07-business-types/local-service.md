@@ -1,10 +1,12 @@
 ---
 id: KB-TYPE-LOCAL-001
+tags: ['local_service', 'automotive', 'salon', 'geo_targeted', 'physical_first', 'reputation']
 title: "بافتار تخصصی خدمات محلی و فنی (کارواش، اتوسرویس، سالن)"
 category: "07-business-types"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [1, 2, 3, 5, 7, 8]
+related_nodes: ['KB-BIZ-MODEL-001', 'KB-BIZ-ECON-001']
 related_business_types: ['LOCAL_SERVICE']
 related_metrics: ['bay_utilization', 'local_maps_rank', 'repeat_rate']
 related_concepts: ['CATCHMENT_AREA', 'LOCAL_TRUST', 'SPEED_DELIVERY']

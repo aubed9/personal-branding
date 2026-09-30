@@ -1,10 +1,12 @@
 ---
 id: KB-GLOSS-BRAND-001
+tags: ['branding_glossary', 'terminology', 'definitions', 'frameworks', 'concepts_index']
 title: "واژه‌نامه تخصصی اصطلاحات برندینگ و هویت"
 category: "11-glossary"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [3, 4, 5, 6, 7]
+related_nodes: ['KB-STR-POS-001', 'KB-IDN-CHAR-001']
 related_business_types: ['ALL']
 related_metrics: ['term_clarity_score']
 related_concepts: ['TERMINOLOGY_STANDARDS', 'DEFINITIONS']

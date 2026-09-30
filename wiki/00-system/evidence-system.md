@@ -1,10 +1,12 @@
 ---
 id: KB-SYS-EVIDENCE-001
+tags: ['evidence_hierarchy', 'assumptions', 'epistemic_provenance', 'validation_gates']
 title: "سیستم رتبه‌بندی شواهد و مدیریت فرضیات"
 category: "00-system"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [1, 2, 3, 4, 5, 6, 7, 8]
+related_nodes: ['KB-SYS-ARCH-001', 'KB-RES-EVID-001']
 related_business_types: ['ALL']
 related_metrics: ['evidence_score', 'assumption_to_fact_rate']
 related_concepts: ['EVIDENCE_HIERARCHY', 'ASSUMPTION_AUDIT']

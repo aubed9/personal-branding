@@ -1,10 +1,12 @@
 ---
 id: KB-MSG-VOCAB-001
+tags: ['brand_vocabulary', 'forbidden_words', 'lexicon', 'verbal_guardrails', 'preferred_terms']
 title: "فرهنگ واژگان و اصطلاحات ممنوعه (Forbidden Words)"
 category: "05-verbal-identity"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [5]
+related_nodes: ['KB-MSG-VOICE-001', 'KB-IDN-GUARD-001']
 related_business_types: ['ALL']
 related_metrics: ['fluff_word_density', 'vocabulary_discipline']
 related_concepts: ['BRAND_VOCABULARY', 'FORBIDDEN_WORDS']

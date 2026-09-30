@@ -1,10 +1,12 @@
 ---
 id: KB-TYPE-HOSP-001
+tags: ['restaurant_cafe', 'hospitality', 'food_waste', 'dining_experience', 'table_turnover', 'menu_engineering']
 title: "بافتار کافه، رستوران و پذیرایی (Hospitality)"
 category: "07-business-types"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [1, 2, 3, 4, 7, 8]
+related_nodes: ['KB-BIZ-MODEL-001', 'KB-BIZ-ECON-001']
 related_business_types: ['RESTAURANT_CAFE_HOSPITALITY']
 related_metrics: ['table_turnover', 'food_cost_percent', 'average_ticket']
 related_concepts: ['SENSORY_EXPERIENCE', 'COMMUNITY_VIBE', 'TAKEAWAY_SHARE']

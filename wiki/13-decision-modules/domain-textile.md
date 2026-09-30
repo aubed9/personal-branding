@@ -1,5 +1,6 @@
 ---
 id: KB-DOMAIN-TEXTILE
+tags: ['decision_modules', 'domain_textile']
 title: "Textile and apparel production domain decision contract"
 category: "13-decision-modules"
 version: "1.0.0"

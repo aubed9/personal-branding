@@ -1,10 +1,12 @@
 ---
 id: KB-TYPE-SAAS-001
+tags: ['b2b_saas', 'cloud_software', 'subscription', 'churn_reduction', 'time_to_value', 'mrr']
 title: "بافتار تخصصی نرم‌افزار و پلتفرم ابری (SaaS)"
 category: "07-business-types"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [1, 2, 3, 5, 8]
+related_nodes: ['KB-BIZ-REV-001', 'KB-KPI-SAAS-001']
 related_business_types: ['SAAS_SOFTWARE']
 related_metrics: ['mrr_arr', 'churn_rate', 'nrr', 'cac_payback']
 related_concepts: ['PRODUCT_LED_GROWTH', 'TIME_TO_VALUE', 'SUBSCRIPTION_HEALTH']

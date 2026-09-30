@@ -1,10 +1,12 @@
 ---
 id: KB-RES-SEG-001
+tags: ['market_segmentation', 'stp', 'core_focus', 'customer_profiles', 'target_audience']
 title: "بخش‌بندی بازار و انتخاب هسته تمرکز"
 category: "02-market-research"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [2, 3]
+related_nodes: ['KB-RES-CUST-001', 'KB-STR-TARGET-001']
 related_business_types: ['ALL']
 related_metrics: ['segment_size', 'segment_profitability']
 related_concepts: ['SEGMENTATION_STP', 'IDEAL_CUSTOMER_PROFILE']

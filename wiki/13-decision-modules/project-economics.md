@@ -1,5 +1,6 @@
 ---
 id: KB-PROJECT-ECONOMICS
+tags: ['decision_modules', 'project_economics']
 title: "Decision Module knowledge contract: KB-PROJECT-ECONOMICS"
 category: "13-decision-modules"
 version: "1.0.0"
