@@ -1,5 +1,6 @@
 ---
 id: KB-UNIT-ECONOMICS
+tags: ['decision_modules', 'unit_economics']
 title: "Decision Module knowledge contract: KB-UNIT-ECONOMICS"
 category: "13-decision-modules"
 version: "1.0.0"

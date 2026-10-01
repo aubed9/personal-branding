@@ -1,5 +1,6 @@
 ---
 id: KB-LONG-SALES-CYCLE
+tags: ['decision_modules', 'long_sales_cycle']
 title: "Decision Module knowledge contract: KB-LONG-SALES-CYCLE"
 category: "13-decision-modules"
 version: "1.0.0"

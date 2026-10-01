@@ -1,10 +1,12 @@
 ---
 id: KB-RES-EVID-001
+tags: ['evidence_quality', 'data_reliability', 'empirical_evidence', 'risk_mitigation', 'survey_bias']
 title: "معیارهای سنجش کیفیت شواهد پژوهش"
 category: "02-market-research"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [2]
+related_nodes: ['KB-SYS-EVIDENCE-001', 'KB-RES-MKT-001']
 related_business_types: ['ALL']
 related_metrics: ['evidence_integrity_score', 'bias_index']
 related_concepts: ['DATA_INTEGRITY', 'RESEARCH_RIGOR']

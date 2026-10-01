@@ -1,5 +1,6 @@
 ---
 id: KB-DIGITAL-PRODUCT
+tags: ['decision_modules', 'digital_product']
 title: "Decision Module knowledge contract: KB-DIGITAL-PRODUCT"
 category: "13-decision-modules"
 version: "1.0.0"

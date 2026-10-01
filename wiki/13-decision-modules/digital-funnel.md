@@ -1,5 +1,6 @@
 ---
 id: KB-DIGITAL-FUNNEL
+tags: ['decision_modules', 'digital_funnel']
 title: "Decision Module knowledge contract: KB-DIGITAL-FUNNEL"
 category: "13-decision-modules"
 version: "1.0.0"

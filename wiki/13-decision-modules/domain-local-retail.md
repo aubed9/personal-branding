@@ -1,5 +1,6 @@
 ---
 id: KB-DOMAIN-LOCAL-RETAIL
+tags: ['decision_modules', 'domain_local_retail']
 title: "Local physical retail domain decision contract"
 category: "13-decision-modules"
 version: "1.0.0"

@@ -1,10 +1,12 @@
 ---
 id: KB-TYPE-MFG-001
+tags: ['manufacturing', 'industrial_b2b', 'production_capacity', 'machining', 'supply_chain', 'dso']
 title: "بافتار صنایع تولیدی و کارخانجات B2B"
 category: "07-business-types"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [1, 2, 3, 5, 7, 8]
+related_nodes: ['KB-BIZ-MODEL-001', 'KB-BIZ-ECON-001']
 related_business_types: ['MANUFACTURER']
 related_metrics: ['capacity_utilization', 'defect_rate', 'moq', 'lead_time']
 related_concepts: ['PRODUCTION_TOLERANCE', 'SUPPLY_CHAIN_RELIABILITY', 'VENDOR_LIST']

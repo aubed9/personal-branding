@@ -1,10 +1,12 @@
 ---
 id: KB-VIS-COLOR-001
+tags: ['color_system', 'color_psychology', 'palette_tokens', 'wcag_contrast', 'monochrome_hierarchy']
 title: "معماری پالت و توکن‌های رنگ"
 category: "15-visual-identity"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [7]
+related_nodes: ['KB-VIS-DSYS-001', 'KB-IDN-CHAR-001']
 related_business_types: ['ALL']
 related_metrics: ['palette_consistency', 'contrast_verification_status']
 related_concepts: ['COLOR_SYSTEM', 'DESIGN_TOKENS', 'VISUAL_HIERARCHY']

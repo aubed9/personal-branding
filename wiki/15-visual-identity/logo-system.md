@@ -1,10 +1,12 @@
 ---
 id: KB-VIS-LOGO-001
+tags: ['logo_system', 'logo_morphology', 'monochrome_contrast', 'responsive_logo', 'visual_symbol']
 title: "سیستم لوگو و قواعد استفاده"
 category: "15-visual-identity"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [7]
+related_nodes: ['KB-VIS-DSYS-001', 'KB-NAM-STRAT-001']
 related_business_types: ['ALL']
 related_metrics: ['logo_variant_coverage', 'application_consistency']
 related_concepts: ['LOGO_SYSTEM', 'WORDMARK', 'SYMBOL', 'BRAND_MARK']

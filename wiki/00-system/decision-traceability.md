@@ -1,10 +1,12 @@
 ---
 id: KB-SYS-TRACE-001
+tags: ['decision_traceability', 'provenance_chain', 'auditability', 'backward_trace']
 title: "ردیابی و تبارشناسی تصمیمات در طول زنجیره"
 category: "00-system"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [1, 2, 3, 4, 5, 6, 7, 8]
+related_nodes: ['KB-SYS-STATE-001', 'KB-SYS-EVIDENCE-001']
 related_business_types: ['ALL']
 related_metrics: ['traceability_depth', 'orphan_decisions']
 related_concepts: ['DECISION_LINEAGE', 'CHAIN_OF_CUSTODY']

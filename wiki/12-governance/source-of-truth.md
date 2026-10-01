@@ -1,10 +1,12 @@
 ---
 id: KB-GOV-SOT-001
+tags: ['governance', 'single_source_of_truth', 'admissibility', 'provenance_policy']
 title: "قوانین مرجع واحد حقیقت (Single Source of Truth)"
 category: "12-governance"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [1, 2, 3, 4, 5, 6, 7, 8]
+related_nodes: ['KB-SYS-ARCH-001', 'KB-SYS-STATE-001']
 related_business_types: ['ALL']
 related_metrics: ['conflict_zero_rate', 'governance_compliance']
 related_concepts: ['SOURCE_OF_TRUTH', 'OWNERSHIP_RULES']

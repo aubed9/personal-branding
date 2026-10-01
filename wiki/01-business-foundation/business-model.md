@@ -1,10 +1,12 @@
 ---
 id: KB-BIZ-MODEL-001
+tags: ['business_model', 'value_creation', 'value_capture', 'business_architecture', 'foundation']
 title: "مدل کسب‌وکار و نحوه خلق و جذب ارزش"
 category: "01-business-foundation"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [1, 2, 3]
+related_nodes: ['KB-BIZ-REV-001', 'KB-BIZ-ECON-001', 'KB-STR-VP-001']
 related_business_types: ['ALL']
 related_metrics: ['gross_margin', 'operating_cash_flow']
 related_concepts: ['VALUE_CREATION', 'VALUE_CAPTURE']

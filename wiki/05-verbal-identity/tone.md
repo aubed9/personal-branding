@@ -1,10 +1,12 @@
 ---
 id: KB-MSG-TONE-001
+tags: ['brand_tone', 'tone_matrix', 'contextual_adaptation', 'situational_tone', 'communication_style']
 title: "ماتریس موقعیتی لحن در موقعیت‌های گوناگون"
 category: "05-verbal-identity"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [5]
+related_nodes: ['KB-MSG-VOICE-001', 'KB-MSG-CORE-001']
 related_business_types: ['ALL']
 related_metrics: ['tone_appropriateness', 'empathy_score']
 related_concepts: ['TONE_MATRIX', 'CONTEXTUAL_ADAPTATION']

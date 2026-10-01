@@ -1,10 +1,12 @@
 ---
 id: KB-TYPE-ECOM-001
+tags: ['ecommerce', 'dtc_retail', 'cart_abandonment', 'returns_management', 'sizing_policy', 'logistics']
 title: "بافتار آنلاین‌شاپ و تجارت الکترونیک (DTC)"
 category: "07-business-types"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [1, 2, 3, 5, 8]
+related_nodes: ['KB-BIZ-REV-001', 'KB-BIZ-ECON-001']
 related_business_types: ['ECOMMERCE_DTC']
 related_metrics: ['conversion_rate', 'aov', 'cart_abandonment', 'roas']
 related_concepts: ['CHECKOUT_FRICTION', 'TRUST_SIGNALS', 'SHIPPING_LOGISTICS']

@@ -1,10 +1,12 @@
 ---
 id: KB-BIZ-ECON-001
+tags: ['unit_economics', 'cac', 'ltv', 'payback_period', 'contribution_margin', 'toc']
 title: "اقتصاد واحد و تعادل هزینه جذب به ارزش مشتری"
 category: "01-business-foundation"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [1, 2, 3]
+related_nodes: ['KB-BIZ-MODEL-001', 'KB-BIZ-REV-001', 'KB-KPI-SAAS-001']
 related_business_types: ['ALL']
 related_metrics: ['CAC', 'LTV', 'payback_period']
 related_concepts: ['UNIT_ECONOMICS', 'LTV_CAC_RATIO']

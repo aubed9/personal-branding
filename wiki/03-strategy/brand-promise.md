@@ -1,10 +1,12 @@
 ---
 id: KB-STR-PROMISE-001
+tags: ['brand_promise', 'unbreakable_commitment', 'guarantee_policy', 'execution', 'trust']
 title: "وعده تخلف‌ناپذیر برند و گارانتی اجرایی"
 category: "03-strategy"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [3]
+related_nodes: ['KB-STR-VP-001', 'KB-STR-PROOF-001']
 related_business_types: ['ALL']
 related_metrics: ['promise_delivery_rate', 'nps']
 related_concepts: ['BRAND_PROMISE', 'CUSTOMER_GUARANTEE']

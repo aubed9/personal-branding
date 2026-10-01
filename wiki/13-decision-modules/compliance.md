@@ -1,5 +1,6 @@
 ---
 id: KB-COMPLIANCE
+tags: ['decision_modules', 'compliance']
 title: "Decision Module knowledge contract: KB-COMPLIANCE"
 category: "13-decision-modules"
 version: "1.0.0"

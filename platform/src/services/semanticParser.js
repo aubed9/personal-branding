@@ -435,23 +435,242 @@ export function parseFreeformSemanticSlots(text, currentContext = null) {
 }
 
 // ---------------------------------------------------------------------------
-// 3. MASTER SEMANTIC PARSER INTERFACE
+// 3. CONVERSATIONAL FINANCIAL EXTRACTION & COMPOUND SPLITTING
 // ---------------------------------------------------------------------------
 
 /**
- * Master semantic input parser: combines multi-pattern unknown detection
- * and unstructured entity slot extraction into a single structured response.
+ * Extracts proposed financial entities from conversational Persian text.
+ * Expands multipliers (هزار, میلیون, میلیارد, همت) and normalizes digits.
+ *
+ * @param {string} text - Raw user message
+ * @returns {object} Extracted financial proposals
+ */
+export function extractProposedFinancials(text) {
+  if (!text || typeof text !== "string") {
+    return {
+      hasFinancialCandidates: false,
+      proposal: null,
+      extractedSummaryFa: ""
+    };
+  }
+
+  const norm = normalizePersianText(text);
+  const withLatinDigits = convertPersianDigitsToEnglish(norm);
+
+  // Currency detection (default to TOMAN if not specified or if 'تومان'/'تومن')
+  let currency = "TOMAN";
+  if (norm.includes("ریال")) {
+    currency = "IRR";
+  }
+
+  function parseAmountWithMultiplier(matchStr) {
+    if (!matchStr) return null;
+    const cleanStr = convertPersianDigitsToEnglish(matchStr).replace(/,/g, "").trim();
+
+    let multiplier = 1;
+    if (cleanStr.includes("همت")) {
+      multiplier = 1000000000000;
+    } else if (cleanStr.includes("میلیارد")) {
+      multiplier = 1000000000;
+    } else if (cleanStr.includes("میلیون") || cleanStr.includes("میل")) {
+      multiplier = 1000000;
+    } else if (cleanStr.includes("هزار") || cleanStr.includes("ک") || cleanStr.includes("k")) {
+      multiplier = 1000;
+    }
+
+    const numMatch = cleanStr.match(/(\d+(?:\.\d+)?)/);
+    if (!numMatch) return null;
+    const baseNum = parseFloat(numMatch[1]);
+    if (isNaN(baseNum)) return null;
+
+    return Math.round(baseNum * multiplier);
+  }
+
+  // 1. Fixed Cost (هزینه ثابت ماهانه / اجاره / حقوق / خرج ماهانه)
+  let monthlyFixedCost = null;
+  const fixedCostRegex = /(?:هزینه\s*ثابت|اجاره|حقوق|خرج\s*ماهانه|هزینه\s*ماهانه)(?:[^\d]{1,25})?(\d+(?:\.\d+)?\s*(?:همت|میلیارد|میلیون|میل|هزار)?)/i;
+  const fixedMatch = withLatinDigits.match(fixedCostRegex);
+  if (fixedMatch && fixedMatch[1]) {
+    monthlyFixedCost = parseAmountWithMultiplier(fixedMatch[1]);
+  }
+
+  // 2. Unit Sale Price (قیمت هر واحد / نرخ فروش / می‌فروشیم / هر دونه)
+  let unitPrice = null;
+  const priceRegex = /(?:قیمت|نرخ\s*فروش|می‌فروشیم)(?:[^\d]{1,25})?(\d+(?:\.\d+)?\s*(?:همت|میلیارد|میلیون|میل|هزار)?)/i;
+  const priceMatch = withLatinDigits.match(priceRegex);
+  if (priceMatch && priceMatch[1]) {
+    unitPrice = parseAmountWithMultiplier(priceMatch[1]);
+  }
+
+  // 3. Unit Variable Cost (هزینه متغیر هر واحد / هزینه تمام شده / هزینه تولید / پامون درمیاد)
+  let variableCost = null;
+  const varCostRegex = /(?:هزینه\s*(?:متغیر|تولید|تمام\s*شده)|پامون\s*درمیاد)(?:[^\d]{1,25})?(\d+(?:\.\d+)?\s*(?:همت|میلیارد|میلیون|میل|هزار)?)/i;
+  const varMatch = withLatinDigits.match(varCostRegex);
+  if (varMatch && varMatch[1]) {
+    variableCost = parseAmountWithMultiplier(varMatch[1]);
+  }
+
+  // 4. Monthly Capacity (ظرفیت ماهانه / توان تولید / سقف تولید)
+  let monthlyCapacity = null;
+  const capRegex = /(?:ظرفیت|توان\s*تولید|سقف\s*تولید)(?:[^\d]{1,25})?(\d+(?:\.\d+)?\s*(?:هزار)?)/i;
+  const capMatch = withLatinDigits.match(capRegex);
+  if (capMatch && capMatch[1]) {
+    monthlyCapacity = parseAmountWithMultiplier(capMatch[1]);
+  }
+
+  // 5. Monthly Sales (فروش ماهانه / ماهانه می‌فروشیم)
+  let monthlySales = null;
+  const salesRegex = /(?:فروش|ماهی)(?:[^\d]{1,25})?(\d+(?:\.\d+)?\s*(?:هزار|تا|عدد|دونه)?)/i;
+  const salesMatch = withLatinDigits.match(salesRegex);
+  if (salesMatch && salesMatch[1]) {
+    monthlySales = parseAmountWithMultiplier(salesMatch[1]);
+  }
+
+  const hasAny = unitPrice !== null || variableCost !== null || monthlyFixedCost !== null || monthlyCapacity !== null || monthlySales !== null;
+
+  if (!hasAny) {
+    return {
+      hasFinancialCandidates: false,
+      proposal: null,
+      extractedSummaryFa: ""
+    };
+  }
+
+  const summaryParts = [];
+  const currLabel = currency === "TOMAN" ? "تومان" : "ریال";
+  if (unitPrice !== null) summaryParts.push(`قیمت هر واحد: ${unitPrice.toLocaleString("fa-IR")} ${currLabel}`);
+  if (variableCost !== null) summaryParts.push(`هزینه متغیر هر واحد: ${variableCost.toLocaleString("fa-IR")} ${currLabel}`);
+  if (monthlyFixedCost !== null) summaryParts.push(`هزینه ثابت ماهانه: ${monthlyFixedCost.toLocaleString("fa-IR")} ${currLabel}`);
+  if (monthlyCapacity !== null) summaryParts.push(`ظرفیت ماهانه: ${monthlyCapacity.toLocaleString("fa-IR")} واحد`);
+  if (monthlySales !== null) summaryParts.push(`فروش ماهانه: ${monthlySales.toLocaleString("fa-IR")} واحد`);
+
+  return {
+    hasFinancialCandidates: true,
+    proposal: {
+      type: "unit_economics",
+      version: 1,
+      currency,
+      unitLabel: "واحد",
+      period: "MONTH",
+      isEstimate: true,
+      unitPrice,
+      variableCost,
+      monthlyFixedCost,
+      monthlySales,
+      monthlyCapacity
+    },
+    extractedSummaryFa: summaryParts.join(" • ")
+  };
+}
+
+/**
+ * Detects whether the user is explicitly asserting absence of guarantee
+ * (e.g. "نتیجه را تضمین نمی‌کنیم", "گارانتی بازگشت وجه نداریم").
+ *
+ * @param {string} text - Raw input
+ * @returns {boolean} True if negative guarantee phrasing is present
+ */
+export function detectNegativeGuaranteeIntent(text) {
+  if (!text || typeof text !== "string") return false;
+  const norm = normalizePersianText(text);
+  return /(?:(?:تضمین|گارانتی|ضمانت)\s*(?:[^\n]{0,25})?\s*(?:نمی\s*کنیم|نمیکنیم|نمی\s*دیم|نمیدیم|نداریم|نمی\s*کنم|نمیکنم|نمی\s*دهیم|نمیدهیم)|بدون\s*تضمین|وعده\s*(?:تضمینی\s*)?(?:نمی\s*دهیم|نمیدهیم|نداریم))/i.test(norm);
+}
+
+/**
+ * Splits compound inputs into known fact clauses and unknown uncertainty clauses.
+ *
+ * @param {string} text - Raw input
+ * @returns {object} Compound split details
+ */
+export function splitCompoundResponse(text) {
+  if (!text || typeof text !== "string") {
+    return { isCompound: false, knownPart: text, unknownPart: "", unmeasuredComponent: "" };
+  }
+
+  const norm = normalizePersianText(text);
+  const contrastPattern = /(?:^|[\s،؛])(ولی|اما|در\s*حالی\s*که|گرچه|هرچند|با\s*این\s*حال|البته)(?:[\s،؛]|$)/i;
+  const match = norm.match(contrastPattern);
+  if (!match) {
+    return { isCompound: false, knownPart: text, unknownPart: "", unmeasuredComponent: "" };
+  }
+
+  const splitIdx = match.index;
+  const partA = text.slice(0, splitIdx).trim();
+  const partB = text.slice(splitIdx + match[0].length).trim();
+
+  const unknownA = detectUnknownIntent(partA);
+  const unknownB = detectUnknownIntent(partB);
+
+  if (!unknownA.isUnknown && unknownB.isUnknown) {
+    let unmeasuredComponent = "هزینه متغیر یا تکمیلی";
+    if (partB.includes("ارسال") || partB.includes("پست")) unmeasuredComponent = "هزینه ارسال";
+    else if (partB.includes("برگشت") || partB.includes("هزینه برگشت") || partB.includes("هزینه مرجوع")) unmeasuredComponent = "هزینه برگشت و مرجوعی";
+    else if (partB.includes("متغیر") || partB.includes("تولید") || partB.includes("تمام شده")) unmeasuredComponent = "هزینه متغیر هر واحد";
+    else if (partB.includes("ثابت") || partB.includes("اجاره")) unmeasuredComponent = "هزینه ثابت";
+    else if (partB.includes("ضایعات") || partB.includes("پرت")) unmeasuredComponent = "نرخ ضایعات";
+    else if (partB.includes("مرجوع")) unmeasuredComponent = "نرخ مرجوعی";
+    else if (partB.includes("سایز") || partB.includes("اندازه")) unmeasuredComponent = "تطبیق سایز";
+
+    return {
+      isCompound: true,
+      knownPart: partA,
+      unknownPart: partB,
+      unmeasuredComponent,
+      unknownCategory: unknownB.category,
+      unknownReason: unknownB.reason,
+      unknownActionItem: unknownB.actionItem
+    };
+  } else if (unknownA.isUnknown && !unknownB.isUnknown) {
+    let unmeasuredComponent = "متغیر اولیه";
+    if (partA.includes("ارسال") || partA.includes("پست")) unmeasuredComponent = "هزینه ارسال";
+    else if (partA.includes("متغیر") || partA.includes("تولید") || partA.includes("تمام شده")) unmeasuredComponent = "هزینه متغیر هر واحد";
+
+    return {
+      isCompound: true,
+      knownPart: partB,
+      unknownPart: partA,
+      unmeasuredComponent,
+      unknownCategory: unknownA.category,
+      unknownReason: unknownA.reason,
+      unknownActionItem: unknownA.actionItem
+    };
+  }
+
+  return { isCompound: false, knownPart: text, unknownPart: "", unmeasuredComponent: "" };
+}
+
+// ---------------------------------------------------------------------------
+// 4. MASTER SEMANTIC PARSER INTERFACE
+// ---------------------------------------------------------------------------
+
+/**
+ * Master semantic input parser: combines multi-pattern unknown detection,
+ * unstructured entity slot extraction, conversational financial candidate extraction,
+ * and compound response separation.
  * 
  * @param {string} text - Raw input from user
  * @param {object} currentContext - Current business context profile
  * @returns {object} Structured extraction
  */
 export function parseSemanticInput(text, currentContext = null) {
-  const unknown = detectUnknownIntent(text);
-  const slots = parseFreeformSemanticSlots(text, currentContext);
+  const isNegativeGuarantee = detectNegativeGuaranteeIntent(text);
+  const compound = splitCompoundResponse(text);
+  const proposedFinancials = extractProposedFinancials(text);
+  const slots = parseFreeformSemanticSlots(compound.isCompound ? compound.knownPart : text, currentContext);
+
+  let unknown = detectUnknownIntent(text);
+  if (isNegativeGuarantee && unknown.isUnknown && !text.includes("نمیدانم") && !text.includes("نمی دانم")) {
+    unknown = { isUnknown: false, category: null, reason: null, actionItem: null };
+  }
+
+  const hasPartialUnknown = compound.isCompound || (proposedFinancials.hasFinancialCandidates && unknown.isUnknown);
+  const effectiveIsUnknown = hasPartialUnknown ? false : unknown.isUnknown;
 
   let hypothesis = null;
-  if (unknown.isUnknown) {
+  if (hasPartialUnknown) {
+    const unmeasuredStr = compound.unmeasuredComponent || (slots.unmeasuredFields.length > 0 ? slots.unmeasuredFields.join("، ") : "مؤلفه نامعلوم");
+    hypothesis = `[فرضیه نیازمند تست - مجهول تفکیک‌شده]: ${unmeasuredStr} به عنوان متغیر مجهول ثبت شد؛ بخش معلوم به عنوان داده معتبر نگهداری می‌شود و عدد صفر فرضی درج نخواهد شد.`;
+  } else if (effectiveIsUnknown) {
     const unmeasuredStr = slots.unmeasuredFields.length > 0 
       ? slots.unmeasuredFields.join("، ") 
       : "داده‌های این حوزه";
@@ -459,13 +678,20 @@ export function parseSemanticInput(text, currentContext = null) {
   }
 
   return {
-    isUnknown: unknown.isUnknown,
+    isUnknown: effectiveIsUnknown,
     unknownCategory: unknown.category,
     unknownReason: unknown.reason,
     unknownActionItem: unknown.actionItem,
+    isCompound: compound.isCompound,
+    hasPartialUnknown,
+    unmeasuredComponent: compound.unmeasuredComponent,
+    knownPart: compound.knownPart,
+    unknownPart: compound.unknownPart,
+    isNegativeGuarantee,
     hypothesis: hypothesis,
     extractedSlots: slots,
     businessTypeMatch: slots.businessTypeMatch,
-    isHybrid: slots.isHybrid
+    isHybrid: slots.isHybrid,
+    proposedFinancials: proposedFinancials
   };
 }

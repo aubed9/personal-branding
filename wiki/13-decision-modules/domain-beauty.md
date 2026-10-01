@@ -1,5 +1,6 @@
 ---
 id: KB-DOMAIN-BEAUTY
+tags: ['decision_modules', 'domain_beauty']
 title: "Beauty / salon domain decision contract"
 category: "13-decision-modules"
 version: "1.0.0"

@@ -77,7 +77,7 @@
 
 ```json
 {
-  "generatedAt": "2026-09-18T22:26:28.645Z",
+  "generatedAt": "2026-09-30T20:22:54.843Z",
   "totalScenarios": 32,
   "passedScenarios": 32,
   "stagesCovered": [

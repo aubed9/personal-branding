@@ -1,5 +1,6 @@
 ---
 id: KB-FOUNDER-BRAND
+tags: ['decision_modules', 'founder_brand']
 title: "Decision Module knowledge contract: KB-FOUNDER-BRAND"
 category: "13-decision-modules"
 version: "1.0.0"

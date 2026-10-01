@@ -1,10 +1,12 @@
 ---
 id: KB-STR-PILLARS-001
+tags: ['strategic_pillars', 'guiding_policy', 'kernel_of_strategy', 'coherent_actions', 'strategic_focus']
 title: "ارکان استراتژیک و ستون‌های هدایت برند"
 category: "03-strategy"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [3]
+related_nodes: ['KB-STR-POS-001', 'KB-BIZ-GOALS-001']
 related_business_types: ['ALL']
 related_metrics: ['pillar_alignment', 'strategic_focus']
 related_concepts: ['STRATEGIC_PILLARS', 'GUIDING_POLICY']

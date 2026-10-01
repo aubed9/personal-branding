@@ -1,10 +1,12 @@
 ---
 id: KB-NAM-STRAT-001
+tags: ['naming_strategy', 'semantic_territories', 'brand_name_generation', 'name_ideation']
 title: "استراتژی نام‌گذاری برند و قلمروهای معنایی"
 category: "06-naming"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [6]
+related_nodes: ['KB-NAM-EVAL-001', 'KB-NAM-TAG-001']
 related_business_types: ['ALL']
 related_metrics: ['naming_fit_score', 'memorability_index']
 related_concepts: ['NAMING_STRATEGY', 'NAMING_TERRITORIES']

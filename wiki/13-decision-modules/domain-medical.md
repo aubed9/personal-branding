@@ -1,5 +1,6 @@
 ---
 id: KB-DOMAIN-MEDICAL
+tags: ['decision_modules', 'domain_medical']
 title: "Medical / dental clinic domain decision contract"
 category: "13-decision-modules"
 version: "1.0.0"

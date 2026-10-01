@@ -1,10 +1,12 @@
 ---
 id: KB-SYS-STATE-001
+tags: ['project_state', 'machine_readable', 'persistence', 'ledger', 'json_schema']
 title: "وضعیت ساخت‌یافته ماشین‌خوان پروژه"
 category: "00-system"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [1, 2, 3, 4, 5, 6, 7, 8]
+related_nodes: ['KB-SYS-ARCH-001', 'KB-SYS-TRACE-001']
 related_business_types: ['ALL']
 related_metrics: ['state_integrity', 'schema_validation']
 related_concepts: ['STATE_MACHINE', 'SCHEMA_INTEGRITY']

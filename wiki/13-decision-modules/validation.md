@@ -1,5 +1,6 @@
 ---
 id: KB-VALIDATION
+tags: ['decision_modules', 'validation']
 title: "Decision Module knowledge contract: KB-VALIDATION"
 category: "13-decision-modules"
 version: "1.0.0"

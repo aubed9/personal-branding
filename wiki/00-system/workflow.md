@@ -1,10 +1,12 @@
 ---
 id: KB-SYS-WORKFLOW-001
+tags: ['sequential_workflow', 'phase_transitions', 'handoff_contracts', 'execution_flow']
 title: "جریان کار متوالی و قراردادهای تبادل داده"
 category: "00-system"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [1, 2, 3, 4, 5, 6, 7, 8]
+related_nodes: ['KB-SYS-ARCH-001', 'KB-SYS-GATES-001']
 related_business_types: ['ALL']
 related_metrics: ['step_cycle_time', 'reentry_count']
 related_concepts: ['HANDOFF', 'SEQUENTIAL_DISCIPLINE']

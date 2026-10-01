@@ -1,4 +1,4 @@
-﻿# Node dependencies
+# Node dependencies
 node_modules/
 platform/node_modules/
 
@@ -27,3 +27,8 @@ Thumbs.db
 # Browser test artifacts
 platform/test-results/
 platform/playwright-report/
+
+# Python cache
+__pycache__/
+*.pyc
+*/__pycache__/

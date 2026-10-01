@@ -1,10 +1,12 @@
 ---
 id: KB-PB-THOUGHT-001
+tags: ['thought_leadership', 'point_of_view', 'content_operating_system', 'industry_influence', 'pr_podcast']
 title: "رهبری فکری و زاویه دید اختصاصی (Point-of-View)"
 category: "08-personal-brand"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [5, 8]
+related_nodes: ['KB-PB-FOUNDER-001', 'KB-MSG-CORE-001']
 related_business_types: ['FOUNDER_LED', 'PROFESSIONAL_SERVICE']
 related_metrics: ['content_engagement', 'inbound_inquiries']
 related_concepts: ['POINT_OF_VIEW', 'INTELLECTUAL_AUTHORITY']

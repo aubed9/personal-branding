@@ -1,10 +1,12 @@
 ---
 id: KB-STR-TARGET-001
+tags: ['target_market', 'buyer_persona', 'beachhead_market', 'ideal_customer_profile', 'icp']
 title: "تعیین بازار هدف متمرکز و پرسونای خریدار"
 category: "03-strategy"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [3]
+related_nodes: ['KB-RES-SEG-001', 'KB-STR-POS-001']
 related_business_types: ['ALL']
 related_metrics: ['target_reach', 'conversion_rate']
 related_concepts: ['TARGET_MARKET', 'BUYER_PERSONA']

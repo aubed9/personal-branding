@@ -1,5 +1,6 @@
 ---
 id: KB-DOMAIN-MACHINING
+tags: ['decision_modules', 'domain_machining']
 title: "Machining / tooling domain decision contract"
 category: "13-decision-modules"
 version: "1.0.0"

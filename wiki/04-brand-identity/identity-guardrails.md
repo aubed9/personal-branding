@@ -1,10 +1,12 @@
 ---
 id: KB-IDN-GUARD-001
+tags: ['identity_guardrails', 'red_lines', 'emotional_boundaries', 'brand_integrity', 'tone_limits']
 title: "گاردریل‌های هویتی و خطوط قرمز حسی"
 category: "04-brand-identity"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [4]
+related_nodes: ['KB-IDN-CHAR-001', 'KB-MSG-VOCAB-001']
 related_business_types: ['ALL']
 related_metrics: ['guardrail_breaches', 'reputation_safety']
 related_concepts: ['IDENTITY_BOUNDARIES', 'BRAND_GUARDRAILS']

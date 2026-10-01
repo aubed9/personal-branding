@@ -1,10 +1,12 @@
 ---
 id: KB-VIS-DSYS-001
+tags: ['design_system', 'visual_tokens', 'design_governance', 'ui_kit', 'brand_assets']
 title: "قرارداد داخلی سیستم طراحی هویت بصری"
 category: "15-visual-identity"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [7]
+related_nodes: ['KB-VIS-LOGO-001', 'KB-VIS-COLOR-001', 'KB-VIS-TYPO-001']
 related_business_types: ['ALL']
 related_metrics: ['visual_consistency', 'asset_coverage']
 related_concepts: ['VISUAL_IDENTITY', 'DESIGN_SYSTEM', 'VISUAL_GOVERNANCE']

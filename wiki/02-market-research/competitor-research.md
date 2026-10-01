@@ -1,10 +1,12 @@
 ---
 id: KB-RES-COMP-001
+tags: ['competitor_analysis', 'behavioral_alternatives', 'five_forces', 'competitive_matrix']
 title: "تحلیل ماتریس رقبا و جایگزین‌های رفتاری"
 category: "02-market-research"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [2, 3]
+related_nodes: ['KB-RES-MKT-001', 'KB-STR-DIFF-001']
 related_business_types: ['ALL']
 related_metrics: ['competitor_overlap', 'alternative_friction']
 related_concepts: ['COMPETITOR_MATRIX', 'DIRECT_INDIRECT_RIVALS']

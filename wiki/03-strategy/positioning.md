@@ -1,10 +1,12 @@
 ---
 id: KB-STR-POS-001
+tags: ['positioning', 'mindshare', 'mental_space', 'strategic_clarity', 'category_ownership']
 title: "استراتژی جایگاه‌یابی و تسخیر جایگاه در ذهن"
 category: "03-strategy"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [3]
+related_nodes: ['KB-STR-TARGET-001', 'KB-STR-DIFF-001', 'KB-STR-VP-001']
 related_business_types: ['ALL']
 related_metrics: ['brand_recall', 'perceived_differentiation']
 related_concepts: ['BRAND_POSITIONING', 'MENTAL_REAL_ESTATE']

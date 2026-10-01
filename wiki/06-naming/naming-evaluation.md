@@ -1,10 +1,12 @@
 ---
 id: KB-NAM-EVAL-001
+tags: ['naming_evaluation', 'phonetics', 'trademark_screening', 'linguistic_test', 'persian_latin_spelling']
 title: "معیارهای ارزیابی، آواشناسی و فیلترهای حقوقی نام"
 category: "06-naming"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [6]
+related_nodes: ['KB-NAM-STRAT-001', 'KB-STR-POS-001']
 related_business_types: ['ALL']
 related_metrics: ['phonetic_score', 'legal_risk_score']
 related_concepts: ['PHONETIC_TESTS', 'TRADEMARK_SCREENING']

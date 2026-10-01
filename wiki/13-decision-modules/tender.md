@@ -1,5 +1,6 @@
 ---
 id: KB-TENDER
+tags: ['decision_modules', 'tender']
 title: "Decision Module knowledge contract: KB-TENDER"
 category: "13-decision-modules"
 version: "1.0.0"

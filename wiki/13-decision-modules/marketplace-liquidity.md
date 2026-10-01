@@ -1,5 +1,6 @@
 ---
 id: KB-MARKETPLACE-LIQUIDITY
+tags: ['decision_modules', 'marketplace_liquidity']
 title: "Decision Module knowledge contract: KB-MARKETPLACE-LIQUIDITY"
 category: "13-decision-modules"
 version: "1.0.0"

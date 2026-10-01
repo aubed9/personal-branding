@@ -1,5 +1,6 @@
 ---
 id: KB-B2B-PROCUREMENT
+tags: ['decision_modules', 'b2b_procurement']
 title: "Decision Module knowledge contract: KB-B2B-PROCUREMENT"
 category: "13-decision-modules"
 version: "1.0.0"

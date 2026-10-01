@@ -1,10 +1,12 @@
 ---
 id: KB-SYS-GATES-001
+tags: ['phase_gates', 'veto_rules', 'gate_validation', 'readiness_criteria', 'exit_gates']
 title: "گیت‌های آمادگی و قوانین وتوی مراحل"
 category: "00-system"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [1, 2, 3, 4, 5, 6, 7, 8]
+related_nodes: ['KB-SYS-ARCH-001', 'KB-BIZ-ECON-001']
 related_business_types: ['ALL']
 related_metrics: ['gate_pass_rate', 'veto_triggers']
 related_concepts: ['READINESS_GATES', 'VETO_RULES']

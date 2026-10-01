@@ -11,6 +11,7 @@ import {
   CheckCircle2,
   Shield
 } from "lucide-react";
+import { exportClientHtmlReport } from "../services/htmlReportExporter.js";
 
 export default function DeliverableModal({
   isOpen,
@@ -49,6 +50,10 @@ export default function DeliverableModal({
     element.click();
     document.body.removeChild(element);
     URL.revokeObjectURL(element.href);
+  };
+
+  const handleDownloadHtml = () => {
+    exportClientHtmlReport(deliverableData, markdownContent);
   };
 
   const handlePrint = () => {
@@ -297,6 +302,14 @@ export default function DeliverableModal({
             >
               <Download className="w-4 h-4" />
               <span>دانلود Markdown (.md)</span>
+            </button>
+
+            <button
+              onClick={handleDownloadHtml}
+              className="flex items-center gap-1.5 text-xs font-black px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-subtle transition-all"
+            >
+              <Download className="w-4 h-4" />
+              <span>دریافت کتابچه وب (.html)</span>
             </button>
 
             <button

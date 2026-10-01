@@ -1,10 +1,12 @@
 ---
 id: KB-KPI-BRAND-001
+tags: ['brand_kpis', 'brand_equity_metrics', 'brand_salience', 'nps', 'brand_resonance']
 title: "سنجه‌های قدرت و ارزش ویژه برند (Brand Equity KPIs)"
 category: "09-metrics"
 version: "1.0.0"
 status: "CANONICAL"
 related_phases: [3, 7, 8]
+related_nodes: ['KB-STR-POS-001', 'KB-IDN-CHAR-001']
 related_business_types: ['ALL']
 related_metrics: ['unaided_recall', 'brand_search_volume', 'nps']
 related_concepts: ['BRAND_EQUITY', 'CUSTOMER_LOYALTY']

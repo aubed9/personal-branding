@@ -1,5 +1,6 @@
 ---
 id: KB-RETENTION
+tags: ['decision_modules', 'retention']
 title: "Decision Module knowledge contract: KB-RETENTION"
 category: "13-decision-modules"
 version: "1.0.0"

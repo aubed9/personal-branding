@@ -1,5 +1,6 @@
 ---
 id: KB-ENTERPRISE-GOVERNANCE
+tags: ['decision_modules', 'enterprise_governance']
 title: "Decision Module knowledge contract: KB-ENTERPRISE-GOVERNANCE"
 category: "13-decision-modules"
 version: "1.0.0"

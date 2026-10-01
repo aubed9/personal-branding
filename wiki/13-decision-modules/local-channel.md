@@ -1,5 +1,6 @@
 ---
 id: KB-LOCAL-CHANNEL
+tags: ['decision_modules', 'local_channel']
 title: "Decision Module knowledge contract: KB-LOCAL-CHANNEL"
 category: "13-decision-modules"
 version: "1.0.0"

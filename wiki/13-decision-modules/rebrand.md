@@ -1,5 +1,6 @@
 ---
 id: KB-REBRAND
+tags: ['decision_modules', 'rebrand']
 title: "Decision Module knowledge contract: KB-REBRAND"
 category: "13-decision-modules"
 version: "1.0.0"

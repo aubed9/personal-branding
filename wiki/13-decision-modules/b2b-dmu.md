@@ -1,5 +1,6 @@
 ---
 id: KB-B2B-DMU
+tags: ['decision_modules', 'b2b_dmu']
 title: "Decision Module knowledge contract: KB-B2B-DMU"
 category: "13-decision-modules"
 version: "1.0.0"

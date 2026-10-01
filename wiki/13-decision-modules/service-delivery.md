@@ -1,5 +1,6 @@
 ---
 id: KB-SERVICE-DELIVERY
+tags: ['decision_modules', 'service_delivery']
 title: "Decision Module knowledge contract: KB-SERVICE-DELIVERY"
 category: "13-decision-modules"
 version: "1.0.0"

@@ -156,7 +156,23 @@
       "max_age_days": 90,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Legacy source-family pointer only. Register the exact report/dataset/version/period as a separate source record before decision-driving use."
+      "limitations": "Legacy source-family pointer only. Register the exact report/dataset/version/period as a separate source record before decision-driving use.",
+      "summary": "درگاه ملی آمار ایران (amar.org.ir) — مرجع رسمی نرخ تورم، بودجه خانوار دهک‌های درآمدی، هرم جمعیتی و اشتغال کشور.",
+      "key_indicators": [
+        "نرخ تورم CPI ماهانه و سالانه",
+        "گزارش هزینه و درآمد خانوار دهک‌های شهری/روستایی",
+        "ضریب جینی و شکاف طبقاتی",
+        "هرم سنی و جمعیت فعال اقتصادی"
+      ],
+      "strategic_utility": "تعیین سهم از جیب (Share of Wallet) دهک‌های هدف و واقع‌سنجی بازار بالقوه در فازهای ۱، ۲ و ۳.",
+      "tags": [
+        "iran_macro",
+        "cpi",
+        "inflation",
+        "demographics",
+        "household_budget",
+        "sci"
+      ]
     },
     "SRC-IR-CBI-FAMILY": {
       "id": "SRC-IR-CBI-FAMILY",
@@ -180,7 +196,23 @@
       "max_age_days": 90,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Legacy source-family pointer only. Register the exact report/dataset/version/period as a separate source record before decision-driving use."
+      "limitations": "Legacy source-family pointer only. Register the exact report/dataset/version/period as a separate source record before decision-driving use.",
+      "summary": "بانک مرکزی جمهوری اسلامی ایران (cbi.ir) — مرجع سیاست‌های پولی، پایه پولی، حجم نقدینگی (M2)، نرخ رسمی ارز و شاخص قیمت تولیدکننده (PPI).",
+      "key_indicators": [
+        "حجم نقدینگی و پایه پولی",
+        "نرخ ارز رسمی و روند نوسانات بازار",
+        "شاخص قیمت تولیدکننده (PPI)",
+        "نرخ بازده بدون ریسک و اعتبارات"
+      ],
+      "strategic_utility": "سناریونویسی استهلاک ارزش سرمایه، قیمت‌گذاری زنجیره تامین و ضرورت پیش‌فروش یا ذخیره انبار در شرایط تورمی.",
+      "tags": [
+        "cbi",
+        "monetary_policy",
+        "liquidity",
+        "fx_rates",
+        "ppi",
+        "inflation"
+      ]
     },
     "SRC-IR-CODAL-FAMILY": {
       "id": "SRC-IR-CODAL-FAMILY",
@@ -204,7 +236,22 @@
       "max_age_days": 365,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Legacy source-family pointer only. Register the exact report/dataset/version/period as a separate source record before decision-driving use."
+      "limitations": "Legacy source-family pointer only. Register the exact report/dataset/version/period as a separate source record before decision-driving use.",
+      "summary": "سامانه جامع ناشران بورسی کدال (codal.ir) و بورس اوراق بهادار تهران — مرجع صورت‌های مالی حسابرسی‌شده شرکت‌های صنعتی و بازرگانی ایران.",
+      "key_indicators": [
+        "حاشیه سود ناخالص و عملیاتی واقعی صنایع",
+        "دوره وصول مطالبات (DSO)",
+        "نسبت گردش دارایی‌ها و چرخه تبدیل وجه نقد (CCC)"
+      ],
+      "strategic_utility": "استخراج بنچ‌مارک‌های واقعی حاشیه سود برای ارزیابی امکان‌پذیری مالی و قیمت‌گذاری در حلقه ۱۰ تصمیم‌گیری.",
+      "tags": [
+        "codal",
+        "tsetmc",
+        "financial_statements",
+        "operating_margin",
+        "dso",
+        "cash_conversion"
+      ]
     },
     "SRC-IR-ECOM-FAMILY": {
       "id": "SRC-IR-ECOM-FAMILY",
@@ -228,7 +275,21 @@
       "max_age_days": 365,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Legacy source-family pointer only. Register the exact report/dataset/version/period as a separate source record before decision-driving use."
+      "limitations": "Legacy source-family pointer only. Register the exact report/dataset/version/period as a separate source record before decision-driving use.",
+      "summary": "مرکز توسعه تجارت الکترونیکی (enamad.ir) — گزارش‌های سالانه تجارت الکترونیکی و آمار کسب‌وکارهای دارای نماد اعتماد الکترونیکی.",
+      "key_indicators": [
+        "گردش مالی تجارت الکترونیکی کشور",
+        "تعداد کسب‌وکارهای دارای اینماد فعال",
+        "روش‌های تسویه حساب (آنلاین، پرداخت در محل، BNPL)"
+      ],
+      "strategic_utility": "تدوین استراتژی کانال‌های دیجیتال و پیش‌بینی حجم معاملات آنلاین در فازهای ۱، ۲ و ۸.",
+      "tags": [
+        "ecommerce",
+        "enamad",
+        "online_shopping",
+        "digital_commerce",
+        "merchant_trends"
+      ]
     },
     "SRC-IR-SHAPARAK-FAMILY": {
       "id": "SRC-IR-SHAPARAK-FAMILY",
@@ -252,7 +313,22 @@
       "max_age_days": 90,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Legacy source-family pointer only. Register the exact report/dataset/version/period as a separate source record before decision-driving use."
+      "limitations": "Legacy source-family pointer only. Register the exact report/dataset/version/period as a separate source record before decision-driving use.",
+      "summary": "شرکت شبکه الکترونیکی پرداخت کارت شاپرک (shaparak.ir) — ناشر آمار رسمی کلیه تراکنش‌های کارت‌خوان و درگاه پرداخت آنلاین در سراسر ایران.",
+      "key_indicators": [
+        "تعداد و ارزش کل تراکنش‌های شاپرک",
+        "سهم درگاه‌های اینترنتی در برابر پایانه‌های فروشگاهی",
+        "ارزش اسمی و حقیقی سبد تراکنش"
+      ],
+      "strategic_utility": "سنجش عمق تراکنش‌های پرداخت دیجیتال و الگوهای مصرف پولی جامعه ایران.",
+      "tags": [
+        "shaparak",
+        "payments",
+        "pos",
+        "ipg",
+        "transaction_volume",
+        "card_payments"
+      ]
     },
     "SRC-IR-DIGIKALA-FAMILY": {
       "id": "SRC-IR-DIGIKALA-FAMILY",
@@ -276,7 +352,22 @@
       "max_age_days": 365,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Legacy source-family pointer only. Register the exact report/dataset/version/period as a separate source record before decision-driving use."
+      "limitations": "Legacy source-family pointer only. Register the exact report/dataset/version/period as a separate source record before decision-driving use.",
+      "summary": "گزارش‌های جامع سالانه پلتفرم دیجی‌کالا — بزرگ‌ترین پلتفرم خرده‌فروشی آنلاین ایران و سنجه رفتار سبد خرید مصرف‌کننده دیجیتال.",
+      "key_indicators": [
+        "سهم FMCG در برابر کالای دیجیتال و پوشاک",
+        "تغییر سبد به سمت کالاهای جایگزین ارزان‌تر (Down-trading)",
+        "ساعات اوج خرید و الگوهای جستجوی کاربران"
+      ],
+      "strategic_utility": "سنجش آمادگی مشتری برای خرید آنلاین و حساسیت قیمتی در دسته‌بندی کالاها.",
+      "tags": [
+        "digikala",
+        "retail_ecommerce",
+        "fmcg",
+        "consumer_behavior",
+        "down_trading",
+        "e-commerce"
+      ]
     },
     "SRC-IR-BAZAAR-FAMILY": {
       "id": "SRC-IR-BAZAAR-FAMILY",
@@ -300,7 +391,21 @@
       "max_age_days": 365,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Legacy source-family pointer only. Register the exact report/dataset/version/period as a separate source record before decision-driving use."
+      "limitations": "Legacy source-family pointer only. Register the exact report/dataset/version/period as a separate source record before decision-driving use.",
+      "summary": "گزارش‌های عملکرد سالانه کافه‌بازار — بزرگ‌ترین بازارگاه برنامه‌ها و بازی‌های موبایلی اندروید در ایران.",
+      "key_indicators": [
+        "سهم نسخه‌های سیستم‌عامل اندروید در ایران",
+        "توزیع جغرافیایی کاربران در استان‌های کشور",
+        "میانگین هزینه‌کرد خریدهای درون‌برنامه‌ای و اشتراک"
+      ],
+      "strategic_utility": "فهم دسترسی تکنولوژیک کاربران و محدودیت‌های پهنای باند و دستگاه در طراحی خدمات و محصول.",
+      "tags": [
+        "cafe_bazaar",
+        "mobile_apps",
+        "android_penetration",
+        "in_app_purchase",
+        "mobile_audience"
+      ]
     },
     "SRC-IR-SNAPP-FAMILY": {
       "id": "SRC-IR-SNAPP-FAMILY",
@@ -324,7 +429,22 @@
       "max_age_days": 365,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Legacy source-family pointer only. Register the exact report/dataset/version/period as a separate source record before decision-driving use."
+      "limitations": "Legacy source-family pointer only. Register the exact report/dataset/version/period as a separate source record before decision-driving use.",
+      "summary": "گزارش‌های عملکرد سوپراپ گروه اسنپ — داده‌های حمل‌ونقل شهری، سفارش غذای آنلاین و خدمات اعتباری BNPL (اسنپ‌پی).",
+      "key_indicators": [
+        "حجم سفرهای شهری و الگوهای تردد",
+        "رفتار سفارش آنلاین غذا (اسنپ‌فود)",
+        "نفوذ سرویس الان بخر بعداً پرداخت کن (اسنپ‌پی BNPL)"
+      ],
+      "strategic_utility": "تایید ضرورت افزودن روش‌های پرداخت اعتباری به مدل‌های فروش کسب‌وکارها جهت کاهش اصطکاک خرید در تورم.",
+      "tags": [
+        "snapp",
+        "mobility",
+        "food_delivery",
+        "bnpl",
+        "urban_services",
+        "consumer_credit"
+      ]
     },
     "SRC-IR-ADTECH-FAMILY": {
       "id": "SRC-IR-ADTECH-FAMILY",
@@ -348,7 +468,24 @@
       "max_age_days": 7,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Legacy source-family pointer only. Register the exact report/dataset/version/period as a separate source record before decision-driving use."
+      "limitations": "Legacy source-family pointer only. Register the exact report/dataset/version/period as a separate source record before decision-driving use.",
+      "summary": "گزارش‌های سالانه بازاریابی دیجیتال یکتانت و تپسل — داده‌های بنچ‌مارک تبلیغات کلیکی، وب‌پوش و تبلیغات موبایلی در فضای وب فارسی.",
+      "key_indicators": [
+        "میانگین نرخ کلیک (CTR) بنری، همسان و ریتارگتینگ",
+        "هزینه هر کلیک (CPC) به تفکیک صنایع و فصول",
+        "سهم ترافیک موبایل (+۸۵٪) در برابر دسکتاپ"
+      ],
+      "strategic_utility": "مبنای محاسبه دقیق هزینه جذب مشتری (CAC) در استراتژی‌های بازاریابی عملکردی (Performance Marketing).",
+      "tags": [
+        "adtech",
+        "yektanet",
+        "tapsell",
+        "ctr",
+        "cpc",
+        "cac",
+        "digital_advertising",
+        "performance_marketing"
+      ]
     },
     "SRC-FOUNDATION-01": {
       "id": "SRC-FOUNDATION-01",
@@ -372,7 +509,20 @@
       "max_age_days": 1095,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use."
+      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use.",
+      "knowledge_layer": "L1 (نظریه مادر جامعه‌شناسی)",
+      "core_concept": "سرمایه فرهنگی (Cultural Capital)، سرمایه نمادین، عادت‌واره (Habitus) و تمایز طبقاتی از طریق مصرف.",
+      "decision_rule": "مصرف هرگز صرفاً کارکردی نیست؛ مصرف ابزاری برای ابراز تعلق یا تمایز طبقاتی است. اگر برندی می‌خواهد در بخش پرمیوم جای گیرد، باید نشانه‌های سرمایه فرهنگی (سلیقه والا، هنر، اصالت، ظرافت ناملموس) را ارائه دهد نه تخفیف یا جاروجنجال تبلیغاتی.",
+      "application": "تعریف کدها و المان‌های نمادین برند و فهم معنای اجتماعی خرید محصول برای مشتری.",
+      "tags": [
+        "sociology",
+        "cultural_capital",
+        "habitus",
+        "symbolic_capital",
+        "premium_positioning",
+        "bourdieu"
+      ],
+      "summary": "اثر بنیادین «Distinction: A Social Critique of the Judgement of Taste» به نویسندگی پیر بوردیو (Pierre Bourdieu). تمرکز بر مفهوم سرمایه فرهنگی (Cultural Capital)، سرمایه نمادین، عادت‌واره (Habitus) و تمایز طبقاتی از طریق مصرف.. قاعده تصمیم‌گیری: مصرف هرگز صرفاً کارکردی نیست؛ مصرف ابزاری برای ابراز تعلق یا تمایز طبقاتی است. اگر برندی می‌خواهد در بخش پرمیوم جای گیرد، باید نشانه‌های سرمایه فرهنگی (سلیقه والا، هنر، اصالت، ظرافت ناملموس) را ارائه دهد نه تخفیف یا جاروجنجال تبلیغاتی."
     },
     "SRC-FOUNDATION-02": {
       "id": "SRC-FOUNDATION-02",
@@ -396,7 +546,19 @@
       "max_age_days": 1095,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use."
+      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use.",
+      "knowledge_layer": "L1 (نظریه ساخت‌یابی - Structuration Theory)",
+      "core_concept": "تعامل متقابل ساختار و عاملیت (Agency & Structure)، بازتابندگی مدرنیته و نهادینه‌شدن رفتارها.",
+      "decision_rule": "رفتار مشتری نه کاملاً آزاد و بی‌قید است و نه کاملاً مقهور ساختارها؛ رفتارهای جدید مصرف زمانی پایدار می‌شوند که به «روال‌های روزمره بازتولیدشونده» تبدیل گردند.",
+      "application": "طراحی پروداکت و سرویس‌هایی که با عادات روزمره ساختاری مخاطب همسو بوده و هزینه هنجاری تغییر رفتار را به حداقل می‌رسانند.",
+      "tags": [
+        "sociology",
+        "structuration",
+        "agency_and_structure",
+        "routine_behavior",
+        "giddens"
+      ],
+      "summary": "اثر بنیادین «The Constitution of Society» به نویسندگی آنتونی گیدنز (Anthony Giddens). تمرکز بر مفهوم تعامل متقابل ساختار و عاملیت (Agency & Structure)، بازتابندگی مدرنیته و نهادینه‌شدن رفتارها.. قاعده تصمیم‌گیری: رفتار مشتری نه کاملاً آزاد و بی‌قید است و نه کاملاً مقهور ساختارها؛ رفتارهای جدید مصرف زمانی پایدار می‌شوند که به «روال‌های روزمره بازتولیدشونده» تبدیل گردند."
     },
     "SRC-FOUNDATION-03": {
       "id": "SRC-FOUNDATION-03",
@@ -420,7 +582,19 @@
       "max_age_days": 1095,
       "status": "VERIFIED",
       "checksum": "git-blob:bdb7f4250e3c581501a20b43b259606086299c5d",
-      "limitations": "Official publisher verification covers bibliographic identity, edition, publication date, ISBN and the publisher-hosted Chapter 1 excerpt. This source is VERIFIED as an edition record; decision-driving propositions still require exact chapter/page/section locators from this edition."
+      "limitations": "Official publisher verification covers bibliographic identity, edition, publication date, ISBN and the publisher-hosted Chapter 1 excerpt. This source is VERIFIED as an edition record; decision-driving propositions still require exact chapter/page/section locators from this edition.",
+      "knowledge_layer": "L1/L2 (اشاعه و پذیرش نوآوری)",
+      "core_concept": "خم انتشار نوآوری (نوآوران ۲.۵٪، پذیرندگان آغازین ۱۳.۵٪، اکثریت آغازین ۳۴٪، اکثریت پسین ۳۴٪، سنتی‌ها ۱۶٪)، ویژگی‌های پنج‌گانه نوآوری (مزیت نسبی، سازگاری، پیچیدگی، آزمون‌پذیری، مشاهده‌پذیری).",
+      "decision_rule": "هرگز پیامی که برای نوآوران و پیشگامان طراحی شده را مستقیماً به اکثریت بازار عرضه نکنید (شکاف مور / The Chasm). برای اکثریت بازار، مهم‌ترین فاکتور «کاهش ریسک»، «مشاهده‌پذیری در جمع همتایان» و «سازگاری با وضع موجود» است.",
+      "application": "زمان‌بندی پیام‌های بازاریابی و انتخاب لحن کمپین بر اساس فاز پذیرش محصول در بازار.",
+      "tags": [
+        "innovation_diffusion",
+        "chasm",
+        "adoption_curve",
+        "rogers",
+        "early_adopters"
+      ],
+      "summary": "اثر بنیادین «Diffusion of Innovations, 5th Edition» به نویسندگی Everett M. Rogers. تمرکز بر مفهوم خم انتشار نوآوری (نوآوران ۲.۵٪، پذیرندگان آغازین ۱۳.۵٪، اکثریت آغازین ۳۴٪، اکثریت پسین ۳۴٪، سنتی‌ها ۱۶٪)، ویژگی‌های پنج‌گانه نوآوری (مزیت نسبی، سازگاری، پیچیدگی، آزمون‌پذیری، مشاهده‌پذیری).. قاعده تصمیم‌گیری: هرگز پیامی که برای نوآوران و پیشگامان طراحی شده را مستقیماً به اکثریت بازار عرضه نکنید (شکاف مور / The Chasm). برای اکثریت بازار، مهم‌ترین فاکتور «کاهش ریسک»، «مشاهده‌پذیری در جمع همتایان» و «سازگاری با وضع موجود» است."
     },
     "SRC-FOUNDATION-04": {
       "id": "SRC-FOUNDATION-04",
@@ -444,7 +618,19 @@
       "max_age_days": 1095,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use."
+      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use.",
+      "knowledge_layer": "L1/L2 (ابعاد فرهنگ ملی)",
+      "core_concept": "شش بعد فرهنگی (فاصله قدرت، فردگرایی/جمع‌گرایی، مردانگی/زنانگی، اجتناب از عدم قطعیت، جهت‌گیری بلندمدت، ارضای تمایلات).",
+      "decision_rule": "در فرهنگ‌هایی با «اجتناب از عدم قطعیت بالا» و «جمع‌گرایی قوی» (نظیر بستر سنتی و مصرفی ایران)، ضمانت‌های سفت‌وسخت، تایید افراد مرجع و خانواده و برندهای تثبیت‌شده بسیار موثرتر از ادعاهای فردگرایانه و ساختارشکنانه عمل می‌کنند.",
+      "application": "تنظیم لحن برند، سیاست‌های گارانتی و اثبات اجتماعی (Social Proof).",
+      "tags": [
+        "cultural_dimensions",
+        "hofstede",
+        "uncertainty_avoidance",
+        "collectivism",
+        "iran_culture"
+      ],
+      "summary": "اثر بنیادین «Cultures and Organizations: Software of the Mind» به نویسندگی گرت هافستد (Geert Hofstede). تمرکز بر مفهوم شش بعد فرهنگی (فاصله قدرت، فردگرایی/جمع‌گرایی، مردانگی/زنانگی، اجتناب از عدم قطعیت، جهت‌گیری بلندمدت، ارضای تمایلات).. قاعده تصمیم‌گیری: در فرهنگ‌هایی با «اجتناب از عدم قطعیت بالا» و «جمع‌گرایی قوی» (نظیر بستر سنتی و مصرفی ایران)، ضمانت‌های سفت‌وسخت، تایید افراد مرجع و خانواده و برندهای تثبیت‌شده بسیار موثرتر از ادعاهای فردگرایانه و ساختارشکنانه عمل می‌کنند."
     },
     "SRC-FOUNDATION-05": {
       "id": "SRC-FOUNDATION-05",
@@ -468,7 +654,20 @@
       "max_age_days": 1095,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use."
+      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use.",
+      "knowledge_layer": "L1 (اقتصاد خرد و تئوری قیمت‌گذاری)",
+      "core_concept": "کشش قیمتی تقاضا (Price Elasticity of Demand)، کالای جانشین، مازاد مصرف‌کننده، تبعیض قیمتی درجه ۱، ۲ و ۳.",
+      "decision_rule": "اگر کشش قیمتی $|E_d| > 1$ باشد، افزایش قیمت درآمد کل را می‌کاهد. توانایی افزایش قیمت بدون از دست دادن مشتریان تنها در صورتی مقدور است که کالای جانشین مستقیم وجود نداشته یا هزینه جابجایی (Switching Cost) به اندازه کافی بالا طراحی شده باشد.",
+      "application": "تعیین استراتژی کشش قیمتی، تخفیف‌های حجمی و بسته‌بندی بر اساس ارزش مازاد.",
+      "tags": [
+        "microeconomics",
+        "price_elasticity",
+        "consumer_surplus",
+        "price_discrimination",
+        "switching_costs",
+        "varian"
+      ],
+      "summary": "اثر بنیادین «Intermediate Microeconomics: A Modern Approach» به نویسندگی هال واریان (Hal R. Varian). تمرکز بر مفهوم کشش قیمتی تقاضا (Price Elasticity of Demand)، کالای جانشین، مازاد مصرف‌کننده، تبعیض قیمتی درجه ۱، ۲ و ۳.. قاعده تصمیم‌گیری: اگر کشش قیمتی $|E_d| > 1$ باشد، افزایش قیمت درآمد کل را می‌کاهد. توانایی افزایش قیمت بدون از دست دادن مشتریان تنها در صورتی مقدور است که کالای جانشین مستقیم وجود نداشته یا هزینه جابجایی (Switching Cost) به اندازه کافی بالا طراحی شده باشد."
     },
     "SRC-FOUNDATION-06": {
       "id": "SRC-FOUNDATION-06",
@@ -492,7 +691,19 @@
       "max_age_days": 1095,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use."
+      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use.",
+      "knowledge_layer": "L1 (اقتصاد کلان)",
+      "core_concept": "تورم و نرخ رشد نقدینگی، درآمد قابل تصرف، رابطه بیکاری و تورم، هزینه فرصت (Opportunity Cost).",
+      "decision_rule": "در شرایط تورم دو رقمی مستمر، ارزش اسمی پول به سرعت ذوب می‌شود؛ مصرف‌کننده برای خریدهای بادوام یا اقساطی ارزش بسیار بالاتری قائل است چون بدهی او توسط تورم مستهلک می‌گردد.",
+      "application": "طراحی روش‌های پرداخت اقساطی (BNPL)، تعدیل دوره‌ای قیمت‌ها و سناریونویسی رکود تورمی.",
+      "tags": [
+        "macroeconomics",
+        "inflation",
+        "opportunity_cost",
+        "disposable_income",
+        "mankiw"
+      ],
+      "summary": "اثر بنیادین «Principles of Macroeconomics» به نویسندگی ان. گریگوری منکیو (N. Gregory Mankiw). تمرکز بر مفهوم تورم و نرخ رشد نقدینگی، درآمد قابل تصرف، رابطه بیکاری و تورم، هزینه فرصت (Opportunity Cost).. قاعده تصمیم‌گیری: در شرایط تورم دو رقمی مستمر، ارزش اسمی پول به سرعت ذوب می‌شود؛ مصرف‌کننده برای خریدهای بادوام یا اقساطی ارزش بسیار بالاتری قائل است چون بدهی او توسط تورم مستهلک می‌گردد."
     },
     "SRC-FOUNDATION-07": {
       "id": "SRC-FOUNDATION-07",
@@ -516,7 +727,21 @@
       "max_age_days": 1095,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use."
+      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use.",
+      "knowledge_layer": "L1 (روانشناسی شناختی و اقتصاد رفتاری)",
+      "core_concept": "سیستم ۱ (سریع، شهودی، احساسی، ناخودآگاه) در برابر سیستم ۲ (کند، منطقی، محاسباتی)، تئوری چشم‌انداز (Prospect Theory)، زیان‌گریزی (Loss Aversion)، اثر لنگراندازی (Anchoring)، قاعده اوج-پایان (Peak-End Rule).",
+      "decision_rule": "درد ناشی از باخت یا از دست دادن، از نظر روانی ۲ تا ۲.۵ برابر قوی‌تر از لذت همان مقدار سود است. پیام بازاریابی که بر «جلوگیری از ضرر و فاجعه» تکیه کند بسیار سریع‌تر سیستم ۱ خریدار را وادار به واکنش می‌کند تا وعده یک سود نامطمئن.",
+      "application": "طراحی تیترهای فروش، پیشنهادهای با زمان محدود، و معماری تجربه مشتری (تمرکز بر نقطه اوج و پایان تجربه).",
+      "tags": [
+        "behavioral_economics",
+        "cognitive_bias",
+        "system_1_system_2",
+        "loss_aversion",
+        "anchoring",
+        "peak_end_rule",
+        "kahneman"
+      ],
+      "summary": "اثر بنیادین «Thinking, Fast and Slow» به نویسندگی دانیل کانمن (Daniel Kahneman). تمرکز بر مفهوم سیستم ۱ (سریع، شهودی، احساسی، ناخودآگاه) در برابر سیستم ۲ (کند، منطقی، محاسباتی)، تئوری چشم‌انداز (Prospect Theory)، زیان‌گریزی (Loss Aversion)، اثر لنگراندازی (Anchoring)، قاعده اوج-پایان (Peak-End Rule).. قاعده تصمیم‌گیری: درد ناشی از باخت یا از دست دادن، از نظر روانی ۲ تا ۲.۵ برابر قوی‌تر از لذت همان مقدار سود است. پیام بازاریابی که بر «جلوگیری از ضرر و فاجعه» تکیه کند بسیار سریع‌تر سیستم ۱ خریدار را وادار به واکنش می‌کند تا وعده یک سود نامطمئن."
     },
     "SRC-FOUNDATION-08": {
       "id": "SRC-FOUNDATION-08",
@@ -540,7 +765,19 @@
       "max_age_days": 1095,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use."
+      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use.",
+      "knowledge_layer": "L1/L2 (معماری انتخاب و اقتصاد رفتاری)",
+      "core_concept": "معماری انتخاب (Choice Architecture)، گزینه پیش‌فرض (Default Bias)، حسابداری ذهنی (Mental Accounting)، انصاف ادراک‌شده.",
+      "decision_rule": "قدرتمندترین نیروی تصمیم‌گیری در انسان، گزینه پیش‌فرض است. برای بیشینه‌سازی فروش، پیشنهاد ایده‌آل را به عنوان انتخاب پیش‌فرض (Recommended/Default) قرار دهید و گزینه‌ها را در بودجه‌های ذهنی خاص مشتری (مثلاً بودجه تفریح در برابر بودجه بقا) جانمایی کنید.",
+      "application": "طراحی سبد خرید، انتخاب پلن‌های عضویت، و پیشنهادهای Upsell.",
+      "tags": [
+        "nudge",
+        "choice_architecture",
+        "default_bias",
+        "mental_accounting",
+        "thaler_sunstein"
+      ],
+      "summary": "اثر بنیادین «Nudge + Misbehaving» به نویسندگی ریچارد تالر و کاس سانستین (Richard Thaler & Cass Sunstein). تمرکز بر مفهوم معماری انتخاب (Choice Architecture)، گزینه پیش‌فرض (Default Bias)، حسابداری ذهنی (Mental Accounting)، انصاف ادراک‌شده.. قاعده تصمیم‌گیری: قدرتمندترین نیروی تصمیم‌گیری در انسان، گزینه پیش‌فرض است. برای بیشینه‌سازی فروش، پیشنهاد ایده‌آل را به عنوان انتخاب پیش‌فرض (Recommended/Default) قرار دهید و گزینه‌ها را در بودجه‌های ذهنی خاص مشتری (مثلاً بودجه تفریح در برابر بودجه بقا) جانمایی کنید."
     },
     "SRC-FOUNDATION-09": {
       "id": "SRC-FOUNDATION-09",
@@ -564,7 +801,21 @@
       "max_age_days": 1095,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use."
+      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use.",
+      "knowledge_layer": "L1/L2 (استراتژی صنعت و مزیت رقابتی)",
+      "core_concept": "نیروهای پنج‌گانه رقابت (تهدید تازه‌واردان، قدرت خریداران، قدرت تامین‌کنندگان، تهدید جانشین‌ها، رقابت میان رقبای فعلی)، استراتژی‌های ژنریک سه‌گانه (رهبری هزینه، تمایز، تمرکز)، زنجیره ارزش (Value Chain).",
+      "decision_rule": "هرگز در تله «گیر افتادن در میانه» (Stuck in the Middle) نیفتید. یک کسب‌وکار نمی‌تواند هم ارزان‌ترین باشد و هم بالاترین خدمات و تمایز را ارائه کند؛ اگر تصمیم به تمایز دارید، باید هزینه ساختار متمایز را بپذیرید و مخاطبانی را انتخاب کنید که حاضر به پرداخت پرمیوم هستند.",
+      "application": "انتخاب صریح موضع استراتژیک و دفاع‌پذیری در برابر حملات رقبا.",
+      "tags": [
+        "competitive_strategy",
+        "five_forces",
+        "generic_strategies",
+        "differentiation",
+        "cost_leadership",
+        "value_chain",
+        "porter"
+      ],
+      "summary": "اثر بنیادین «Competitive Strategy + Competitive Advantage» به نویسندگی مایکل پورتر (Michael E. Porter). تمرکز بر مفهوم نیروهای پنج‌گانه رقابت (تهدید تازه‌واردان، قدرت خریداران، قدرت تامین‌کنندگان، تهدید جانشین‌ها، رقابت میان رقبای فعلی)، استراتژی‌های ژنریک سه‌گانه (رهبری هزینه، تمایز، تمرکز)، زنجیره ارزش (Value Chain).. قاعده تصمیم‌گیری: هرگز در تله «گیر افتادن در میانه» (Stuck in the Middle) نیفتید. یک کسب‌وکار نمی‌تواند هم ارزان‌ترین باشد و هم بالاترین خدمات و تمایز را ارائه کند؛ اگر تصمیم به تمایز دارید، باید هزینه ساختار متمایز را بپذیرید و مخاطبانی را انتخاب کنید که حاضر به پرداخت پرمیوم هستند."
     },
     "SRC-FOUNDATION-10": {
       "id": "SRC-FOUNDATION-10",
@@ -588,7 +839,20 @@
       "max_age_days": 1095,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use."
+      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use.",
+      "knowledge_layer": "L2 (هسته استراتژی اجرایی)",
+      "core_concept": "استراتژی بد (کلمات قلمبه‌سلمبه، اهداف آرزومندانه بدون راهکار، فرار از انتخاب‌های سخت). هسته استراتژی خوب (The Kernel): تشخیص دقیق چالش (Diagnosis)، سیاست راهنما (Guiding Policy)، و اقدامات منسجم متمرکز (Coherent Actions).",
+      "decision_rule": "استراتژی خوب یعنی انتخاب کارهایی که نباید انجام دهید؛ ایجاد اهرم با تمرکز ۹۰٪ انرژی و منابع روی ۱ یا ۲ نقطه گلوگاهی بحرانی که تغییر در آنها سرنوشت را عوض می‌کند.",
+      "application": "غربالگری پیشنهادهای پراکنده بازاریابی و تبدیل چشم‌انداز به برنامه‌های اقدام منسجم.",
+      "tags": [
+        "strategy_kernel",
+        "diagnosis",
+        "guiding_policy",
+        "coherent_actions",
+        "focus",
+        "rumelt"
+      ],
+      "summary": "اثر بنیادین «Good Strategy / Bad Strategy» به نویسندگی ریچارد روملت (Richard Rumelt). تمرکز بر مفهوم استراتژی بد (کلمات قلمبه‌سلمبه، اهداف آرزومندانه بدون راهکار، فرار از انتخاب‌های سخت). هسته استراتژی خوب (The Kernel): تشخیص دقیق چالش (Diagnosis)، سیاست راهنما (Guiding Policy)، و اقدامات منسجم متمرکز (Coherent Actions).. قاعده تصمیم‌گیری: استراتژی خوب یعنی انتخاب کارهایی که نباید انجام دهید؛ ایجاد اهرم با تمرکز ۹۰٪ انرژی و منابع روی ۱ یا ۲ نقطه گلوگاهی بحرانی که تغییر در آنها سرنوشت را عوض می‌کند."
     },
     "SRC-FOUNDATION-11": {
       "id": "SRC-FOUNDATION-11",
@@ -612,7 +876,18 @@
       "max_age_days": 1095,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use."
+      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use.",
+      "knowledge_layer": "L1/L2 (تئوری نوآوری برهم‌زننده - Disruptive Innovation)",
+      "core_concept": "نوآوری‌های تدریجی (Sustaining) در برابر برهم‌زننده (Disruptive)، تسخیر پایین بازار (Low-end Foothold)، بازارهای جدید (New-market Foothold).",
+      "decision_rule": "بازیگران بزرگ به دلیل ساختار هزینه و وسوسه سود حاشیه‌ای بالا، بخش‌های پایین بازار را رها می‌کنند. یک برند تازه‌وارد هرگز نباید با بازیگر تثبیت‌شده در زمین قوت او (نوآوری تدریجی پرهزینه) رقابت کند؛ بلکه باید با محصولی ساده‌تر، ارزان‌تر یا در دسترس‌تر بخش رهاشده را تسخیر نماید.",
+      "application": "استراتژی ورود به بازار و مقابله با غول‌های مستقر در صنعت.",
+      "tags": [
+        "disruptive_innovation",
+        "low_end_foothold",
+        "sustaining_innovation",
+        "christensen"
+      ],
+      "summary": "اثر بنیادین «The Innovator's Dilemma» به نویسندگی کلیتون کریستنسن (Clayton M. Christensen). تمرکز بر مفهوم نوآوری‌های تدریجی (Sustaining) در برابر برهم‌زننده (Disruptive)، تسخیر پایین بازار (Low-end Foothold)، بازارهای جدید (New-market Foothold).. قاعده تصمیم‌گیری: بازیگران بزرگ به دلیل ساختار هزینه و وسوسه سود حاشیه‌ای بالا، بخش‌های پایین بازار را رها می‌کنند. یک برند تازه‌وارد هرگز نباید با بازیگر تثبیت‌شده در زمین قوت او (نوآوری تدریجی پرهزینه) رقابت کند؛ بلکه باید با محصولی ساده‌تر، ارزان‌تر یا در دسترس‌تر بخش رهاشده را تسخیر نماید."
     },
     "SRC-FOUNDATION-12": {
       "id": "SRC-FOUNDATION-12",
@@ -636,7 +911,19 @@
       "max_age_days": 1095,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use."
+      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use.",
+      "knowledge_layer": "L2 (تئوری شغل‌های انجام‌نشده - Jobs to Be Done)",
+      "core_concept": "مشتریان کالا یا خدمت را «نمی‌خرند»، بلکه آن را «استخدام می‌کنند» تا در یک موقعیت مشخص زندگی، پیشرفتی را برایشان محقق سازد. ابعاد سه‌گانه شغل: کارکردی (Functional)، احساسی (Emotional)، و اجتماعی (Social).",
+      "decision_rule": "ویژگی‌های دموگرافیک (سن، جنس، شغل) علت خرید نیستند؛ شرایط و موقعیت کشمکش (Struggle in Context) محرک استخدام محصول است. راهکار باید مستقیماً کشمکش را حل کند.",
+      "application": "مصاحبه‌های عمیق مشتری، طراحی محصول و خلق پیام‌های دقیق فروش.",
+      "tags": [
+        "jobs_to_be_done",
+        "jtbd",
+        "customer_struggle",
+        "functional_emotional_social_jobs",
+        "christensen"
+      ],
+      "summary": "اثر بنیادین «Competing Against Luck: JTBD» به نویسندگی کلیتون کریستنسن (Christensen et al.). تمرکز بر مفهوم مشتریان کالا یا خدمت را «نمی‌خرند»، بلکه آن را «استخدام می‌کنند» تا در یک موقعیت مشخص زندگی، پیشرفتی را برایشان محقق سازد. ابعاد سه‌گانه شغل: کارکردی (Functional)، احساسی (Emotional)، و اجتماعی (Social).. قاعده تصمیم‌گیری: ویژگی‌های دموگرافیک (سن، جنس، شغل) علت خرید نیستند؛ شرایط و موقعیت کشمکش (Struggle in Context) محرک استخدام محصول است. راهکار باید مستقیماً کشمکش را حل کند."
     },
     "SRC-FOUNDATION-13": {
       "id": "SRC-FOUNDATION-13",
@@ -660,7 +947,19 @@
       "max_age_days": 1095,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use."
+      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use.",
+      "knowledge_layer": "L3 (پلی‌بوک اعتبارسنجی نیاز و گفتگوی مشتری)",
+      "core_concept": "سه قانون مام‌تست: ۱. درباره زندگی و تجربیات گذشته مشتری صحبت کنید، نه ایده خیالی خودتان. ۲. درباره رفتارهای واقعی گذشته بپرسید، نه پیش‌بینی‌های تعارفی آینده. ۳. کمتر حرف بزنید و بیشتر گوش دهید.",
+      "decision_rule": "هرگونه داده مبتنی بر «اگر من این را بسازم آیا می‌خری؟» بی‌ارزش است و باید با ضریب صفر سنجیده شود؛ تنها تعهدات واقعی (پول پرداخت‌شده، وقت صرف‌شده، معرفی افراد) نشانه اعتبارسنجی محصول است.",
+      "application": "ارزیابی شواهد بازار و غربالگری فرضیات اعتبارسنجی در فازهای ۱ و ۲.",
+      "tags": [
+        "mom_test",
+        "customer_validation",
+        "interviewing",
+        "evidence_based_validation",
+        "fitzpatrick"
+      ],
+      "summary": "اثر بنیادین «The Mom Test» به نویسندگی راب فیتزپاتریک (Rob Fitzpatrick). تمرکز بر مفهوم سه قانون مام‌تست: ۱. درباره زندگی و تجربیات گذشته مشتری صحبت کنید، نه ایده خیالی خودتان. ۲. درباره رفتارهای واقعی گذشته بپرسید، نه پیش‌بینی‌های تعارفی آینده. ۳. کمتر حرف بزنید و بیشتر گوش دهید.. قاعده تصمیم‌گیری: هرگونه داده مبتنی بر «اگر من این را بسازم آیا می‌خری؟» بی‌ارزش است و باید با ضریب صفر سنجیده شود؛ تنها تعهدات واقعی (پول پرداخت‌شده، وقت صرف‌شده، معرفی افراد) نشانه اعتبارسنجی محصول است."
     },
     "SRC-FOUNDATION-14": {
       "id": "SRC-FOUNDATION-14",
@@ -684,7 +983,20 @@
       "max_age_days": 1095,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use."
+      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use.",
+      "knowledge_layer": "L2/L3 (بوم ارزش پیشنهادی)",
+      "core_concept": "هم‌راستایی مشخصات محصول (تسکین‌دهنده‌های درد، شادی‌آفرین‌ها، محصولات/خدمات) با پروفایل مشتری (شغل‌ها، رنج‌ها، دستاوردها).",
+      "decision_rule": "تناسب مسئله-راهکار زمانی رخ می‌دهد که تسکین‌دهنده‌ها رنج‌های با شدت بالا (Extreme Pains) را هدف قرار دهند، نه رنج‌های جزئی که کاربر حاضر به پرداخت پول برای رفع آنها نیست.",
+      "application": "تدوین هسته ارزش پیشنهادی در فاز ۳ استراتژی برند.",
+      "tags": [
+        "value_proposition",
+        "customer_profile",
+        "value_map",
+        "pain_relievers",
+        "gain_creators",
+        "osterwalder"
+      ],
+      "summary": "اثر بنیادین «Value Proposition Design» به نویسندگی الکساندر اوستروالدر (Alexander Osterwalder). تمرکز بر مفهوم هم‌راستایی مشخصات محصول (تسکین‌دهنده‌های درد، شادی‌آفرین‌ها، محصولات/خدمات) با پروفایل مشتری (شغل‌ها، رنج‌ها، دستاوردها).. قاعده تصمیم‌گیری: تناسب مسئله-راهکار زمانی رخ می‌دهد که تسکین‌دهنده‌ها رنج‌های با شدت بالا (Extreme Pains) را هدف قرار دهند، نه رنج‌های جزئی که کاربر حاضر به پرداخت پول برای رفع آنها نیست."
     },
     "SRC-FOUNDATION-15": {
       "id": "SRC-FOUNDATION-15",
@@ -708,7 +1020,19 @@
       "max_age_days": 1095,
       "status": "VERIFIED",
       "checksum": "git-blob:e613b0fc96129832f30e4af7708df794fb9fc87a",
-      "limitations": "Official Pearson verification covers edition, authors, publication date, ISBN and chapter-level table-of-contents locators. This source is VERIFIED as an edition record; detailed decision-driving propositions still require chapter/page/section locators from the verified text."
+      "limitations": "Official Pearson verification covers edition, authors, publication date, ISBN and chapter-level table-of-contents locators. This source is VERIFIED as an edition record; detailed decision-driving propositions still require chapter/page/section locators from the verified text.",
+      "knowledge_layer": "L1/L2 (مدل ارزش ویژه برند مبتنی بر مشتری - CBBE)",
+      "core_concept": "هرم ارزش برند: برجستگی (Salience) $\\rightarrow$ تصویر و عملکرد (Performance/Imagery) $\\rightarrow$ قضاوت‌ها و احساسات (Judgments/Feelings) $\\rightarrow$ طنین و وفاداری عمیق (Resonance). نقاط اشتراک (POP) و نقاط تمایز (POD).",
+      "decision_rule": "قبل از اینکه ادعای تمایز منحصر‌به‌فرد (POD) شما جدی گرفته شود، ابتدا باید نقاط اشتراک طبقه‌بندی (POP) را احراز کنید؛ مشتری اول باید مطمئن شود شما حداقل‌های استاندارد آن صنعت را دارید.",
+      "application": "معماری لایه‌به‌لایه هویت و ادراک برند در مراحل ۳ تا ۶.",
+      "tags": [
+        "brand_equity",
+        "cbbe_pyramid",
+        "brand_salience",
+        "brand_resonance",
+        "keller"
+      ],
+      "summary": "اثر بنیادین «Strategic Brand Management: Building, Measuring, and Managing Brand Equity» به نویسندگی Kevin Lane Keller; Vanitha Swaminathan. تمرکز بر مفهوم هرم ارزش برند: برجستگی (Salience) $\\rightarrow$ تصویر و عملکرد (Performance/Imagery) $\\rightarrow$ قضاوت‌ها و احساسات (Judgments/Feelings) $\\rightarrow$ طنین و وفاداری عمیق (Resonance). نقاط اشتراک (POP) و نقاط تمایز (POD).. قاعده تصمیم‌گیری: قبل از اینکه ادعای تمایز منحصر‌به‌فرد (POD) شما جدی گرفته شود، ابتدا باید نقاط اشتراک طبقه‌بندی (POP) را احراز کنید؛ مشتری اول باید مطمئن شود شما حداقل‌های استاندارد آن صنعت را دارید."
     },
     "SRC-FOUNDATION-16": {
       "id": "SRC-FOUNDATION-16",
@@ -732,7 +1056,20 @@
       "max_age_days": 1095,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use."
+      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use.",
+      "knowledge_layer": "L1/L2 (دارایی‌های برند و هویت چندبعدی)",
+      "core_concept": "ابعاد چهارگانه ارزش برند (آگاهی از نام، وفاداری، کیفیت ادراک‌شده، تداعی‌های ذهنی). برند به مثابه محصول، سازمان، شخص و نماد.",
+      "decision_rule": "هویت برند فراتر از یک لوگو یا محصول است؛ هسته هویت برند (Core Identity) باید نماینده ارزش‌های پایدار کسب‌وکار باشد و با تغییر کمپین‌ها دگرگون نشود.",
+      "application": "خلق شخصیت برند، اصول رفتاری و امضاهای نمادین در فاز ۴.",
+      "tags": [
+        "brand_equity",
+        "brand_identity_system",
+        "brand_awareness",
+        "perceived_quality",
+        "brand_loyalty",
+        "aaker"
+      ],
+      "summary": "اثر بنیادین «Managing Brand Equity + Building Strong Brands» به نویسندگی دیوید آکر (David A. Aaker). تمرکز بر مفهوم ابعاد چهارگانه ارزش برند (آگاهی از نام، وفاداری، کیفیت ادراک‌شده، تداعی‌های ذهنی). برند به مثابه محصول، سازمان، شخص و نماد.. قاعده تصمیم‌گیری: هویت برند فراتر از یک لوگو یا محصول است؛ هسته هویت برند (Core Identity) باید نماینده ارزش‌های پایدار کسب‌وکار باشد و با تغییر کمپین‌ها دگرگون نشود."
     },
     "SRC-FOUNDATION-17": {
       "id": "SRC-FOUNDATION-17",
@@ -756,7 +1093,19 @@
       "max_age_days": 1095,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use."
+      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use.",
+      "knowledge_layer": "L1 (قوانین تجربی و آماری رشد برند - موسسه ارنبرگ-باس)",
+      "core_concept": "دردسترس‌بودن ذهنی (Mental Availability) و دردسترس‌بودن فیزیکی (Physical Availability). قانون دوبرابر خطر (Double Jeopardy). دارایی‌های متمایز (Distinctive Assets) به جای تمایز مفهومی. خریداران سبک (Light Buyers) به عنوان موتور رشد.",
+      "decision_rule": "برندها با تبدیل مشتریان وفادار به وفادارتر رشد نمی‌کنند؛ آنها با نفوذ گسترده و جذب خریداران سبک یا غیرمشتریانی که برند را در نقاط ورود به دسته‌بندی (CEPs) به یاد می‌آورند رشد می‌کنند.",
+      "application": "تضمین پوشش سراسری کانال‌ها، خلق کدهای بصری و کلامی ماندگار، و دوری از وسواس بیش‌ازحد در سگمنتیشن افراطی.",
+      "tags": [
+        "how_brands_grow",
+        "mental_availability",
+        "physical_availability",
+        "distinctive_assets",
+        "sharp"
+      ],
+      "summary": "اثر بنیادین «How Brands Grow: What Marketers Don't Know» به نویسندگی بایرون شارپ (Byron Sharp). تمرکز بر مفهوم دردسترس‌بودن ذهنی (Mental Availability) و دردسترس‌بودن فیزیکی (Physical Availability). قانون دوبرابر خطر (Double Jeopardy). دارایی‌های متمایز (Distinctive Assets) به جای تمایز مفهومی. خریداران سبک (Light Buyers) به عنوان موتور رشد.. قاعده تصمیم‌گیری: برندها با تبدیل مشتریان وفادار به وفادارتر رشد نمی‌کنند؛ آنها با نفوذ گسترده و جذب خریداران سبک یا غیرمشتریانی که برند را در نقاط ورود به دسته‌بندی (CEPs) به یاد می‌آورند رشد می‌کنند."
     },
     "SRC-FOUNDATION-18": {
       "id": "SRC-FOUNDATION-18",
@@ -780,7 +1129,22 @@
       "max_age_days": 1095,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use."
+      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use.",
+      "knowledge_layer": "L2 (منشور هویت برند - Identity Prism)",
+      "core_concept": "وجوه شش‌گانه منشور هویت (فیزیک، شخصیت، فرهنگ، رابطه، بازتاب مشتری، خودانگاره مشتری).",
+      "decision_rule": "هویت واقعی زمانی ساخته می‌شود که بین تجلی بیرونی (فیزیک و رابطه) و باورهای درونی (فرهنگ و شخصیت) همخوانی مطلق وجود داشته باشد.",
+      "application": "طراحی دستورالعمل‌های یکپارچه برند در فاز ۴ و ۵.",
+      "tags": [
+        "brand_identity_prism",
+        "physique",
+        "personality",
+        "culture",
+        "relationship",
+        "reflection",
+        "self_image",
+        "kapferer"
+      ],
+      "summary": "اثر بنیادین «The New Strategic Brand Management» به نویسندگی ژان نوئل کاپفرر (Jean-Noël Kapferer). تمرکز بر مفهوم وجوه شش‌گانه منشور هویت (فیزیک، شخصیت، فرهنگ، رابطه، بازتاب مشتری، خودانگاره مشتری).. قاعده تصمیم‌گیری: هویت واقعی زمانی ساخته می‌شود که بین تجلی بیرونی (فیزیک و رابطه) و باورهای درونی (فرهنگ و شخصیت) همخوانی مطلق وجود داشته باشد."
     },
     "SRC-FOUNDATION-19": {
       "id": "SRC-FOUNDATION-19",
@@ -804,7 +1168,21 @@
       "max_age_days": 1095,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use."
+      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use.",
+      "knowledge_layer": "L1/L2 (مرجع کلاسیک و جامع مدیریت بازاریابی)",
+      "core_concept": "فرآیند STP (بخش‌بندی، هدف‌گیری، جایگاه‌یابی)، آمیخته بازاریابی 4P/7P، مدیریت کانال‌ها، چرخه عمر محصول (PLC).",
+      "decision_rule": "استراتژی بازاریابی بدون بخش‌بندی قابل اتکا بر اساس نیازها و رفتارهای واقعی، تیراندازی در تاریکی است؛ هدف‌گیری باید بر اساس جذابیت بخش و توان رقابتی سازمان انتخاب شود.",
+      "application": "ساختاربندی برنامه‌های بازاریابی و هماهنگی ابزارهای آمیخته در فاز ۳ و ۵.",
+      "tags": [
+        "marketing_management",
+        "stp",
+        "segmentation",
+        "targeting",
+        "positioning",
+        "marketing_mix_4p",
+        "kotler"
+      ],
+      "summary": "اثر بنیادین «Marketing Management» به نویسندگی فیلیپ کاتلر و کوین لین کلر (Philip Kotler & Kevin Lane Keller). تمرکز بر مفهوم فرآیند STP (بخش‌بندی، هدف‌گیری، جایگاه‌یابی)، آمیخته بازاریابی 4P/7P، مدیریت کانال‌ها، چرخه عمر محصول (PLC).. قاعده تصمیم‌گیری: استراتژی بازاریابی بدون بخش‌بندی قابل اتکا بر اساس نیازها و رفتارهای واقعی، تیراندازی در تاریکی است؛ هدف‌گیری باید بر اساس جذابیت بخش و توان رقابتی سازمان انتخاب شود."
     },
     "SRC-FOUNDATION-20": {
       "id": "SRC-FOUNDATION-20",
@@ -828,7 +1206,20 @@
       "max_age_days": 1095,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use."
+      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use.",
+      "knowledge_layer": "L2/L3 (علوم اعصاب کاربردی در بازاریابی)",
+      "core_concept": "مدل اهداف انگیزشی (Motivational Goals: استقلال، امنیت، هیجان)، ارزش ادراک‌شده منهای رنج پرداخت (Net Value = Perceived Reward - Perceived Pain)، کدهای ناخودآگاه بسته‌بندی و تبلیغات.",
+      "decision_rule": "مغز انسان ارزش را به صورت حسی و با کدگذاری ناخودآگاه ارزیابی می‌کند. برای افزایش ارزش خالص، یا پاداش ادراک‌شده را با تحریک حسی بالا ببرید یا درد پرداخت را با روش‌های پرداخت ناملموس و بسته‌های شفاف کاهش دهید.",
+      "application": "تدوین سیستم هویت کلامی، نام‌گذاری، و المان‌های حسی در فاز ۵ و ۶.",
+      "tags": [
+        "behavioral_science",
+        "implicit_goals",
+        "explicit_goals",
+        "neuro_marketing",
+        "autopilot",
+        "barden"
+      ],
+      "summary": "اثر بنیادین «Decoded: The Science Behind Why We Buy» به نویسندگی فیل باردن (Phil Barden). تمرکز بر مفهوم مدل اهداف انگیزشی (Motivational Goals: استقلال، امنیت، هیجان)، ارزش ادراک‌شده منهای رنج پرداخت (Net Value = Perceived Reward - Perceived Pain)، کدهای ناخودآگاه بسته‌بندی و تبلیغات.. قاعده تصمیم‌گیری: مغز انسان ارزش را به صورت حسی و با کدگذاری ناخودآگاه ارزیابی می‌کند. برای افزایش ارزش خالص، یا پاداش ادراک‌شده را با تحریک حسی بالا ببرید یا درد پرداخت را با روش‌های پرداخت ناملموس و بسته‌های شفاف کاهش دهید."
     },
     "SRC-FOUNDATION-21": {
       "id": "SRC-FOUNDATION-21",
@@ -852,7 +1243,21 @@
       "max_age_days": 1095,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use."
+      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use.",
+      "knowledge_layer": "L1/L2 (روانشناسی اقناع و نفوذ اجتماعی)",
+      "core_concept": "اصول هفت‌گانه اقناع (عمل متقابل، تعهد و ثبات، اثبات اجتماعی، علاقه/مشابهت، اقتدار/مرجعیت، کمیابی، یگانگی/تعلق). اثر پیش‌اقناع (Pre-Suasion).",
+      "decision_rule": "اثبات اجتماعی زمانی حداکثر قدرت را دارد که مشتری احساس کند افرادی دقیقاً مشابه خودش و با شرایط مشابه او این انتخاب را انجام داده‌اند؛ ادعای کلی فایده ندارد، رضایت مستند همتایان معجزه می‌کند.",
+      "application": "طراحی صفحات فرود، پیام‌های فراخوان عمل (CTA) و اثبات ادعاها (RTBs).",
+      "tags": [
+        "influence",
+        "persuasion",
+        "reciprocity",
+        "social_proof",
+        "authority",
+        "scarcity",
+        "cialdini"
+      ],
+      "summary": "اثر بنیادین «Influence + Pre-Suasion» به نویسندگی رابرت چالدینی (Robert B. Cialdini). تمرکز بر مفهوم اصول هفت‌گانه اقناع (عمل متقابل، تعهد و ثبات، اثبات اجتماعی، علاقه/مشابهت، اقتدار/مرجعیت، کمیابی، یگانگی/تعلق). اثر پیش‌اقناع (Pre-Suasion).. قاعده تصمیم‌گیری: اثبات اجتماعی زمانی حداکثر قدرت را دارد که مشتری احساس کند افرادی دقیقاً مشابه خودش و با شرایط مشابه او این انتخاب را انجام داده‌اند؛ ادعای کلی فایده ندارد، رضایت مستند همتایان معجزه می‌کند."
     },
     "SRC-FOUNDATION-22": {
       "id": "SRC-FOUNDATION-22",
@@ -876,7 +1281,19 @@
       "max_age_days": 1095,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use."
+      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use.",
+      "knowledge_layer": "L2/L3 (بازاریابی مدرن مبتنی بر اجازه و تمایز چشمگیر)",
+      "core_concept": "گاو بنفش (محصولی که ارزش حرف زدن دارد)، کوچک‌ترین بازار قابل اتکا (Smallest Viable Market)، بازاریابی اجازه‌ای (Permission Marketing).",
+      "decision_rule": "سعی نکنید برای همه جذاب باشید؛ کسب‌وکارهای نوپا باید یک گوشه کوچک اما مشتاق از بازار را با چنان دقتی راضی کنند که اعضای آن خودشان به مروجان داوطلب تبدیل شوند.",
+      "application": "مرزبندی‌های استراتژیک در فاز ۳ و انتخاب مشتریان اولیه.",
+      "tags": [
+        "purple_cow",
+        "remarkable_product",
+        "permission_marketing",
+        "smallest_viable_market",
+        "godin"
+      ],
+      "summary": "اثر بنیادین «Purple Cow + This Is Marketing» به نویسندگی ست گادین (Seth Godin). تمرکز بر مفهوم گاو بنفش (محصولی که ارزش حرف زدن دارد)، کوچک‌ترین بازار قابل اتکا (Smallest Viable Market)، بازاریابی اجازه‌ای (Permission Marketing).. قاعده تصمیم‌گیری: سعی نکنید برای همه جذاب باشید؛ کسب‌وکارهای نوپا باید یک گوشه کوچک اما مشتاق از بازار را با چنان دقتی راضی کنند که اعضای آن خودشان به مروجان داوطلب تبدیل شوند."
     },
     "SRC-FOUNDATION-23": {
       "id": "SRC-FOUNDATION-23",
@@ -900,7 +1317,19 @@
       "max_age_days": 1095,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use."
+      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use.",
+      "knowledge_layer": "L1/L3 (علم فروش معاملات پیچیده و سازمانی)",
+      "core_concept": "توالی پرسش‌های چهارگانه: وضعیت (Situation)، مشکل (Problem)، پیامد و ضمنی (Implication)، بازده و ارزش حل (Need-Payoff).",
+      "decision_rule": "در فروش‌های با ارزش بالا، تعریف فوری ویژگی‌های محصول باعث مقاومت خریدار می‌شود؛ فروشنده حرفه‌ای با پرسیدن سوالات پیامدی کاری می‌کند که خریدار خودش عواقب مالی دردناک دست روی دست گذاشتن را با زبان خود بیان کند.",
+      "application": "طراحی اسکریپت‌های فروش سازمانی و هدایت جلسات دمو و مشاوره.",
+      "tags": [
+        "spin_selling",
+        "situation_problem_implication_need_payoff",
+        "complex_sales",
+        "b2b_sales",
+        "rackham"
+      ],
+      "summary": "اثر بنیادین «SPIN Selling» به نویسندگی نیل راکهام (Neil Rackham). تمرکز بر مفهوم توالی پرسش‌های چهارگانه: وضعیت (Situation)، مشکل (Problem)، پیامد و ضمنی (Implication)، بازده و ارزش حل (Need-Payoff).. قاعده تصمیم‌گیری: در فروش‌های با ارزش بالا، تعریف فوری ویژگی‌های محصول باعث مقاومت خریدار می‌شود؛ فروشنده حرفه‌ای با پرسیدن سوالات پیامدی کاری می‌کند که خریدار خودش عواقب مالی دردناک دست روی دست گذاشتن را با زبان خود بیان کند."
     },
     "SRC-FOUNDATION-24": {
       "id": "SRC-FOUNDATION-24",
@@ -924,7 +1353,19 @@
       "max_age_days": 1095,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use."
+      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use.",
+      "knowledge_layer": "L2/L3 (فروش مبتنی بر بینش و چالشگری)",
+      "core_concept": "تیپ‌های پنج‌گانه فروشنده (چالشگر، سخت‌کوش، گرگ تنها، رابطه‌ساز، حلال مشکلات). برتری مدل چالشگر: آموزش دادن بینش غیرمنتظره به خریدار (Teach)، شخصی‌سازی بر اساس دغدغه ذینفعان (Tailor)، و در دست گرفتن کنترل مکالمه مالی (Take Control).",
+      "decision_rule": "خریدار B2B به دنبال گپ دوستانه نیست؛ او به دنبال شریکی است که زوایای پنهان کسب‌وکارش را که خودش نمی‌دانسته به او بیاموزد و پیش‌فرض‌های او را با منطق به چالش بکشد.",
+      "application": "هدایت ارزش در مذاکرات تجاری، فاز ۵ و هماهنگی تیم فروش با استراتژی برند.",
+      "tags": [
+        "challenger_sale",
+        "commercial_teaching",
+        "tailoring_for_resonance",
+        "taking_control",
+        "dixon_adamson"
+      ],
+      "summary": "اثر بنیادین «The Challenger Sale» به نویسندگی متیو دیکسون و برنت آدامسون (Matthew Dixon & Brent Adamson). تمرکز بر مفهوم تیپ‌های پنج‌گانه فروشنده (چالشگر، سخت‌کوش، گرگ تنها، رابطه‌ساز، حلال مشکلات). برتری مدل چالشگر: آموزش دادن بینش غیرمنتظره به خریدار (Teach)، شخصی‌سازی بر اساس دغدغه ذینفعان (Tailor)، و در دست گرفتن کنترل مکالمه مالی (Take Control).. قاعده تصمیم‌گیری: خریدار B2B به دنبال گپ دوستانه نیست؛ او به دنبال شریکی است که زوایای پنهان کسب‌وکارش را که خودش نمی‌دانسته به او بیاموزد و پیش‌فرض‌های او را با منطق به چالش بکشد."
     },
     "SRC-FOUNDATION-25": {
       "id": "SRC-FOUNDATION-25",
@@ -948,7 +1389,20 @@
       "max_age_days": 1095,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use."
+      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use.",
+      "knowledge_layer": "L3 (تاکتیک‌های مذاکره در موقعیت‌های حساس)",
+      "core_concept": "همدلی تاکتیکی (Tactical Empathy)، برچسب‌زنی احساسی (Labeling)، آینه‌سازی (Mirroring)، سوالات کالیبره‌شده (شروع با چه و چگونه)، گرفتن «نه» به جای «بله» تعارفی.",
+      "decision_rule": "هرگز برای رسیدن به توافق قیمت خود را بی‌دلیل به دو نیم نکنید؛ کشف انگیزه‌های پنهان، ترس‌ها و دغدغه‌های غیرمالی طرف مقابل کلید قفل‌گشایی از بن‌بست‌های مذاکره است.",
+      "application": "ساختارهای مدیریت اعتراض و سناریوهای نهایی بستن قرارداد.",
+      "tags": [
+        "negotiation",
+        "tactical_empathy",
+        "mirroring",
+        "labeling",
+        "calibrated_questions",
+        "voss"
+      ],
+      "summary": "اثر بنیادین «Never Split the Difference» به نویسندگی کریس واس (Chris Voss). تمرکز بر مفهوم همدلی تاکتیکی (Tactical Empathy)، برچسب‌زنی احساسی (Labeling)، آینه‌سازی (Mirroring)، سوالات کالیبره‌شده (شروع با چه و چگونه)، گرفتن «نه» به جای «بله» تعارفی.. قاعده تصمیم‌گیری: هرگز برای رسیدن به توافق قیمت خود را بی‌دلیل به دو نیم نکنید؛ کشف انگیزه‌های پنهان، ترس‌ها و دغدغه‌های غیرمالی طرف مقابل کلید قفل‌گشایی از بن‌بست‌های مذاکره است."
     },
     "SRC-FOUNDATION-26": {
       "id": "SRC-FOUNDATION-26",
@@ -972,7 +1426,19 @@
       "max_age_days": 1095,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use."
+      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use.",
+      "knowledge_layer": "L1/L2 (اقتصاد وفاداری و شاخص رضایت عمیق)",
+      "core_concept": "شاخص خالص مروجان (NPS)، سودهای بد (Bad Profits: درآمد از جریمه یا گیر انداختن مشتری) در برابر سودهای خوب (Good Profits)، اثر مرکب ۵٪ افزایش نگه‌داشت مشتری بر ۲۵٪ تا ۹۵٪ رشد سودآوری.",
+      "decision_rule": "رشد ارگانیک بدون ریزش کم ممکن نیست؛ درآمدی که از نارضایتی و جریمه مشتری حاصل شود، برند را از درون مسموم می‌کند و هزینه جذب مشتری بعدی را سرسام‌آور بالا می‌برد.",
+      "application": "سنجه‌های رضایت، برنامه‌های آنبوردینگ و فرآیندهای بازخورد مشتری.",
+      "tags": [
+        "net_promoter_score",
+        "nps",
+        "customer_loyalty",
+        "good_profits_bad_profits",
+        "reichheld"
+      ],
+      "summary": "اثر بنیادین «The Loyalty Effect + The Ultimate Question» به نویسندگی فرد رایشهلد (Fred Reichheld). تمرکز بر مفهوم شاخص خالص مروجان (NPS)، سودهای بد (Bad Profits: درآمد از جریمه یا گیر انداختن مشتری) در برابر سودهای خوب (Good Profits)، اثر مرکب ۵٪ افزایش نگه‌داشت مشتری بر ۲۵٪ تا ۹۵٪ رشد سودآوری.. قاعده تصمیم‌گیری: رشد ارگانیک بدون ریزش کم ممکن نیست؛ درآمدی که از نارضایتی و جریمه مشتری حاصل شود، برند را از درون مسموم می‌کند و هزینه جذب مشتری بعدی را سرسام‌آور بالا می‌برد."
     },
     "SRC-FOUNDATION-27": {
       "id": "SRC-FOUNDATION-27",
@@ -996,7 +1462,19 @@
       "max_age_days": 1095,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use."
+      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use.",
+      "knowledge_layer": "L2/L4 (ارزش طول عمر مشتری و توزیع ارزش)",
+      "core_concept": "مشتری‌محوری یعنی شناسایی باارزش‌ترین مشتریان (Super Consumers) و متمرکز کردن منابع نوآوری و خدمات بر آنها؛ همه مشتریان برابر نیستند و سرمایه‌گذاری یکسان روی مشتریان کم‌ارزش خطای سرمایه است.",
+      "decision_rule": "مشتریانی با $ بالا را پیدا کرده و ساختار نگه‌داشت را متناسب با ارزش آنها سفارشی‌سازی کنید؛ از مشتریان پرهزینه و پرضرر به آرامی فاصله بگیرید.",
+      "application": "تحلیل ماتریس بخش‌بندی مشتریان و تعیین بودجه Retention.",
+      "tags": [
+        "customer_centricity",
+        "customer_lifetime_value",
+        "clv",
+        "strategic_customers",
+        "fader"
+      ],
+      "summary": "اثر بنیادین «Customer Centricity» به نویسندگی پیتر فیدر (Peter Fader). تمرکز بر مفهوم مشتری‌محوری یعنی شناسایی باارزش‌ترین مشتریان (Super Consumers) و متمرکز کردن منابع نوآوری و خدمات بر آنها؛ همه مشتریان برابر نیستند و سرمایه‌گذاری یکسان روی مشتریان کم‌ارزش خطای سرمایه است.. قاعده تصمیم‌گیری: مشتریانی با $ بالا را پیدا کرده و ساختار نگه‌داشت را متناسب با ارزش آنها سفارشی‌سازی کنید؛ از مشتریان پرهزینه و پرضرر به آرامی فاصله بگیرید."
     },
     "SRC-FOUNDATION-28": {
       "id": "SRC-FOUNDATION-28",
@@ -1020,7 +1498,19 @@
       "max_age_days": 1095,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use."
+      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use.",
+      "knowledge_layer": "L1/L2 (بنیان‌های علم مدیریت مدرن)",
+      "core_concept": "هدف یک کسب‌وکار خلق مشتری است (تنها دو کارکرد سودآور: بازاریابی و نوآوری). تفکیک کارایی (انجام درست کارها) از اثربخشی (انجام کارهای درست).",
+      "decision_rule": "هیچ کار بیهوده‌ای خطرناک‌تر از این نیست که کاری را که اصلاً نباید انجام شود، با حداکثر کارایی انجام دهیم!",
+      "application": "تعیین اولویت‌های مدیرعامل و هرس کردن پروژه‌های بی‌فایده.",
+      "tags": [
+        "management_principles",
+        "effectiveness_vs_efficiency",
+        "creating_a_customer",
+        "innovation_marketing",
+        "drucker"
+      ],
+      "summary": "اثر بنیادین «The Practice of Management + The Effective Executive» به نویسندگی پیتر دراکر (Peter F. Drucker). تمرکز بر مفهوم هدف یک کسب‌وکار خلق مشتری است (تنها دو کارکرد سودآور: بازاریابی و نوآوری). تفکیک کارایی (انجام درست کارها) از اثربخشی (انجام کارهای درست).. قاعده تصمیم‌گیری: هیچ کار بیهوده‌ای خطرناک‌تر از این نیست که کاری را که اصلاً نباید انجام شود، با حداکثر کارایی انجام دهیم!"
     },
     "SRC-FOUNDATION-29": {
       "id": "SRC-FOUNDATION-29",
@@ -1044,7 +1534,19 @@
       "max_age_days": 1095,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use."
+      "limitations": "Migrated bibliographic inventory. Verify exact edition/publication identity and add page/chapter locator before decision-driving use.",
+      "knowledge_layer": "L2/L3 (اهرم‌های مدیریت خروجی و اهداف OKR)",
+      "core_concept": "خروجی مدیر = خروجی سازمان او به علاوه خروجی سازمان‌های زیر نفوذ او. شاخص‌های اهرمی، اصل تولید و خطوط مونتاژ در کارهای فکری، مدیریت مبتنی بر هدف (MBO / OKRs).",
+      "decision_rule": "برای هر فعالیت استراتژیک باید شاخص‌های جفت‌شده (Paired Indicators) تعریف شود تا افزایش کمیت به افت فاجعه‌بار کیفیت نینجامد (مثلاً تعداد لید + درصد صلاحیت لیدها).",
+      "application": "تدوین شاخص‌های عملکردی و هماهنگی تیم‌ها برای اجرای سند استراتژی برند.",
+      "tags": [
+        "high_output_management",
+        "managerial_leverage",
+        "paired_indicators",
+        "okr_mbo",
+        "grove"
+      ],
+      "summary": "اثر بنیادین «High Output Management» به نویسندگی اندی گروو (Andrew S. Grove). تمرکز بر مفهوم خروجی مدیر = خروجی سازمان او به علاوه خروجی سازمان‌های زیر نفوذ او. شاخص‌های اهرمی، اصل تولید و خطوط مونتاژ در کارهای فکری، مدیریت مبتنی بر هدف (MBO / OKRs).. قاعده تصمیم‌گیری: برای هر فعالیت استراتژیک باید شاخص‌های جفت‌شده (Paired Indicators) تعریف شود تا افزایش کمیت به افت فاجعه‌بار کیفیت نینجامد (مثلاً تعداد لید + درصد صلاحیت لیدها)."
     },
     "SRC-FOUNDATION-30": {
       "id": "SRC-FOUNDATION-30",
@@ -1068,7 +1570,21 @@
       "max_age_days": 1095,
       "status": "NEEDS_RESEARCH",
       "checksum": null,
-      "limitations": "Legacy composite entry, not a single citable source. Split into exact works before use."
+      "limitations": "Legacy composite entry, not a single citable source. Split into exact works before use.",
+      "knowledge_layer": "L1/L2/L3 (مالی شرکت‌ها، گلوگاه‌های عملیاتی و اقتصاد واحد مدرن)",
+      "core_concept": "ارزش فعلی خالص (NPV)، تئوری محدودیت‌ها (TOC) و اقتصاد واحد (Unit Economics: LTV, CAC, Payback)",
+      "decision_rule": "نرخ سوزاندن پول و دوره بازگشت هزینه جذب (Payback) تعیین‌کننده بقای کسب‌وکار است؛ کمپین‌های بدون هماهنگی با گلوگاه ارزش برند را تخریب می‌کنند.",
+      "application": "راستی‌آزمایی طرح‌های برندینگ در بستر صورت مالی واقعی و امکان‌سنجی حاشیه سود.",
+      "tags": [
+        "unit_economics",
+        "cac_payback",
+        "ltv_cac_ratio",
+        "theory_of_constraints",
+        "toc",
+        "corporate_finance",
+        "skok_goldratt_brealey"
+      ],
+      "summary": "اثر بنیادین «تلفیق طلایی: برلی و مایرز (Brealey & Myers) + الیاهو گلدرات (Goldratt) + دیوید اسکوک (David Skok)» به نویسندگی تلفیق طلایی: برلی و مایرز (Brealey & Myers) + الیاهو گلدرات (Goldratt) + دیوید اسکوک (David Skok). تمرکز بر مفهوم ارزش فعلی خالص (NPV)، تئوری محدودیت‌ها (TOC) و اقتصاد واحد (Unit Economics: LTV, CAC, Payback). قاعده تصمیم‌گیری: نرخ سوزاندن پول و دوره بازگشت هزینه جذب (Payback) تعیین‌کننده بقای کسب‌وکار است؛ کمپین‌های بدون هماهنگی با گلوگاه ارزش برند را تخریب می‌کنند."
     },
     "SRC-IR-SCI-CPI-1405-05": {
       "id": "SRC-IR-SCI-CPI-1405-05",
