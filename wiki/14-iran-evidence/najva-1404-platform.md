@@ -1,12 +1,15 @@
 ---
 id: KB-IR-PLATFORM-NAJVA-1404
+tags: ['iran_evidence', 'najva_1404_platform', 'sms_marketing', 'personalization', 'click_rate', 'campaign_optimization', 'retention']
 title: "رفتار کمپین‌های پیامکی نجوا — گزارش سالانه ۱۴۰۴"
 category: "14-iran-evidence"
-version: "1.0.0"
+version: "1.1.0"
 status: "VERIFIED"
+related_nodes: ['KB-TYPE-ECOM-001', 'KB-VERB-MSG-001', 'KB-DEC-RETENTION-001']
 related_phases: [2, 8]
-related_business_types: ['CONTEXT_DRIVEN']
+related_business_types: ['CONTEXT_DRIVEN', 'ECOMMERCE', 'B2C', 'RETAIL']
 source_ids: ['SRC-IR-NAJVA-REPORT-1404-FIRST-PARTY']
+sources: ['SRC-IR-NAJVA-REPORT-1404-FIRST-PARTY']
 claim_ids: ['KCL-IR-NAJVA-1404-SMS-PERSONALIZATION', 'KCL-IR-NAJVA-1404-SMS-CLICKER-CASE']
 last_updated: "2026-09-30"
 ---

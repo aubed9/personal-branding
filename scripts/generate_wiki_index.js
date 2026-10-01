@@ -11,7 +11,7 @@ for (const line of lines) {
   if (m) { currentId = m[1]; nodes[currentId] = { id: currentId }; continue; }
   if (currentId) {
     const t = line.match(/^    title:\s*(.+)$/);
-    if (t) nodes[currentId].title = t[1].trim();
+    if (t) nodes[currentId].title = t[1].trim().replace(/^"/, '').replace(/"$/, '');
     const f = line.match(/^    file:\s*(.+)$/);
     if (f) nodes[currentId].file = f[1].trim().replace(/^wiki\//, '');
     const c = line.match(/^    category:\s*(.+)$/);
@@ -26,11 +26,13 @@ Object.values(nodes).forEach(n => {
 });
 
 const sourceRegistry = JSON.parse(fs.readFileSync('wiki/source-registry.json', 'utf8')).sources;
+const nodeCount = Object.keys(nodes).length;
+const sourceCount = Object.keys(sourceRegistry).length;
 
 let md = `# نمایه جامع پایگاه دانش دیجیتال مارکت (Knowledge Wiki Index)
 
 > پایگاه دانش رسمی، ساخت‌یافته و مبتنی بر شواهد سیستم ساخت برند و تصمیم‌گیری کسب‌وکار **DIGITAL MARKET**.  
-> این مخزن حاوی **۹۸ گره دانشی استاندارد** با شناسه‌های پایدار (\`KB-...\`)، **۶۵ منبع مستند و معتبر** (\`SRC-...\`)، اتصالات گراف معنایی، ۳۰ نظریه بنیادین علمی و راهنماهای کاربردی بازار ایران است.
+> این مخزن حاوی **${nodeCount} گره دانشی استاندارد** با شناسه‌های پایدار (\`KB-...\`)، **${sourceCount} منبع مستند و معتبر** (\`SRC-...\`)، اتصالات گراف معنایی، ۳۰ نظریه بنیادین علمی و راهنماهای کاربردی بازار ایران است.
 
 ---
 
@@ -117,12 +119,12 @@ md += `\n---
 
 ## 📊 شواهد کلان، پولی و داده‌های بازار ایران (Iran Macro & Platform Evidence)
 
-| شناسه گره | عنوان مدرک آماری | منبع و دوره |
+| شناسه گره | عنوان مدرک آماری | مأخذ و وضعیت اعتبار |
 | :--- | :--- | :--- |
 `;
 
 byCat['14-iran-evidence']?.forEach(n => {
-  md += `| [\`${n.id}\`](${n.file}) | ${n.title} | گزارش رسمی مأخذ |\n`;
+  md += `| [\`${n.id}\`](${n.file}) | ${n.title} | مأخذ رسمی تأییدشده |\n`;
 });
 
 md += `\n---
@@ -158,7 +160,7 @@ for (let i = 1; i <= 30; i++) {
 
 md += `\n---
 
-## 🇮🇷 مراجع داده‌ای اقتصاد و بازار ایران (Iran Economic & Digital Sources)
+## 🇮🇷 مراجع داده‌ای اقتصاد، بسترها و قوانین ایران (Iran Market & Evidence Sources)
 
 | شناسه منبع | نهاد / گزارش | شاخص‌های کلیدی قابل استخراج | حوزه استفاده |
 | :--- | :--- | :--- | :--- |
@@ -167,8 +169,9 @@ md += `\n---
 | \`SRC-IR-CODAL-FAMILY\` | سامانه ناشران بورسی کدال (codal.ir) | حاشیه سود واقعی صنایع، دوره وصول DSO | فاز ۱، ۸ |
 | \`SRC-IR-ECOM-FAMILY\` | مرکز توسعه تجارت الکترونیکی (enamad.ir) | گردش مالی ایکامرس، آمار نماد اعتماد | فاز ۱، ۲، ۸ |
 | \`SRC-IR-SHAPARAK-FAMILY\` | شبکه پرداخت شاپرک (shaparak.ir) | ارزش و تعداد تراکنش‌های بانکی کارتی | فاز ۲، ۸ |
-| \`SRC-IR-DIGIKALA-FAMILY\` | گزارش سالانه دیجی‌کالا | رفتار سبد خرید آنلاین، پدیده Down-trading | فاز ۲، ۳، ۸ |
-| \`SRC-IR-SNAPP-FAMILY\` | گزارش عملکرد گروه اسنپ | سفارش آنلاین غذا، استقبال از اعتباری BNPL | فاز ۱، ۲، ۸ |
+| \`SRC-IR-DIGIKALA-FAMILY\` | گزارش سالانه گروه دیجی‌کالا | رفتار سبد خرید آنلاین، پدیده Down-trading و طلای دیجیتال | فاز ۱، ۲، ۳، ۸ |
+| \`SRC-IR-SNAPP-FAMILY\` | گزارش عملکرد گروه اسنپ | سفارش آنلاین غذا، سفرهای شهری و رفتار روزمره | فاز ۱، ۲، ۸ |
+| \`SRC-IR-NAJVA-REPORT-1404-FIRST-PARTY\` | گزارش سالانه پلتفرم نجوا ۱۴۰۴ | نرخ کلیک و اثر شخصی‌سازی پیامک در بازاریابی بازگشتی | فاز ۲، ۵، ۸ |
 | \`SRC-IR-BAZAAR-FAMILY\` | گزارش سالانه کافه‌بازار | سیستم‌عامل اندروید، پرداخت درون‌برنامه‌ای | فاز ۲، ۸ |
 | \`SRC-IR-ADTECH-FAMILY\` | گزارش بازاریابی دیجیتال یکتانت/تپسل | هزینه کلیک CPC، نرخ کلیک CTR، هزینه CAC | فاز ۱، ۲، ۸ |
 
@@ -177,4 +180,4 @@ md += `\n---
 `;
 
 fs.writeFileSync('wiki/INDEX.md', md, 'utf8');
-console.log('Successfully generated full wiki/INDEX.md covering all 98 nodes and 30 canonical foundations!');
+console.log(`Successfully generated full wiki/INDEX.md covering all ${nodeCount} nodes and ${sourceCount} sources!`);

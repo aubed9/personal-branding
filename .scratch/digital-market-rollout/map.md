@@ -17,14 +17,14 @@ Reaching the end of this map looks like:
 - [issues/02-export-delivery-formats.md](file:///d:/personal%20branding/.scratch/digital-market-rollout/issues/02-export-delivery-formats.md): Standardized 3-tier client deliverable suite (Single-file offline HTML, `@media print` executive PDF, portable JSON state) with verified prototype in `deliverables/prototype_client_report.html`.
 - [issues/03-financial-freeform-parsing.md](file:///d:/personal%20branding/.scratch/digital-market-rollout/issues/03-financial-freeform-parsing.md): Defined Persian currency multiplier grammar and enforced "Zero-Silent-Guessing" one-click confirmation gate for conversational financial entries.
 - [issues/04-iranian-guild-taxonomy-verification.md](file:///d:/personal%20branding/.scratch/digital-market-rollout/issues/04-iranian-guild-taxonomy-verification.md): Completed automated audit of all 753 taxonomy entries with 100% valid 6-digit Iranian ISIC guild codes and 15-axis context profiles.
+- [issues/05-iranian-macroeconomic-sources-ingestion.md](file:///d:/personal%20branding/.scratch/digital-market-rollout/issues/05-iranian-macroeconomic-sources-ingestion.md): Locked 4-pillar source ingestion policy: cryptographic source-first admission, build-time frozen ES bundle compilation, explicit freshness window degradation (`max_age_days`), and founder shop-floor reality override gate.
 
 ## Frontier
 
-*(The frontier is clear! All 4 charted decision tickets are resolved.)*
+*(The frontier is clear! All 5 charted decision tickets are resolved.)*
 
 ## Not yet specified
 
-- **Live Iranian Macroeconomic API Ingestion**: Automated daily inflation/exchange rate integration into unit economics. Hazy until core release settles; deferred to V2.1.
 - **Multi-Tenant Consulting Workspaces**: Collaboration engine for agency teams managing multiple corporate clients simultaneously; deferred to V2.2.
 - **Automated Brand Book Visual Asset Synthesizer**: SVG/vector palette and typographic sheet generation downstream of Phase 7 visual identity; deferred to V2.2.
 

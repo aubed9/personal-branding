@@ -1110,7 +1110,18 @@ export const CANONICAL_EXTERNAL_SOURCE_REGISTRY = Object.freeze({
     "max_age_days": 365,
     "status": "VERIFIED",
     "checksum": "git-blob:e5789db07520fd153067cb13939735064fef540b",
-    "limitations": "Full first-party web report is reproducible at the exact URL. Admit only metrics explicitly located in its 1404 Digikala sections; reported price and value changes are platform-specific nominal observations, not an official Iran-wide inflation, real-growth or unit-volume measure. Other awkwardly rendered statistics are excluded."
+    "limitations": "Full first-party web report is reproducible at the exact URL. Admit only metrics explicitly located in its 1404 Digikala sections; reported price and value changes are platform-specific nominal observations, not an official Iran-wide inflation, real-growth or unit-volume measure. Other awkwardly rendered statistics are excluded.",
+    "core_concept": "نسخه کامل وب گزارش سال ۱۴۰۴ گروه دیجی‌کالا. بیش از ۷۴۵ هزار بار جستجوی عبارت «ارزان» با رشد ۴۴٪، رشد ۷۴٪ میانگین قیمت اقلام فروخته‌شده و ۹۱.۵٪ ارزش فروش کل.",
+    "decision_rule": "جستجوی گسترده کلمه ارزان نشان‌دهنده اولویت قطعی ارزش ادراک‌شده بر برندینگ فانتزی است؛ کسب‌وکارها باید شفافیت قیمت و اثبات صرفه اقتصادی را در پیام اصلی خود قرار دهند.",
+    "application": "تدوین پیام‌های ارزش در فاز ۵، بهینه‌سازی قیمت‌گذاری در فاز ۲ و تنظیم آفرها در فاز ۸.",
+    "tags": [
+      "digikala_full",
+      "search_behavior",
+      "cheap_search",
+      "ecommerce_trends",
+      "price_inflation"
+    ],
+    "summary": "مستندات مشروح وب‌سایت گزارش سالانه دیجی‌کالا ۱۴۰۴. تحلیل رفتاری دقیق کاربران در جستجوی واژگان تخفیفی و تغییرات سبد خرید اقلام مصرفی و سوپرمارکتی."
   },
   "SRC-IR-DIGIKALA-REPORT-1404-OFFICIAL-POST": {
     "id": "SRC-IR-DIGIKALA-REPORT-1404-OFFICIAL-POST",
@@ -1134,7 +1145,18 @@ export const CANONICAL_EXTERNAL_SOURCE_REGISTRY = Object.freeze({
     "max_age_days": 365,
     "status": "VERIFIED",
     "checksum": "git-blob:1bff3c171324e12588291995daac72119943c4ad",
-    "limitations": "First-party Digikala platform evidence only. The full annual-report landing behind the LinkedIn short link was not reproducibly retrieved in this run. Admit only metrics explicitly present in Digikala's own company announcement; never interpret them as Iran-wide retail or consumer-market totals."
+    "limitations": "First-party Digikala platform evidence only. The full annual-report landing behind the LinkedIn short link was not reproducibly retrieved in this run. Admit only metrics explicitly present in Digikala's own company announcement; never interpret them as Iran-wide retail or consumer-market totals.",
+    "core_concept": "اعلامیه رسمی گزارش سال ۱۴۰۴ دیجی‌کالا. جهش ۵۱ درصدی جستجوی کالای دست دوم، رشد ۱۲ برابری خرید طلای دیجیتال و عدم بازگشت ارزش دلاری میانگین سفارش به سطح ۱۳۹۷.",
+    "decision_rule": "در بازارهای آنلاین مصرفی، مصرف‌کنندگان ایرانی به سمت دارایی‌های امن خرد و کالاهای اقتصادی/کارکرده روی آورده‌اند؛ برندها باید بسته‌های پس‌اندازپذیر و گزینه‌های بهصرفه ارائه دهند.",
+    "application": "طراحی استراتژی سبد محصول فاز ۱ و کشف دردهای عمیق مشتری در فاز ۲.",
+    "tags": [
+      "digikala",
+      "platform_data",
+      "consumer_trends",
+      "secondhand",
+      "digital_gold"
+    ],
+    "summary": "بیانیه رسمی دیجی‌کالا درباره گزارش عملکرد سال ۱۴۰۴. منعکس‌کننده الگوهای خرید پلتفرمی، تمایل به کالای دست دوم و سرمایه‌گذاری خرد در دوران تورم."
   },
   "SRC-IR-ECOM-REPORT-1403": {
     "id": "SRC-IR-ECOM-REPORT-1403",
@@ -1158,7 +1180,18 @@ export const CANONICAL_EXTERNAL_SOURCE_REGISTRY = Object.freeze({
     "max_age_days": 365,
     "status": "VERIFIED",
     "checksum": "git-blob:33aeb425af47b6a39770cc95fd71c2653886ab71",
-    "limitations": "The official site identifies the report and report-download area, but the report file was not directly fetchable by the verification client. Only headline figures repeatedly tied to the official release are promoted; table-level statistics require direct report locators."
+    "limitations": "The official site identifies the report and report-download area, but the report file was not directly fetchable by the verification client. Only headline figures repeatedly tied to the official release are promoted; table-level statistics require direct report locators.",
+    "core_concept": "گزارش سالانه تجارت الکترونیکی ایران سال ۱۴۰۳ (مرکز تتا). حجم کل گردش مالی ۵,۵۰۰ همت با رشد ۷۳ درصدی نسبت به سال قبل و فعالیت بیش از ۳۰۶ هزار کسب‌وکار اینماددار.",
+    "decision_rule": "رشد اسمی بالا در کنار انقباض سبد واقعی نشان می‌دهد که افزایش تعداد کسب‌وکارهای آنلاین شدت رقابت را بالا برده و متمایزسازی برند تنها راه گریز از جنگ قیمت است.",
+    "application": "برآورد سهم بازار آنلاین در فاز ۱ و ۲، تدوین استراتژی تمایز دیجیتال در فاز ۳ و طراحی کانال‌های فروش فاز ۸.",
+    "tags": [
+      "enamad",
+      "ecommerce_report",
+      "teta",
+      "digital_commerce",
+      "market_size"
+    ],
+    "summary": "گزارش جامع سالانه تجارت الکترونیکی کشور در سال ۱۴۰۳. تصویرگر اندازه بازار آنلاین، ضریب نفوذ اینماد، حجم روش‌های پرداخت و ترکیب گروه‌های کالایی."
   },
   "SRC-IR-LAW-ECOM-1382-QAVANIN-LOCATOR": {
     "id": "SRC-IR-LAW-ECOM-1382-QAVANIN-LOCATOR",
@@ -1182,7 +1215,18 @@ export const CANONICAL_EXTERNAL_SOURCE_REGISTRY = Object.freeze({
     "max_age_days": 30,
     "status": "VERIFIED",
     "checksum": "git-blob:5e1522c4008c121c717379f8aede8fe592750cca",
-    "limitations": "Current official consolidated qavanin text was verified only for Article 2 definitions and Articles 33–39 and 50–55 consumer/distance-contract and advertising duties. This record does not establish Enamad rules, all implementing regulations, all exceptions, or activity-specific licensing."
+    "limitations": "Current official consolidated qavanin text was verified only for Article 2 definitions and Articles 33–39 and 50–55 consumer/distance-contract and advertising duties. This record does not establish Enamad rules, all implementing regulations, all exceptions, or activity-specific licensing.",
+    "core_concept": "متن رسمی قانون تجارت الکترونیکی در پایگاه ملی قوانین و مقررات کشور (dotic / qavanin.ir).",
+    "decision_rule": "استنادهای حقوقی پلتفرم به مواد ۳۳ تا ۳۸ (حق انصراف و شروط باطل) باید مستقیماً با متن تنقیح‌شده این پایگاه مطابقت داده شوند.",
+    "application": "اعتبارسنجی ارجاعات حقوقی و ممیزی قراردادهای مشتری در فازهای ۱، ۳ و ۸.",
+    "tags": [
+      "qavanin",
+      "ecommerce_law",
+      "statutory_text",
+      "consumer_protection",
+      "verified_legal"
+    ],
+    "summary": "نسخه معتبر و تنقیح‌شده قانون تجارت الکترونیکی در درگاه ملی قوانین کشور با قابلیت ردیابی ماده‌به‌ماده."
   },
   "SRC-IR-NAJVA-REPORT-1404-FIRST-PARTY": {
     "id": "SRC-IR-NAJVA-REPORT-1404-FIRST-PARTY",
@@ -1206,7 +1250,18 @@ export const CANONICAL_EXTERNAL_SOURCE_REGISTRY = Object.freeze({
     "max_age_days": 365,
     "status": "VERIFIED",
     "checksum": "git-blob:c9c709dfc07b4fad13ab8f6338cb4c8f45f1b24d",
-    "limitations": "First-party Najva campaign observations only, over the 14-month period stated in its methodology. Observational comparisons do not identify causal effects, national SMS benchmarks, conversions or ROI. Sample sizes are not disclosed for personalization; the clicker case covers only 20 campaigns of one brand."
+    "limitations": "First-party Najva campaign observations only, over the 14-month period stated in its methodology. Observational comparisons do not identify causal effects, national SMS benchmarks, conversions or ROI. Sample sizes are not disclosed for personalization; the clicker case covers only 20 campaigns of one brand.",
+    "core_concept": "گزارش سالانه بازاریابی بازگشتی نجوا ۱۴۰۴. نرخ کلیک کمپین‌های پیامکی با شخصی‌سازی متغیرها ۴.۳۹٪ در برابر ۲.۳۴٪ در ارسال عمومی (ارتقای ۸۷ درصدی نرخ کلیک).",
+    "decision_rule": "ارسال پیامک انبوه بدون بخش‌بندی و متغیرهای شخصی‌سازی‌شده باعث فرسودگی مخاطب و هدررفت هزینه می‌شود؛ در فاز ریتنشن باید ارسال هدفمند بر اساس رفتار خرید قبلی اولویت یابد.",
+    "application": "طراحی کمپین‌های نگهداشت مشتری (Retention) در فاز ۸ و تنظیم ماتریس لحن پیام در فاز ۵.",
+    "tags": [
+      "najva",
+      "sms_marketing",
+      "personalization",
+      "click_through_rate",
+      "retention"
+    ],
+    "summary": "گزارش سالانه پلتفرم نجوا در سال ۱۴۰۴ پیرامون اثربخشی کمپین‌های بازاریابی پیامکی و مزیت ملموس پیام‌های هدفمند بر ارسال عمومی."
   },
   "SRC-IR-SCI-CPI-1405-05": {
     "id": "SRC-IR-SCI-CPI-1405-05",
@@ -1230,7 +1285,19 @@ export const CANONICAL_EXTERNAL_SOURCE_REGISTRY = Object.freeze({
     "max_age_days": 90,
     "status": "VERIFIED",
     "checksum": "git-blob:dab85907905167792325701902b8c13162601927",
-    "limitations": "The origin domain timed out during verification. Release identity, publication time and figures were captured from an indexed National Statistics Portal representation and corroborating reporting. Re-capture the direct origin URL/snapshot on the next freshness verification."
+    "limitations": "The origin domain timed out during verification. Release identity, publication time and figures were captured from an indexed National Statistics Portal representation and corroborating reporting. Re-capture the direct origin URL/snapshot on the next freshness verification.",
+    "core_concept": "شاخص رسمی قیمت کالاها و خدمات مصرفی خانوارهای کشور (مرکز آمار ایران - مرداد ۱۴۰۵). تورم نقطه به نقطه ۸۹.۰٪ و عدد شاخص ۷۰۰.۱.",
+    "decision_rule": "در شرایط تورم مفرط، مصرف‌کنندگان با شدت به سمت رفتار Down-trading (جایگزینی کالاهای اقتصادی و دست دوم) و خریدهای تکه‌تکه سوق می‌یابند. مدل‌های قیمت‌گذاری باید بر مبنای حاشیه مشارکت پویا بازطراحی شوند.",
+    "application": "تعیین مفروضات مالی فاز ۱، تحلیل فشارهای وارده بر بودجه خانوار در فاز ۲ و تنظیم استراتژی تخفیف و بسته‌بندی در فاز ۸.",
+    "tags": [
+      "sci",
+      "cpi",
+      "macroeconomics",
+      "inflation",
+      "down_trading",
+      "iran_market"
+    ],
+    "summary": "گزارش رسمی مرکز آمار ایران از شاخص بهای کالاها و خدمات مصرفی در مرداد ۱۴۰۵. منبع پایه محاسبات انقباض قدرت خرید، تورم اقلام و رفتار صرفه‌جویانه خانوار."
   },
   "SRC-IR-SHAPARAK-REPORT-134": {
     "id": "SRC-IR-SHAPARAK-REPORT-134",
@@ -1254,7 +1321,18 @@ export const CANONICAL_EXTERNAL_SOURCE_REGISTRY = Object.freeze({
     "max_age_days": 90,
     "status": "VERIFIED",
     "checksum": "git-blob:0d3b089f5a3293ef74b4c499281e67c4973dd23a",
-    "limitations": "The origin page was not directly fetchable by the verification client; the indexed official Shaparak representation preserved the official code, date and headline figures. Use only the explicitly captured figures until the report PDF/page is snapshotted directly."
+    "limitations": "The origin page was not directly fetchable by the verification client; the indexed official Shaparak representation preserved the official code, date and headline figures. Use only the explicitly captured figures until the report PDF/page is snapshotted directly.",
+    "core_concept": "گزارش اقتصادی شماره ۱۳۴ شبکه الکترونیکی پرداخت کارت (شاپرک - مرداد ۱۴۰۵). پردازش ۴.۶۵۱ میلیارد تراکنش با ارزش اسمی ۳,۶۵۴ همت در شبکه پرداخت کشور.",
+    "decision_rule": "پایانه‌های فروشگاهی (POS) همچنان کانال مسلط پرداخت اسمی هستند اما درگاه‌های اینترنتی ارزش میانگین بالاتری در سبدهای تخصصی ثبت می‌کنند. بهینه‌سازی فرآیند تسویه در درگاه آنلاین مانع ریزش سبد خرید می‌شود.",
+    "application": "طراحی مسیرهای تسویه فاز ۱، ارزیابی سهم فروش حضوری و آنلاین در فاز ۲ و تنظیم فرآیندهای مالی کمپین‌ها در فاز ۸.",
+    "tags": [
+      "shaparak",
+      "payments",
+      "pos_terminals",
+      "internet_gateway",
+      "transaction_volume"
+    ],
+    "summary": "گزارش رسمی عملکرد شبکه شاپرک در مرداد ۱۴۰۵. مستندکننده شاخص‌های گردش پول، سهم ابزارهای پرداخت و پایداری تسویه در شبکه بانکی کشور."
   },
   "SRC-IR-SNAPP-REPORT-1404-OFFICIAL-COMPANY": {
     "id": "SRC-IR-SNAPP-REPORT-1404-OFFICIAL-COMPANY",
@@ -1278,7 +1356,18 @@ export const CANONICAL_EXTERNAL_SOURCE_REGISTRY = Object.freeze({
     "max_age_days": 365,
     "status": "VERIFIED",
     "checksum": "git-blob:7ef09428433be25cccea7158b1b8bec5f2440dfd",
-    "limitations": "First-party Snapp platform evidence only. The full report behind the published short link was not reproducibly retrieved in this run. Admit only metrics explicitly visible on Snapp's official company page; never interpret them as Iran-wide mobility, commerce, market-share or consumer totals."
+    "limitations": "First-party Snapp platform evidence only. The full report behind the published short link was not reproducibly retrieved in this run. Admit only metrics explicitly visible on Snapp's official company page; never interpret them as Iran-wide mobility, commerce, market-share or consumer totals.",
+    "core_concept": "گزارش رسمی سوپراپ اسنپ در سال ۱۴۰۴. ثبت ۸.۲ میلیارد بازدید سالانه سوپراپ و تمرکز سفارش‌ها روی نیازهای فوری روزمره.",
+    "decision_rule": "سوپراپ‌ها به زیرساخت عادات روزانه شهری تبدیل شده‌اند؛ هر برندی که بتواند در دسترس‌پذیری درلحظه و سفارش فوری ادغام شود، شانس حفظ مشتری به مراتب بالاتری دارد.",
+    "application": "تعیین کانال‌های توزیع و وفاداری مشتری در فازهای ۱ و ۸.",
+    "tags": [
+      "snapp",
+      "superapp",
+      "daily_habits",
+      "on_demand",
+      "urban_mobility"
+    ],
+    "summary": "گزارش رسمی گروه اسنپ ۱۴۰۴. آمار ترافیک سالانه سوپراپ، شکل‌گیری عادات روزانه دیجیتال و ادغام خدمات حمل‌ونقل، غذا و خریدهای سوپرمارکتی."
   },
   "SRC-IR-SNAPP-REPORT-1404-URBAN-TRIPS-POST": {
     "id": "SRC-IR-SNAPP-REPORT-1404-URBAN-TRIPS-POST",
@@ -1302,7 +1391,18 @@ export const CANONICAL_EXTERNAL_SOURCE_REGISTRY = Object.freeze({
     "max_age_days": 365,
     "status": "VERIFIED",
     "checksum": "git-blob:1fe872f758c3a832b57bec9526047765379584c6",
-    "limitations": "First-party Snapp platform evidence only. The >1.5 billion figure is Snapp-reported urban trips in 1404; it is not the total number of urban trips in Iran and does not by itself establish market share."
+    "limitations": "First-party Snapp platform evidence only. The >1.5 billion figure is Snapp-reported urban trips in 1404; it is not the total number of urban trips in Iran and does not by itself establish market share.",
+    "core_concept": "گزارش تخصصی سفرهای شهری اسنپ ۱۴۰۴. انجام ۱.۵ میلیارد سفر شهری معادل ۴۰۷ میلیون ساعت سفر در شهرهای ایران.",
+    "decision_rule": "حمل‌ونقل اشتراکی دیجیتال زمان و جغرافیای مصرف شهری را بازتعریف کرده است؛ خدمات محلی باید بر اساس شعاع دسترسی و الگوهای جابه‌جایی مشتریان بازتنظیم شوند.",
+    "application": "تحلیل جغرافیایی و بازار هدف محلی در فاز ۱ و فاز ۲.",
+    "tags": [
+      "snapp_mobility",
+      "urban_trips",
+      "geographic_behavior",
+      "daily_routines",
+      "iran_cities"
+    ],
+    "summary": "داده‌های رسمی اسنپ در حوزه سفرهای درون‌شهری. منبع تحلیل زمان تلف‌شده در سفر، نقاط متراکم شهری و تغییر عادات جابه‌جایی شهروندان ایرانی."
   },
   "SRC-IR-TAX-TERMINALS-CURRENT-QAVANIN-1405": {
     "id": "SRC-IR-TAX-TERMINALS-CURRENT-QAVANIN-1405",
@@ -1326,7 +1426,17 @@ export const CANONICAL_EXTERNAL_SOURCE_REGISTRY = Object.freeze({
     "max_age_days": 30,
     "status": "VERIFIED",
     "checksum": "git-blob:38f181b784bd8581e69eaf10d87022b9cad85bb8",
-    "limitations": "Verified only for the captured current locators (Articles 10 and 12-14) and visible 1404-04-08 amendment markers. Other taxpayer obligations still require their own current primary locators and applicability checks."
+    "limitations": "Verified only for the captured current locators (Articles 10 and 12-14) and visible 1404-04-08 amendment markers. Other taxpayer obligations still require their own current primary locators and applicability checks.",
+    "core_concept": "متن تنقیح‌شده جاری قانون پایانه‌های فروشگاهی و سامانه مؤدیان با اعمال کلیه اصلاحیه‌ها تا سال ۱۴۰۵.",
+    "decision_rule": "پلتفرم در ارزیابی کسب‌وکارهای B2B و B2C تنها متن تنقیح‌شده جاری را مرجع صدور فاکتور رسمی و شناسایی درآمد معتبر می‌داند.",
+    "application": "طراحی ستون فقرات مالی و محاسباتی در فاز ۱ و ماژول انطباق تجاری.",
+    "tags": [
+      "tax_current_codified",
+      "statutory_authority",
+      "b2b_invoicing",
+      "vat_rules"
+    ],
+    "summary": "مجموعه تنقیح‌شده و به‌روز قانون پایانه‌های فروشگاهی در سامانه قوانین تا افق ۱۴۰۵."
   },
   "SRC-IR-TAX-TERMINALS-EASE-1402-QAVANIN": {
     "id": "SRC-IR-TAX-TERMINALS-EASE-1402-QAVANIN",
@@ -1350,7 +1460,17 @@ export const CANONICAL_EXTERNAL_SOURCE_REGISTRY = Object.freeze({
     "max_age_days": 30,
     "status": "VERIFIED",
     "checksum": "git-blob:a6c8a7c6930eceaa313f219608813fd00445ce37",
-    "limitations": "Verifies the official identity, promulgation, Official Gazette publication and effective date of the 1402 facilitation law. It does not by itself establish every currently applicable taxpayer-system obligation because Article 1 was replaced on 1402-10-18 and later 1404 amendments affect the wider chain."
+    "limitations": "Verifies the official identity, promulgation, Official Gazette publication and effective date of the 1402 facilitation law. It does not by itself establish every currently applicable taxpayer-system obligation because Article 1 was replaced on 1402-10-18 and later 1404 amendments affect the wider chain.",
+    "core_concept": "متن مصوب قانون تسهیل تکالیف مؤدیان ۱۴۰۲ در پایگاه ملی قوانین کشور.",
+    "decision_rule": "محاسبات مالیاتی پلتفرم باید بر اساس برنامه زمان‌بندی رسمی مندرج در این قانون هماهنگ باشد.",
+    "application": "راستی‌آزمایی محاسبات جریان وجه نقد فاز ۱.",
+    "tags": [
+      "qavanin_tax_ease",
+      "verified_legal",
+      "tax_schedule",
+      "cash_flow"
+    ],
+    "summary": "متن رسمی قانون تسهیل تکالیف مؤدیان سامانه پایانه‌های فروشگاهی در سامانه قوانین کشور."
   },
   "SRC-IR-TAX-TERMINALS-EASE-M1-1402-QAVANIN": {
     "id": "SRC-IR-TAX-TERMINALS-EASE-M1-1402-QAVANIN",
@@ -1374,7 +1494,16 @@ export const CANONICAL_EXTERNAL_SOURCE_REGISTRY = Object.freeze({
     "max_age_days": 30,
     "status": "VERIFIED",
     "checksum": "git-blob:69f70c5f63dca2f3bf963be980a67e385fecb940",
-    "limitations": "Verifies the official replacement of Article 1 and its publication metadata. It is one link in the current-law chain and must not be treated as proof of all current taxpayer-system obligations."
+    "limitations": "Verifies the official replacement of Article 1 and its publication metadata. It is one link in the current-law chain and must not be treated as proof of all current taxpayer-system obligations.",
+    "core_concept": "قانون اصلاح ماده ۱ قانون تسهیل تکالیف مؤدیان جهت تمدید مهلت‌های اعمال صورتحساب‌های الکترونیکی.",
+    "decision_rule": "مهلت‌های ثبت صورتحساب‌های خرید و فروش در کارپوشه مؤدیان مشمول تمدیدهای قانونی مصوب این ماده است.",
+    "application": "تنظیم جدول زمانی انطباق مالیاتی کسب‌وکار در فاز ۱.",
+    "tags": [
+      "tax_amendment_m1",
+      "statutory_timeline",
+      "invoicing_deadline"
+    ],
+    "summary": "متن تنقیحی اصلاحیه ماده ۱ قانون تسهیل تکالیف مؤدیان ثبت‌شده در سامانه ملی قوانین."
   },
   "SRC-IR-TRADE-UNION-AMENDMENT-1403-QAVANIN": {
     "id": "SRC-IR-TRADE-UNION-AMENDMENT-1403-QAVANIN",
@@ -1398,6 +1527,16 @@ export const CANONICAL_EXTERNAL_SOURCE_REGISTRY = Object.freeze({
     "max_age_days": 30,
     "status": "VERIFIED",
     "checksum": "git-blob:48789f41a29fc73633a1b5711376bc23b1f0f47b",
-    "limitations": "Verifies the 1403 amendment, including Article 1 changes to licensing provisions and the replacement Article 27 enforcement structure. Activity-specific licensing prerequisites and current implementing rules still require their own primary locators."
+    "limitations": "Verifies the 1403 amendment, including Article 1 changes to licensing provisions and the replacement Article 27 enforcement structure. Activity-specific licensing prerequisites and current implementing rules still require their own primary locators.",
+    "core_concept": "متن رسمی قانون اصلاح قانون نظام صنفی مصوب ۱۴۰۳/۰۵/۰۲ در سامانه ملی قوانین کشور.",
+    "decision_rule": "این مصوبه ملاک نهایی صلاحیت‌های حقوقی و حدود نظارتی اتحادیه‌ها برای کلیه ۷۵۳ صنف کشور در دوران جاری است.",
+    "application": "اعتبارسنجی حقوقی وضعیت واحدهای صنفی و رتبه‌بندی ریسک مجوز در فاز ۱.",
+    "tags": [
+      "qavanin_guild_1403",
+      "statutory_reform",
+      "verified_legal",
+      "guild_compliance"
+    ],
+    "summary": "متن رسمی تنقیح‌شده اصلاحیه ۱۴۰۳ قانون نظام صنفی مندرج در پایگاه ملی قوانین کشور."
   }
 });
