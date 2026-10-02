@@ -1,0 +1,24 @@
+# SPIN Selling — publisher verification snapshot
+
+Captured: 2026-09-26
+Publisher: McGraw-Hill
+Author: Neil Rackham
+Edition: First Edition; McGraw-Hill Professional
+Published: 1988-06-01
+ISBN: 978-0070511132
+Publisher URL:
+https://www.mheducation.com/highered/product/spin-selling-rackham/9780070511132.html
+
+Verified Locators & Structural Content:
+- Chapter 2: Obtaining Commitment: Closing the Sale
+- Chapter 4: The SPIN Strategy (Situation, Problem, Implication, Need-Payoff questions)
+- Chapter 5: Giving Benefits in Major Sales
+- Chapter 6: Preventing Objections
+
+Key Conceptual Extractions:
+- High-value complex sales require an inquiry-driven consultative dialogue, not high-pressure closing gimmicks.
+- The SPIN sequence: Situation questions establish baseline; Problem questions uncover dissatisfaction; Implication questions expand the perceived cost of inaction; Need-Payoff questions guide the buyer to articulate the solution.
+- Premature feature pitching triggers buyer objections; developing implications makes the budget necessary.
+
+Admission Boundary:
+- Verified against McGraw-Hill catalog. Standard foundation for B2B sales scripts and consultative sales in Phase 5 and 8.

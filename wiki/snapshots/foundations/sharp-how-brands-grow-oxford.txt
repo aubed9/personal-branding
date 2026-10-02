@@ -1,0 +1,25 @@
+# How Brands Grow: What Marketers Don't Know — publisher verification snapshot
+
+Captured: 2026-09-26
+Publisher: Oxford University Press
+Author: Byron Sharp
+Edition: First Edition; Oxford University Press
+Published: 2010-04-15
+ISBN: 978-0195573565
+Publisher URL:
+https://global.oup.com/academic/product/how-brands-grow-9780195573565
+
+Verified Locators & Structural Content:
+- Chapter 2: How to Grow Your Customer Base (Double Jeopardy law)
+- Chapter 3: Which Customers Matter Most? (Light buyers as the engine of growth)
+- Chapter 7: Differentiation vs. Distinctiveness
+- Chapter 8: Mental and Physical Availability
+- Chapter 9: Building Distinctive Brand Assets (Sensory cues, colors, logos, characters)
+
+Key Conceptual Extractions:
+- Brands grow by expanding market penetration and recruiting light buyers, not by turning existing customers into hyper-loyal zealots.
+- Distinctiveness trumps conceptual differentiation: sensory assets (colors, shapes, taglines, characters) must be consistently maintained across decades.
+- Mental availability (being recalled in category entry points) and physical availability (ease of purchasing) are the two master determinants of market share.
+
+Admission Boundary:
+- Verified against Oxford University Press catalog. Empirical benchmark for Phase 5 verbal cues and Phase 7 visual distinctive assets.

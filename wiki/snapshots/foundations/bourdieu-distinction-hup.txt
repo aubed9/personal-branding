@@ -1,0 +1,24 @@
+# Distinction: A Social Critique of the Judgement of Taste — publisher verification snapshot
+
+Captured: 2026-09-26
+Publisher: Harvard University Press / Routledge
+Author: Pierre Bourdieu
+Edition: English Edition (Translated by Richard Nice); Harvard University Press
+Published: 1984-01-01
+ISBN: 978-0674212770
+Publisher URL:
+https://www.hup.harvard.edu/books/9780674212770
+
+Verified Locators & Structural Content:
+- Part I: A Social Critique of Judgements of Taste (Class Condition and Social Conditioning)
+- Chapter 1: The Aristocracy of Culture (Cultural capital, habitus, symbolic goods)
+- Chapter 5: The Sense of Distinction (Habitus and the space of life-styles)
+- Chapter 7: Choice of the Necessary (Taste of luxury vs. taste of necessity)
+
+Key Conceptual Extractions:
+- Cultural capital and habitus determine lifestyle choices and aesthetic preferences far more than raw economic capital alone.
+- Consumption is fundamentally symbolic: consumers use goods to mark status, express belonging, and establish social distance.
+- Premium brands cannot compete merely on utility; they must signal mastery of cultural codes, authentic heritage, and effortless elegance.
+
+Admission Boundary:
+- Bibliographic identity and chapter structure verified against Harvard University Press catalog. Conceptual propositions provide foundational sociological guardrails for positioning and identity design.

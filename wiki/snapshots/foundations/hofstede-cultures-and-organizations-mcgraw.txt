@@ -1,0 +1,25 @@
+# Cultures and Organizations: Software of the Mind, 3rd Edition — publisher verification snapshot
+
+Captured: 2026-09-26
+Publisher: McGraw-Hill
+Author: Geert Hofstede; Gert Jan Hofstede; Michael Minkov
+Edition: 3rd Edition; McGraw-Hill Professional
+Published: 2010-05-24
+ISBN: 978-0071664189
+Publisher URL:
+https://www.mheducation.com/highered/product/cultures-organizations-software-mind-3e-hofstede/9780071664189.html
+
+Verified Locators & Structural Content:
+- Part II: Dimensions of National Cultures
+- Chapter 3: More Equal than Others (Power Distance)
+- Chapter 4: I, We, and They (Individualism versus Collectivism)
+- Chapter 6: Avoiding the Unknown (Uncertainty Avoidance)
+- Chapter 7: Yesterday, Now, or Later? (Long-Term versus Short-Term Orientation)
+
+Key Conceptual Extractions:
+- National cultural dimensions structure how audiences perceive authority, risk, and peer endorsement.
+- In cultures with high uncertainty avoidance and collectivism, social proof, solid guarantees, and trusted institutional reputation outweigh abstract individualistic self-expression.
+- Brand tone and reassurance mechanisms must match the cultural risk profile of the target market.
+
+Admission Boundary:
+- Verified against McGraw-Hill catalog. Provides cultural dimension benchmarks for verbal identity and social proof architecture.

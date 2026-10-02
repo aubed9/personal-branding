@@ -1,6 +1,6 @@
 ---
 id: KB-BIZ-GOALS-001
-tags: ['strategic_goals', '90_day_milestones', 'paired_indicators', 'okr', 'execution_targets']
+tags: ['strategic_goals', '90_day_milestones', 'paired_indicators', 'okr', 'execution_targets', 'okrs', 'grove_leverage', 'strategic_intent']
 title: "هدف‌گذاری ملموس ۹۰ روزه و شاخص‌های موفقیت"
 category: "01-business-foundation"
 version: "1.0.0"
@@ -12,6 +12,7 @@ related_metrics: ['goal_attainment_rate', 'mrr_target']
 related_concepts: ['GOAL_CLARITY', 'NORTH_STAR_METRIC']
 source: "DIGITAL MARKET Knowledge Engine & Academic Foundations"
 last_updated: "2026-09-05"
+sources: ['SRC-FOUNDATION-29', 'SRC-FOUNDATION-10', 'SRC-FOUNDATION-28']
 ---
 
 # مفهوم چیست؟
@@ -57,4 +58,27 @@ last_updated: "2026-09-05"
 تعداد اهداف هوشمند (SMART)، درصد تحقق اهداف ۹۰ روزه.
 
 # Related Wiki Nodes
-- `KB-BIZ-MODEL-001`\n- `KB-KPI-BRAND-001`
+- `KB-BIZ-MODEL-001`
+- `KB-KPI-BRAND-001`
+
+---
+
+## پایه‌های علمی و مراجع دانشی (Scientific Foundations & Sourced Evidence)
+### پایه‌های علمی و مراجع دانشی (Scientific Foundations)
+- **اندی گروو (SRC-FOUNDATION-29):** خروجی مدیر تابع اهداف اهرمی است. استفاده از شاخص‌های جفت‌شده (Paired Indicators) مانع فدا شدن کیفیت در ازای دستیابی به کمیت فروش می‌شود.
+- **ریچارد روملت (SRC-FOUNDATION-10):** اشتباه گرفتن اهداف جاه‌طلبانه (مانند 'رسیدن به درآمد ۱۰۰ میلیاردی') با استراتژی، بزرگ‌ترین نشانه استراتژی بد است. هدف باید گلوگاه حیاتی را هدف بگیرد.
+- **پیتر دراکر (SRC-FOUNDATION-28):** مدیریت بر مبنای هدف (MBO) زمانی کار می‌کند که مرزهای اثربخشی (انجام کار درست) از کارایی (انجام درست کار غلط) تفکیک شوند.
+
+---
+
+## شواهد و بستر تجاری ایران (Iranian Market Context & Evidence)
+### شواهد و بستر تجاری ایران (Iranian Market Realities)
+- **سنجه‌های متناسب با تورم:** اهداف فروش اسمی در ایران باید همواره با نرخ تورم نقطه به نقطه تعدیل شوند؛ رشد فروش کمتر از تورم سالانه، رشد منفی واقعی محسوب می‌شود.
+- **ظرفیت جذب سرمایه در گردش:** هدف‌گذاری مقیاس بدون تامین خط اعتباری بانکی یا نقدینگی پیش‌دریافت، بنگاه را دچار بحران قفل‌شدگی سفارش‌ها می‌کند.
+
+---
+
+## قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+### قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+1. **قاعده سنجه‌های جفت‌شده:** هر هدف کمی درآمدی باید یک شاخص کیفی همراه داشته باشد (مثلاً تعداد مشتریان جدید + نرخ رضایت یا ریزش زیر ۵٪).
+2. **قاعده تحدید اهداف:** حداکثر ۱ تا ۲ هدف کلیدی فصلی (OKRs) تعیین شود تا تمرکز تیم متلاشی نگردد.

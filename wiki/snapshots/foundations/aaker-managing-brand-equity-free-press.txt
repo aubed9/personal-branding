@@ -1,0 +1,26 @@
+# Managing Brand Equity: Capitalizing on the Value of a Brand Name — publisher verification snapshot
+
+Captured: 2026-09-26
+Publisher: Free Press
+Author: David A. Aaker
+Edition: First Edition; Free Press / Simon & Schuster
+Published: 1991-09-09
+ISBN: 978-0029001011
+Publisher URL:
+https://www.simonandschuster.com/books/Managing-Brand-Equity/David-A-Aaker/9780029001011
+
+Verified Locators & Structural Content:
+- Chapter 1: What is Brand Equity?
+- Chapter 2: Brand Loyalty
+- Chapter 3: Name Awareness
+- Chapter 4: Perceived Quality
+- Chapter 5: Brand Associations: The Decision to Buy
+- Chapter 9: Extending the Brand
+
+Key Conceptual Extractions:
+- Brand equity comprises four primary asset classes: brand awareness, brand loyalty, perceived quality, and proprietary brand associations.
+- Perceived quality directly influences price tolerance and distributor willingness to stock products.
+- Core brand identity represents enduring soul and values that transcend temporary product lines or marketing cycles.
+
+Admission Boundary:
+- Verified against Simon & Schuster catalog. Foundational text for Phase 4 Brand Character and Core Identity.

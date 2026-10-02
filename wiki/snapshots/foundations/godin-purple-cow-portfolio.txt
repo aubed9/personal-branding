@@ -1,0 +1,25 @@
+# Purple Cow: Transform Your Business by Being Remarkable — publisher verification snapshot
+
+Captured: 2026-09-26
+Publisher: Portfolio / Penguin
+Author: Seth Godin
+Edition: First Edition; Portfolio / Penguin Random House
+Published: 2003-05-08
+ISBN: 978-1591840213
+Publisher URL:
+https://www.penguinrandomhouse.com/books/297378/purple-cow-new-edition-by-seth-godin/
+
+Verified Locators & Structural Content:
+- The New P: Purple Cow
+- Not Enough Ps: The Death of the TV-Industrial Complex
+- The Opposite of Remarkable Is 'Very Good'
+- Find the Otaku (Passionate early adopters)
+- Who's Listening? (Permission Marketing)
+
+Key Conceptual Extractions:
+- In crowded markets, being 'very good' is boring and invisible; a product must be genuinely remarkable (worth making a remark about).
+- Mass marketing to average consumers is economically obsolete; winners target obsessed niche communities ('otaku') who spread the word voluntarily.
+- The safest marketing choice is the riskiest: playing it safe ensures complete commoditization.
+
+Admission Boundary:
+- Verified against Penguin Random House catalog. Inspires radical differentiation and niche boundary selection in Phase 3.

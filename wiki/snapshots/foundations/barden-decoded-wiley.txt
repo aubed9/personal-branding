@@ -1,0 +1,24 @@
+# Decoded: The Science Behind Why We Buy — publisher verification snapshot
+
+Captured: 2026-09-26
+Publisher: John Wiley & Sons
+Author: Phil Barden
+Edition: First Edition; John Wiley & Sons
+Published: 2013-02-18
+ISBN: 978-1118345603
+Publisher URL:
+https://www.wiley.com/en-us/Decoded%3A+The+Science+Behind+Why+We+Buy-p-9781118345603
+
+Verified Locators & Structural Content:
+- Chapter 1: Decision Making in the Autopilot (Implicit vs. explicit purchasing drivers)
+- Chapter 2: The Currency of Value (Net Value = Reward - Pain)
+- Chapter 4: The Motivational Map (Autonomy, Security, Excitement)
+- Chapter 6: The Purchasing Process and Touchpoints
+
+Key Conceptual Extractions:
+- Purchase decisions are governed by the brain's autopilot: sensory cues are decoded non-consciously within fractions of a second.
+- Net Purchase Value = Perceived Reward minus Perceived Pain (cost). Elevating sensory reward or reducing cognitive friction drives conversion.
+- Products fulfill three primary motivational clusters: Security (reassurance), Autonomy (mastery/status), and Excitement (novelty/discovery).
+
+Admission Boundary:
+- Verified against Wiley catalog. Governs sensory branding and psychological pain-reduction in Phases 4, 5, and 6.

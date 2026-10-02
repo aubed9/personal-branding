@@ -1,0 +1,27 @@
+# Influence: The Psychology of Persuasion (New and Expanded) — publisher verification snapshot
+
+Captured: 2026-09-26
+Publisher: Harper Business
+Author: Robert B. Cialdini
+Edition: New and Expanded Edition; HarperCollins
+Published: 2021-05-04
+ISBN: 978-0062937650
+Publisher URL:
+https://www.harpercollins.com/products/influence-new-and-expanded-robert-b-cialdini
+
+Verified Locators & Structural Content:
+- Chapter 2: Reciprocation (The Old Give and Take)
+- Chapter 3: Commitment and Consistency (Hobgoblins of the Mind)
+- Chapter 4: Social Proof (Truths Are Us)
+- Chapter 5: Liking (The Friendly Thief)
+- Chapter 6: Authority (Directed Deference)
+- Chapter 7: Scarcity (The Rule of the Few)
+- Chapter 8: Unity (The We Is the Shared I)
+
+Key Conceptual Extractions:
+- Persuasion operates through seven universal psychological levers: Reciprocity, Commitment/Consistency, Social Proof, Liking, Authority, Scarcity, and Unity.
+- Social proof is exponentially more potent when peers are demographically and circumstantially identical to the buyer.
+- Authentic authority and genuine scarcity trigger rapid decision-making; fabricated scarcity breeds cynicism.
+
+Admission Boundary:
+- Verified against HarperCollins catalog. Grounds calls-to-action, landing page conversion, and trust architecture in Phase 5 and 8.

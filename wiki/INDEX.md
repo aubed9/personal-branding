@@ -1,7 +1,7 @@
 # نمایه جامع پایگاه دانش دیجیتال مارکت (Knowledge Wiki Index)
 
 > پایگاه دانش رسمی، ساخت‌یافته و مبتنی بر شواهد سیستم ساخت برند و تصمیم‌گیری کسب‌وکار **DIGITAL MARKET**.  
-> این مخزن حاوی **۹۸ گره دانشی استاندارد** با شناسه‌های پایدار (`KB-...`)، **۶۵ منبع مستند و معتبر** (`SRC-...`)، اتصالات گراف معنایی، ۳۰ نظریه بنیادین علمی و راهنماهای کاربردی بازار ایران است.
+> این مخزن حاوی **99 گره دانشی استاندارد** با شناسه‌های پایدار (`KB-...`)، **67 منبع مستند و معتبر** (`SRC-...`)، اتصالات گراف معنایی، ۳۰ نظریه بنیادین علمی و راهنماهای کاربردی بازار ایران است.
 
 ---
 
@@ -88,58 +88,59 @@
 
 | شناسه ماژول | عنوان ماژول دانشی | دسته بافتاری |
 | :--- | :--- | :--- |
-| [`KB-B2B-DMU`](13-decision-modules/b2b-dmu.md) | "Decision Module knowledge contract: KB-B2B-DMU" | قواعد تصمیم‌گیری زنجیره |
-| [`KB-B2B-PROCUREMENT`](13-decision-modules/b2b-procurement.md) | "Decision Module knowledge contract: KB-B2B-PROCUREMENT" | قواعد تصمیم‌گیری زنجیره |
-| [`KB-B2C-BEHAVIOR`](13-decision-modules/b2c-behavior.md) | "Decision Module knowledge contract: KB-B2C-BEHAVIOR" | قواعد تصمیم‌گیری زنجیره |
-| [`KB-BRAND-ARCHITECTURE`](13-decision-modules/brand-architecture.md) | "Decision Module knowledge contract: KB-BRAND-ARCHITECTURE" | قواعد تصمیم‌گیری زنجیره |
-| [`KB-COMPLIANCE`](13-decision-modules/compliance.md) | "Decision Module knowledge contract: KB-COMPLIANCE" | قواعد تصمیم‌گیری زنجیره |
-| [`KB-DIGITAL-FUNNEL`](13-decision-modules/digital-funnel.md) | "Decision Module knowledge contract: KB-DIGITAL-FUNNEL" | قواعد تصمیم‌گیری زنجیره |
-| [`KB-DIGITAL-PRODUCT`](13-decision-modules/digital-product.md) | "Decision Module knowledge contract: KB-DIGITAL-PRODUCT" | قواعد تصمیم‌گیری زنجیره |
-| [`KB-ENTERPRISE-GOVERNANCE`](13-decision-modules/enterprise-governance.md) | "Decision Module knowledge contract: KB-ENTERPRISE-GOVERNANCE" | قواعد تصمیم‌گیری زنجیره |
-| [`KB-FOUNDER-BRAND`](13-decision-modules/founder-brand.md) | "Decision Module knowledge contract: KB-FOUNDER-BRAND" | قواعد تصمیم‌گیری زنجیره |
-| [`KB-LOCAL-CHANNEL`](13-decision-modules/local-channel.md) | "Decision Module knowledge contract: KB-LOCAL-CHANNEL" | قواعد تصمیم‌گیری زنجیره |
-| [`KB-LOCAL-MARKET`](13-decision-modules/local-market.md) | "Decision Module knowledge contract: KB-LOCAL-MARKET" | قواعد تصمیم‌گیری زنجیره |
-| [`KB-LONG-SALES-CYCLE`](13-decision-modules/long-sales-cycle.md) | "Decision Module knowledge contract: KB-LONG-SALES-CYCLE" | قواعد تصمیم‌گیری زنجیره |
-| [`KB-LTV-CAC`](13-decision-modules/ltv-cac.md) | "Decision Module knowledge contract: KB-LTV-CAC" | قواعد تصمیم‌گیری زنجیره |
-| [`KB-MARKET-ENTRY`](13-decision-modules/market-entry.md) | "Decision Module knowledge contract: KB-MARKET-ENTRY" | قواعد تصمیم‌گیری زنجیره |
-| [`KB-MARKETPLACE-LIQUIDITY`](13-decision-modules/marketplace-liquidity.md) | "Decision Module knowledge contract: KB-MARKETPLACE-LIQUIDITY" | قواعد تصمیم‌گیری زنجیره |
-| [`KB-MICRO-OPERATIONS`](13-decision-modules/micro-operations.md) | "Decision Module knowledge contract: KB-MICRO-OPERATIONS" | قواعد تصمیم‌گیری زنجیره |
-| [`KB-MULTI-BRANCH`](13-decision-modules/multi-branch.md) | "Decision Module knowledge contract: KB-MULTI-BRANCH" | قواعد تصمیم‌گیری زنجیره |
-| [`KB-OPERATIONS`](13-decision-modules/operations.md) | "Decision Module knowledge contract: KB-OPERATIONS" | قواعد تصمیم‌گیری زنجیره |
-| [`KB-ORGANIZATIONAL-BRAND`](13-decision-modules/organizational-brand.md) | "Decision Module knowledge contract: KB-ORGANIZATIONAL-BRAND" | قواعد تصمیم‌گیری زنجیره |
-| [`KB-PHYSICAL-OFFER`](13-decision-modules/physical-offer.md) | "Decision Module knowledge contract: KB-PHYSICAL-OFFER" | قواعد تصمیم‌گیری زنجیره |
-| [`KB-PLATFORM-MECHANICS`](13-decision-modules/platform-mechanics.md) | "Decision Module knowledge contract: KB-PLATFORM-MECHANICS" | قواعد تصمیم‌گیری زنجیره |
-| [`KB-PROJECT-ECONOMICS`](13-decision-modules/project-economics.md) | "Decision Module knowledge contract: KB-PROJECT-ECONOMICS" | قواعد تصمیم‌گیری زنجیره |
-| [`KB-REBRAND`](13-decision-modules/rebrand.md) | "Decision Module knowledge contract: KB-REBRAND" | قواعد تصمیم‌گیری زنجیره |
-| [`KB-RETENTION`](13-decision-modules/retention.md) | "Decision Module knowledge contract: KB-RETENTION" | قواعد تصمیم‌گیری زنجیره |
-| [`KB-SERVICE-DELIVERY`](13-decision-modules/service-delivery.md) | "Decision Module knowledge contract: KB-SERVICE-DELIVERY" | قواعد تصمیم‌گیری زنجیره |
-| [`KB-TENDER`](13-decision-modules/tender.md) | "Decision Module knowledge contract: KB-TENDER" | قواعد تصمیم‌گیری زنجیره |
-| [`KB-UNIT-ECONOMICS`](13-decision-modules/unit-economics.md) | "Decision Module knowledge contract: KB-UNIT-ECONOMICS" | قواعد تصمیم‌گیری زنجیره |
-| [`KB-VALIDATION`](13-decision-modules/validation.md) | "Decision Module knowledge contract: KB-VALIDATION" | قواعد تصمیم‌گیری زنجیره |
-| [`KB-DOMAIN-CAFE`](13-decision-modules/domain-cafe.md) | "Cafe / specialty coffee domain decision contract" | دامنه تخصصی صنف |
-| [`KB-DOMAIN-LOCAL-RETAIL`](13-decision-modules/domain-local-retail.md) | "Local physical retail domain decision contract" | دامنه تخصصی صنف |
-| [`KB-DOMAIN-TAX-SAAS`](13-decision-modules/domain-tax-saas.md) | "Iran tax/accounting SaaS domain decision contract" | دامنه تخصصی صنف |
-| [`KB-DOMAIN-SAAS-GENERAL`](13-decision-modules/domain-saas-general.md) | "General SaaS adoption domain decision contract" | دامنه تخصصی صنف |
-| [`KB-DOMAIN-MEDICAL`](13-decision-modules/domain-medical.md) | "Medical / dental clinic domain decision contract" | دامنه تخصصی صنف |
-| [`KB-DOMAIN-BEAUTY`](13-decision-modules/domain-beauty.md) | "Beauty / salon domain decision contract" | دامنه تخصصی صنف |
-| [`KB-DOMAIN-MACHINING`](13-decision-modules/domain-machining.md) | "Machining / tooling domain decision contract" | دامنه تخصصی صنف |
-| [`KB-DOMAIN-MANUFACTURING`](13-decision-modules/domain-manufacturing.md) | "General manufacturing domain decision contract" | دامنه تخصصی صنف |
-| [`KB-DOMAIN-AUTOMOTIVE`](13-decision-modules/domain-automotive.md) | "Automotive local service operations domain decision contract" | دامنه تخصصی صنف |
-| [`KB-DOMAIN-RESTAURANT`](13-decision-modules/domain-restaurant.md) | "Restaurant and dining operations domain decision contract" | دامنه تخصصی صنف |
-| [`KB-DOMAIN-TEXTILE`](13-decision-modules/domain-textile.md) | "Textile and apparel production domain decision contract" | دامنه تخصصی صنف |
+| [`KB-B2B-DMU`](13-decision-modules/b2b-dmu.md) | Decision Module knowledge contract: KB-B2B-DMU | قواعد تصمیم‌گیری زنجیره |
+| [`KB-B2B-PROCUREMENT`](13-decision-modules/b2b-procurement.md) | Decision Module knowledge contract: KB-B2B-PROCUREMENT | قواعد تصمیم‌گیری زنجیره |
+| [`KB-B2C-BEHAVIOR`](13-decision-modules/b2c-behavior.md) | Decision Module knowledge contract: KB-B2C-BEHAVIOR | قواعد تصمیم‌گیری زنجیره |
+| [`KB-BRAND-ARCHITECTURE`](13-decision-modules/brand-architecture.md) | Decision Module knowledge contract: KB-BRAND-ARCHITECTURE | قواعد تصمیم‌گیری زنجیره |
+| [`KB-COMPLIANCE`](13-decision-modules/compliance.md) | Decision Module knowledge contract: KB-COMPLIANCE | قواعد تصمیم‌گیری زنجیره |
+| [`KB-DIGITAL-FUNNEL`](13-decision-modules/digital-funnel.md) | Decision Module knowledge contract: KB-DIGITAL-FUNNEL | قواعد تصمیم‌گیری زنجیره |
+| [`KB-DIGITAL-PRODUCT`](13-decision-modules/digital-product.md) | Decision Module knowledge contract: KB-DIGITAL-PRODUCT | قواعد تصمیم‌گیری زنجیره |
+| [`KB-ENTERPRISE-GOVERNANCE`](13-decision-modules/enterprise-governance.md) | Decision Module knowledge contract: KB-ENTERPRISE-GOVERNANCE | قواعد تصمیم‌گیری زنجیره |
+| [`KB-FOUNDER-BRAND`](13-decision-modules/founder-brand.md) | Decision Module knowledge contract: KB-FOUNDER-BRAND | قواعد تصمیم‌گیری زنجیره |
+| [`KB-LOCAL-CHANNEL`](13-decision-modules/local-channel.md) | Decision Module knowledge contract: KB-LOCAL-CHANNEL | قواعد تصمیم‌گیری زنجیره |
+| [`KB-LOCAL-MARKET`](13-decision-modules/local-market.md) | Decision Module knowledge contract: KB-LOCAL-MARKET | قواعد تصمیم‌گیری زنجیره |
+| [`KB-LONG-SALES-CYCLE`](13-decision-modules/long-sales-cycle.md) | Decision Module knowledge contract: KB-LONG-SALES-CYCLE | قواعد تصمیم‌گیری زنجیره |
+| [`KB-LTV-CAC`](13-decision-modules/ltv-cac.md) | Decision Module knowledge contract: KB-LTV-CAC | قواعد تصمیم‌گیری زنجیره |
+| [`KB-MARKET-ENTRY`](13-decision-modules/market-entry.md) | Decision Module knowledge contract: KB-MARKET-ENTRY | قواعد تصمیم‌گیری زنجیره |
+| [`KB-MARKETPLACE-LIQUIDITY`](13-decision-modules/marketplace-liquidity.md) | Decision Module knowledge contract: KB-MARKETPLACE-LIQUIDITY | قواعد تصمیم‌گیری زنجیره |
+| [`KB-MICRO-OPERATIONS`](13-decision-modules/micro-operations.md) | Decision Module knowledge contract: KB-MICRO-OPERATIONS | قواعد تصمیم‌گیری زنجیره |
+| [`KB-MULTI-BRANCH`](13-decision-modules/multi-branch.md) | Decision Module knowledge contract: KB-MULTI-BRANCH | قواعد تصمیم‌گیری زنجیره |
+| [`KB-OPERATIONS`](13-decision-modules/operations.md) | Decision Module knowledge contract: KB-OPERATIONS | قواعد تصمیم‌گیری زنجیره |
+| [`KB-ORGANIZATIONAL-BRAND`](13-decision-modules/organizational-brand.md) | Decision Module knowledge contract: KB-ORGANIZATIONAL-BRAND | قواعد تصمیم‌گیری زنجیره |
+| [`KB-PHYSICAL-OFFER`](13-decision-modules/physical-offer.md) | Decision Module knowledge contract: KB-PHYSICAL-OFFER | قواعد تصمیم‌گیری زنجیره |
+| [`KB-PLATFORM-MECHANICS`](13-decision-modules/platform-mechanics.md) | Decision Module knowledge contract: KB-PLATFORM-MECHANICS | قواعد تصمیم‌گیری زنجیره |
+| [`KB-PROJECT-ECONOMICS`](13-decision-modules/project-economics.md) | Decision Module knowledge contract: KB-PROJECT-ECONOMICS | قواعد تصمیم‌گیری زنجیره |
+| [`KB-REBRAND`](13-decision-modules/rebrand.md) | Decision Module knowledge contract: KB-REBRAND | قواعد تصمیم‌گیری زنجیره |
+| [`KB-RETENTION`](13-decision-modules/retention.md) | Decision Module knowledge contract: KB-RETENTION | قواعد تصمیم‌گیری زنجیره |
+| [`KB-SERVICE-DELIVERY`](13-decision-modules/service-delivery.md) | Decision Module knowledge contract: KB-SERVICE-DELIVERY | قواعد تصمیم‌گیری زنجیره |
+| [`KB-TENDER`](13-decision-modules/tender.md) | Decision Module knowledge contract: KB-TENDER | قواعد تصمیم‌گیری زنجیره |
+| [`KB-UNIT-ECONOMICS`](13-decision-modules/unit-economics.md) | Decision Module knowledge contract: KB-UNIT-ECONOMICS | قواعد تصمیم‌گیری زنجیره |
+| [`KB-VALIDATION`](13-decision-modules/validation.md) | Decision Module knowledge contract: KB-VALIDATION | قواعد تصمیم‌گیری زنجیره |
+| [`KB-DOMAIN-CAFE`](13-decision-modules/domain-cafe.md) | Cafe / specialty coffee domain decision contract | دامنه تخصصی صنف |
+| [`KB-DOMAIN-LOCAL-RETAIL`](13-decision-modules/domain-local-retail.md) | Local physical retail domain decision contract | دامنه تخصصی صنف |
+| [`KB-DOMAIN-TAX-SAAS`](13-decision-modules/domain-tax-saas.md) | Iran tax/accounting SaaS domain decision contract | دامنه تخصصی صنف |
+| [`KB-DOMAIN-SAAS-GENERAL`](13-decision-modules/domain-saas-general.md) | General SaaS adoption domain decision contract | دامنه تخصصی صنف |
+| [`KB-DOMAIN-MEDICAL`](13-decision-modules/domain-medical.md) | Medical / dental clinic domain decision contract | دامنه تخصصی صنف |
+| [`KB-DOMAIN-BEAUTY`](13-decision-modules/domain-beauty.md) | Beauty / salon domain decision contract | دامنه تخصصی صنف |
+| [`KB-DOMAIN-MACHINING`](13-decision-modules/domain-machining.md) | Machining / tooling domain decision contract | دامنه تخصصی صنف |
+| [`KB-DOMAIN-MANUFACTURING`](13-decision-modules/domain-manufacturing.md) | General manufacturing domain decision contract | دامنه تخصصی صنف |
+| [`KB-DOMAIN-AUTOMOTIVE`](13-decision-modules/domain-automotive.md) | Automotive local service operations domain decision contract | دامنه تخصصی صنف |
+| [`KB-DOMAIN-RESTAURANT`](13-decision-modules/domain-restaurant.md) | Restaurant and dining operations domain decision contract | دامنه تخصصی صنف |
+| [`KB-DOMAIN-TEXTILE`](13-decision-modules/domain-textile.md) | Textile and apparel production domain decision contract | دامنه تخصصی صنف |
 
 ---
 
 ## 📊 شواهد کلان، پولی و داده‌های بازار ایران (Iran Macro & Platform Evidence)
 
-| شناسه گره | عنوان مدرک آماری | منبع و دوره |
+| شناسه گره | عنوان مدرک آماری | مأخذ و وضعیت اعتبار |
 | :--- | :--- | :--- |
-| [`KB-IR-MACRO-SCI-CPI-001`](14-iran-evidence/sci-cpi-1405-05.md) | "تورم مصرف‌کننده ایران — مرکز آمار، مرداد ۱۴۰۵" | گزارش رسمی مأخذ |
-| [`KB-IR-MACRO-CBI-CPI-001`](14-iran-evidence/cbi-cpi-1405-05.md) | "تورم مناطق شهری — بانک مرکزی، مرداد ۱۴۰۵" | گزارش رسمی مأخذ |
-| [`KB-IR-PAYMENTS-SHAPARAK-001`](14-iran-evidence/shaparak-134.md) | "شبکه پرداخت ایران — گزارش مرداد ۱۴۰۵ شاپرک" | گزارش رسمی مأخذ |
-| [`KB-IR-ECOM-REPORT-001`](14-iran-evidence/ecommerce-1403.md) | "گزارش تجارت الکترونیکی ایران — سال ۱۴۰۳" | گزارش رسمی مأخذ |
-| [`KB-IR-PLATFORM-DIGIKALA-1404`](14-iran-evidence/digikala-1404-platform.md) | "رفتار کاربران دیجی‌کالا — گزارش سال ۱۴۰۴" | گزارش رسمی مأخذ |
-| [`KB-IR-PLATFORM-SNAPP-1404`](14-iran-evidence/snapp-1404-platform.md) | "رفتار کاربران اسنپ — گزارش سال ۱۴۰۴" | گزارش رسمی مأخذ |
+| [`KB-IR-MACRO-SCI-CPI-001`](14-iran-evidence/sci-cpi-1405-05.md) | تورم مصرف‌کننده ایران — مرکز آمار، مرداد ۱۴۰۵ | مأخذ رسمی تأییدشده |
+| [`KB-IR-MACRO-CBI-CPI-001`](14-iran-evidence/cbi-cpi-1405-05.md) | تورم مناطق شهری — بانک مرکزی، مرداد ۱۴۰۵ | مأخذ رسمی تأییدشده |
+| [`KB-IR-PAYMENTS-SHAPARAK-001`](14-iran-evidence/shaparak-134.md) | شبکه پرداخت ایران — گزارش مرداد ۱۴۰۵ شاپرک | مأخذ رسمی تأییدشده |
+| [`KB-IR-ECOM-REPORT-001`](14-iran-evidence/ecommerce-1403.md) | گزارش تجارت الکترونیکی ایران — سال ۱۴۰۳ | مأخذ رسمی تأییدشده |
+| [`KB-IR-PLATFORM-DIGIKALA-1404`](14-iran-evidence/digikala-1404-platform.md) | رفتار کاربران دیجی‌کالا — گزارش سال ۱۴۰۴ | مأخذ رسمی تأییدشده |
+| [`KB-IR-PLATFORM-SNAPP-1404`](14-iran-evidence/snapp-1404-platform.md) | رفتار کاربران اسنپ — گزارش سال ۱۴۰۴ | مأخذ رسمی تأییدشده |
+| [`KB-IR-PLATFORM-NAJVA-1404`](14-iran-evidence/najva-1404-platform.md) | رفتار کمپین‌های پیامکی نجوا — گزارش سالانه ۱۴۰۴ | مأخذ رسمی تأییدشده |
 
 ---
 
@@ -190,7 +191,7 @@
 
 ---
 
-## 🇮🇷 مراجع داده‌ای اقتصاد و بازار ایران (Iran Economic & Digital Sources)
+## 🇮🇷 مراجع داده‌ای اقتصاد، بسترها و قوانین ایران (Iran Market & Evidence Sources)
 
 | شناسه منبع | نهاد / گزارش | شاخص‌های کلیدی قابل استخراج | حوزه استفاده |
 | :--- | :--- | :--- | :--- |
@@ -199,8 +200,9 @@
 | `SRC-IR-CODAL-FAMILY` | سامانه ناشران بورسی کدال (codal.ir) | حاشیه سود واقعی صنایع، دوره وصول DSO | فاز ۱، ۸ |
 | `SRC-IR-ECOM-FAMILY` | مرکز توسعه تجارت الکترونیکی (enamad.ir) | گردش مالی ایکامرس، آمار نماد اعتماد | فاز ۱، ۲، ۸ |
 | `SRC-IR-SHAPARAK-FAMILY` | شبکه پرداخت شاپرک (shaparak.ir) | ارزش و تعداد تراکنش‌های بانکی کارتی | فاز ۲، ۸ |
-| `SRC-IR-DIGIKALA-FAMILY` | گزارش سالانه دیجی‌کالا | رفتار سبد خرید آنلاین، پدیده Down-trading | فاز ۲، ۳، ۸ |
-| `SRC-IR-SNAPP-FAMILY` | گزارش عملکرد گروه اسنپ | سفارش آنلاین غذا، استقبال از اعتباری BNPL | فاز ۱، ۲، ۸ |
+| `SRC-IR-DIGIKALA-FAMILY` | گزارش سالانه گروه دیجی‌کالا | رفتار سبد خرید آنلاین، پدیده Down-trading و طلای دیجیتال | فاز ۱، ۲، ۳، ۸ |
+| `SRC-IR-SNAPP-FAMILY` | گزارش عملکرد گروه اسنپ | سفارش آنلاین غذا، سفرهای شهری و رفتار روزمره | فاز ۱، ۲، ۸ |
+| `SRC-IR-NAJVA-REPORT-1404-FIRST-PARTY` | گزارش سالانه پلتفرم نجوا ۱۴۰۴ | نرخ کلیک و اثر شخصی‌سازی پیامک در بازاریابی بازگشتی | فاز ۲، ۵، ۸ |
 | `SRC-IR-BAZAAR-FAMILY` | گزارش سالانه کافه‌بازار | سیستم‌عامل اندروید، پرداخت درون‌برنامه‌ای | فاز ۲، ۸ |
 | `SRC-IR-ADTECH-FAMILY` | گزارش بازاریابی دیجیتال یکتانت/تپسل | هزینه کلیک CPC، نرخ کلیک CTR، هزینه CAC | فاز ۱، ۲، ۸ |
 

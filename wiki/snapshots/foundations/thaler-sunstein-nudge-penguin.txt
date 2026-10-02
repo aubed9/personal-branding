@@ -1,0 +1,24 @@
+# Nudge: Improving Decisions About Health, Wealth, and Happiness (Final Edition) — publisher verification snapshot
+
+Captured: 2026-09-26
+Publisher: Penguin Books
+Author: Richard H. Thaler; Cass R. Sunstein
+Edition: The Final Edition; Penguin Books
+Published: 2021-08-03
+ISBN: 978-0143137009
+Publisher URL:
+https://www.penguinrandomhouse.com/books/675661/nudge-by-richard-h-thaler-and-cass-r-sunstein/
+
+Verified Locators & Structural Content:
+- Introduction: Libertarian Paternalism & Choice Architecture
+- Chapter 1: Biases and Blunders (Anchors, availability, representativeness)
+- Chapter 2: Resisting Temptation (Mental accounting)
+- Chapter 5: Choice Architecture (Defaults, error handling, feedback, incentives)
+
+Key Conceptual Extractions:
+- Default options exert overwhelming influence on choices; setting the optimal tier as default maximizes adoption while preserving user freedom.
+- Mental accounting causes customers to allocate budgets into rigid mental buckets (e.g. survival vs. self-improvement vs. entertainment).
+- Structured choice architecture guides users toward higher-value choices without cognitive overload.
+
+Admission Boundary:
+- Verified against Penguin Random House catalog. Drives checkout design, plan defaults, and offer structure.

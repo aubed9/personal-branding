@@ -1,0 +1,24 @@
+# Customer Centricity: Focus on the Right Customers for Strategic Advantage — publisher verification snapshot
+
+Captured: 2026-09-26
+Publisher: Wharton Digital Press
+Author: Peter Fader
+Edition: First Edition; Wharton School Press
+Published: 2012-04-15
+ISBN: 978-1613630167
+Publisher URL:
+https://wsp.wharton.upenn.edu/book/customer-centricity/
+
+Verified Locators & Structural Content:
+- Chapter 1: Why Customer Centricity?
+- Chapter 2: Understanding Customer Lifetime Value (CLV distribution)
+- Chapter 3: Customer Equity (Treating customers as unequal assets)
+- Chapter 4: Developing a Customer-Centric Organization
+
+Key Conceptual Extractions:
+- Customer centricity does NOT mean treating all customers equally or doing whatever every customer demands.
+- A business must celebrate customer heterogeneity: identify high-CLV customers and direct product innovation and premium service to delight them.
+- Disinvest from persistently unprofitable low-CLV customers to protect operational capacity.
+
+Admission Boundary:
+- Verified against Wharton School Press catalog. Guides segmentation, customer lifetime value allocation, and retention tiering.

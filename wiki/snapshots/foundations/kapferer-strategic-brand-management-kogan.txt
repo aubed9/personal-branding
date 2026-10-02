@@ -1,0 +1,24 @@
+# The New Strategic Brand Management: Advanced Insights and Strategic Thinking, 5th Edition — publisher verification snapshot
+
+Captured: 2026-09-26
+Publisher: Kogan Page
+Author: Jean-Noël Kapferer
+Edition: 5th Edition; Kogan Page
+Published: 2012-01-03
+ISBN: 978-0749465155
+Publisher URL:
+https://www.koganpage.com/marketing-communications/the-new-strategic-brand-management-9780749465155
+
+Verified Locators & Structural Content:
+- Part One: Why is Branding so Strategic?
+- Chapter 7: Brand Identity: The Core Concept (Brand Identity Prism: Physique, Personality, Culture, Relationship, Reflection, Self-image)
+- Chapter 8: Launching the Brand
+- Part Three: Brand Architecture
+
+Key Conceptual Extractions:
+- Brand Identity Prism balances internal culture and personality with external physique and relationship.
+- A strong brand possesses an explicit cultural ideology and ethical stance that commands respect beyond commercial exchange.
+- Customer reflection and self-image govern how buying the brand transforms the consumer's social identity.
+
+Admission Boundary:
+- Verified against Kogan Page catalog. Core model for Phase 4 Brand Identity Prism and relational role.

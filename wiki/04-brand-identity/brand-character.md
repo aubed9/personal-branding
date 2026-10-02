@@ -1,6 +1,6 @@
 ---
 id: KB-IDN-CHAR-001
-tags: ['brand_character', 'archetypes', 'psychological_soul', 'jungian_archetypes', 'brand_archetype']
+tags: ['brand_character', 'archetypes', 'psychological_soul', 'jungian_archetypes', 'brand_archetype', 'aaker_personality', 'identity_prism']
 title: "کاراکتر و کهن‌الگوی روان‌شناختی برند"
 category: "04-brand-identity"
 version: "1.0.0"
@@ -12,6 +12,7 @@ related_metrics: ['archetype_coherence', 'character_resonance']
 related_concepts: ['JUNGIAN_ARCHETYPES', 'BRAND_PERSONA']
 source: "DIGITAL MARKET Knowledge Engine & Academic Foundations"
 last_updated: "2026-09-05"
+sources: ['SRC-FOUNDATION-16', 'SRC-FOUNDATION-18', 'SRC-FOUNDATION-04']
 ---
 
 # مفهوم چیست؟
@@ -57,7 +58,8 @@ last_updated: "2026-09-05"
 انسجام حسی برند، وضوح شخصیت ادراک‌شده توسط مخاطب.
 
 # Related Wiki Nodes
-- `KB-IDN-PERSON-001`\n- `KB-MSG-VOICE-001`
+- `KB-IDN-PERSON-001`
+- `KB-MSG-VOICE-001`
 # الگوریتم حل مسئله و انتخاب کهن‌الگو (Execution Algorithm)
 ```text
 [شروع: تحلیل انگیزه ناخودآگاه مخاطب هدف بر اساس ماتریس ۴ ربعی مارک و پیرسون]
@@ -82,3 +84,25 @@ last_updated: "2026-09-05"
 # دستورالعمل اجرایی رفتار پرسنل صف (Frontline Behavioral Protocol)
 1. **قانون خوش‌آمدگویی ۳ ثانیه‌ای:** هر مشتری که وارد می‌شود طی ۳ ثانیه با ارتباط چشمی و احوالپرسی محترمانه متوجه دیده شدن خود شود.
 2. **پروتکل توضیح شفاف:** عیب خودرو، طعم قهوه یا قابلیت نرم‌افزار به زبان ساده و قابل فهم بیان شود بدون گیج کردن مشتری با واژگان فنی نامفهوم.
+
+---
+
+## پایه‌های علمی و مراجع دانشی (Scientific Foundations & Sourced Evidence)
+### پایه‌های علمی و مراجع دانشی (Scientific Foundations)
+- **دیوید آکر (SRC-FOUNDATION-16):** شخصیت برند ابعاد انسانی برند را می‌سازد (صداقت، هیجان، شایستگی، دل‌ربایی، سرسختی) و پیوند عاطفی ایجاد می‌کند.
+- **ژان نوئل کاپفرر (SRC-FOUNDATION-18):** منشور هویت برند؛ شخصیت برند صدای سخنگوی درونی فرهنگ و باورهای سازمانی است.
+- **گرت هافستد (SRC-FOUNDATION-04):** تناسب الگوهای کهن‌الگویی با ابعاد فرهنگی جامعه هدف.
+
+---
+
+## شواهد و بستر تجاری ایران (Iranian Market Context & Evidence)
+### شواهد و بستر تجاری ایران (Iranian Market Realities)
+- **استقبال از کهن‌الگوهای حامی و دانا:** در بازار ایران به دلیل فضای عدم قطعیت اقتصادی، برندهایی که کهن‌الگوی «حامی / مراقب» (Caregiver) یا «دانا / راهنما» (Sage) اتخاذ می‌کنند ضریب اعتماد بالاتری نسبت به کهن‌الگوهای یاغی و ساختارشکن کسب می‌کنند.
+- **انطباق رفتار با کلام:** هرگونه تناقض میان ادعای اصالت و رفتار پرسنل فروش در مغازه یا پاسخگویی پشتیبانی، شخصیت برند را تخریب می‌کند.
+
+---
+
+## قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+### قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+1. **قاعده کهن‌الگوی مسلط و متمم:** برند حداکثر یک کهن‌الگوی اصلی (۷۰٪ لحن و تصویر) و یک کهن‌الگوی متمم (۳۰٪) دارد.
+2. **قاعده ثبات رفتاری:** شخصیت برند نباید با تغییر فصل یا کمپین تغییر کند؛ این ویژگی ستون فقرات پایدار هویت است.

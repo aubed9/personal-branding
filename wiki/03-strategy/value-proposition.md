@@ -1,6 +1,6 @@
 ---
 id: KB-STR-VP-001
-tags: ['value_proposition', 'pain_relievers', 'gain_creators', 'value_map', 'customer_profile']
+tags: ['value_proposition', 'pain_relievers', 'gain_creators', 'value_map', 'customer_profile', 'osterwalder']
 title: "گزاره ارزش پیشنهادی و تسکین دردهای مشتری"
 category: "03-strategy"
 version: "1.0.0"
@@ -12,6 +12,7 @@ related_metrics: ['value_prop_resonance', 'pain_relief_score']
 related_concepts: ['VALUE_PROPOSITION', 'PAIN_RELIEVERS_GAIN_CREATORS']
 source: "DIGITAL MARKET Knowledge Engine & Academic Foundations"
 last_updated: "2026-09-05"
+sources: ['SRC-FOUNDATION-14', 'SRC-FOUNDATION-12', 'SRC-FOUNDATION-20']
 ---
 
 # مفهوم چیست؟
@@ -57,4 +58,27 @@ last_updated: "2026-09-05"
 نرخ درک ارزش توسط مشتری، کاهش ریزش در مرحله ارزیابی.
 
 # Related Wiki Nodes
-- `KB-RES-CUST-001`\n- `KB-STR-PROMISE-001`
+- `KB-RES-CUST-001`
+- `KB-STR-PROMISE-001`
+
+---
+
+## پایه‌های علمی و مراجع دانشی (Scientific Foundations & Sourced Evidence)
+### پایه‌های علمی و مراجع دانشی (Scientific Foundations)
+- **الکساندر استروالدر (SRC-FOUNDATION-14):** بوم ارزش پیشنهادی؛ نگاشت محصولات و خدمات، تسکین‌دهنده‌های درد و شادی‌آفرین‌ها بر رنج‌ها و دستاوردهای مشتری.
+- **کلیتون کریستنسن (SRC-FOUNDATION-12):** ارزش پیشنهادی پاسخی مستقیم به شغل در دست اقدام مشتری در زمان کشمکش است.
+- **فیل باردن (SRC-FOUNDATION-20):** ارزش پیشنهادی باید به کدهای پاداش حسی و روان‌شناختی تبدیل شود.
+
+---
+
+## شواهد و بستر تجاری ایران (Iranian Market Context & Evidence)
+### شواهد و بستر تجاری ایران (Iranian Market Realities)
+- **تمرکز بر تسکین درد تا خلق شادی تجملی:** در شرایط رکود تورمی، پیشنهادهایی که دردهای حاد مالی، اتلاف وقت و ریسک خرابی را رفع می‌کنند نرخ موفقیت بسیار بالاتری از مزایای لوکس فانتزی دارند.
+- **تضمین سلامت و گارانتی:** ضمانت برگشت وجه واقعی یا گارانتی تعویض بی قیدوشرط به نیرومندترین ارزش پیشنهادی تبدیل شده است.
+
+---
+
+## قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+### قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+1. **قاعده تسکین رنج حاد:** ارزش پیشنهادی باید حداقل یک رنج درجه ۱ (شدید و مستمر) مشتری را درمان کند، نه ۱۰ درد کم‌اهمیت.
+2. **قاعده شفافیت یک‌جمله‌ای:** ارزش پیشنهادی باید در یک جمله کوتاه بدون واژگان مبهم تخصصی قابل فهم باشد.

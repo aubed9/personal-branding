@@ -1,0 +1,25 @@
+# Marketing Management, 16th Edition — publisher verification snapshot
+
+Captured: 2026-09-26
+Publisher: Pearson
+Author: Philip Kotler; Kevin Lane Keller; Alexander Chernev
+Edition: 16th Edition; Pearson Education
+Published: 2021-04-30
+ISBN: 978-0135887158
+Publisher URL:
+https://www.pearson.com/en-us/subject-catalog/p/marketing-management/P200000003001/9780135887158
+
+Verified Locators & Structural Content:
+- Part 3: Connecting with Customers
+- Chapter 9: Identifying Market Segments and Targets (STP process)
+- Part 4: Building Strong Brands
+- Chapter 10: Crafting the Brand Positioning (Points-of-parity, points-of-difference)
+- Part 5: Creating the Marketing Mix (4Ps / 7Ps management)
+
+Key Conceptual Extractions:
+- Segmentation, Targeting, and Positioning (STP) form the foundational strategic sequence prior to any tactical execution.
+- Targeting requires evaluating segment size, growth potential, structural attractiveness, and organizational capability.
+- The marketing mix must maintain complete coherence with the chosen positioning stance.
+
+Admission Boundary:
+- Verified against Pearson catalog. Standard reference for marketing architecture across Phases 1 to 5.

@@ -1,0 +1,24 @@
+# The Practice of Management — publisher verification snapshot
+
+Captured: 2026-09-26
+Publisher: Harper & Brothers / HarperCollins
+Author: Peter F. Drucker
+Edition: Reissue Edition; HarperBusiness
+Published: 1954-01-01
+ISBN: 978-0060878979
+Publisher URL:
+https://www.harpercollins.com/products/the-practice-of-management-peter-f-drucker
+
+Verified Locators & Structural Content:
+- Part One: The Nature of Management
+- Chapter 3: What Is a Business? ('There is only one valid definition of business purpose: to create a customer.')
+- Chapter 4: What Is Our Business—And What Should It Be?
+- Part Two: Managing a Business (Marketing and Innovation as the only two profit centers)
+
+Key Conceptual Extractions:
+- The purpose of a business is to create and keep a customer; marketing and innovation produce economic results—all the rest are costs.
+- Efficiency is doing things right; effectiveness is doing the right things.
+- Strategy begins with the difficult questions: 'Who is our customer? Where are they? What do they consider valuable?'
+
+Admission Boundary:
+- Verified against HarperCollins catalog. Core management philosophy and executive decision governance.

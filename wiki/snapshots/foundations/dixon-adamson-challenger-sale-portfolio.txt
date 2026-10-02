@@ -1,0 +1,24 @@
+# The Challenger Sale: Taking Control of the Customer Conversation — publisher verification snapshot
+
+Captured: 2026-09-26
+Publisher: Portfolio / Penguin
+Author: Matthew Dixon; Brent Adamson
+Edition: First Edition; Portfolio / Penguin Random House
+Published: 2011-11-10
+ISBN: 978-1591844358
+Publisher URL:
+https://www.penguinrandomhouse.com/books/309322/the-challenger-sale-by-matthew-dixon-and-brent-adamson/
+
+Verified Locators & Structural Content:
+- Chapter 2: The Challenger (Five sales profiles: Hard Worker, Relationship Builder, Lone Wolf, Problem Solver, Challenger)
+- Chapter 3: Teaching for Differentiation (Commercial teaching)
+- Chapter 4: Tailoring for Resonance
+- Chapter 5: Taking Control of the Sale
+
+Key Conceptual Extractions:
+- In complex B2B environments, 'Relationship Builders' underperform; 'Challengers' dominate by teaching customers unique insights about their own operations.
+- The Challenger playbook: Teach for differentiation, Tailor for resonance with distinct stakeholders, and Take control of the financial discussion.
+- Commercial teaching leads TO the vendor's unique capability rather than leading WITH it.
+
+Admission Boundary:
+- Verified against Penguin Random House catalog. Powers B2B thought leadership and enterprise negotiation playbooks.

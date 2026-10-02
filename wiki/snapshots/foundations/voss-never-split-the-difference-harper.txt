@@ -1,0 +1,25 @@
+# Never Split the Difference: Negotiating As If Your Life Depended On It — publisher verification snapshot
+
+Captured: 2026-09-26
+Publisher: Harper Business
+Author: Chris Voss; Tahl Raz
+Edition: First Edition; HarperCollins
+Published: 2016-05-17
+ISBN: 978-0062407801
+Publisher URL:
+https://www.harpercollins.com/products/never-split-the-difference-chris-vosstahl-raz
+
+Verified Locators & Structural Content:
+- Chapter 2: Be a Mirror (Tactical empathy and mirroring)
+- Chapter 3: Don't Feel Their Pain, Label It (Labeling fears)
+- Chapter 4: Beware 'Yes'—Master 'No'
+- Chapter 5: Trigger the Two Words That Immediately Transform Any Negotiation ('That's Right')
+- Chapter 7: Create the Illusion of Control (Calibrated questions starting with 'How' or 'What')
+
+Key Conceptual Extractions:
+- Compromise ('splitting the difference') often yields catastrophic compromises; true leverage uncovers the Black Swan (hidden non-monetary drivers).
+- Tactical empathy and emotional labeling disarm fear and defensiveness.
+- Calibrated open-ended questions ('How am I supposed to do that?') force the counterpart to problem-solve on your behalf.
+
+Admission Boundary:
+- Verified against HarperCollins catalog. Governs high-stakes B2B client negotiations and objection management.

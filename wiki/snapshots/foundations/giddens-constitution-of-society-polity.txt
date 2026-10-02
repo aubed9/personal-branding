@@ -1,0 +1,23 @@
+# The Constitution of Society: Outline of the Theory of Structuration — publisher verification snapshot
+
+Captured: 2026-09-26
+Publisher: Polity Press / University of California Press
+Author: Anthony Giddens
+Edition: First Edition; University of California Press / Polity
+Published: 1984-01-01
+ISBN: 978-0520057289
+Publisher URL:
+https://www.ucpress.edu/books/the-constitution-of-society/paper
+
+Verified Locators & Structural Content:
+- Chapter 1: Elements of the Theory of Structuration (Agency, reflexivity, practical consciousness)
+- Chapter 2: Consciousness, Self and Social Encounters (Routines, ontological security)
+- Chapter 6: Structuration Theory, Empirical Research and Social Critique
+
+Key Conceptual Extractions:
+- Structuration theory posits that human agency and social structure are a duality: routines reproduce social institutions, and institutions constrain and enable human action.
+- Ontological security relies on predictability of everyday routines. Consumers resist abrupt behavioral change unless the new habit integrates smoothly into existing daily practices.
+- Market adoption succeeds when a brand's product is routinized into day-to-day practical consciousness.
+
+Admission Boundary:
+- Bibliographic identity and edition verified against University of California Press and Polity catalogs. Supports behavioral habit design and adoption models.

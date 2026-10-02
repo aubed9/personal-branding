@@ -1,6 +1,6 @@
 ---
 id: KB-STR-POS-001
-tags: ['positioning', 'mindshare', 'mental_space', 'strategic_clarity', 'category_ownership']
+tags: ['positioning', 'mindshare', 'mental_space', 'strategic_clarity', 'category_ownership', 'strategic_positioning', 'porter', 'keller_pop_pod', 'onlyness']
 title: "استراتژی جایگاه‌یابی و تسخیر جایگاه در ذهن"
 category: "03-strategy"
 version: "1.0.0"
@@ -12,6 +12,7 @@ related_metrics: ['brand_recall', 'perceived_differentiation']
 related_concepts: ['BRAND_POSITIONING', 'MENTAL_REAL_ESTATE']
 source: "DIGITAL MARKET Knowledge Engine & Academic Foundations"
 last_updated: "2026-09-05"
+sources: ['SRC-FOUNDATION-09', 'SRC-FOUNDATION-15', 'SRC-FOUNDATION-10']
 ---
 
 # مفهوم چیست؟
@@ -57,7 +58,8 @@ last_updated: "2026-09-05"
 یادآوری بدون کمک برند (Unaided Recall)، شاخص تمایز.
 
 # Related Wiki Nodes
-- `KB-STR-DIFF-001`\n- `KB-STR-PROMISE-001`
+- `KB-STR-DIFF-001`
+- `KB-STR-PROMISE-001`
 # الگوریتم حل مسئله و تدوین جایگاه‌یابی انحصاری (Execution Algorithm)
 ```text
 [شروع: استخراج بزرگ‌ترین درد مشترک مشتریان و نقطه ضعف رقبای صنف]
@@ -89,3 +91,25 @@ last_updated: "2026-09-05"
 
 # الزامات و پلی‌بوک‌های بومی بازار ایران (Iranian Market Realities)
 - **پرهیز از ادعاهای کلیشه‌ای و توخالی:** کلماتی مانند «با کیفیت‌ترین»، «ارزان‌ترین»، «با ما بدرخشید» در بازار ایران کارکرد معکوس دارند و نشانه عدم تخصص تلقی می‌شوند. مزیت باید عینی و قابل لمس باشد (مانند: «تحویل زیر ۳۰ دقیقه با ضمانت پرداخت خسارت دیرکرد»).
+
+---
+
+## پایه‌های علمی و مراجع دانشی (Scientific Foundations & Sourced Evidence)
+### پایه‌های علمی و مراجع دانشی (Scientific Foundations)
+- **مایکل پورتر (SRC-FOUNDATION-09):** جایگاه‌یابی استراتژیک یعنی انجام فعالیت‌های متفاوت از رقبا یا انجام فعالیت‌های مشابه به شیوه‌ای کاملاً متفاوت. جوهره استراتژی انتخاب کارهایی است که نباید انجام دهیم.
+- **کوین لین کلر (SRC-FOUNDATION-15):** تفکیک نقاط اشتراک الزامی (Points-of-Parity) از نقاط تمایز برند (Points-of-Difference). ابتدا باید صلاحیت حضور در صنعت اثبات شود تا ادعای تمایز معتبر تلقی گردد.
+- **ریچارد روملت (SRC-FOUNDATION-10):** سیاست راهنما (Guiding Policy) که مسیر هدایت برند را متمرکز می‌کند.
+
+---
+
+## شواهد و بستر تجاری ایران (Iranian Market Context & Evidence)
+### شواهد و بستر تجاری ایران (Iranian Market Realities)
+- **ادعاهای تکراری و بی‌اثر:** در بازار ایران اکثر برندها مدعی «کیفیت برتر، قیمت مناسب، خدمات پس از فروش» هستند که ادعاهایی کلیشه‌ای و فاقد تمایز واقعی است.
+- **اثبات با شواهد عینی:** جایگاه‌یابی باید دارای مدرک اثبات قابل راستی‌آزمایی (RTB) مانند تاییدیه دانشگاهی، مجوز استاندارد، یا سابقه تخصصی صنف باشد.
+
+---
+
+## قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+### قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+1. **قاعده آزمون یگانگی (Only-ness Test):** گزاره جایگاه‌یابی باید فرمت «ما تنها [دسته‌بندی] هستیم که [تمایز رادیکال] را برای [مخاطب خاص] فراهم می‌کنیم» را برآورده کند.
+2. **قاعده عدم تقارن:** ادعای جایگاه‌یابی نباید توسط رقیب اصلی قابل کپی‌برداری در کمتر از ۶ ماه باشد.
