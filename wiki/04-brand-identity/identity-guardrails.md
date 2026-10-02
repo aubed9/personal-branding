@@ -1,6 +1,6 @@
 ---
 id: KB-IDN-GUARD-001
-tags: ['identity_guardrails', 'red_lines', 'emotional_boundaries', 'brand_integrity', 'tone_limits']
+tags: ['identity_guardrails', 'red_lines', 'emotional_boundaries', 'brand_integrity', 'tone_limits', 'brand_guardrails', 'culture_physics', 'veto_rules', 'integrity']
 title: "گاردریل‌های هویتی و خطوط قرمز حسی"
 category: "04-brand-identity"
 version: "1.0.0"
@@ -12,6 +12,7 @@ related_metrics: ['guardrail_breaches', 'reputation_safety']
 related_concepts: ['IDENTITY_BOUNDARIES', 'BRAND_GUARDRAILS']
 source: "DIGITAL MARKET Knowledge Engine & Academic Foundations"
 last_updated: "2026-09-05"
+sources: ['SRC-FOUNDATION-18', 'SRC-FOUNDATION-10', 'SRC-FOUNDATION-16']
 ---
 
 # مفهوم چیست؟
@@ -57,4 +58,26 @@ last_updated: "2026-09-05"
 تعداد نقض گاردریل‌های هویتی = صفر.
 
 # Related Wiki Nodes
-- `KB-MSG-VOCAB-001`\n- `KB-PLAY-CRISIS-001`
+- `KB-MSG-VOCAB-001`
+- `KB-PLAY-CRISIS-001`
+
+---
+
+## پایه‌های علمی و مراجع دانشی (Scientific Foundations & Sourced Evidence)
+### پایه‌های علمی و مراجع دانشی (Scientific Foundations)
+- **ژان نوئل کاپفرر (SRC-FOUNDATION-18):** فرهنگ و مرزهای تغییرناپذیر برند مانع از قربانی شدن هویت در کمپین‌های هیجانی کوتاه‌مدت می‌شوند.
+- **ریچارد روملت (SRC-FOUNDATION-10):** سیاست‌های راهنما که مرزهای مشخصی برای کارهای ممنوعه تعیین می‌کنند.
+
+---
+
+## شواهد و بستر تجاری ایران (Iranian Market Context & Evidence)
+### شواهد و بستر تجاری ایران (Iranian Market Realities)
+- **حفظ خط قرمز در کمپین‌های وایرال:** دوری از شوخی‌های سخیف اینستاگرامی که در کوتاه‌مدت ویو می‌آورند اما اعتبار برند صنعتی یا پزشکی را تخریب می‌کنند.
+- **محدودیت‌های قانونی و نظارتی:** انطباق با ضوابط تبلیغاتی کشور و هنجارهای عرفی بازار.
+
+---
+
+## قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+### قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+1. **قاعده لیست سیاه برند:** تدوین ۵ خط قرمز مطلق در رفتار، لحن و تخفیف‌گذاری برند.
+2. **قاعده وتوی مدیر برند:** هرگونه محتوا یا پیشنهاد متضاد با گاردریل‌ها باید توسط متولی برند وتو شود.

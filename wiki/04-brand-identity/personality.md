@@ -1,6 +1,6 @@
 ---
 id: KB-IDN-PERSON-001
-tags: ['brand_personality', 'brand_traits', 'behavioral_posture', 'emotional_connection']
+tags: ['brand_personality', 'brand_traits', 'behavioral_posture', 'emotional_connection', 'aaker_5_dimensions', 'barden']
 title: "صفات شخصیتی محوری برند (Brand Traits)"
 category: "04-brand-identity"
 version: "1.0.0"
@@ -12,6 +12,7 @@ related_metrics: ['trait_consistency', 'personality_depth']
 related_concepts: ['BRAND_PERSONALITY_5_DIMENSIONS', 'HUMAN_TRAITS']
 source: "DIGITAL MARKET Knowledge Engine & Academic Foundations"
 last_updated: "2026-09-05"
+sources: ['SRC-FOUNDATION-16', 'SRC-FOUNDATION-20', 'SRC-FOUNDATION-04']
 ---
 
 # مفهوم چیست؟
@@ -58,3 +59,24 @@ last_updated: "2026-09-05"
 
 # Related Wiki Nodes
 - `KB-IDN-CHAR-001`
+
+---
+
+## پایه‌های علمی و مراجع دانشی (Scientific Foundations & Sourced Evidence)
+### پایه‌های علمی و مراجع دانشی (Scientific Foundations)
+- **دیوید آکر (SRC-FOUNDATION-16):** ابعاد پنج‌گانه شخصیت برند (صداقت، هیجان، شایستگی، دل‌ربایی، سرسختی).
+- **فیل باردن (SRC-FOUNDATION-20):** نقش ابعاد شخصیتی در تحریک ناخودآگاه انگیزه‌های امنیت، استقلال یا هیجان در مغز.
+
+---
+
+## شواهد و بستر تجاری ایران (Iranian Market Context & Evidence)
+### شواهد و بستر تجاری ایران (Iranian Market Realities)
+- **تقاضای بالا برای شایستگی و صداقت:** در فضای اقتصادی پرنوسان، برندهایی با شخصیت باصداقت (Sincerity) و شایسته (Competence) بیشترین سهم اعتماد را به خود اختصاص می‌دهند.
+- **پرهیز از شخصیت‌های متناقض:** همخوانی لحن پشتیبانی و ادبیات بسته‌بندی با شخصیت ادعایی.
+
+---
+
+## قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+### قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+1. **قاعده نسبت ۶۰ به ۴۰ ابعاد:** انتخاب یک بعد اصلی (۶۰٪) و حداکثر یک بعد کمکی (۴۰٪).
+2. **قاعده ترجمه شخصیتی به رفتار:** هر بعد شخصیتی باید یک نمونه رفتار عینی در خدمات پس از فروش داشته باشد.

@@ -1,6 +1,6 @@
 ---
 id: KB-TYPE-MFG-001
-tags: ['manufacturing', 'industrial_b2b', 'production_capacity', 'machining', 'supply_chain', 'dso']
+tags: ['manufacturing', 'industrial_b2b', 'production_capacity', 'machining', 'supply_chain', 'dso', 'manufacturing_strategy', 'theory_of_constraints', 'value_chain', 'capacity']
 title: "بافتار صنایع تولیدی و کارخانجات B2B"
 category: "07-business-types"
 version: "1.0.0"
@@ -12,6 +12,7 @@ related_metrics: ['capacity_utilization', 'defect_rate', 'moq', 'lead_time']
 related_concepts: ['PRODUCTION_TOLERANCE', 'SUPPLY_CHAIN_RELIABILITY', 'VENDOR_LIST']
 source: "DIGITAL MARKET Knowledge Engine & Academic Foundations"
 last_updated: "2026-09-05"
+sources: ['SRC-FOUNDATION-30', 'SRC-FOUNDATION-09', 'SRC-FOUNDATION-10']
 ---
 
 # مفهوم چیست؟
@@ -58,3 +59,24 @@ OEE (اثربخشی کلی تجهیزات) بالای ۸۵٪، نرخ ضایعا
 
 # Related Wiki Nodes
 - `KB-KPI-B2B-001`
+
+---
+
+## پایه‌های علمی و مراجع دانشی (Scientific Foundations & Sourced Evidence)
+### پایه‌های علمی و مراجع دانشی (Scientific Foundations)
+- **الیاهو گلدرات (SRC-FOUNDATION-30):** تئوری محدودیت‌ها (Theory of Constraints). هر خط تولید حداقل یک گلوگاه دارد و هرگونه بهینه‌سازی خارج از گلوگاه توهم افزایش بهره‌وری است.
+- **مایکل پورتر (SRC-FOUNDATION-09):** تحلیل زنجیره ارزش تولیدی و صرفه‌جویی ناشی از مقیاس (Economies of Scale).
+
+---
+
+## شواهد و بستر تجاری ایران (Iranian Market Context & Evidence)
+### شواهد و بستر تجاری ایران (Iranian Market Realities)
+- **ریسک تامین مواد اولیه و ارز:** نوسان هفتگی قیمت مواد پتروشیمی، فلزات و قطعات وارداتی مستلزم درج بندهای تعدیل قیمت در قراردادهای B2B است.
+- **قطعی‌های فصلی انرژی (برق و گاز):** ظرفیت تولید اسمی باید با ضریب امنیت ۸۰٪ برای محاسبات تعهدات تحویل سفارش تعدیل شود.
+
+---
+
+## قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+### قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+1. **قاعده حاشیه ایمنی مواد:** حداقل ۳۰ روز موجودی انبار برای مواد اولیه بحرانی الزامی است.
+2. **قاعده قراردادهای شناور:** قیمت فروش در تیراژهای بالا باید به نرخ رسمی بورس کالا یا ارز نیما متصل شود.

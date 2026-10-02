@@ -1,6 +1,6 @@
 ---
 id: KB-PB-FOUNDER-001
-tags: ['founder_brand', 'personal_branding', 'executive_presence', 'business_alignment', 'founder_equity']
+tags: ['founder_brand', 'personal_branding', 'executive_presence', 'business_alignment', 'founder_equity', 'founder_branding', 'symbolic_capital', 'executive_reputation', 'cialdini']
 title: "برند شخصی بنیان‌گذار و پیوند با کسب‌وکار (Founder Brand)"
 category: "08-personal-brand"
 version: "1.0.0"
@@ -12,6 +12,7 @@ related_metrics: ['founder_influence_score', 'lead_generation_attributed']
 related_concepts: ['THOUGHT_LEADERSHIP', 'FOUNDER_DEPENDENCY_RISK']
 source: "DIGITAL MARKET Knowledge Engine & Academic Foundations"
 last_updated: "2026-09-05"
+sources: ['SRC-FOUNDATION-01', 'SRC-FOUNDATION-21', 'SRC-FOUNDATION-18']
 ---
 
 # مفهوم چیست؟
@@ -58,3 +59,24 @@ last_updated: "2026-09-05"
 
 # Related Wiki Nodes
 - `KB-PB-THOUGHT-001`
+
+---
+
+## پایه‌های علمی و مراجع دانشی (Scientific Foundations & Sourced Evidence)
+### پایه‌های علمی و مراجع دانشی (Scientific Foundations)
+- **پیر بوردیو (SRC-FOUNDATION-01):** سرمایه نمادین (Symbolic Capital)؛ اعتبار، شهرت و کاریزمای بنیان‌گذار مستقیماً به عنوان دارایی اقتصادی بنگاه عمل می‌کند.
+- **رابرت چالدینی (SRC-FOUNDATION-21):** اصل اقتدار (Authority)؛ مصرف‌کنندگان و شرکای تجاری به صورت ناخودآگاه از متخصصان موثق و صاحب‌نظران رسمی پیروی می‌کنند.
+
+---
+
+## شواهد و بستر تجاری ایران (Iranian Market Context & Evidence)
+### شواهد و بستر تجاری ایران (Iranian Market Realities)
+- **کسری اعتماد عمومی در بازار:** در فضای تجاری ایران، اعتماد به نام و چهره بنیان‌گذار بسیار سریع‌تر از اعتماد به یک شرکت حقوقی بی‌نام‌ونشان شکل می‌گیرد.
+- **حضور در لینکدین و رسانه‌های تخصصی:** شبکه‌سازی بنیان‌گذار در لینکدین موثرترین کانال جذب سرمایه‌گذار و قراردادهای کلان B2B در ایران است.
+
+---
+
+## قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+### قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+1. **قاعده تفکیک هویت فرد از شرکت:** برند شخصی باید مکمل برند تجاری باشد نه جانشین آن؛ کسب‌وکار باید بدون حضور فیزیکی موسس نیز قابل واگذاری باشد.
+2. **قاعده اصالت در روایت:** برند شخصی باید بر اساس تخصص اثبات‌شده و تجارب واقعی ساخته شود، نه شعارهای توخالی انگیزشی.

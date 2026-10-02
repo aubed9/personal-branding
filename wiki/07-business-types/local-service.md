@@ -1,6 +1,6 @@
 ---
 id: KB-TYPE-LOCAL-001
-tags: ['local_service', 'automotive', 'salon', 'geo_targeted', 'physical_first', 'reputation']
+tags: ['local_service', 'automotive', 'salon', 'geo_targeted', 'physical_first', 'reputation', 'local_marketing', 'service_radius', 'social_proof', 'guild_license']
 title: "بافتار تخصصی خدمات محلی و فنی (کارواش، اتوسرویس، سالن)"
 category: "07-business-types"
 version: "1.0.0"
@@ -12,6 +12,7 @@ related_metrics: ['bay_utilization', 'local_maps_rank', 'repeat_rate']
 related_concepts: ['CATCHMENT_AREA', 'LOCAL_TRUST', 'SPEED_DELIVERY']
 source: "DIGITAL MARKET Knowledge Engine & Academic Foundations"
 last_updated: "2026-09-05"
+sources: ['SRC-FOUNDATION-21', 'SRC-FOUNDATION-17', 'SRC-IR-SNAPP-REPORT-1404-URBAN-TRIPS-POST']
 ---
 
 # مفهوم چیست؟
@@ -80,3 +81,24 @@ last_updated: "2026-09-05"
   $$\text{RR} = \frac{\text{مشتریان مراجعه‌کننده بیش از ۲ بار در سال}}{\text{کل مشتریان سال}} \times 100 \quad (\text{آستانه موفقیت: } \ge 45\%)$$
 - **شاخص گردش مشتری به صندلی/باکس (Turnover per Bay):**
   $$\text{Bay Turnover} = \frac{\text{تعداد خودرو/مشتری در روز}}{\text{تعداد جایگاه‌های فعال}} \quad (\text{بهینه: } 8 - 12 \text{ خودرو در روز برای هر باکس})$$
+
+---
+
+## پایه‌های علمی و مراجع دانشی (Scientific Foundations & Sourced Evidence)
+### پایه‌های علمی و مراجع دانشی (Scientific Foundations)
+- **رابرت چالدینی (SRC-FOUNDATION-21):** اثبات اجتماعی محلی؛ مشتریان به شدت تحت تاثیر توصیه همسایگان و هم‌محله‌ای‌های خود تصمیم می‌گیرند.
+- **بایرون شارپ (SRC-FOUNDATION-17):** دسترسی‌پذیری فیزیکی در شعاع جغرافیایی تعیین‌کننده اصلی انتخاب خدمات محلی است.
+
+---
+
+## شواهد و بستر تجاری ایران (Iranian Market Context & Evidence)
+### شواهد و بستر تجاری ایران (Iranian Market Realities)
+- **شعاع جغرافیایی ترافیک شهری:** داده‌های سفرهای شهری اسنپ (SRC-IR-SNAPP-REPORT-1404-URBAN-TRIPS-POST) نشان می‌دهد ترافیک و هزینه جابه‌جایی مشتریان را به انتخاب در شعاع حداکثر ۳ تا ۵ کیلومتری محدود کرده است.
+- **اعتبار صنفی و جواز کسب:** الزامات بازرسی اتحادیه‌ها (قانون نظام صنفی) وجود پروانه کسب معتبر را پیش‌شرط اعتماد محلی ساخته است.
+
+---
+
+## قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+### قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+1. **قاعده تمرکز بر شعاع دسترسی:** ۸۰٪ بودجه بازاریابی محلی باید در محدوده شعاع ۱۵ دقیقه‌ای خودرویی متمرکز شود.
+2. **قاعده پاسخگویی فوری:** در خدمات محلی، پاسخگویی به تماس یا پیام در کمتر از ۳ دقیقه شانس تبدیل را دو برابر می‌کند.

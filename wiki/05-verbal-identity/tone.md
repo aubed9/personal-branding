@@ -1,6 +1,6 @@
 ---
 id: KB-MSG-TONE-001
-tags: ['brand_tone', 'tone_matrix', 'contextual_adaptation', 'situational_tone', 'communication_style']
+tags: ['brand_tone', 'tone_matrix', 'contextual_adaptation', 'situational_tone', 'communication_style', 'tone_of_voice', 'hofstede_culture', 'persian_etiquette']
 title: "ماتریس موقعیتی لحن در موقعیت‌های گوناگون"
 category: "05-verbal-identity"
 version: "1.0.0"
@@ -12,6 +12,7 @@ related_metrics: ['tone_appropriateness', 'empathy_score']
 related_concepts: ['TONE_MATRIX', 'CONTEXTUAL_ADAPTATION']
 source: "DIGITAL MARKET Knowledge Engine & Academic Foundations"
 last_updated: "2026-09-05"
+sources: ['SRC-FOUNDATION-04', 'SRC-FOUNDATION-16', 'SRC-FOUNDATION-21']
 ---
 
 # مفهوم چیست؟
@@ -58,3 +59,24 @@ last_updated: "2026-09-05"
 
 # Related Wiki Nodes
 - `KB-MSG-VOICE-001`
+
+---
+
+## پایه‌های علمی و مراجع دانشی (Scientific Foundations & Sourced Evidence)
+### پایه‌های علمی و مراجع دانشی (Scientific Foundations)
+- **گرت هافستد (SRC-FOUNDATION-04):** انطباق لحن ارتباطی با ابعاد فرهنگی فاصله قدرت و جمع‌گرایی در جامعه هدف.
+- **رابرت چالدینی (SRC-FOUNDATION-21):** هم‌زبانی و مشابهت کلامی با مخاطب نرخ همراهی و پذیرش را تقویت می‌کند.
+
+---
+
+## شواهد و بستر تجاری ایران (Iranian Market Context & Evidence)
+### شواهد و بستر تجاری ایران (Iranian Market Realities)
+- **مدیریت تعارف و صمیمیت در فارسی:** لحن برند ایرانی باید مرز بین صمیمیت مدرن و احترام سنتی را رعایت کند؛ صمیمیت زننده دافعه ایجاد می‌کند.
+- **تغییر لحن در لحظات بحران:** لحن در حل شکایت مشتری باید قاطع، عذرخواهانه و پاسخگو باشد نه شوخ‌طبع.
+
+---
+
+## قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+### قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+1. **قاعده ماتریس لحن چهارگانه:** تنظیم لحن در ۴ حالت (معرفی، فروش، پشتیبانی، بحران).
+2. **قاعده پرهیز از لحن دوپهلوی تصنعی:** پرهیز از جملات رسمی سنگین اداری به نفع شفافیت روان.

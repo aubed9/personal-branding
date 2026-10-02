@@ -1,6 +1,6 @@
 ---
 id: KB-NAM-EVAL-001
-tags: ['naming_evaluation', 'phonetics', 'trademark_screening', 'linguistic_test', 'persian_latin_spelling']
+tags: ['naming_evaluation', 'phonetics', 'trademark_screening', 'linguistic_test', 'persian_latin_spelling', 'naming_scorecard', 'keller']
 title: "معیارهای ارزیابی، آواشناسی و فیلترهای حقوقی نام"
 category: "06-naming"
 version: "1.0.0"
@@ -12,6 +12,7 @@ related_metrics: ['phonetic_score', 'legal_risk_score']
 related_concepts: ['PHONETIC_TESTS', 'TRADEMARK_SCREENING']
 source: "DIGITAL MARKET Knowledge Engine & Academic Foundations"
 last_updated: "2026-09-05"
+sources: ['SRC-FOUNDATION-15', 'SRC-FOUNDATION-17', 'SRC-FOUNDATION-20']
 ---
 
 # مفهوم چیست؟
@@ -58,3 +59,24 @@ last_updated: "2026-09-05"
 
 # Related Wiki Nodes
 - `KB-NAM-STRAT-001`
+
+---
+
+## پایه‌های علمی و مراجع دانشی (Scientific Foundations & Sourced Evidence)
+### پایه‌های علمی و مراجع دانشی (Scientific Foundations)
+- **کوین لین کلر (SRC-FOUNDATION-15):** معیارهای شش‌گانه ارزیابی نام برند: ماندگاری در حافظه، بار معنایی، جذابیت عاطفی، انتقال‌پذیری، انطباق‌پذیری و حفاظت‌پذیری.
+- **بایرون شارپ (SRC-FOUNDATION-17):** نام باید به عنوان یک دارایی متمایز (Distinctive Asset) تثبیت شود.
+
+---
+
+## شواهد و بستر تجاری ایران (Iranian Market Context & Evidence)
+### شواهد و بستر تجاری ایران (Iranian Market Realities)
+- **استعلام در سامانه اداره مالکیت معنوی:** بررسی تشابه طبقاتی در سامانه ثبت اسناد و املاک کشور پیش از هرگونه سرمایه‌گذاری روی تابلو و لوگو.
+- **سهولت تایپ در کیبورد فارسی و انگلیسی:** نبود حروف چندگانه مبهم (مانند ز/ض/ظ/ذ یا س/ص/ث) که سرچ نام را در گوگل یا اینستاگرام دچار خطا کند.
+
+---
+
+## قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+### قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+1. **قاعده امتیاز ۸۰ از ۱۰۰:** نام باید در ماتریس ۶ فاکتوری کلر حداقل نمره ۸۰ کسب کند.
+2. **قاعده آزمون رادیویی:** نام باید با یک‌بار شنیدن در تماس صوتی، بدون غلط املایی نوشته شود.

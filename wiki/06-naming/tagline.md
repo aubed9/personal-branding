@@ -1,6 +1,6 @@
 ---
 id: KB-NAM-TAG-001
-tags: ['tagline', 'slogan', 'brand_catchphrase', 'mnemonic_devices', 'brand_hook']
+tags: ['tagline', 'slogan', 'brand_catchphrase', 'mnemonic_devices', 'brand_hook', 'tagline_design', 'cognitive_ease', 'kahneman_rhyme']
 title: "معماری شعار برند و تکنیک‌های خلق تگ‌لاین"
 category: "06-naming"
 version: "1.0.0"
@@ -12,6 +12,7 @@ related_metrics: ['tagline_stickiness', 'claim_clarity']
 related_concepts: ['TAGLINE_ARCHITECTURE', 'SLOGAN_DESIGN']
 source: "DIGITAL MARKET Knowledge Engine & Academic Foundations"
 last_updated: "2026-09-05"
+sources: ['SRC-FOUNDATION-07', 'SRC-FOUNDATION-22', 'SRC-FOUNDATION-17']
 ---
 
 # مفهوم چیست؟
@@ -58,3 +59,24 @@ last_updated: "2026-09-05"
 
 # Related Wiki Nodes
 - `KB-STR-PROMISE-001`
+
+---
+
+## پایه‌های علمی و مراجع دانشی (Scientific Foundations & Sourced Evidence)
+### پایه‌های علمی و مراجع دانشی (Scientific Foundations)
+- **دانیل کانمن (SRC-FOUNDATION-07):** سهولت شناختی (Cognitive Ease) و اثر ریتم/قافیه؛ ذهن جملات موزون و ساده را حقیقی‌تر و ماندگارتر می‌داند.
+- **ست گادین (SRC-FOUNDATION-22):** شعار باید تمایز رادیکال محصول را در کلماتی کوتاه بازگو کند.
+
+---
+
+## شواهد و بستر تجاری ایران (Iranian Market Context & Evidence)
+### شواهد و بستر تجاری ایران (Iranian Market Realities)
+- **استفاده از وزن و ریتم در فرهنگ زبانی ایران:** شعارهایی که دارای توازن آوایی یا طنین متقارن هستند ماندگاری چندین دهه‌ای پیدا می‌کنند.
+- **پرهیز از ادعاهای اغراق‌آمیز:** شعارهای مانند 'همیشه در اوج' به سرعت توسط مخاطب باهوش به عنوان پوچ رد می‌شوند.
+
+---
+
+## قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+### قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+1. **قاعده حداکثر ۵ واژه:** شعار نباید طولانی باشد؛ باید در یک بازدم قابل بیان باشد.
+2. **قاعده آزمون جایگزینی رقیب:** اگر بتوان شعار را زیر لوگوی رقیب اصلی گذاشت و معنی داد، آن شعار به درد نمی‌خورد.

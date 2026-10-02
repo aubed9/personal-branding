@@ -1,6 +1,6 @@
 ---
 id: KB-VIS-LOGO-001
-tags: ['logo_system', 'logo_morphology', 'monochrome_contrast', 'responsive_logo', 'visual_symbol']
+tags: ['logo_system', 'logo_morphology', 'monochrome_contrast', 'responsive_logo', 'visual_symbol', 'brand_mark', 'distinctive_assets', 'scalability']
 title: "سیستم لوگو و قواعد استفاده"
 category: "15-visual-identity"
 version: "1.0.0"
@@ -12,6 +12,7 @@ related_metrics: ['logo_variant_coverage', 'application_consistency']
 related_concepts: ['LOGO_SYSTEM', 'WORDMARK', 'SYMBOL', 'BRAND_MARK']
 source: "SRC-INT-PHASE7-VISUAL-CONTRACT"
 last_updated: "2026-09-27"
+sources: ['SRC-INT-PHASE7-VISUAL-CONTRACT', 'SRC-FOUNDATION-17', 'SRC-FOUNDATION-16']
 ---
 
 # هدف
@@ -41,3 +42,24 @@ last_updated: "2026-09-27"
 - `KB-VIS-DSYS-001`
 - `KB-NAM-STRAT-001`
 - `KB-IDN-CHAR-001`
+
+---
+
+## پایه‌های علمی و مراجع دانشی (Scientific Foundations & Sourced Evidence)
+### پایه‌های علمی و مراجع دانشی (Scientific Foundations)
+- **بایرون شارپ (SRC-FOUNDATION-17):** لوگو نمادی است که باید با تکرار مداوم به یک نشانه بازیابی سریع در مغز خریدار تبدیل شود.
+- **دیوید آکر (SRC-FOUNDATION-16):** لوگو به مثابه دارایی نمادین برند و ظرف انتقال ارزش ادراک‌شده.
+
+---
+
+## شواهد و بستر تجاری ایران (Iranian Market Context & Evidence)
+### شواهد و بستر تجاری ایران (Iranian Market Realities)
+- **مقیاس‌پذیری در ابعاد کوچک موبایل:** لوگو باید در اندازه آیکون اپلیکیشن یا پروفایل اینستاگرام (ابعاد ۳۲ در ۳۲ پیکسل) کاملاً واضح باشد.
+- **انطباق با فرهنگ بصری خط فارسی:** لوگوتایپ‌های فارسی باید تناسبات خوشنویسی و ضوابط کرنینگ حروف متصل فارسی را رعایت کنند.
+
+---
+
+## قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+### قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+1. **قاعده تک‌رنگ (Monochrome Test):** لوگو باید در نسخه کاملاً سیاه و سفید نیز هویت خود را حفظ کند.
+2. **قاعده پرهیز از المان‌های پیچیده:** جزئیات مینیاتوری در نمایشگرهای موبایل محو می‌شوند؛ سادگی هندسی شرط اول است.

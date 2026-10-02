@@ -1,6 +1,6 @@
 ---
 id: KB-STR-PILLARS-001
-tags: ['strategic_pillars', 'guiding_policy', 'kernel_of_strategy', 'coherent_actions', 'strategic_focus']
+tags: ['strategic_pillars', 'guiding_policy', 'kernel_of_strategy', 'coherent_actions', 'strategic_focus', 'focus', 'tradeoffs']
 title: "ارکان استراتژیک و ستون‌های هدایت برند"
 category: "03-strategy"
 version: "1.0.0"
@@ -12,6 +12,7 @@ related_metrics: ['pillar_alignment', 'strategic_focus']
 related_concepts: ['STRATEGIC_PILLARS', 'GUIDING_POLICY']
 source: "DIGITAL MARKET Knowledge Engine & Academic Foundations"
 last_updated: "2026-09-05"
+sources: ['SRC-FOUNDATION-10', 'SRC-FOUNDATION-28', 'SRC-FOUNDATION-09']
 ---
 
 # مفهوم چیست؟
@@ -58,3 +59,24 @@ last_updated: "2026-09-05"
 
 # Related Wiki Nodes
 - `KB-STR-POS-001`
+
+---
+
+## پایه‌های علمی و مراجع دانشی (Scientific Foundations & Sourced Evidence)
+### پایه‌های علمی و مراجع دانشی (Scientific Foundations)
+- **ریچارد روملت (SRC-FOUNDATION-10):** ستون‌های استراتژیک همان اقدامات منسجم (Coherent Actions) هستند که با یکدیگر هم‌افزایی داشته و انرژی سازمان را متمرکز می‌کنند.
+- **پیتر دراکر (SRC-FOUNDATION-28):** استراتژی یعنی تصمیم‌گیری درباره آنچه نباید انجام دهیم.
+
+---
+
+## شواهد و بستر تجاری ایران (Iranian Market Context & Evidence)
+### شواهد و بستر تجاری ایران (Iranian Market Realities)
+- **پراکندگی منابع در بنگاه‌های کوچک:** تلاش برای انجام همه کارها همزمان در شرایط کمبود نقدینگی و تورم، عامل شکست پروژه‌ها در ایران است.
+- **انتخاب حداکثر ۳ اولویت محوری:** تمرکز کلیه واحدهای سازمان بر ۳ ستون راهبردی در هر سال.
+
+---
+
+## قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+### قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+1. **قاعده وتوی پروژه‌های خارج از ستون‌ها:** هر پیشنهادی که به یکی از ۳ ستون استراتژیک متصل نباشد فوراً رد می‌شود.
+2. **قاعده هماهنگی چندبخشی:** هر ستون باید حداقل دو بخش عملیاتی، بازاریابی و فروش را درگیر کند.

@@ -1,6 +1,6 @@
 ---
 id: KB-TYPE-SAAS-001
-tags: ['b2b_saas', 'cloud_software', 'subscription', 'churn_reduction', 'time_to_value', 'mrr']
+tags: ['b2b_saas', 'cloud_software', 'subscription', 'churn_reduction', 'time_to_value', 'mrr', 'saas_architecture', 'churn_rate', 'net_dollar_retention']
 title: "بافتار تخصصی نرم‌افزار و پلتفرم ابری (SaaS)"
 category: "07-business-types"
 version: "1.0.0"
@@ -12,6 +12,7 @@ related_metrics: ['mrr_arr', 'churn_rate', 'nrr', 'cac_payback']
 related_concepts: ['PRODUCT_LED_GROWTH', 'TIME_TO_VALUE', 'SUBSCRIPTION_HEALTH']
 source: "DIGITAL MARKET Knowledge Engine & Academic Foundations"
 last_updated: "2026-09-05"
+sources: ['SRC-FOUNDATION-30', 'SRC-FOUNDATION-27', 'SRC-FOUNDATION-26']
 ---
 
 # مفهوم چیست؟
@@ -58,3 +59,24 @@ Net Revenue Retention > 110%, Churn < 2% per month.
 
 # Related Wiki Nodes
 - `KB-KPI-SAAS-001`
+
+---
+
+## پایه‌های علمی و مراجع دانشی (Scientific Foundations & Sourced Evidence)
+### پایه‌های علمی و مراجع دانشی (Scientific Foundations)
+- **دیوید اسکوک (SRC-FOUNDATION-30):** معماری اقتصاد واحد SaaS بر دو قانون استوار است: CAC Payback Period باید کمتر از ۱۲ ماه و نسبت LTV/CAC حداقل ۳.۰ باشد.
+- **فرد رایشهلد (SRC-FOUNDATION-26):** کاهش ۵٪ در نرخ ریزش (Churn) می‌تواند سودآوری شرکت اشتراکی را بین ۲۵٪ تا ۹۵٪ افزایش دهد.
+
+---
+
+## شواهد و بستر تجاری ایران (Iranian Market Context & Evidence)
+### شواهد و بستر تجاری ایران (Iranian Market Realities)
+- **استقبال از اشتراک سالانه با تخفیف:** به دلیل نوسانات ارزش ریال و نبود زیرساخت برداشت خودکار بین‌بانکی پایدار (Direct Debit عمومی)، فروش پلن‌های سالانه پیش‌پرداخت نقدینگی شرکت را تضمین می‌کند.
+- **فرصت سامانه‌های مودیان و اتوماسیون مالیاتی:** با الزام اجرای قانون پایانه‌های فروشگاهی، SaaSهای حسابداری و اتصال به کارپوشه بالاترین نرخ رشد را تجربه می‌کنند.
+
+---
+
+## قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+### قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+1. **قاعده دوره بازگشت نقدینگی:** اگر هزینه جذب کاربر با درآمد ۶ ماه اول او جبران نشود، رشد کمپین متوقف می‌گردد.
+2. **قاعده آنبوردینگ سریع:** کاربر باید در کمتر از ۵ دقیقه اولین ارزش ملموس (Aha Moment) را در نرم‌افزار تجربه کند.

@@ -1,6 +1,6 @@
 ---
 id: KB-STR-PROMISE-001
-tags: ['brand_promise', 'unbreakable_commitment', 'guarantee_policy', 'execution', 'trust']
+tags: ['brand_promise', 'unbreakable_commitment', 'guarantee_policy', 'execution', 'trust', 'consistency', 'customer_trust', 'commitment']
 title: "وعده تخلف‌ناپذیر برند و گارانتی اجرایی"
 category: "03-strategy"
 version: "1.0.0"
@@ -12,6 +12,7 @@ related_metrics: ['promise_delivery_rate', 'nps']
 related_concepts: ['BRAND_PROMISE', 'CUSTOMER_GUARANTEE']
 source: "DIGITAL MARKET Knowledge Engine & Academic Foundations"
 last_updated: "2026-09-05"
+sources: ['SRC-FOUNDATION-15', 'SRC-FOUNDATION-16', 'SRC-FOUNDATION-21']
 ---
 
 # مفهوم چیست؟
@@ -58,3 +59,24 @@ last_updated: "2026-09-05"
 
 # Related Wiki Nodes
 - `KB-STR-POS-001`
+
+---
+
+## پایه‌های علمی و مراجع دانشی (Scientific Foundations & Sourced Evidence)
+### پایه‌های علمی و مراجع دانشی (Scientific Foundations)
+- **کوین لین کلر (SRC-FOUNDATION-15):** وعده برند جوهره تعهد عملیاتی سازمان به مشتری است.
+- **رابرت چالدینی (SRC-FOUNDATION-21):** اصل تعهد و ثبات (Commitment & Consistency)؛ پایداری بر وعده‌ها شرط بنیادی اعتماد است.
+
+---
+
+## شواهد و بستر تجاری ایران (Iranian Market Context & Evidence)
+### شواهد و بستر تجاری ایران (Iranian Market Realities)
+- **بی‌اعتمادی ناشی از وعده‌های محقق‌نشده:** وعده‌ای که با تاخیر یا تبصره‌های پنهان همراه شود برند را به ورطه نابودی اعتبار می‌کشاند.
+- **گارانتی رسمی و ثبت‌شده:** وعده باید در قالب ضمانت کتبی، نماد اعتماد یا قرارداد معتبر به مشتری عرضه شود.
+
+---
+
+## قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+### قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+1. **قاعده تعهد بدون تبصره:** وعده برند نباید با شروط دست‌وپاگیر و تبصره‌های خاکستری مشروط شود.
+2. **قاعده جبران فوری در صورت شکست وعده:** پروتکل جبران خطای بدقولی باید شفاف و خودکار باشد.

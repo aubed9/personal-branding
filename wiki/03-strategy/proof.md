@@ -1,6 +1,6 @@
 ---
 id: KB-STR-PROOF-001
-tags: ['reasons_to_believe', 'rtb', 'proof_points', 'social_proof', 'credibility', 'trust_signals']
+tags: ['reasons_to_believe', 'rtb', 'proof_points', 'social_proof', 'credibility', 'trust_signals', 'verification']
 title: "دلایل باورپذیری و شواهد اثبات ادعا (RTB)"
 category: "03-strategy"
 version: "1.0.0"
@@ -12,6 +12,7 @@ related_metrics: ['credibility_score', 'claim_proof_ratio']
 related_concepts: ['REASONS_TO_BELIEVE', 'EVIDENCE_OF_CAPABILITY']
 source: "DIGITAL MARKET Knowledge Engine & Academic Foundations"
 last_updated: "2026-09-05"
+sources: ['SRC-FOUNDATION-21', 'SRC-FOUNDATION-15', 'SRC-FOUNDATION-13']
 ---
 
 # مفهوم چیست؟
@@ -58,3 +59,24 @@ last_updated: "2026-09-05"
 
 # Related Wiki Nodes
 - `KB-MSG-CORE-001`
+
+---
+
+## پایه‌های علمی و مراجع دانشی (Scientific Foundations & Sourced Evidence)
+### پایه‌های علمی و مراجع دانشی (Scientific Foundations)
+- **رابرت چالدینی (SRC-FOUNDATION-21):** شواهد اثبات اجتماعی و مراجع رسمی قدرتمندترین شتاب‌دهنده تبدیل هستند.
+- **کوین لین کلر (SRC-FOUNDATION-15):** دلایل باورپذیری (Reasons to Believe - RTBs) پایه عقلانی تمایز عاطفی هستند.
+
+---
+
+## شواهد و بستر تجاری ایران (Iranian Market Context & Evidence)
+### شواهد و بستر تجاری ایران (Iranian Market Realities)
+- **مدارک اثبات در بازار ایران:** اینماد معتبر، کد رهگیری مالیاتی، جواز صنف، گواهینامه‌های استاندارد، و ویدیوهای رضایت مشتریان قبلی.
+- **اثبات با ارقام دقیق:** استفاده از آمارهای دقیق (مثلاً 'پردازش ۴۵,۰۰۰ سفارش موفق') به جای صفات کلی مانند 'تعداد زیادی مشتری'.
+
+---
+
+## قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+### قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+1. **قاعده پیوند هر ادعا به یک سند:** هر ادعای تمایز در فاز ۳ باید حداقل یک مدرک اثبات قابل راستی‌آزمایی داشته باشد.
+2. **قاعده رضایت‌نامه همتا:** گواهی مشتریان باید از کسب‌وکارها یا افرادی با شرایط دقیقاً مشابه مشتری هدف باشد.

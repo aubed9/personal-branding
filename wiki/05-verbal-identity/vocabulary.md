@@ -1,6 +1,6 @@
 ---
 id: KB-MSG-VOCAB-001
-tags: ['brand_vocabulary', 'forbidden_words', 'lexicon', 'verbal_guardrails', 'preferred_terms']
+tags: ['brand_vocabulary', 'forbidden_words', 'lexicon', 'verbal_guardrails', 'preferred_terms', 'power_words', 'bourdieu_language', 'jargon']
 title: "فرهنگ واژگان و اصطلاحات ممنوعه (Forbidden Words)"
 category: "05-verbal-identity"
 version: "1.0.0"
@@ -12,6 +12,7 @@ related_metrics: ['fluff_word_density', 'vocabulary_discipline']
 related_concepts: ['BRAND_VOCABULARY', 'FORBIDDEN_WORDS']
 source: "DIGITAL MARKET Knowledge Engine & Academic Foundations"
 last_updated: "2026-09-05"
+sources: ['SRC-FOUNDATION-01', 'SRC-FOUNDATION-20', 'SRC-FOUNDATION-17']
 ---
 
 # مفهوم چیست؟
@@ -58,3 +59,24 @@ last_updated: "2026-09-05"
 
 # Related Wiki Nodes
 - `KB-IDN-GUARD-001`
+
+---
+
+## پایه‌های علمی و مراجع دانشی (Scientific Foundations & Sourced Evidence)
+### پایه‌های علمی و مراجع دانشی (Scientific Foundations)
+- **پیر بوردیو (SRC-FOUNDATION-01):** سرمایه زبانی؛ انتخاب دایره واژگان نشان‌دهنده پایگاه اجتماعی و سطح تخصص برند است.
+- **فیل باردن (SRC-FOUNDATION-20):** اثرگذاری واژگان حسی و ملموس بر کدگذاری پاداش در سیستم ۱ مغز.
+
+---
+
+## شواهد و بستر تجاری ایران (Iranian Market Context & Evidence)
+### شواهد و بستر تجاری ایران (Iranian Market Realities)
+- **اصطلاحات تخصصی صنف:** استفاده درست از واژگان کلیدی صنف خود (مثلاً در صنف طلا، مکانیک یا قهوه) نشان‌دهنده اصالت و خاک بازار خوردن است.
+- **فهرست واژگان ممنوعه:** حذف کلمات فریبنده و کلیشه‌ای مانند 'بی‌نظیر'، 'تک'، 'ارزان‌ترین در خاورمیانه'.
+
+---
+
+## قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+### قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+1. **قاعده واژگان اختصاصی:** تدوین لیست ۱۰ واژه کلیدی برند که باید در تمام محتواها تکرار شوند.
+2. **قاعده کلمات ممنوعه:** ثبت لیست سیاه واژگانی که استفاده از آنها در تبلیغات اکیداً ممنوع است.

@@ -1,6 +1,6 @@
 ---
 id: KB-TYPE-ECOM-001
-tags: ['ecommerce', 'dtc_retail', 'cart_abandonment', 'returns_management', 'sizing_policy', 'logistics']
+tags: ['ecommerce', 'dtc_retail', 'cart_abandonment', 'returns_management', 'sizing_policy', 'logistics', 'ecommerce_playbook', 'online_retail', 'conversion_rate']
 title: "بافتار آنلاین‌شاپ و تجارت الکترونیک (DTC)"
 category: "07-business-types"
 version: "1.0.0"
@@ -12,6 +12,7 @@ related_metrics: ['conversion_rate', 'aov', 'cart_abandonment', 'roas']
 related_concepts: ['CHECKOUT_FRICTION', 'TRUST_SIGNALS', 'SHIPPING_LOGISTICS']
 source: "DIGITAL MARKET Knowledge Engine & Academic Foundations"
 last_updated: "2026-09-05"
+sources: ['SRC-IR-ECOM-REPORT-1403', 'SRC-IR-DIGIKALA-REPORT-1404-OFFICIAL-FULL', 'SRC-FOUNDATION-17']
 ---
 
 # مفهوم چیست؟
@@ -58,3 +59,24 @@ Conversion Rate > 2.5%, Cart Abandonment < 65%.
 
 # Related Wiki Nodes
 - `KB-KPI-ECOM-001`
+
+---
+
+## پایه‌های علمی و مراجع دانشی (Scientific Foundations & Sourced Evidence)
+### پایه‌های علمی و مراجع دانشی (Scientific Foundations)
+- **بایرون شارپ (SRC-FOUNDATION-17):** دسترسی‌پذیری فیزیکی و دیجیتال شرط اول رشد است. در ایکامرس، آسانی فرآیند ثبت سفارش و نبود اصطکاک در درگاه پرداخت بیش از ادعاهای تمایز انتزاعی به فروش منجر می‌شود.
+- **اورت راجرز (SRC-FOUNDATION-03):** پذیرش خرید آنلاین زمانی به اکثریت بازار سرایت می‌کند که ریسک ادراک‌شده (گارانتی مرجوعی، امنیت پرداخت) به حداقل برسد.
+
+---
+
+## شواهد و بستر تجاری ایران (Iranian Market Context & Evidence)
+### شواهد و بستر تجاری ایران (Iranian Market Realities)
+- **اندازه بازار ۵,۵۰۰ همت:** گزارش تجارت الکترونیکی ۱۴۰۳ (SRC-IR-ECOM-REPORT-1403) گردش مالی کلان را با ۳۰۶ هزار کسب‌وکار اینماددار نشان می‌دهد.
+- **رفتار جستجوی ارزان و تخفیف:** گزارش دیجی‌کالا ۱۴۰۴ (SRC-IR-DIGIKALA-REPORT-1404-OFFICIAL-FULL) با ثبت بیش از ۷۴۵ هزار جستجوی عبارت «ارزان» نشان می‌دهد پیشنهاد ارزش شفاف اقتصادی محرک اصلی تکمیل خرید آنلاین است.
+
+---
+
+## قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+### قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+1. **قاعده ثبت سفارش در ۳ مرحله:** فرآیند پرداخت نباید نیازمند ثبت‌نام طولانی باشد؛ ثبت سریع با پیامک OTP الزامی است.
+2. **قاعده شفافیت هزینه ارسال:** هزینه ارسال باید در همان ابتدا مشخص باشد؛ نمایش هزینه در مرحله آخر عامل ۵۰٪ ترک سبد خرید است.

@@ -1,6 +1,6 @@
 ---
 id: KB-TYPE-HOSP-001
-tags: ['restaurant_cafe', 'hospitality', 'food_waste', 'dining_experience', 'table_turnover', 'menu_engineering']
+tags: ['restaurant_cafe', 'hospitality', 'food_waste', 'dining_experience', 'table_turnover', 'menu_engineering', 'prime_cost', 'bourdieu_taste', 'snappfood']
 title: "بافتار کافه، رستوران و پذیرایی (Hospitality)"
 category: "07-business-types"
 version: "1.0.0"
@@ -12,6 +12,7 @@ related_metrics: ['table_turnover', 'food_cost_percent', 'average_ticket']
 related_concepts: ['SENSORY_EXPERIENCE', 'COMMUNITY_VIBE', 'TAKEAWAY_SHARE']
 source: "DIGITAL MARKET Knowledge Engine & Academic Foundations"
 last_updated: "2026-09-05"
+sources: ['SRC-FOUNDATION-01', 'SRC-FOUNDATION-08', 'SRC-IR-SNAPP-REPORT-1404-OFFICIAL-COMPANY']
 ---
 
 # مفهوم چیست؟
@@ -58,3 +59,24 @@ Food Cost زیر ۳۲٪، نرخ بازگشت هفتگی مشتریان بالا
 
 # Related Wiki Nodes
 - `KB-IDN-CHAR-001`
+
+---
+
+## پایه‌های علمی و مراجع دانشی (Scientific Foundations & Sourced Evidence)
+### پایه‌های علمی و مراجع دانشی (Scientific Foundations)
+- **پیر بوردیو (SRC-FOUNDATION-01):** انتخاب کافه و رستوران ابزار بازتولید تمایز فرهنگی و سلیقه طبقاتی است. طراحی فضا و کدگذاری نمادین هویت مصرف‌کننده را شکل می‌دهد.
+- **ریچارد تالر (SRC-FOUNDATION-08):** حسابداری ذهنی؛ هزینه صرف غذا در رستوران در حساب ذهنی 'تفریح و پاداش' قرار دارد نه بقای فیزیولوژیک.
+
+---
+
+## شواهد و بستر تجاری ایران (Iranian Market Context & Evidence)
+### شواهد و بستر تجاری ایران (Iranian Market Realities)
+- **نفوذ پلتفرم‌های دلیوری:** طبق داده‌های اسنپ‌فود و سفارش آنلاین، رستوران‌ها بدون مدیریت کانال بیرون‌بر سهم بزرگی از بازار ساعات اوج را از دست می‌دهند.
+- **کنترل Prime Cost:** مجموع بهای تمام‌شده غذا (Food Cost) و دستمزد پرسنل در بازار ایران نباید از ۵۵٪ تا ۶۰٪ فروش ناخالص فراتر رود.
+
+---
+
+## قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+### قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+1. **قاعده فودکاست حداکثر ۳۵٪:** آیتم‌های منو باید به گونه‌ای مهندسی شوند که میانگین هزینه مواد از ۳۵٪ قیمت فروش تجاوز نکند.
+2. **قاعده چرخش میز (Table Turnover):** در ساعات پیک، مدت زمان ماندگاری مشتری در سالن باید مدیریت شود.

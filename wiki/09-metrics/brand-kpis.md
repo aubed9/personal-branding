@@ -1,6 +1,6 @@
 ---
 id: KB-KPI-BRAND-001
-tags: ['brand_kpis', 'brand_equity_metrics', 'brand_salience', 'nps', 'brand_resonance']
+tags: ['brand_kpis', 'brand_equity_metrics', 'brand_salience', 'nps', 'brand_resonance', 'salience', 'category_entry_points']
 title: "سنجه‌های قدرت و ارزش ویژه برند (Brand Equity KPIs)"
 category: "09-metrics"
 version: "1.0.0"
@@ -12,6 +12,7 @@ related_metrics: ['unaided_recall', 'brand_search_volume', 'nps']
 related_concepts: ['BRAND_EQUITY', 'CUSTOMER_LOYALTY']
 source: "DIGITAL MARKET Knowledge Engine & Academic Foundations"
 last_updated: "2026-09-05"
+sources: ['SRC-FOUNDATION-15', 'SRC-FOUNDATION-16', 'SRC-FOUNDATION-17']
 ---
 
 # مفهوم چیست؟
@@ -58,3 +59,24 @@ NPS > 60، سهم ترافیک مستقیم بالای ۴۰٪.
 
 # Related Wiki Nodes
 - `KB-STR-POS-001`
+
+---
+
+## پایه‌های علمی و مراجع دانشی (Scientific Foundations & Sourced Evidence)
+### پایه‌های علمی و مراجع دانشی (Scientific Foundations)
+- **کوین لین کلر (SRC-FOUNDATION-15):** هرم ارزش ویژه برند؛ سنجه‌های برجستگی (Salience)، طنین و وفاداری عمیق (Resonance).
+- **بایرون شارپ (SRC-FOUNDATION-17):** سنجش نقاط ورود به دسته‌بندی (CEPs) و سهم ذهنی (Share of Mind) در لحظه احساس نیاز.
+
+---
+
+## شواهد و بستر تجاری ایران (Iranian Market Context & Evidence)
+### شواهد و بستر تجاری ایران (Iranian Market Realities)
+- **سهم جستجو در بسترهای مسلط:** سنجش حجم جستجوی نام برند در گوگل و فروشگاه‌های پلتفرمی (دیجی‌کالا، بازار) شاخص‌ترین نشانه برجستگی برند است.
+- **ارزیابی رضایت مشتری با NPS بومی:** سنجه شاخص مروجان در خریدهای تکراری ابزار پیش‌بینی ریزش مشتری در بازار ایران است.
+
+---
+
+## قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+### قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+1. **قاعده سنجه‌های رفتاری بر نگرشی:** ارقام خرید تکراری و ترافیک ارگانیک بر نظرسنجی‌های انتزاعی ترجیح دارند.
+2. **قاعده پایش فصلی دارایی‌های متمایز:** میزان یادآوری رنگ، لوگو و شعار باید هر فصل ارزیابی شود.

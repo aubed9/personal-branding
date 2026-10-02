@@ -1,6 +1,6 @@
 ---
 id: KB-STR-TARGET-001
-tags: ['target_market', 'buyer_persona', 'beachhead_market', 'ideal_customer_profile', 'icp']
+tags: ['target_market', 'buyer_persona', 'beachhead_market', 'ideal_customer_profile', 'icp', 'smallest_viable_market', 'segmentation']
 title: "تعیین بازار هدف متمرکز و پرسونای خریدار"
 category: "03-strategy"
 version: "1.0.0"
@@ -12,6 +12,7 @@ related_metrics: ['target_reach', 'conversion_rate']
 related_concepts: ['TARGET_MARKET', 'BUYER_PERSONA']
 source: "DIGITAL MARKET Knowledge Engine & Academic Foundations"
 last_updated: "2026-09-05"
+sources: ['SRC-FOUNDATION-19', 'SRC-FOUNDATION-22', 'SRC-FOUNDATION-27']
 ---
 
 # مفهوم چیست؟
@@ -58,3 +59,24 @@ last_updated: "2026-09-05"
 
 # Related Wiki Nodes
 - `KB-RES-SEG-001`
+
+---
+
+## پایه‌های علمی و مراجع دانشی (Scientific Foundations & Sourced Evidence)
+### پایه‌های علمی و مراجع دانشی (Scientific Foundations)
+- **ست گادین (SRC-FOUNDATION-22):** کوچک‌ترین بازار قابل اتکا (Smallest Viable Market)؛ محصول را برای گروهی کوچک و پرشور طراحی کنید.
+- **فیلیپ کاتلر (SRC-FOUNDATION-19):** فرآیند STP؛ ارزیابی جذابیت و دسترسی‌پذیری سگمنت‌ها.
+
+---
+
+## شواهد و بستر تجاری ایران (Iranian Market Context & Evidence)
+### شواهد و بستر تجاری ایران (Iranian Market Realities)
+- **دهک‌های درآمدی مرکز آمار ایران:** تفاوت فاحش سبد مصرفی دهک‌های ۱ تا ۳ با دهک‌های ۸ تا ۱۰ (SRC-IR-SCI-CPI-1405-05) بازاریابی یکنواخت برای کل جامعه را غیرممکن ساخته است.
+- **خوشه‌های جغرافیایی کلان‌شهرها:** تمرکز بر مراکز پرجمعیت و شهرهای استان‌های بزرگ به عنوان فاز اول ورود.
+
+---
+
+## قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+### قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+1. **قاعده وضوح مشتری نامناسب:** پروفایل مشتری باید دقیقاً مشخص کند چه کسانی مشتری ما نیستند.
+2. **قاعده توانایی پرداخت:** بازار هدف باید انگیزه بالا، فوریت در نیاز و بودجه نقد کافی داشته باشد.

@@ -1,6 +1,6 @@
 ---
 id: KB-MSG-VOICE-001
-tags: ['brand_voice', 'verbal_identity', 'consistent_voice', 'personality_expression', 'tone_of_voice']
+tags: ['brand_voice', 'verbal_identity', 'consistent_voice', 'personality_expression', 'tone_of_voice', 'consistency', 'personality_projection', 'kapferer']
 title: "صدای ثابت و پایدار برند (Brand Voice)"
 category: "05-verbal-identity"
 version: "1.0.0"
@@ -12,6 +12,7 @@ related_metrics: ['voice_consistency', 'brand_resonance']
 related_concepts: ['BRAND_VOICE', 'CONSISTENT_EXPRESSION']
 source: "DIGITAL MARKET Knowledge Engine & Academic Foundations"
 last_updated: "2026-09-05"
+sources: ['SRC-FOUNDATION-18', 'SRC-FOUNDATION-22', 'SRC-FOUNDATION-16']
 ---
 
 # مفهوم چیست؟
@@ -57,4 +58,26 @@ last_updated: "2026-09-05"
 شاخص شناخت صدا توسط مخاطب، انطباق کپی‌رایترها با دفترچه صدا.
 
 # Related Wiki Nodes
-- `KB-IDN-CHAR-001`\n- `KB-MSG-TONE-001`
+- `KB-IDN-CHAR-001`
+- `KB-MSG-TONE-001`
+
+---
+
+## پایه‌های علمی و مراجع دانشی (Scientific Foundations & Sourced Evidence)
+### پایه‌های علمی و مراجع دانشی (Scientific Foundations)
+- **ژان نوئل کاپفرر (SRC-FOUNDATION-18):** صدای برند امضای شنیداری و متنی شخصیت سازمان است.
+- **ست گادین (SRC-FOUNDATION-22):** داشتن صدایی شفاف و متمایز که بدون لوگو هم برای مخاطب قابل شناسایی باشد.
+
+---
+
+## شواهد و بستر تجاری ایران (Iranian Market Context & Evidence)
+### شواهد و بستر تجاری ایران (Iranian Market Realities)
+- **یکدستی صدا در تمام کانال‌ها:** متنی که در اینستاگرام منتشر می‌شود باید همان صدای پاسخگوی تلفنی یا بسته‌بندی را داشته باشد.
+- **پرهیز از تقلید لحن برندهای ترند:** تقلید صدای دیجی‌کالا یا اسنپ توسط کسب‌وکارهای B2B یا سنتی هویت آنها را مخدوش می‌کند.
+
+---
+
+## قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+### قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+1. **قاعده پایداری صدا در برابر تغییر لحن:** صدا هویت ثابت است؛ لحن بر اساس موقعیت تعدیل می‌شود.
+2. **قاعده آزمون شناسایی بدون امضا:** اگر نام برند را از متن حذف کنیم، مخاطب باید حس کند این متن متعلق به کیست.

@@ -1,6 +1,6 @@
 ---
 id: KB-KPI-SAAS-001
-tags: ['saas_kpis', 'mrr', 'arr', 'churn_rate', 'ltv_cac', 'net_revenue_retention', 'nrr']
+tags: ['saas_kpis', 'mrr', 'arr', 'churn_rate', 'ltv_cac', 'net_revenue_retention', 'nrr', 'saas_metrics', 'skok_framework', 'magic_number', 'quick_ratio']
 title: "شاخص‌های کلیدی عملکرد نرم‌افزارهای ابری (SaaS Metrics)"
 category: "09-metrics"
 version: "1.0.0"
@@ -12,6 +12,7 @@ related_metrics: ['mrr', 'arr', 'churn', 'nrr']
 related_concepts: ['SAAS_FINANCIALS', 'UNIT_ECONOMICS']
 source: "DIGITAL MARKET Knowledge Engine & Academic Foundations"
 last_updated: "2026-09-05"
+sources: ['SRC-FOUNDATION-30', 'SRC-FOUNDATION-26', 'SRC-FOUNDATION-27']
 ---
 
 # مفهوم چیست؟
@@ -58,3 +59,24 @@ MRR Growth Rate > 10% monthly, CAC Payback < 8 months.
 
 # Related Wiki Nodes
 - `KB-TYPE-SAAS-001`
+
+---
+
+## پایه‌های علمی و مراجع دانشی (Scientific Foundations & Sourced Evidence)
+### پایه‌های علمی و مراجع دانشی (Scientific Foundations)
+- **دیوید اسکوک و برایان بلفور (SRC-FOUNDATION-30):** شاخص‌های کلیدی اقتصاد اشتراکی؛ LTV, CAC, Net Retention Rate, Magic Number.
+- **پیتر فیدر (SRC-FOUNDATION-27):** تمرکز بر مشتریان با بیشترین ارزش طول عمر (High-CLV).
+
+---
+
+## شواهد و بستر تجاری ایران (Iranian Market Context & Evidence)
+### شواهد و بستر تجاری ایران (Iranian Market Realities)
+- **سنجش ران‌وی مالی (Cash Runway):** با تورم بالای ۵۰٪، ماه‌های باقی‌مانده از بقای مالی با فرمول نقدینگی تقسیم بر نرخ سوزاندن خالص (Net Burn Rate) بررسی می‌شود.
+- **نرخ تمدید اشتراک در شرایط تحریمی:** بررسی پایداری ابزارهای زیرساختی و هزینه‌های دلاری سرورها در برابر درآمدهای ریالی.
+
+---
+
+## قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+### قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+1. **قاعده Quick Ratio بالاتر از ۴:** نسبت رشد درآمدهای جدید به درآمدهای از دست رفته (Churn) باید بالای ۴ باشد.
+2. **قاعده بازگشت زیر ۱۲ ماه:** دوره بازگشت هزینه جذب هر مشتری نباید از ۱ سال فراتر رود.

@@ -1,6 +1,6 @@
 ---
 id: KB-PLAY-CRISIS-001
-tags: ['crisis_management', 'reputation_defense', 'pr_playbook', 'stakeholder_communication', 'escalation']
+tags: ['crisis_management', 'reputation_defense', 'pr_playbook', 'stakeholder_communication', 'escalation', 'pr_protocol', 'damage_control', 'tactical_empathy']
 title: "پلی‌بوک مدیریت بحران و صیانت از اعتبار برند"
 category: "10-playbooks"
 version: "1.0.0"
@@ -12,6 +12,7 @@ related_metrics: ['crisis_response_time', 'sentiment_recovery_rate']
 related_concepts: ['REPUTATION_PROTECTION', 'CRISIS_COMMUNICATION']
 source: "DIGITAL MARKET Knowledge Engine & Academic Foundations"
 last_updated: "2026-09-05"
+sources: ['SRC-FOUNDATION-07', 'SRC-FOUNDATION-25', 'SRC-FOUNDATION-26']
 ---
 
 # مفهوم چیست؟
@@ -78,3 +79,24 @@ last_updated: "2026-09-05"
 # قواعد طلایی پاسخ به نظرات منفی در بلد، نشان و Google Maps
 1. هرگز لحن تدافعی نگیرید و به مشتری برچسب دروغگویی نزنید.
 2. همیشه نام شاکی و شماره مستقیم تماس مدیریت را در پاسخ عمومی قید کنید تا سایر بینندگان، تعهد ۱۰۰٪ برند به پاسخگویی را با چشمان خود ببینند.
+
+---
+
+## پایه‌های علمی و مراجع دانشی (Scientific Foundations & Sourced Evidence)
+### پایه‌های علمی و مراجع دانشی (Scientific Foundations)
+- **دانیل کانمن (SRC-FOUNDATION-07):** قاعده اوج-پایان (Peak-End Rule)؛ پایان‌بندی بحران و جبران خسارت نحوه قضاوت نهایی مشتری را تعیین می‌کند.
+- **کریس واس (SRC-FOUNDATION-25):** همدلی تاکتیکی (Tactical Empathy) و برچسب‌زنی احساسات منفی برای خلع سلاح خشم مخاطب.
+
+---
+
+## شواهد و بستر تجاری ایران (Iranian Market Context & Evidence)
+### شواهد و بستر تجاری ایران (Iranian Market Realities)
+- **بحران‌های ناشی از قطعی خدمات یا گرانی:** شفافیت صریح و جبران خسارت ملموس (کد تخفیف، بازگشت وجه، تمدید اشتراک) مانع از موج منفی در شبکه‌های اجتماعی می‌شود.
+- **مسئولیت‌پذیری در رسانه‌ها:** هرگونه لاپوشانی یا انداختن تقصیر به گردن مشتری در فضای مجازی ایران نتیجه معکوس داشته و بحران را تشدید می‌کند.
+
+---
+
+## قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+### قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+1. **قاعده پاسخ در ۲ ساعت اول:** بیانیه اولیه عذرخواهی و تایید مشکل باید ظرف حداکثر ۲ ساعت منتشر شود.
+2. **قاعده جبران پیش‌دستانه:** پیشنهاد جبران خسارت باید قبل از درخواست مشتری ارائه گردد.

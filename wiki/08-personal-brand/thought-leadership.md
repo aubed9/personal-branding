@@ -1,6 +1,6 @@
 ---
 id: KB-PB-THOUGHT-001
-tags: ['thought_leadership', 'point_of_view', 'content_operating_system', 'industry_influence', 'pr_podcast']
+tags: ['thought_leadership', 'point_of_view', 'content_operating_system', 'industry_influence', 'pr_podcast', 'commercial_teaching', 'pov', 'challenger_sale']
 title: "رهبری فکری و زاویه دید اختصاصی (Point-of-View)"
 category: "08-personal-brand"
 version: "1.0.0"
@@ -12,6 +12,7 @@ related_metrics: ['content_engagement', 'inbound_inquiries']
 related_concepts: ['POINT_OF_VIEW', 'INTELLECTUAL_AUTHORITY']
 source: "DIGITAL MARKET Knowledge Engine & Academic Foundations"
 last_updated: "2026-09-05"
+sources: ['SRC-FOUNDATION-24', 'SRC-FOUNDATION-22', 'SRC-FOUNDATION-10']
 ---
 
 # مفهوم چیست؟
@@ -71,3 +72,24 @@ last_updated: "2026-09-05"
 
 # سنجه‌های تسلط بر موتورهای هوش مصنوعی و سئو (GEO & Personal SEO)
 - **شاخص گراف دانش شخصی (Personal Knowledge Graph Presence):** جستجوی نام بنیان‌گذار همراه با نام برند باید حداقل در صفحه اول گوگل و پاسخ‌های ChatGPT و Claude به عنوان مرجع صنف ظاهر شود.
+
+---
+
+## پایه‌های علمی و مراجع دانشی (Scientific Foundations & Sourced Evidence)
+### پایه‌های علمی و مراجع دانشی (Scientific Foundations)
+- **متیو دیکسون و آدامسون (SRC-FOUNDATION-24):** آموزش تجاری (Commercial Teaching) در مدل فروش چالشگر؛ رهبری فکری یعنی آموختن زوایای پنهان و خطاهای پرهزینه به مشتری در صنعت خودش.
+- **ست گادین (SRC-FOUNDATION-22):** داشتن دیدگاه متمایز و شجاعانه (POV) که ارزش بحث و گفتگو را در صنعت برانگیزد.
+
+---
+
+## شواهد و بستر تجاری ایران (Iranian Market Context & Evidence)
+### شواهد و بستر تجاری ایران (Iranian Market Realities)
+- **کمبود محتوای تحلیلی دست‌اول:** انتشار گزارش‌های آماری بومی و تحلیل‌های داده‌محور از صنعت خود، رهبری فکری را بدون نیاز به بودجه سنگین تبلیغاتی تثبیت می‌کند.
+- **ارتباط با اکوسیستم استارتاپی و صنعتی:** مصاحبه‌ها، وبینارها و گزارش‌های سالانه معتبرترین ابزار تثبیت جایگاه کارشناسی در بازار ایران است.
+
+---
+
+## قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+### قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+1. **قاعده زاویه دید چالشگرانه:** محتوای رهبری فکری باید یکی از فرضیات غلط رایج در صنف را با مدرک نقض کند.
+2. **قاعده هدایت به قابلیت راهکار:** آموزش باید مخاطب را به این نتیجه برساند که برای حل این چالش ساختاری به توانایی تخصصی ما نیاز است.
