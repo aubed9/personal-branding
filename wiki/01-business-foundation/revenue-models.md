@@ -1,6 +1,6 @@
 ---
 id: KB-BIZ-REV-001
-tags: ['revenue_models', 'monetization', 'pricing_mechanisms', 'subscription', 'transactional', 'retainer']
+tags: ['revenue_models', 'monetization', 'pricing_mechanisms', 'subscription', 'transactional', 'retainer', 'revenue_streams', 'pricing_model', 'varian']
 title: "مدل‌های درآمدی و مکانیزم‌های قیمت‌ستانی"
 category: "01-business-foundation"
 version: "1.0.0"
@@ -12,6 +12,7 @@ related_metrics: ['arpu', 'mrr_arr']
 related_concepts: ['REVENUE_ARCHITECTURE', 'PRICING_MECHANISM']
 source: "DIGITAL MARKET Knowledge Engine & Academic Foundations"
 last_updated: "2026-09-05"
+sources: ['SRC-FOUNDATION-05', 'SRC-FOUNDATION-30', 'SRC-FOUNDATION-26']
 ---
 
 # مفهوم چیست؟
@@ -58,3 +59,25 @@ last_updated: "2026-09-05"
 
 # Related Wiki Nodes
 - `KB-BIZ-ECON-001`
+
+---
+
+## پایه‌های علمی و مراجع دانشی (Scientific Foundations & Sourced Evidence)
+### پایه‌های علمی و مراجع دانشی (Scientific Foundations)
+- **هال واریان (SRC-FOUNDATION-05):** مدل‌های درآمدی از طریق تبعیض قیمتی و تعرفه‌بندی دوسطحی (Two-Part Tariff) مازاد رفاه مصرف‌کننده را به مازاد تولیدکننده تبدیل می‌کنند.
+- **دیوید اسکوک و ساس متریکس (SRC-FOUNDATION-30):** مدل درآمدی اشتراکی متوالی (MRR) با تثبیت درآمد پیش‌بینی‌پذیر، ضریب ارزش‌گذاری شرکت را ۳ تا ۵ برابر مدل‌های تک‌فروشی سنتی بالا می‌برد.
+- **فرد رایشهلد (SRC-FOUNDATION-26):** تمایز سود خوب (Good Profits ناشی از ارزش واقعی) از سود بد (Bad Profits ناشی از جریمه و گیر انداختن مشتری).
+
+---
+
+## شواهد و بستر تجاری ایران (Iranian Market Context & Evidence)
+### شواهد و بستر تجاری ایران (Iranian Market Realities)
+- **مقاومت در برابر اشتراک بلندمدت ریالی:** به دلیل نوسانات ارزش پول، اشتراک سالانه پیش‌پرداخت با تخفیف جذاب، بسیار موفق‌تر از اشتراک ماهانه متکی بر برداشت خودکار بانکی (Direct Debit) عمل می‌کند.
+- **رواج مدل‌های اعتباری (BNPL):** داده‌های گزارش اسنپ و دیجی‌کالا نشان می‌دهد مدل‌های خرید اقساطی خرد نرخ تکمیل خرید را به ویژه در کالاهای مصرفی بادوام جهش داده‌اند.
+
+---
+
+## قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+### قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+1. **قاعده پیش‌بینی‌پذیری جریان درآمد:** مدل‌های درآمدی با حداقل ۴۰٪ درآمد تکرارشونده نسبت به مدل‌های فروش تصادفی اولویت دارند.
+2. **قاعده شفافیت قیمت:** هرگونه هزینه پنهان در لحظه پرداخت نهایی باعث انصراف کاربر و باطل شدن گیت اعتماد می‌شود.

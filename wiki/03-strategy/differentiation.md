@@ -1,6 +1,6 @@
 ---
 id: KB-STR-DIFF-001
-tags: ['differentiation', 'only_ness_statement', 'defensible_advantage', 'purple_cow', 'uniqueness']
+tags: ['differentiation', 'only_ness_statement', 'defensible_advantage', 'purple_cow', 'uniqueness', 'radical_differentiation', 'distinctive_assets', 'byron_sharp']
 title: "تمایز معنادار و بیانیه انحصار (Only-ness)"
 category: "03-strategy"
 version: "1.0.0"
@@ -12,6 +12,7 @@ related_metrics: ['onlyness_clarity', 'substitutability_index']
 related_concepts: ['ONLYNESS_STATEMENT', 'RADICAL_DIFFERENTIATION']
 source: "DIGITAL MARKET Knowledge Engine & Academic Foundations"
 last_updated: "2026-09-05"
+sources: ['SRC-FOUNDATION-09', 'SRC-FOUNDATION-22', 'SRC-FOUNDATION-17']
 ---
 
 # مفهوم چیست؟
@@ -58,3 +59,25 @@ last_updated: "2026-09-05"
 
 # Related Wiki Nodes
 - `KB-STR-POS-001`
+
+---
+
+## پایه‌های علمی و مراجع دانشی (Scientific Foundations & Sourced Evidence)
+### پایه‌های علمی و مراجع دانشی (Scientific Foundations)
+- **ست گادین (SRC-FOUNDATION-22):** گاو بنفش؛ در جهانی شلوغ، محصول بسیار خوب دیگر دیده نمی‌شود؛ محصول باید شایسته حرف زدن و گفتگو باشد (Remarkable).
+- **بایرون شارپ (SRC-FOUNDATION-17):** متمایز بودن ادراکی خیالی است؛ دارایی‌های بصری و کلامی متمایز (Distinctive Assets) هستند که برند را در ذهن نگاه می‌دارند.
+- **مایکل پورتر (SRC-FOUNDATION-09):** تمایز پایدار مستلزم پذیرش هزینه‌های ساختار متمایز و دفاع‌پذیری در برابر کپی‌کاری است.
+
+---
+
+## شواهد و بستر تجاری ایران (Iranian Market Context & Evidence)
+### شواهد و بستر تجاری ایران (Iranian Market Realities)
+- **کپی‌کاری سریع محصولات:** در بازار ایران نوآوری‌های ظاهری ظرف چند هفته کپی می‌شوند؛ تمایز واقعی باید در شبکه توزیع، فرهنگ سازمانی یا زنجیره تامین اختصاصی ریشه داشته باشد.
+- **کدهای بومی تمایز:** استفاده از هویت فرهنگی اصیل و داستان واقعی موسس، تقلیدناپذیرترین المان تمایز در برندهای ایرانی است.
+
+---
+
+## قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+### قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+1. **قاعده هزینه تمایز:** اگر ایجاد تمایز هیچ تغییری در اولویت‌ها یا هزینه‌های جاری ایجاد نکند، آن تمایز واقعی نیست.
+2. **قاعده مرزهای تمایز:** برای دستیابی به تمایز در یک حوزه، باید آگاهانه در بخش‌های دیگر متوسط یا غایب باشید.

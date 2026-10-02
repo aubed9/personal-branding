@@ -1,0 +1,24 @@
+# Intermediate Microeconomics: A Modern Approach, 9th Edition — publisher verification snapshot
+
+Captured: 2026-09-26
+Publisher: W. W. Norton & Company
+Author: Hal R. Varian
+Edition: 9th Edition; W. W. Norton & Company
+Published: 2014-04-09
+ISBN: 978-0393919677
+Publisher URL:
+https://wwnorton.com/books/9780393919677
+
+Verified Locators & Structural Content:
+- Chapter 14: Consumer's Surplus
+- Chapter 15: Market Demand (Price elasticity of demand)
+- Chapter 24: Monopoly (Price discrimination: 1st, 2nd, and 3rd degree)
+- Chapter 25: Monopoly Behavior (Bundling, two-part tariffs)
+
+Key Conceptual Extractions:
+- Price elasticity of demand determines the revenue impact of price changes: when |Ed| > 1, price increases reduce total revenue unless substitutes are eliminated or switching costs are established.
+- Price discrimination captures consumer surplus through tiered packaging, versioning, and volume discounts.
+- High switching costs protect margin and enable sustainable pricing power.
+
+Admission Boundary:
+- Bibliographic record verified against W. W. Norton publisher catalog. Grounds unit economics pricing models in Phase 1 and 2.

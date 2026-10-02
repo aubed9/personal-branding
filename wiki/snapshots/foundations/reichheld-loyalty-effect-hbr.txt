@@ -1,0 +1,24 @@
+# The Loyalty Effect: The Hidden Force Behind Growth, Profits, and Lasting Value — publisher verification snapshot
+
+Captured: 2026-09-26
+Publisher: Harvard Business Review Press
+Author: Frederick F. Reichheld
+Edition: First Edition; Harvard Business School Press
+Published: 1996-02-01
+ISBN: 978-0875844480
+Publisher URL:
+https://store.hbr.org/product/the-loyalty-effect-the-hidden-force-behind-growth-profits-and-lasting-value/4488
+
+Verified Locators & Structural Content:
+- Chapter 1: The Loyalty Effect (Compounding impact of 5% customer retention)
+- Chapter 3: Customer Value (Defection cost, lifetime profit curve)
+- Chapter 6: Profit from Loyalty
+- Chapter 8: The Net Promoter concept foundations
+
+Key Conceptual Extractions:
+- Increasing customer retention by just 5% increases company profits by 25% to 95% due to reduced acquisition costs and higher lifetime spend.
+- Defection rates are the most reliable early warning signal of brand decay.
+- 'Bad profits' extracted through punitive contracts and unexpected fees destroy word-of-mouth and inflate future acquisition costs.
+
+Admission Boundary:
+- Verified against Harvard Business Review Press catalog. Foundations for CRM, retention economics, and NPS governance.

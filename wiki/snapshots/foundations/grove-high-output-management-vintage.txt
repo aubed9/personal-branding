@@ -1,0 +1,24 @@
+# High Output Management — publisher verification snapshot
+
+Captured: 2026-09-26
+Publisher: Vintage Books / Random House
+Author: Andrew S. Grove
+Edition: Vintage Books Edition (1995); Random House
+Published: 1983-01-01
+ISBN: 978-0679762881
+Publisher URL:
+https://www.penguinrandomhouse.com/books/72648/high-output-management-by-andrew-s-grove/
+
+Verified Locators & Structural Content:
+- Part I: The Operating Engine (Breakfast factory analogy, limiting steps, indicators)
+- Part II: Management Is a Team Sport (Managerial leverage)
+- Part III: Team of Teams (Meetings, planning)
+- Part IV: The Players (Task-relevant maturity, OKR principles)
+
+Key Conceptual Extractions:
+- A manager's output is the output of their organization plus the output of the neighboring organizations influenced by them.
+- High leverage activities yield disproportionate output per unit of managerial time invested.
+- Indicators must be paired (e.g. quantity paired with quality) to prevent perverse incentives and operational distortion.
+
+Admission Boundary:
+- Verified against Penguin Random House catalog. Provides operational leverage and execution KPIs in Phase 1 and 8.

@@ -1,0 +1,25 @@
+# Competing Against Luck: The Story of Innovation and Customer Choice — publisher verification snapshot
+
+Captured: 2026-09-26
+Publisher: HarperBusiness
+Author: Clayton M. Christensen; Taddy Hall; Karen Dillon; David S. Duncan
+Edition: First Edition; HarperCollins
+Published: 2016-10-04
+ISBN: 978-0062435613
+Publisher URL:
+https://www.harpercollins.com/products/competing-against-luck-clayton-m-christensenkaren-dillondavid-s-duncantaddy-hall
+
+Verified Locators & Structural Content:
+- Chapter 1: The Milkshake Dilemma
+- Chapter 2: Progress, Not Products (Jobs to be Done defined)
+- Chapter 3: The Anatomy of a Job (Functional, emotional, and social dimensions)
+- Chapter 5: How to Hear What Your Customers Don't Say
+- Chapter 7: The Job-Centered Organization
+
+Key Conceptual Extractions:
+- Customers do not buy products; they 'hire' them to make progress in a specific struggling context.
+- Demographic traits do not cause purchases; the circumstantial struggle in context is the true driver of adoption.
+- Every Job to be Done has functional, emotional, and social dimensions; winning solutions satisfy the non-functional dimensions where competitors fail.
+
+Admission Boundary:
+- Verified against HarperCollins catalog. Powers Phase 2 customer problem discovery and JTBD interview modeling.

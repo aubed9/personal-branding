@@ -1,6 +1,6 @@
 ---
 id: KB-VIS-DSYS-001
-tags: ['design_system', 'visual_tokens', 'design_governance', 'ui_kit', 'brand_assets']
+tags: ['design_system', 'visual_tokens', 'design_governance', 'ui_kit', 'brand_assets', 'distinctive_assets', 'visual_grammar', 'accessibility']
 title: "قرارداد داخلی سیستم طراحی هویت بصری"
 category: "15-visual-identity"
 version: "1.0.0"
@@ -12,6 +12,7 @@ related_metrics: ['visual_consistency', 'asset_coverage']
 related_concepts: ['VISUAL_IDENTITY', 'DESIGN_SYSTEM', 'VISUAL_GOVERNANCE']
 source: "SRC-INT-PHASE7-VISUAL-CONTRACT"
 last_updated: "2026-09-27"
+sources: ['SRC-INT-PHASE7-VISUAL-CONTRACT', 'SRC-FOUNDATION-17', 'SRC-FOUNDATION-20']
 ---
 
 # هدف
@@ -52,3 +53,25 @@ last_updated: "2026-09-27"
 - `KB-VIS-COLOR-001`
 - `KB-VIS-TYPE-001`
 - `KB-VIS-LOGO-001`
+
+---
+
+## پایه‌های علمی و مراجع دانشی (Scientific Foundations & Sourced Evidence)
+### پایه‌های علمی و مراجع دانشی (Scientific Foundations)
+- **قرارداد فاز ۷ هویت بصری (SRC-INT-PHASE7-VISUAL-CONTRACT):** الزام به انطباق ساختار بصری با کهن‌الگو و جهت‌گیری استراتژیک برند؛ تولید راهنمای رنگ، فرم، و سیستم تایپوگرافی بدون نقص.
+- **بایرون شارپ (SRC-FOUNDATION-17):** دارایی‌های بصری متمایز (پالت رنگی خاص، فرم لوگو، پترن‌های گرافیکی) پایه‌های برجستگی ذهنی برند در شلف فروشگاه و وب هستند.
+- **فیل باردن (SRC-FOUNDATION-20):** کدهای بصری و پردازش ناخودآگاه در کسر ثانیه توسط قشر بینایی مغز.
+
+---
+
+## شواهد و بستر تجاری ایران (Iranian Market Context & Evidence)
+### شواهد و بستر تجاری ایران (Iranian Market Realities)
+- **سازگاری تایپوگرافی فارسی:** ضرورت استفاده از تایپ‌فیس‌های استاندارد بومی با پشتیبانی کامل از وزن‌ها و ارقام فارسی (مانند خانواده وزیرمتن، ایران‌یکان، کلمه).
+- **کیفیت در چاپخانه‌های محلی:** طراحی اقلام هویت بصری باید با استانداردهای ماشین‌های چاپ افست و بسته‌بندی موجود در بازار ایران سازگار باشد.
+
+---
+
+## قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+### قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+1. **قاعده استقلال رنگی:** رنگ هویت اصلی باید در بین ۳ رقیب مستقیم محلی کاملاً منحصربه‌فرد باشد.
+2. **قاعده کنتراست و خوانایی:** کنتراست عناصر متنی در وب و چاپ نباید کمتر از استاندارد WCAG AA (نسبت ۴.۵ به ۱) باشد.

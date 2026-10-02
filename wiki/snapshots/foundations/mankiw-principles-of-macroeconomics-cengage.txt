@@ -1,0 +1,24 @@
+# Principles of Macroeconomics, 9th Edition — publisher verification snapshot
+
+Captured: 2026-09-26
+Publisher: Cengage Learning
+Author: N. Gregory Mankiw
+Edition: 9th Edition; Cengage Learning
+Published: 2020-01-01
+ISBN: 978-0357133491
+Publisher URL:
+https://www.cengage.com/c/principles-of-macroeconomics-9e-mankiw/9780357133491/
+
+Verified Locators & Structural Content:
+- Chapter 11: Measuring the Cost of Living (CPI, inflation calculation)
+- Chapter 16: The Monetary System (Money supply, liquidity)
+- Chapter 17: Money Growth and Inflation (Quantity theory of money, inflation tax)
+- Chapter 21: The Influence of Monetary and Fiscal Policy on Aggregate Demand
+
+Key Conceptual Extractions:
+- Persistent high inflation erodes purchasing power, distorts relative prices, and shifts consumer preference toward tangible stores of value and credit arrangements.
+- Nominal revenue growth must always be adjusted for real inflation to assess true business traction.
+- In inflationary regimes, installment payments (BNPL) and dynamic margin indexing preserve customer purchasing ability.
+
+Admission Boundary:
+- Verified against Cengage catalog. Establishes macroeconomic baseline constraints for Iranian market modeling.

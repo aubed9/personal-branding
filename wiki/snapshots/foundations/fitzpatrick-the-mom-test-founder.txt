@@ -1,0 +1,25 @@
+# The Mom Test: How to talk to customers & learn if your business is a good idea when everyone is lying to you — publisher verification snapshot
+
+Captured: 2026-09-26
+Publisher: Founder Centric
+Author: Rob Fitzpatrick
+Edition: First Edition; Robfitz Ltd
+Published: 2013-09-08
+ISBN: 978-1492180746
+Publisher URL:
+https://www.momtestbook.com/
+
+Verified Locators & Structural Content:
+- Chapter 1: The Mom Test (Talk about their life instead of your idea, ask about past facts, talk less)
+- Chapter 2: Avoiding bad data (Compliments, fluff, ideas)
+- Chapter 3: Asking the important questions
+- Chapter 4: Keeping it casual
+- Chapter 5: Commitment and advancement
+
+Key Conceptual Extractions:
+- Hypothetical questions ('Would you buy this?') yield zero-value data because people are polite and optimistic.
+- Valid customer research extracts concrete historical behavior: how much did they pay, when did they last struggle, what workarounds do they currently use.
+- Real validation requires tangible commitments (time, reputation, or money), not verbal praise.
+
+Admission Boundary:
+- Verified against author official imprint catalog. Enforces customer interview validation rules and evidence hygiene.

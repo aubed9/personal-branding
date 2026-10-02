@@ -1,0 +1,24 @@
+# Thinking, Fast and Slow — publisher verification snapshot
+
+Captured: 2026-09-26
+Publisher: Farrar, Straus and Giroux
+Author: Daniel Kahneman
+Edition: First Edition; Farrar, Straus and Giroux / Penguin
+Published: 2011-10-25
+ISBN: 978-0374275631
+Publisher URL:
+https://us.macmillan.com/books/9780374533557/thinkingfastandslow
+
+Verified Locators & Structural Content:
+- Part I: Two Systems (System 1 fast and intuitive, System 2 slow and deliberative)
+- Part II: Heuristics and Biases (Anchoring effect, availability heuristic)
+- Part IV: Choices (Prospect theory, loss aversion, framing effects)
+- Part V: Two Selves (Experiencing self vs. remembering self, Peak-End Rule)
+
+Key Conceptual Extractions:
+- Loss aversion: losses loom larger than gains by a psychological factor of roughly 2 to 2.5x.
+- Anchoring: initial price exposure strongly biases subsequent value assessments.
+- Peak-End Rule: customers remember experiences by their emotional peak and final moment, not the arithmetic average of every touchpoint.
+
+Admission Boundary:
+- Verified against Macmillan / FSG publisher catalog. Core reference for behavioral economics, pricing presentation, and customer journey touchpoints.

@@ -1,0 +1,24 @@
+# Good Strategy/Bad Strategy: The Difference and Why It Matters — publisher verification snapshot
+
+Captured: 2026-09-26
+Publisher: Crown Business / Currency
+Author: Richard Rumelt
+Edition: First Edition; Crown Business / Random House
+Published: 2011-07-19
+ISBN: 978-0307886231
+Publisher URL:
+https://www.penguinrandomhouse.com/books/202685/good-strategy-bad-strategy-by-richard-rumelt/
+
+Verified Locators & Structural Content:
+- Chapter 1: Good Strategy Is Unexpected
+- Chapter 3: Bad Strategy (Fluff, failure to face the challenge, mistaking goals for strategy)
+- Chapter 5: The Kernel of Good Strategy (Diagnosis, Guiding Policy, Coherent Actions)
+- Chapter 7: Using Leverage & Proximate Objectives
+
+Key Conceptual Extractions:
+- Strategy is not a wishlist or financial goal; it is a cohesive problem-solving mechanism addressing a critical crux.
+- The Kernel of Good Strategy consists of three elements: an honest diagnosis of the obstacle, a guiding policy for dealing with it, and a set of coherent, mutually reinforcing actions.
+- True leverage comes from concentrating resources on one or two pivotal bottlenecks rather than diluting effort across multiple initiatives.
+
+Admission Boundary:
+- Verified against Penguin Random House catalog. Enforces coherence criteria in Phase 3 brand strategy.

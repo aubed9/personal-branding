@@ -1,0 +1,24 @@
+# Value Proposition Design: How to Create Products and Services Customers Want — publisher verification snapshot
+
+Captured: 2026-09-26
+Publisher: John Wiley & Sons
+Author: Alexander Osterwalder; Yves Pigneur; Gregory Bernarda; Alan Smith
+Edition: 1st Edition; Strategyzer Series; John Wiley & Sons
+Published: 2014-10-20
+ISBN: 978-1118968055
+Publisher URL:
+https://www.wiley.com/en-us/Value+Proposition+Design%3A+How+to+Create+Products+and+Services+Customers+Want-p-9781118968055
+
+Verified Locators & Structural Content:
+- Canvas: The Customer Profile (Customer jobs, pains, gains)
+- Canvas: The Value Map (Products & services, pain relievers, gain creators)
+- Design: Fit (Problem-solution fit, product-market fit, business model fit)
+- Test: Testing the value proposition
+
+Key Conceptual Extractions:
+- Problem-solution fit occurs when pain relievers target acute, high-severity pains and gain creators unlock substantial, measurable benefits.
+- A value proposition fails when it attempts to address every minor inconvenience rather than dominating the core struggle.
+- The Value Map must align seamlessly with the Business Model Canvas to ensure commercial viability.
+
+Admission Boundary:
+- Verified against Wiley Strategyzer Series catalog. Foundations for Phase 3 Value Proposition construction.

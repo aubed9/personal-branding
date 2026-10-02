@@ -1,0 +1,24 @@
+# Competitive Strategy: Techniques for Analyzing Industries and Competitors — publisher verification snapshot
+
+Captured: 2026-09-26
+Publisher: Free Press
+Author: Michael E. Porter
+Edition: First Free Press Edition; Simon & Schuster
+Published: 1980-06-01
+ISBN: 978-0684841489
+Publisher URL:
+https://www.simonandschuster.com/books/Competitive-Strategy/Michael-E-Porter/9780684841489
+
+Verified Locators & Structural Content:
+- Chapter 1: The Structural Analysis of Industries (Five Forces framework)
+- Chapter 2: Generic Competitive Strategies (Cost leadership, differentiation, focus; danger of 'stuck in the middle')
+- Chapter 3: A Framework for Competitor Analysis
+- Chapter 7: Structural Analysis within Industries (Strategic groups, mobility barriers)
+
+Key Conceptual Extractions:
+- Industry profitability is governed by five competitive forces; strategy is the deliberate choice of a distinctive position defended by structural barriers.
+- Generic strategies require disciplined trade-offs: cost leadership vs. differentiation vs. niche focus. Pursuing both without separate systems results in being 'stuck in the middle'.
+- Differentiation requires accepting costs associated with uniqueness and serving buyers willing to pay for it.
+
+Admission Boundary:
+- Verified against Simon & Schuster catalog. Foundational text for Phase 3 competitive positioning.

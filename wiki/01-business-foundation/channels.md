@@ -1,6 +1,6 @@
 ---
 id: KB-BIZ-CHANNEL-001
-tags: ['acquisition_channels', 'distribution', 'marketing_channels', 'channel_fit', 'go_to_market']
+tags: ['acquisition_channels', 'distribution', 'marketing_channels', 'channel_fit', 'go_to_market', 'physical_availability', 'channel_strategy', 'byron_sharp', 'omnichannel']
 title: "کانال‌های دسترسی، توزیع و بازاریابی"
 category: "01-business-foundation"
 version: "1.0.0"
@@ -12,6 +12,7 @@ related_metrics: ['channel_cac', 'channel_share']
 related_concepts: ['OMNICHANNEL', 'DISTRIBUTION_STRATEGY']
 source: "DIGITAL MARKET Knowledge Engine & Academic Foundations"
 last_updated: "2026-09-05"
+sources: ['SRC-FOUNDATION-17', 'SRC-FOUNDATION-03', 'SRC-IR-ECOM-REPORT-1403']
 ---
 
 # مفهوم چیست؟
@@ -58,3 +59,24 @@ last_updated: "2026-09-05"
 
 # Related Wiki Nodes
 - `KB-RES-MKT-001`
+
+---
+
+## پایه‌های علمی و مراجع دانشی (Scientific Foundations & Sourced Evidence)
+### پایه‌های علمی و مراجع دانشی (Scientific Foundations)
+- **بایرون شارپ (SRC-FOUNDATION-17):** دسترسی‌پذیری فیزیکی (Physical Availability) شرط لازم رشد است. مشتریان راحت‌طلبند و محصولی را می‌خرند که دسترسی و خرید آن کمترین زحمت و اتلاف وقت را داشته باشد.
+- **اورت راجرز (SRC-FOUNDATION-03):** کانال‌های ارتباطی باید با عادات پذیرندگان آغازین و اکثریت بازار مطابقت داشته باشند؛ پیچیدگی مسیر خرید نرخ نفوذ را مستقیماً کاهش می‌دهد.
+
+---
+
+## شواهد و بستر تجاری ایران (Iranian Market Context & Evidence)
+### شواهد و بستر تجاری ایران (Iranian Market Realities)
+- **ترکیب کانال حضوری و آنلاین (Omnichannel):** طبق گزارش سالانه تجارت الکترونیکی (SRC-IR-ECOM-REPORT-1403)، بیش از ۳۰۶ هزار کسب‌وکار اینماددار وجود دارند اما کانال‌های شبکه‌های اجتماعی (اینستاگرام و تلگرام) هنوز لایه اول کشف محصول برای مصرف‌کننده هستند.
+- **پایداری پرداخت:** استفاده از درگاه‌های پرداخت متصل به شاپرک (SRC-IR-SHAPARAK-REPORT-134) با تسویه پایدار، پیش‌نیاز کانال فروش الکترونیکی است.
+
+---
+
+## قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+### قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+1. **قاعده کانال غالب:** کسب‌وکار نوپا نباید در ابتدا در بیش از ۲ کانال اصلی انرژی بگذارد (یک کانال کشف + یک کانال تبدیل مستقیم).
+2. **قاعده اصطکاک صفر:** مسیر ثبت سفارش و پرداخت در کانال نباید بیش از ۳ کلیک یا ۲ دقیقه طول بکشد.

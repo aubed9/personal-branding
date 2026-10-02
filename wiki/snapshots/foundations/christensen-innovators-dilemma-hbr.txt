@@ -1,0 +1,25 @@
+# The Innovator's Dilemma: When New Technologies Cause Great Firms to Fail — publisher verification snapshot
+
+Captured: 2026-09-26
+Publisher: Harvard Business Review Press
+Author: Clayton M. Christensen
+Edition: Reprint Edition; Harvard Business Review Press
+Published: 1997-05-01
+ISBN: 978-1422196021
+Publisher URL:
+https://store.hbr.org/product/the-innovator-s-dilemma-when-new-technologies-cause-great-firms-to-fail/9602
+
+Verified Locators & Structural Content:
+- Part One: Why Great Firms Can Fail
+- Chapter 1: How Can Great Firms Fail? Insights from the Hard Disk Drive Industry
+- Chapter 2: Value Networks and the Impetus to Innovate
+- Part Two: Managing Disruptive Technological Change
+- Chapter 9: Performance Provided, Market Demand, and the Product Life Cycle
+
+Key Conceptual Extractions:
+- Incumbents listen to their best customers, chase high-margin sustaining innovations, and systematically leave lower tiers under-served.
+- Disruptive entrants enter at the bottom with simpler, cheaper, or more accessible offerings, then march upmarket as their performance improves.
+- New brand challengers should avoid head-on confrontations with dominant players and instead establish footholds in overlooked or non-consuming segments.
+
+Admission Boundary:
+- Verified against Harvard Business Review Press catalog. Governs market entry tactics and disruption analysis.

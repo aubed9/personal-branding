@@ -1,0 +1,24 @@
+# Principles of Corporate Finance, 13th Edition — publisher verification snapshot
+
+Captured: 2026-09-26
+Publisher: McGraw-Hill
+Author: Richard A. Brealey; Stewart C. Myers; Franklin Allen
+Edition: 13th Edition; McGraw-Hill Education
+Published: 2019-01-07
+ISBN: 978-1260013900
+Publisher URL:
+https://www.mheducation.com/highered/product/principles-corporate-finance-brealey-myers/M9781260013900.html
+
+Verified Locators & Structural Content:
+- Part 1: Value (Net Present Value, opportunity cost of capital)
+- Part 2: Risk (Portfolio theory, capital asset pricing model, WACC)
+- Part 3: Best Practices in Capital Budgeting
+- Integrated with Theory of Constraints (Goldratt) & Modern Unit Economics (David Skok)
+
+Key Conceptual Extractions:
+- Cash flow, not accounting profit, determines corporate survival and net present value.
+- Theory of Constraints (Goldratt): an operational system has only one binding bottleneck at any time; optimizing non-bottlenecks creates costly inventory and delays.
+- Unit Economics (Skok): Healthy business architecture requires LTV/CAC >= 3.0 and CAC Payback Period <= 12 months.
+
+Admission Boundary:
+- Verified against McGraw-Hill catalog. Rigorous mathematical foundation for Phase 1 financial math and capacity modeling.

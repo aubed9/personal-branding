@@ -1,6 +1,6 @@
 ---
 id: KB-NAM-STRAT-001
-tags: ['naming_strategy', 'semantic_territories', 'brand_name_generation', 'name_ideation']
+tags: ['naming_strategy', 'semantic_territories', 'brand_name_generation', 'name_ideation', 'naming_territories', 'brand_salience', 'phonetics', 'trademark']
 title: "استراتژی نام‌گذاری برند و قلمروهای معنایی"
 category: "06-naming"
 version: "1.0.0"
@@ -12,6 +12,7 @@ related_metrics: ['naming_fit_score', 'memorability_index']
 related_concepts: ['NAMING_STRATEGY', 'NAMING_TERRITORIES']
 source: "DIGITAL MARKET Knowledge Engine & Academic Foundations"
 last_updated: "2026-09-05"
+sources: ['SRC-FOUNDATION-17', 'SRC-FOUNDATION-15', 'SRC-FOUNDATION-20']
 ---
 
 # مفهوم چیست؟
@@ -57,7 +58,8 @@ last_updated: "2026-09-05"
 نمره ماندگاری نام در حافظه، تناسب با هویت برند.
 
 # Related Wiki Nodes
-- `KB-STR-POS-001`\n- `KB-NAM-EVAL-001`
+- `KB-STR-POS-001`
+- `KB-NAM-EVAL-001`
 # الگوریتم غربالگری و ثبت رسمی نام برند (Execution Algorithm)
 ```text
 [شروع: تولید ۳۰ تا ۵۰ ایده نام در قلمروهای توصیفی، تداعی‌گر، انتزاعی و ترکیبی]
@@ -81,3 +83,25 @@ $$\text{Total Score} = \text{روانی تلفظ (۲۵)} + \text{ماندگار�
 
 # الزامات و پلی‌بوک‌های بومی بازار ایران (Iranian Market Realities)
 - **قوانین اداره ثبت علائم تجاری:** نام انتخابی نباید عام صنف باشد، نباید خلاف موازین عمومی باشد و در صورت استفاده از نام لاتین، معادل مصوب فرهنگستان یا ثبت بین‌المللی ضرورت دارد.
+
+---
+
+## پایه‌های علمی و مراجع دانشی (Scientific Foundations & Sourced Evidence)
+### پایه‌های علمی و مراجع دانشی (Scientific Foundations)
+- **بایرون شارپ (SRC-FOUNDATION-17):** نام برند مهم‌ترین دارایی متمایز برند (Distinctive Brand Asset) است و باید تلفظ آسان و پایداری بلندمدت داشته باشد.
+- **کوین لین کلر (SRC-FOUNDATION-15):** معیارهای شش‌گانه انتخاب المان‌های برند: به‌یادماندنی بودن، معنادار بودن، دوست‌داشتنی بودن، انتقال‌پذیری، انطباق‌پذیری و حفاظت‌پذیری حقوقی.
+- **فیل باردن (SRC-FOUNDATION-20):** هماهنگی صوتی و تداعی‌های ناخودآگاه آوایی (Sound Symbolism).
+
+---
+
+## شواهد و بستر تجاری ایران (Iranian Market Context & Evidence)
+### شواهد و بستر تجاری ایران (Iranian Market Realities)
+- **ضوابط ثبت علائم تجاری:** الزامات اداره مالکیت معنوی ایران (ثبت واژگان مصوب فرهنگستان زبان و ادب فارسی) و عدم امکان ثبت واژگان لاتین بدون کارت بازرگانی.
+- **دسترسی به دامنه .ir و آی‌دی شبکه‌های اجتماعی:** بررسی همزمان آزاد بودن نام دامنه ملی و نام کاربری شبکه‌های اجتماعی.
+
+---
+
+## قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+### قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+1. **قاعده تلفظ‌پذیری آسان:** نام باید با یک‌بار شنیدن پشت تلفن قابل نوشتن باشد بدون اینکه نیاز به هجی کردن حروف داشته باشد.
+2. **قاعده حفاظت حقوقی:** پیش از نهایی‌سازی باید استعلام اولیه در سامانه مالکیت معنوی کشور انجام شود.

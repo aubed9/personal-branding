@@ -1,6 +1,6 @@
 ---
 id: KB-MSG-CORE-001
-tags: ['message_pillars', 'elevator_hook', '30_second_pitch', 'core_narrative', 'value_hook']
+tags: ['message_pillars', 'elevator_hook', '30_second_pitch', 'core_narrative', 'value_hook', 'system1_framing', 'cialdini_persuasion', 'hook']
 title: "ارکان پیام و قلاب معرفی ۳۰ ثانیه‌ای (Elevator Hook)"
 category: "05-verbal-identity"
 version: "1.0.0"
@@ -12,6 +12,7 @@ related_metrics: ['message_recall', 'elevator_pitch_conversion']
 related_concepts: ['MESSAGE_PILLARS', 'ELEVATOR_PITCH']
 source: "DIGITAL MARKET Knowledge Engine & Academic Foundations"
 last_updated: "2026-09-05"
+sources: ['SRC-FOUNDATION-07', 'SRC-FOUNDATION-20', 'SRC-FOUNDATION-21']
 ---
 
 # مفهوم چیست؟
@@ -57,7 +58,8 @@ last_updated: "2026-09-05"
 نرخ تبدیل قلاب آسانسوری به جلسه یا سفارش.
 
 # Related Wiki Nodes
-- `KB-STR-VP-001`\n- `KB-MSG-CTA-001`
+- `KB-STR-VP-001`
+- `KB-MSG-CTA-001`
 # الگوریتم حل مسئله و مهندسی پیام بر مبنای StoryBrand دونالد میلر (Execution Algorithm)
 ```text
 [۱. شخصیت (مشتری، قهرمان داستان است، نه برند شما)]
@@ -89,3 +91,25 @@ $$\text{Hook} = [\text{بیان درد ملموس مخاطب}] + [\text{معرف
 - **گام اول (شنیدن فعال بدون قطع کلام):** «کاملاً حق با شماست و متوجهم چقدر این موضوع آزاردهنده بوده.»
 - **گام دوم (پذیرش مسئولیت):** «ما اینجاییم تا خطای پیش‌آمده را بی‌درنگ و کامل حل کنیم.»
 - **گام سوم (اقدام فوری):** «همین الان کار دوباره بدون هزینه انجام می‌شود و فاکتور این مرحله مهمان ما هستید.»
+
+---
+
+## پایه‌های علمی و مراجع دانشی (Scientific Foundations & Sourced Evidence)
+### پایه‌های علمی و مراجع دانشی (Scientific Foundations)
+- **دانیل کانمن (SRC-FOUNDATION-07):** سوگیری چارچوب‌بندی (Framing Effect). پیام‌هایی که بر رفع تهدید و پیشگیری از خسران تاکید دارند واکنش فوری سیستم ۱ را برمی‌انگیزند.
+- **فیل باردن (SRC-FOUNDATION-20):** کدگذاری صریح در برابر ضمنی؛ پیام باید اهداف انگیزشی امنیت، تسلط یا هیجان را فعال کند.
+- **رابرت چالدینی (SRC-FOUNDATION-21):** بهره‌گیری از اهرم‌های اقتدار، اثبات اجتماعی و عمل متقابل در متن پیام‌ها.
+
+---
+
+## شواهد و بستر تجاری ایران (Iranian Market Context & Evidence)
+### شواهد و بستر تجاری ایران (Iranian Market Realities)
+- **اثربخشی پیامک‌های شخصی‌سازی‌شده:** گزارش سالانه نجوا (SRC-IR-NAJVA-REPORT-1404-FIRST-PARTY) نشان می‌دهد پیام‌های شخصی‌سازی‌شده نرخ کلیکی معادل ۴.۳۹٪ ثبت کرده‌اند که ۸۷٪ بالاتر از پیام‌های عمومی است.
+- **ساده‌سازی زبان اداری:** مخاطب ایرانی از متون رسمی و پرطمطراق گریزان است و پیام‌های ساده، مستقیم و صمیمی را ترجیح می‌دهد.
+
+---
+
+## قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+### قواعد تصمیم‌گیری و گاردریل‌های اجرایی (Actionable Decision Rules)
+1. **قاعده قلاب ۳ ثانیه‌ای:** تیتر اصلی پیام باید در ۳ ثانیه اول درد یا منفعت ملموس را منتقل کند.
+2. **قاعده سه ستون پیام‌رسانی:** پیام‌ها باید حول ۳ ستون موضوعی مشخص سازمان‌دهی شوند و از پرداختن به شاخ‌وبرگ پرهیز گردد.
